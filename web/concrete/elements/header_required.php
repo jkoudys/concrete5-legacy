@@ -48,8 +48,8 @@ if (is_object($c)) {
     $akk = $c->getCollectionAttributeValue('meta_keywords');
 }
 ?>
-<title><?php echo $escapedPageTitle?></title>
-<?
+<title><?= $escapedPageTitle ?></title>
+<?php
 if ($akd) { ?>
 <meta name="description" content="<?=htmlspecialchars($akd, ENT_COMPAT, APP_CHARSET)?>" />
 <?php } else { ?>

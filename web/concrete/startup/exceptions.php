@@ -22,4 +22,4 @@ function Concrete5_Exception_Handler($e)
     }
 }
 
-set_exception_handler('Concrete5_Exception_Handler');
+//set_exception_handler('Concrete5_Exception_Handler');
