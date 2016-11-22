@@ -25,9 +25,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_Block extends Object
 {
 
-    var $cID;
-    var $arHandle;
-    var $c;
+    public $cID;
+    public $arHandle;
+    public $c;
     protected $csrID;
     protected $proxyBlock = false;
     protected $bIncludeInComposerIsSet = false;
@@ -298,12 +298,12 @@ class Concrete5_Model_Block extends Object
         }
     }
     /*
-	 * Returns a path to where the block type's files are located.
-	 * @access public
-	 * @return string $path
-	 */
+     * Returns a path to where the block type's files are located.
+     * @access public
+     * @return string $path
+     */
 
-    function revertToAreaPermissions()
+    public function revertToAreaPermissions()
     {
         $c = $this->getBlockCollectionObject();
 
@@ -377,25 +377,25 @@ class Concrete5_Model_Block extends Object
     }
 
 
-    function loadNewCollection(&$c)
+    public function loadNewCollection(&$c)
     {
         $this->c = $c;
     }
 
-    function setBlockAreaObject(&$a)
+    public function setBlockAreaObject(&$a)
     {
         $this->a = $a;
         $this->arHandle = $a->getAreaHandle();
     }
 
-    function getBlockAreaObject()
+    public function getBlockAreaObject()
     {
         if (is_object($this->a)) {
             return $this->a;
         }
     }
 
-    function getOriginalCollection()
+    public function getOriginalCollection()
     {
         // given a block ID, we find the original collection ID (where this bID is marked as isOriginal)
         $db = Loader::db();
@@ -409,7 +409,7 @@ class Concrete5_Model_Block extends Object
         }
     }
 
-    function getNumChildren()
+    public function getNumChildren()
     {
         $db = Loader::db();
         $q = "select count(*) as total from CollectionVersionBlocks where bID = ? and isOriginal = 0";
@@ -417,7 +417,7 @@ class Concrete5_Model_Block extends Object
         return $total;
     }
 
-    function passThruBlock($method)
+    public function passThruBlock($method)
     {
         // pass this onto the blocktype's class
 
@@ -458,7 +458,7 @@ class Concrete5_Model_Block extends Object
         return $this->getInstance();
     }
 
-    function getCollectionList()
+    public function getCollectionList()
     {
         // gets a list of collections that include this block, along with area name, etc...
         // used in the block_details.php page in the admin control panel
@@ -475,7 +475,7 @@ class Concrete5_Model_Block extends Object
         }
     }
 
-    function update($data)
+    public function update($data)
     {
         // this function updates fields common to every block
 
@@ -499,19 +499,19 @@ class Concrete5_Model_Block extends Object
         $bc->save($data);
     }
 
-    function isActive()
+    public function isActive()
     {
         return $this->bIsActive;
     }
 
-    function deactivate()
+    public function deactivate()
     {
         $db = Loader::db();
         $q = "update Blocks set bIsActive = 0 where bID = ?";
         $db->query($q, array($this->bID));
     }
 
-    function activate()
+    public function activate()
     {
         $db = Loader::db();
         $q = "update Blocks set bIsActive = 1 where bID = ?";
@@ -527,7 +527,7 @@ class Concrete5_Model_Block extends Object
         return PackageList::getHandle($this->pkgID);
     }
 
-    function updateBlockName($name, $force = 0)
+    public function updateBlockName($name, $force = 0)
     {
         // this function allows children blocks to change the name of the block. This is useful
         // for the block search functionality - a content local block can make the block name
@@ -546,7 +546,7 @@ class Concrete5_Model_Block extends Object
         }
     }
 
-    function alias($c)
+    public function alias($c)
     {
 
         // creates an alias of the block, attached to this collection, within the CollectionVersionBlocks table
@@ -606,7 +606,7 @@ class Concrete5_Model_Block extends Object
     /**
      * Moves a block onto a new page and into a new area. Does not change any data about the block otherwise
      */
-    function move($nc, $area)
+    public function move($nc, $area)
     {
         $db = Loader::db();
           $bID = $this->getBlockID();
@@ -619,7 +619,7 @@ class Concrete5_Model_Block extends Object
         $db->Execute('update CollectionVersionBlocks set cID = ?, cvID = ?, arHandle = ?, cbDisplayOrder = ? where cID = ? and bID = ? and arHandle = ? and isOriginal = 1', $v);
     }
 
-    function duplicate($nc)
+    public function duplicate($nc)
     {
         // duplicate takes a new collection as its argument, and duplicates the existing block
         // to that collection
@@ -803,7 +803,7 @@ class Concrete5_Model_Block extends Object
         }
     }
 
-    function getBlockCollectionObject()
+    public function getBlockCollectionObject()
     {
         if (is_object($this->c)) {
             return $this->c;
@@ -812,27 +812,27 @@ class Concrete5_Model_Block extends Object
         }
     }
 
-    function getBlockCollectionID()
+    public function getBlockCollectionID()
     {
         return $this->cID;
     }
 
-    function getBlockTypeName()
+    public function getBlockTypeName()
     {
         return $this->btName;
     }
 
-    function getBlockTypeHandle()
+    public function getBlockTypeHandle()
     {
         return $this->btHandle;
     }
 
-    function getBlockFilename()
+    public function getBlockFilename()
     {
         return $this->bFilename;
     }
 
-    function getBlockComposerFilename()
+    public function getBlockComposerFilename()
     {
         if (!$this->bIncludeInComposerIsSet) {
             $this->setBlockComposerProperties();
@@ -865,12 +865,12 @@ class Concrete5_Model_Block extends Object
         return $this->cbDisplayOrder;
     }
 
-    function getBlockID()
+    public function getBlockID()
     {
         return $this->bID;
     }
 
-    function getBlockTypeID()
+    public function getBlockTypeID()
     {
         return $this->btID;
     }
@@ -880,17 +880,17 @@ class Concrete5_Model_Block extends Object
         return BlockType::getByID($this->btID);
     }
 
-    function getAreaHandle()
+    public function getAreaHandle()
     {
         return $this->arHandle;
     }
 
-    function getBlockUserID()
+    public function getBlockUserID()
     {
         return $this->uID;
     }
 
-    function getBlockName()
+    public function getBlockName()
     {
         return $this->bName;
     }
@@ -901,7 +901,7 @@ class Concrete5_Model_Block extends Object
      * @param string $type (system || user)
      * @return string date formated like: 2009-01-01 00:00:00
     */
-    function getBlockDateAdded($type = 'system')
+    public function getBlockDateAdded($type = 'system')
     {
         if (ENABLE_USER_TIMEZONES && $type == 'user') {
             $dh = Loader::helper('date');
@@ -911,12 +911,12 @@ class Concrete5_Model_Block extends Object
         }
     }
 
-    function getBlockDateLastModified()
+    public function getBlockDateLastModified()
     {
         return $this->bDateModified;
     }
 
-    function _getBlockAction()
+    protected function getBlockAction()
     {
         $cID = $this->getBlockActionCollectionID();
         $bID = $this->getBlockID();
@@ -954,36 +954,36 @@ class Concrete5_Model_Block extends Object
 
         return false;
     }
-    function getBlockEditAction()
+    public function getBlockEditAction()
     {
-        return $this->_getBlockAction();
+        return $this->getBlockAction();
     }
 
-    function getBlockUpdateInformationAction()
+    public function getBlockUpdateInformationAction()
     {
-        $str = $this->_getBlockAction();
+        $str = $this->getBlockAction();
         return $str . '&amp;btask=update_information';
     }
 
-    function getBlockMasterCollectionAliasAction()
+    public function getBlockMasterCollectionAliasAction()
     {
-        $str = $this->_getBlockAction();
+        $str = $this->getBlockAction();
         return $str . '&amp;btask=mc_alias';
     }
 
-    function getBlockUpdateCssAction()
+    public function getBlockUpdateCssAction()
     {
-        $str = $this->_getBlockAction();
+        $str = $this->getBlockAction();
         return $str . '&amp;btask=update_block_css';
     }
 
-    function getBlockUpdateComposerSettingsAction()
+    public function getBlockUpdateComposerSettingsAction()
     {
-        $str = $this->_getBlockAction();
+        $str = $this->getBlockAction();
         return $str . '&amp;btask=update_composer_settings';
     }
 
-    function getBlockPassThruAction()
+    public function getBlockPassThruAction()
     {
         // is the block located in a stack?
         $pc = $this->getBlockCollectionObject();
@@ -996,12 +996,12 @@ class Concrete5_Model_Block extends Object
             $str = DIR_REL . "/" . DISPATCHER_FILENAME . "?cID={$cID}&amp;stackID=" . $this->getBlockActionCollectionID() . "&amp;bID={$bID}&amp;btask=passthru_stack&amp;ccm_token=" . $token;
             return $str;
         } else {
-            $str = $this->_getBlockAction();
+            $str = $this->getBlockAction();
             return $str . '&amp;btask=passthru';
         }
     }
 
-    function isEditable()
+    public function isEditable()
     {
         $bv = new BlockView();
         $bv->setBlockObject($this);
@@ -1012,7 +1012,7 @@ class Concrete5_Model_Block extends Object
         return false;
     }
 
-    function overrideAreaPermissions()
+    public function overrideAreaPermissions()
     {
         if (!$this->cbOverrideAreaPermissions) {
             $this->cbOverrideAreaPermissions = 0;
@@ -1025,7 +1025,7 @@ class Concrete5_Model_Block extends Object
         $this->deleteBlock($forceDelete);
     }
 
-    function deleteBlock($forceDelete = false)
+    public function deleteBlock($forceDelete = false)
     {
         $db = Loader::db();
 
@@ -1103,7 +1103,7 @@ class Concrete5_Model_Block extends Object
         }
     }
 
-    function setOriginalBlockID($originalBID)
+    public function setOriginalBlockID($originalBID)
     {
         $this->originalBID = $originalBID;
     }
@@ -1123,7 +1123,7 @@ class Concrete5_Model_Block extends Object
         $r = $db->query($q, array($do, $bID, $cID, $cvID, $arHandle));
     }
 
-    function setBlockDisplayOrder($i)
+    public function setBlockDisplayOrder($i)
     {
         // This function moves a block up or down
         // Since this is a function that has to be called from an instantiated block, then we already know the cID and areaName
@@ -1230,54 +1230,10 @@ class Concrete5_Model_Block extends Object
      */
     public function refreshCache()
     {
-        /*
-		// if the block is a global block, we need to delete all cached versions that reference it.
-		if ($this->bIsGlobal) {
-			$this->refreshCacheAll();
-		} else {
-			$c = $this->getBlockCollectionObject();
-			$a = $this->getBlockAreaObject();
-			if (is_object($c) && is_object($a)) {
-				Cache::delete('block', $this->getBlockID() . ':' . $c->getCollectionID() . ':' . $c->getVersionID() . ':' . $a->getAreaHandle());
-				Cache::delete('block_view_output', $c->getCollectionID() . ':' . $this->getBlockID() . ':' . $a->getAreaHandle());
-				Cache::delete('collection_blocks', $c->getCollectionID() . ':' . $c->getVersionID());
-			}
-			Cache::delete('block', $this->getBlockID());
-
-			// now we check the scrapbook display
-			$db = Loader::db();
-
-
-			$rows=$db->getAll('select cID, cvID, arHandle FROM CollectionVersionBlocks cvb inner join btCoreScrapbookDisplay bts on bts.bID = cvb.bID where bts.bOriginalID = ?', array($this->getBlockID()));
-			foreach($rows as $row){
-				Cache::delete('block', $this->getBlockID() . ':' . intval($row['cID']) . ':' . intval($row['cvID']) . ':' . $row['arHandle'] );
-				Cache::delete('block_view_output', $row['cID'] . ':' . $this->getBlockID() . ':' . $row['arHandle']);
-				Cache::delete('block', $this->getBlockID());
-			}
-
-			if ($this->getBlockTypeHandle() == BLOCK_HANDLE_SCRAPBOOK_PROXY && is_object($a)) {
-				$rows=$db->getAll('select cID, cvID, arHandle FROM CollectionVersionBlocks cvb inner join btCoreScrapbookDisplay bts on bts.bOriginalID = cvb.bID where bts.bID = ?', array($this->getBlockID()));
-				foreach($rows as $row){
-					Cache::delete('block', $row['bID'] . ':' . $c->getCollectionID() . ':' . $c->getVersionID() . ':' . $a->getAreaHandle());
-					Cache::delete('block_view_output', $c->getCollectionID() . ':' . $row['bID'] . ':' . $a->getAreaHandle());
-				}
-			}
-		}
-		*/
     }
 
     public function refreshCacheAll()
     {
-        /*
-		$db = Loader::db();
-		$rows=$db->getAll( 'SELECT cID, cvID, arHandle FROM CollectionVersionBlocks WHERE bID='.intval($this->getBlockID()) );
-		foreach($rows as $row){
-			Cache::delete('block', $this->getBlockID() . ':' . intval($row['cID']) . ':' . intval($row['cvID']) . ':' . $row['arHandle'] );
-			Cache::delete('block_view_output', $row['cID'] . ':' . $this->getBlockID(). ':' . $row['arHandle']);
-			Cache::delete('collection_blocks', $row['cID'] . ':' . $row['cvID']);
-			Cache::delete('block', $this->getBlockID());
-		}
-		*/
     }
 
     public function export($node, $exportType = 'full')
@@ -1313,7 +1269,7 @@ class Concrete5_Model_Block extends Object
         }
     }
 
-    function updateBlockInformation($data)
+    public function updateBlockInformation($data)
     {
         // this is the function that updates a block's information, like its block filename, and block name
         $db = Loader::db();
@@ -1337,7 +1293,7 @@ class Concrete5_Model_Block extends Object
         $this->refreshBlockOutputCache();
     }
 
-    function updateBlockComposerSettings($data)
+    public function updateBlockComposerSettings($data)
     {
         $db = Loader::db();
         $this->updateBlockInformation($data);
