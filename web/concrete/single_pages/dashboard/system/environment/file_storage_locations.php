@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('File Storage Locations'), false, 'span6 offset3', false)?>
 
@@ -35,9 +35,9 @@
 			$b1 = $concrete_interface->submit(t('Save'), 'file-storage', 'right', 'primary');
 			print $b1;
 		?>		
-		<? if (is_object($fsl)) { ?>
+		<?php if (is_object($fsl)) { ?>
 			<button type="submit" name="delete" value="1" onclick="return confirm('<?=t('Are you sure? (Note: this will not remove any files, it will simply remove the pointer to the directory, and reset any files that are set to this location.)')?>')" class="pull-right btn btn-danger"><?=t('Delete Alternate')?></button>
-		<? } ?>
+		<?php } ?>
 
 	</div>
 	</form>

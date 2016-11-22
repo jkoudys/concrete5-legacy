@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $th = Loader::helper('text');
@@ -42,31 +42,31 @@ $locales = Localization::getAvailableInterfaceLanguageDescriptions(ACTIVE_LOCALE
 				</tr>
                 <tr>
                     <td><?=t('Email Address')?> <span class="required">*</span></td>
-                    <td><? if ($assignment->allowEditAvatar()) { ?><?=t('User Avatar')?><? } ?></td>
+                    <td><?php if ($assignment->allowEditAvatar()) { ?><?=t('User Avatar')?><?php } ?></td>
                 </tr>
                 <tr>
 					<td><input type="text" name="uEmail" autocomplete="off" value="<?=$th->entities($_POST['uEmail'])?>" style="width: 95%"></td>
-					<td><? if ($assignment->allowEditAvatar()) { ?><input type="file" name="uAvatar" style="width: 95%"/><? } ?></td>
+					<td><?php if ($assignment->allowEditAvatar()) { ?><input type="file" name="uAvatar" style="width: 95%"/><?php } ?></td>
 				</tr>
                 
                 
-				<? if (count($locales) > 1) { // "> 1" because en_US is always available ?>
+				<?php if (count($locales) > 1) { // "> 1" because en_US is always available ?>
 			
 				<tr>
 					<td colspan="2"><?=t('Language')?></td>
 				</tr>	
 				<tr>
 					<td colspan="2">
-					<? print $form->select('uDefaultLanguage', $locales, Localization::activeLocale()); ?>
+					<?php print $form->select('uDefaultLanguage', $locales, Localization::activeLocale()); ?>
 					</td>
 				</tr>
                 
-				<? } ?>
+				<?php } ?>
                 
 			</tbody>
 		</table>
 
-	<? if (count($attribs) > 0) { ?>
+	<?php if (count($attribs) > 0) { ?>
 	
         <table class="table table-striped">
         	<thead>
@@ -76,22 +76,22 @@ $locales = Localization::getAvailableInterfaceLanguageDescriptions(ACTIVE_LOCALE
 			</thead>
             <tbody>
             
-			<? foreach($attribs as $ak) { 
+			<?php foreach($attribs as $ak) { 
 				if (in_array($ak->getAttributeKeyID(), $assignment->getAttributesAllowedArray())) { 
 				?>
                 <tr>
                     <td class="clearfix">
-                    	<label><?=$ak->getAttributeKeyDisplayName()?> <? if ($ak->isAttributeKeyRequiredOnRegister()) { ?><span class="required">*</span><? } ?></label>
-                        <? $ak->render('form', $caValue, false)?>
+                    	<label><?=$ak->getAttributeKeyDisplayName()?> <?php if ($ak->isAttributeKeyRequiredOnRegister()) { ?><span class="required">*</span><?php } ?></label>
+                        <?php $ak->render('form', $caValue, false)?>
                     </td>
                 </tr>
-                <? } ?>
-            <? } // END Foreach ?>
+                <?php } ?>
+            <?php } // END Foreach ?>
         
 			</tbody>
         </table>
 	
-	<? } ?>
+	<?php } ?>
 
 		<table class="inputs-list table-striped table">
         	<thead>
@@ -103,7 +103,7 @@ $locales = Localization::getAvailableInterfaceLanguageDescriptions(ACTIVE_LOCALE
 				<tr>
 					<td>
                     
-					<? 
+					<?php 
 					$gak = PermissionKey::getByHandle('assign_user_groups');
 					foreach ($gArray as $g) { 
 						if ($gak->validate($g['gID'])) {
@@ -111,7 +111,7 @@ $locales = Localization::getAvailableInterfaceLanguageDescriptions(ACTIVE_LOCALE
 
 						?>
 						<label>
-							<input type="checkbox" name="gID[]" value="<?=$g['gID']?>" <? 
+							<input type="checkbox" name="gID[]" value="<?=$g['gID']?>" <?php 
                             if (is_array($_POST['gID'])) {
                                 if (in_array($g['gID'], $_POST['gID'])) {
                                     echo(' checked ');
@@ -120,7 +120,7 @@ $locales = Localization::getAvailableInterfaceLanguageDescriptions(ACTIVE_LOCALE
                         ?> />
 							<span><?=h(tc('GroupName', $g['gName']))?></span>
 						</label>
-                    <? }
+                    <?php }
                     
                     
                 } ?>
@@ -137,7 +137,7 @@ $locales = Localization::getAvailableInterfaceLanguageDescriptions(ACTIVE_LOCALE
     <div class="ccm-pane-footer">
         <div class="ccm-buttons">
             <input type="hidden" name="create" value="1" />
-            <? print $ih->submit(t('Add'), 'ccm-user-form', 'right', 'primary'); ?>
+            <?php print $ih->submit(t('Add'), 'ccm-user-form', 'right', 'primary'); ?>
         </div>	
     </div>
 

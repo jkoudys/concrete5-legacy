@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @package Helpers
  * @category Concrete
@@ -290,7 +290,7 @@ class ConcreteDashboardHelper {
 				}
 				?>
 				</ul>
-				<?
+				<?php
 			}
 		$recent = ob_get_contents();
 		ob_end_clean();
@@ -309,7 +309,7 @@ class ConcreteDashboardHelper {
 
 		ob_start(); ?>
 			<div id="ccm-intelligent-search-results">
-			<?
+			<?php
 			$page = Page::getByPath('/dashboard');
 			$children = $page->getCollectionChildrenArray(true);
 			
@@ -347,14 +347,14 @@ class ConcreteDashboardHelper {
 				
 				
 				<ul class="ccm-intelligent-search-results-list">
-				<? if (count($ch2) == 0) { ?>
+				<?php if (count($ch2) == 0) { ?>
 					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($page, false, true)?>"><?=t($page->getCollectionName())?></a><span><?=t($page->getCollectionName())?> <?=t($page->getAttribute('meta_keywords'))?></span></li>
-				<? } ?>
+				<?php } ?>
 				
-				<?
+				<?php
 				if ($page->getCollectionPath() == '/dashboard/system') { ?>
 					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($page, false, true)?>"><?=t('View All')?></a><span><?=t($page->getCollectionName())?> <?=t($page->getAttribute('meta_keywords'))?></span></li>
-				<?				
+				<?php				
 				}
 				
 				foreach($ch2 as $chi) {
@@ -369,14 +369,14 @@ class ConcreteDashboardHelper {
 					}
 			
 					?>
-					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($subpage, false, true)?>"><?=t($subpage->getCollectionName())?></a><span><? if ($page->getCollectionPath() != '/dashboard/system') { ?><?=t($page->getCollectionName())?> <?=t($page->getAttribute('meta_keywords'))?> <? } ?><?=t($subpage->getCollectionName())?> <?=t($subpage->getAttribute('meta_keywords'))?></span></li>
-					<? 
+					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($subpage, false, true)?>"><?=t($subpage->getCollectionName())?></a><span><?php if ($page->getCollectionPath() != '/dashboard/system') { ?><?=t($page->getCollectionName())?> <?=t($page->getAttribute('meta_keywords'))?> <?php } ?><?=t($subpage->getCollectionName())?> <?=t($subpage->getAttribute('meta_keywords'))?></span></li>
+					<?php 
 				}
 				?>
 				</ul>
 				
 				</div>
-				<? }
+				<?php }
 				
 				$custHome = Page::getByPath('/dashboard/home');
 				$custHomeP = new Permissions($custHome);
@@ -394,7 +394,7 @@ class ConcreteDashboardHelper {
 				
 				</div>
 				
-				<? } ?>
+				<?php } ?>
 				
 				<div class="ccm-intelligent-search-results-module ccm-intelligent-search-results-module-loading">
 				<h1><?=t('Your Site')?></h1>
@@ -402,21 +402,21 @@ class ConcreteDashboardHelper {
 				</ul>
 				</div>
 				
-				<? if (ENABLE_INTELLIGENT_SEARCH_HELP) { ?>
+				<?php if (ENABLE_INTELLIGENT_SEARCH_HELP) { ?>
 				<div class="ccm-intelligent-search-results-module ccm-intelligent-search-results-module-offsite ccm-intelligent-search-results-module-loading">
 				<h1><?=t('Help')?></h1>
 				<ul class="ccm-intelligent-search-results-list" id="ccm-intelligent-search-results-list-help">
 				</ul>
 				</div>
-				<? } ?>
+				<?php } ?>
 				
-				<? if (ENABLE_INTELLIGENT_SEARCH_MARKETPLACE) { ?>
+				<?php if (ENABLE_INTELLIGENT_SEARCH_MARKETPLACE) { ?>
 				<div class="ccm-intelligent-search-results-module ccm-intelligent-search-results-module-offsite ccm-intelligent-search-results-module-loading">
 				<h1><?=t('Add-Ons')?></h1>
 				<ul class="ccm-intelligent-search-results-list" id="ccm-intelligent-search-results-list-marketplace">
 				</ul>
 				</div>
-				<? } ?>				
+				<?php } ?>				
 			</div>
 			
 			<div id="ccm-dashboard-overlay">
@@ -426,7 +426,7 @@ class ConcreteDashboardHelper {
 			<!--recent-->
 						
 			
-			<? 
+			<?php 
 			$currentHeader = false;
 			$x = 0;
 			$itemsChanged = false;
@@ -450,47 +450,47 @@ class ConcreteDashboardHelper {
 					}
 					
 					if ($currentHeader != $parent->getCollectionID()) { ?>
-						<? if ($currentHeader != false) { ?>
+						<?php if ($currentHeader != false) { ?>
 							</ul>
 							</div>
-							<? $x++; ?>
-							<? if ($x % 4 == 0) { ?>
+							<?php $x++; ?>
+							<?php if ($x % 4 == 0) { ?>
 								<div class="clearfix" style="padding-bottom: 0px"></div>
-							<? } ?>
+							<?php } ?>
 							
-						<? } ?>
+						<?php } ?>
 
 						<div class="ccm-dashboard-overlay-module">
 						<h1><?=t($parent->getCollectionName())?></h1>
 						<ul>			
 						
-						<? $currentHeader = $parent->getCollectionID(); ?>		
+						<?php $currentHeader = $parent->getCollectionID(); ?>		
 
-					<? } ?>
+					<?php } ?>
 					
 						<li><a href="<?=Loader::helper('navigation')->getLinkToCollection($p, false, true)?>"><?=$name?></a></li>
 
 				
-				<? } ?>
+				<?php } ?>
 				
 							
-			<? } ?>
-			<?
+			<?php } ?>
+			<?php
 			if ($itemsChanged) {
 				$u = new User;
 				$u->saveConfig('QUICK_NAV_BOOKMARKS', serialize($d));
 			}
 			?>
-			<? if ($currentHeader != false) { ?>
+			<?php if ($currentHeader != false) { ?>
 							</ul>
 							</div>
-			<? } ?>
+			<?php } ?>
 			</div>
 			</div>
 			<div id="ccm-dashboard-overlay-misc" class="ccm-dashboard-overlay-misc-rounded">
 			<div class="ccm-dashboard-overlay-inner">
 
-            <?
+            <?php
 
 			// Before we throw in a UL, we check permissions, etc. to see if any of the LI items need to be shown.
 			$systemNews = Page::getByPath('/dashboard/news');
@@ -512,33 +512,33 @@ class ConcreteDashboardHelper {
 
                 <ul>
 
-                <? if ($canAccessNews) { ?>
+                <?php if ($canAccessNews) { ?>
                     <li><a href="<?=View::url('/dashboard/news')?>"><strong><?=t('News')?></strong></a> – <?=t('Learn about your site and concrete5.')?></li>
-                <? } ?>
+                <?php } ?>
 
-				<? if ($canAccessSystem) { ?>
+				<?php if ($canAccessSystem) { ?>
                     <li><a href="<?=View::url('/dashboard/system')?>"><strong><?=t('System &amp; Settings')?></strong></a> – <?=t('Secure and setup your site.')?></li>
-                <? } ?>
+                <?php } ?>
 
-                <? if ($canAccessExtend && $canViewExtend) { ?>
+                <?php if ($canAccessExtend && $canViewExtend) { ?>
                     <li><a href="<?php echo View::url('/dashboard/extend') ?>"><strong><?php echo t("Extend concrete5") ?></strong></a> – 
-                    <? if (ENABLE_MARKETPLACE_SUPPORT) { ?>
+                    <?php if (ENABLE_MARKETPLACE_SUPPORT) { ?>
                     <?php echo sprintf(t('<a href="%s">Install</a>, <a href="%s">update</a> or download more <a href="%s">themes</a> and <a href="%s">add-ons</a>.'),
                         View::url('/dashboard/extend/install'),
                         View::url('/dashboard/extend/update'),
                         View::url('/dashboard/extend/themes'),
                         View::url('/dashboard/extend/add-ons')); ?>
-                    <? } else { ?>
+                    <?php } else { ?>
 					<?php echo sprintf(t('<a href="%s">Install</a> or <a href="%s">update</a> packages.'),
                         View::url('/dashboard/extend/install'),
                         View::url('/dashboard/extend/update'))?>
-                    <? } ?>
+                    <?php } ?>
 					</li>
-                <? } ?>
+                <?php } ?>
 
                 </ul>
 
-            <? } ?>
+            <?php } ?>
 
 			</div>
 			</div>
@@ -548,7 +548,7 @@ class ConcreteDashboardHelper {
 			</div>
 			</div>
 			</div>
-		<?
+		<?php
 			$html = ob_get_contents();
 			ob_end_clean();
 			

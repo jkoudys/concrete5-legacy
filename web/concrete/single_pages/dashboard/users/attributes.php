@@ -1,13 +1,13 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<? if (isset($key)) { ?>
+<?php if (isset($key)) { ?>
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Attribute'), false, false, false)?>
 <form method="post" action="<?=$this->action('edit')?>" id="ccm-attribute-key-form">
 
 
 
-<? Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type, 'key' => $key)); ?>
+<?php Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type, 'key' => $key)); ?>
 
 </form>
 
@@ -16,27 +16,27 @@
 
 
 
-<? } else if ($this->controller->getTask() == 'select_type' || $this->controller->getTask() == 'add' || $this->controller->getTask() == 'edit') { ?>
+<?php } else if ($this->controller->getTask() == 'select_type' || $this->controller->getTask() == 'add' || $this->controller->getTask() == 'edit') { ?>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('User Attributes'), false, false, false)?>
 
-	<? if (isset($type)) { ?>
+	<?php if (isset($type)) { ?>
 		<form method="post" action="<?=$this->action('add')?>" id="ccm-attribute-key-form">
 	
-		<? Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type)); ?>
+		<?php Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type)); ?>
 	
 		</form>	
-	<? } ?>
+	<?php } ?>
 	
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
 
 
-<? } else { ?>
+<?php } else { ?>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('User Attributes'), false, false, false)?>
 
-	<?
+	<?php
 	$attribs = UserAttributeKey::getList();
 	Loader::element('dashboard/attributes_table', array('category' => $category, 'attribs'=> $attribs, 'editURL' => '/dashboard/users/attributes')); ?>
 
@@ -60,7 +60,7 @@
 	
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
-<? } ?>
+<?php } ?>
 
 <script type="text/javascript">
 $(function() {
