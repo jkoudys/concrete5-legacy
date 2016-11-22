@@ -28,7 +28,7 @@ New versions of concrete5 can be found in this repository: http://github.com/con
 
 # Note
 
-This is the development distribution of concrete5 Legacy. It is bleeding edge. The latest development build can be downloaded from https://github.com/concrete5/concrete5-legacy/zipball/master. 
+This is the development distribution of concrete5 Legacy. It is bleeding edge. The latest development build can be downloaded from https://github.com/concrete5/concrete5-legacy/zipball/master.
 
 For the latest fully supported release, check out http://www.concrete5.org/download/
 
@@ -39,7 +39,7 @@ For the latest fully supported release, check out http://www.concrete5.org/downl
 3. Visit your concrete5 site in your web browser. You should see an installation screen where you can specify your site's name, your base URL, and your database settings, and the rest of the information necessary to install concrete5.
 4. Click through and wait for the installation to complete.
 5. concrete5 should be installed.
-	
+
 # Documentation
 
 http://concrete5.org/documentation/
@@ -49,11 +49,7 @@ http://concrete5.org/documentation/
 http://www.concrete5.org/developers/submitting-code/submitting_code_to_concrete/
 
 ### Short Tags
-The concrete5 git repository currently uses php "short tags". Pull requests should maintain this convention. Final release versions have short tags converted to long tags. _Note:_ This issue has thoroughly discussed. Currently the shed is red but may be painted green in the future.
-
-If short tags are not enabled in your development environment you can enable them either
-* In `php.ini` add `short_open_tag = On`
-* In Apache `.htaccess` add `php_value short_open_tag 1`
+The shed has been painted green. PHP short tags are removed completely.
 
 ### Building Assets
 You *do not* need to build assets in order to run the github master
