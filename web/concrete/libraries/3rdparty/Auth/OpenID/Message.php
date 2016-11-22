@@ -15,8 +15,10 @@ require_once 'Auth/Yadis/XML.php';
 require_once 'Auth/OpenID/Consumer.php'; // For Auth_OpenID_FailureResponse
 
 // This doesn't REALLY belong here, but where is better?
-define('Auth_OpenID_IDENTIFIER_SELECT',
-       "http://specs.openid.net/auth/2.0/identifier_select");
+define(
+    'Auth_OpenID_IDENTIFIER_SELECT',
+    "http://specs.openid.net/auth/2.0/identifier_select"
+);
 
 // URI for Simple Registration extension, the only commonly deployed
 // OpenID 1.x extension, and so a special case
@@ -79,13 +81,17 @@ function Auth_OpenID_registerNamespaceAlias($namespace_uri, $alias)
 {
     global $Auth_OpenID_registered_aliases;
 
-    if (Auth_OpenID::arrayGet($Auth_OpenID_registered_aliases,
-                              $alias) == $namespace_uri) {
+    if (Auth_OpenID::arrayGet(
+        $Auth_OpenID_registered_aliases,
+        $alias
+    ) == $namespace_uri) {
         return true;
     }
 
-    if (in_array($namespace_uri,
-                 array_values($Auth_OpenID_registered_aliases))) {
+    if (in_array(
+        $namespace_uri,
+        array_values($Auth_OpenID_registered_aliases)
+    )) {
         return false;
     }
 
@@ -106,8 +112,10 @@ function Auth_OpenID_removeNamespaceAlias($namespace_uri, $alias)
 {
     global $Auth_OpenID_registered_aliases;
 
-    if (Auth_OpenID::arrayGet($Auth_OpenID_registered_aliases,
-                              $alias) === $namespace_uri) {
+    if (Auth_OpenID::arrayGet(
+        $Auth_OpenID_registered_aliases,
+        $alias
+    ) === $namespace_uri) {
         unset($Auth_OpenID_registered_aliases[$alias]);
         return true;
     }
@@ -122,7 +130,8 @@ function Auth_OpenID_removeNamespaceAlias($namespace_uri, $alias)
  *
  * @package OpenID
  */
-class Auth_OpenID_Mapping {
+class Auth_OpenID_Mapping
+{
     /**
      * Initialize a mapping.  If $classic_array is specified, its keys
      * and values are used to populate the mapping.
@@ -273,7 +282,8 @@ class Auth_OpenID_Mapping {
  *
  * @package OpenID
  */
-class Auth_OpenID_NamespaceMap {
+class Auth_OpenID_NamespaceMap
+{
     function Auth_OpenID_NamespaceMap()
     {
         $this->alias_to_namespace = new Auth_OpenID_Mapping();
@@ -313,7 +323,7 @@ class Auth_OpenID_NamespaceMap {
         return in_array($namespace_uri, $this->implicit_namespaces);
     }
 
-    function addAlias($namespace_uri, $desired_alias, $implicit=false)
+    function addAlias($namespace_uri, $desired_alias, $implicit = false)
     {
         // Add an alias from this namespace URI to the desired alias
         global $Auth_OpenID_OPENID_PROTOCOL_FIELDS;
@@ -321,8 +331,10 @@ class Auth_OpenID_NamespaceMap {
         // Check that desired_alias is not an openid protocol field as
         // per the spec.
         if (in_array($desired_alias, $Auth_OpenID_OPENID_PROTOCOL_FIELDS)) {
-            Auth_OpenID::log("\"%s\" is not an allowed namespace alias",
-                            $desired_alias);
+            Auth_OpenID::log(
+                "\"%s\" is not an allowed namespace alias",
+                $desired_alias
+            );
             return null;
         }
 
@@ -340,8 +352,10 @@ class Auth_OpenID_NamespaceMap {
 
         if (($current_namespace_uri !== null) &&
             ($current_namespace_uri != $namespace_uri)) {
-            Auth_OpenID::log('Cannot map "%s" because previous mapping exists',
-                            $namespace_uri);
+            Auth_OpenID::log(
+                'Cannot map "%s" because previous mapping exists',
+                $namespace_uri
+            );
             return null;
         }
 
@@ -350,9 +364,13 @@ class Auth_OpenID_NamespaceMap {
         $alias = $this->namespace_to_alias->get($namespace_uri);
 
         if (($alias !== null) && ($alias != $desired_alias)) {
-            Auth_OpenID::log('Cannot map %s to alias %s. ' .
+            Auth_OpenID::log(
+                'Cannot map %s to alias %s. ' .
                             'It is already mapped to alias %s',
-                            $namespace_uri, $desired_alias, $alias);
+                $namespace_uri,
+                $desired_alias,
+                $alias
+            );
             return null;
         }
 
@@ -412,7 +430,8 @@ class Auth_OpenID_NamespaceMap {
  *
  * @package OpenID
  */
-class Auth_OpenID_Message {
+class Auth_OpenID_Message
+{
 
     function Auth_OpenID_Message($openid_namespace = null)
     {
@@ -450,7 +469,6 @@ class Auth_OpenID_Message {
         // Partition into "openid." args and bare args
         $openid_args = array();
         foreach ($args as $key => $value) {
-
             if (is_array($value)) {
                 return null;
             }
@@ -522,7 +540,7 @@ class Auth_OpenID_Message {
                 if ($this->namespaces->addAlias($value, $ns_key) === null) {
                     return false;
                 }
-            } else if (($ns_alias == Auth_OpenID_NULL_NAMESPACE) &&
+            } elseif (($ns_alias == Auth_OpenID_NULL_NAMESPACE) &&
                        ($ns_key == 'ns')) {
                 // null namespace
                 if ($this->setOpenIDNamespace($value, false) === false) {
@@ -547,7 +565,6 @@ class Auth_OpenID_Message {
             if ($ns_uri === null) {
                 $ns_uri = $this->_getDefaultNamespace($ns_alias);
                 if ($ns_uri === null) {
-
                     $ns_uri = Auth_OpenID_OPENID_NS;
                     $ns_key = sprintf('%s.%s', $ns_alias, $ns_key);
                 } else {
@@ -577,9 +594,11 @@ class Auth_OpenID_Message {
             return false;
         }
 
-        $succeeded = $this->namespaces->addAlias($openid_ns_uri,
-                                                 Auth_OpenID_NULL_NAMESPACE,
-                                                 $implicit);
+        $succeeded = $this->namespaces->addAlias(
+            $openid_ns_uri,
+            Auth_OpenID_NULL_NAMESPACE,
+            $implicit
+        );
         if ($succeeded === false) {
             return false;
         }
@@ -598,7 +617,8 @@ class Auth_OpenID_Message {
     {
         // Create a Message from a KVForm string
         return Auth_OpenID_Message::fromOpenIDArgs(
-                     Auth_OpenID_KVForm::toArray($kvform_string));
+            Auth_OpenID_KVForm::toArray($kvform_string)
+        );
     }
 
     function copy()
@@ -657,9 +677,12 @@ class Auth_OpenID_Message {
         return $kvargs;
     }
 
-    function toFormMarkup($action_url, $form_tag_attrs = null,
-                          $submit_text = "Continue")
-    {
+    function toFormMarkup(
+        $action_url,
+        $form_tag_attrs = null,
+        $submit_text = "Continue"
+    ) {
+
         $form = "<form accept-charset=\"UTF-8\" ".
             "enctype=\"application/x-www-form-urlencoded\"";
 
@@ -683,12 +706,16 @@ class Auth_OpenID_Message {
 
         foreach ($this->toPostArgs() as $name => $value) {
             $form .= sprintf(
-                        "<input type=\"hidden\" name=\"%s\" value=\"%s\" />\n",
-                        htmlspecialchars($name), htmlspecialchars($value));
+                "<input type=\"hidden\" name=\"%s\" value=\"%s\" />\n",
+                htmlspecialchars($name),
+                htmlspecialchars($value)
+            );
         }
 
-        $form .= sprintf("<input type=\"submit\" value=\"%s\" />\n",
-                         htmlspecialchars($submit_text));
+        $form .= sprintf(
+            "<input type=\"submit\" value=\"%s\" />\n",
+            htmlspecialchars($submit_text)
+        );
 
         $form .= "</form>\n";
 
@@ -733,8 +760,10 @@ class Auth_OpenID_Message {
 
         if ($namespace == Auth_OpenID_OPENID_NS) {
             if ($this->_openid_ns_uri === null) {
-                return new Auth_OpenID_FailureResponse(null,
-                    'OpenID namespace not set');
+                return new Auth_OpenID_FailureResponse(
+                    null,
+                    'OpenID namespace not set'
+                );
             } else {
                 $namespace = $this->_openid_ns_uri;
             }
@@ -743,9 +772,11 @@ class Auth_OpenID_Message {
         if (($namespace != Auth_OpenID_BARE_NS) &&
               (!is_string($namespace))) {
             //TypeError
-            $err_msg = sprintf("Namespace must be Auth_OpenID_BARE_NS, ".
+            $err_msg = sprintf(
+                "Namespace must be Auth_OpenID_BARE_NS, ".
                               "Auth_OpenID_OPENID_NS or a string. got %s",
-                              print_r($namespace, true));
+                print_r($namespace, true)
+            );
             return new Auth_OpenID_FailureResponse(null, $err_msg);
         }
 
@@ -812,8 +843,11 @@ class Auth_OpenID_Message {
         } else {
             if ((!$this->args->contains(array($namespace, $key))) &&
               ($default == Auth_OpenID_NO_DEFAULT)) {
-                $err_msg = sprintf("Namespace %s missing required field %s",
-                                   $namespace, $key);
+                $err_msg = sprintf(
+                    "Namespace %s missing required field %s",
+                    $namespace,
+                    $key
+                );
                 return new Auth_OpenID_FailureResponse(null, $err_msg);
             } else {
                 return $this->args->get(array($namespace, $key), $default);
@@ -902,9 +936,9 @@ class Auth_OpenID_Message {
             if ($alias == 'ns') {
               // Return the namespace URI for a namespace alias
               // parameter.
-              return $this->namespaces->getNamespaceURI($key);
+                return $this->namespaces->getNamespaceURI($key);
             } else {
-              $ns = $this->namespaces->getNamespaceURI($alias);
+                $ns = $this->namespaces->getNamespaceURI($alias);
             }
         }
 
@@ -916,5 +950,3 @@ class Auth_OpenID_Message {
         return $this->getArg($ns, $key, $default);
     }
 }
-
-

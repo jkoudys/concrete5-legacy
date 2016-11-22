@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $dh = Loader::helper('concrete/dashboard/sitemap');
 if (!$dh->canRead()) {
@@ -40,14 +40,14 @@ if ($_POST['process']) {
 		}
 		if ($nc->getCollectionPointerOriginalID() > 0) {
 			$ncID = $nc->getCollectionPointerOriginalID();
-		}		
+		}
 		$db->Execute('insert into QueuePageDuplicationRelations (cID, originalCID, queue_name) values (?, ?, ?)', array(
 			$ncID, $ocID, 'copy_page'
 		));
-			
+
 		$q->deleteMessage($p);
 	}
-	$obj->totalItems = $q->count();	
+	$obj->totalItems = $q->count();
 	print $js->encode($obj);
 	if ($q->count() == 0) {
 		$q->deleteQueue('copy_page');
@@ -72,7 +72,7 @@ if ($_POST['process']) {
 	}
 
 	$dc = Page::getByID($_REQUEST['destCID']);
-	if (count($originalPages) > 0 && is_object($dc) && !$dc->isError()) { 
+	if (count($originalPages) > 0 && is_object($dc) && !$dc->isError()) {
 		$u = new User();
 		if ($u->isSuperUser() && $oc->canMoveCopyTo($dc)) {
 			foreach($originalPages as $oc) {

@@ -64,7 +64,7 @@ class Zend_Db_Statement_Mysql extends Zend_Db_Statement
         // send $params as input parameters to the statement
         if ($params) {
             $newParams = array();
-            foreach($params AS $k => $v) {
+            foreach ($params as $k => $v) {
                 $newParams[$k] = $this->_adapter->quote($v);
             }
 
@@ -72,9 +72,9 @@ class Zend_Db_Statement_Mysql extends Zend_Db_Statement
             $sql = call_user_func_array('sprintf', $newParams);
             unset($newParams);
         }
-        
+
         $this->_stmt = mysql_query($sql);
-        if($this->_stmt === false) {
+        if ($this->_stmt === false) {
             $this->_throwException();
         }
         return true;
@@ -126,10 +126,10 @@ class Zend_Db_Statement_Mysql extends Zend_Db_Statement
         return mysql_error($this->_adapter->getConnection());
     }
 
-    private function _throwException($message=null)
+    private function _throwException($message = null)
     {
         require_once 'Zend/Db/Statement/Exception.php';
-        if($message === null) {
+        if ($message === null) {
             $message = $this->errorMessage()." (".$this->errorCode().")";
         }
         throw new Zend_Db_Statement_Exception($message);
@@ -158,9 +158,9 @@ class Zend_Db_Statement_Mysql extends Zend_Db_Statement
      */
     public function rowCount()
     {
-        if($this->_stmt == true) {
+        if ($this->_stmt == true) {
             return mysql_affected_rows($this->_adapter->getConnection());
-        } else if($this->_stmt == null) {
+        } elseif ($this->_stmt == null) {
             return -1;
         } else {
             return mysql_num_rows($this->_stmt);
@@ -215,7 +215,7 @@ class Zend_Db_Statement_Mysql extends Zend_Db_Statement
      */
     public function closeCursor()
     {
-        if(is_resource($this->_stmt)) {
+        if (is_resource($this->_stmt)) {
             mysql_free_result($this->_stmt);
         }
         $this->_stmt = null;
@@ -231,7 +231,7 @@ class Zend_Db_Statement_Mysql extends Zend_Db_Statement
      */
     public function columnCount()
     {
-        if(is_resource($this->_stmt)) {
+        if (is_resource($this->_stmt)) {
             return mysql_num_fields($this->_stmt);
         } else {
             return 0;

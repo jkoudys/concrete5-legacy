@@ -2,12 +2,12 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Controller_Dashboard_System_Optimization_ClearCache extends DashboardBaseController {
-	
-	public $helpers = array('form'); 
-	
+
+	public $helpers = array('form');
+
 	public function view(){
 	}
-	
+
 	public function do_clear() {
 		if ($this->token->validate("clear_cache")) {
 			if ($this->isPost()) {
@@ -20,9 +20,9 @@ class Concrete5_Controller_Dashboard_System_Optimization_ClearCache extends Dash
 	}
 
 	public function cache_cleared() {
-		$this->set('message', t('Cached files removed.'));	
+		$this->set('message', t('Cached files removed.'));
 		$this->view();
 	}
-	
-	
+
+
 }

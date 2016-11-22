@@ -1,9 +1,9 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $form = Loader::helper("form");
 $tp = new TaskPermission();
 $dt = Loader::helper('form/date_time');
-if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) { 
+if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) {
 	die(t("You do not have user search or group search permissions."));
 }
 $pae = false;
@@ -22,17 +22,17 @@ if (!is_object($pd)) {
 	$pd = false;
 }
 
-if ($_POST['task'] == 'save_permissions') { 
+if ($_POST['task'] == 'save_permissions') {
 	$js = Loader::helper('json');
 	$r = new stdClass;
-	
+
 	if (is_object($pae)) {
 		$pd = PermissionDuration::translateFromRequest();
 	} else {
 		$r->error = true;
 		$r->message = t('You must choose who this permission is for.');
 	}
-	
+
 	if (!$r->error) {
 		$r->peID = $pae->getAccessEntityID();
 		if (is_object($pd)) {
@@ -41,7 +41,7 @@ if ($_POST['task'] == 'save_permissions') {
 			$r->pdID = 0;
 		}
 	}
-	
+
 	print $js->encode($r);
 	exit;
 }
@@ -59,9 +59,9 @@ if ($_POST['task'] == 'save_permissions') {
 
 <p><?=t('Who gets access to this permission?')?></p>
 
-<div id="ccm-permissions-access-entity-label"><? if (is_object($pae)) { ?><div class="alert alert-info"><?=$pae->getAccessEntityLabel()?></div><? } else { ?><div class="alert alert-warning"><?=t('None Selected')?></div><? } ?></div>
+<div id="ccm-permissions-access-entity-label"><?php if (is_object($pae)) { ?><div class="alert alert-info"><?=$pae->getAccessEntityLabel()?></div><?php } else { ?><div class="alert alert-warning"><?=t('None Selected')?></div><?php } ?></div>
 
-<? if (!is_object($pae)) { ?>
+<?php if (!is_object($pae)) { ?>
 
 <div class="btn-group">
 	<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -69,31 +69,31 @@ if ($_POST['task'] == 'save_permissions') {
 	<span class="caret"></span>
 		</a>
 	<ul class="dropdown-menu">
-	<? 
+	<?php
 	$category = PermissionKeyCategory::getByHandle($_REQUEST['pkCategoryHandle']);
 	$entitytypes = PermissionAccessEntityType::getList($category);
 	foreach($entitytypes as $type) { ?>
 		<li><?=$type->getAccessEntityTypeLinkHTML()?></li>
-	<? } ?>
+	<?php } ?>
 	</ul>
 </div>
 <br/><br/>
 
-<? foreach($entitytypes as $type) { ?>
-	
-<? if ($type->getPackageID() > 0) { ?>
-	<? Loader::packageElement('permission/access/entity/types/' . $type->getAccessEntityTypeHandle(), $type->getPackageHandle(), array('type' => $type)); ?>
-<? } else { ?>
-	<? Loader::element('permission/access/entity/types/' . $type->getAccessEntityTypeHandle(), array('type' => $type)); ?>
-<? } ?>
+<?php foreach($entitytypes as $type) { ?>
 
-	
-<? } ?>
-
-<? } ?>
+<?php if ($type->getPackageID() > 0) { ?>
+	<?php Loader::packageElement('permission/access/entity/types/' . $type->getAccessEntityTypeHandle(), $type->getPackageHandle(), array('type' => $type)); ?>
+<?php } else { ?>
+	<?php Loader::element('permission/access/entity/types/' . $type->getAccessEntityTypeHandle(), array('type' => $type)); ?>
+<?php } ?>
 
 
-<? if (!isset($_REQUEST['disableDuration'])) { ?>
+<?php } ?>
+
+<?php } ?>
+
+
+<?php if (!isset($_REQUEST['disableDuration'])) { ?>
 
 <h4><?=t('Time Settings')?></h4>
 
@@ -101,7 +101,7 @@ if ($_POST['task'] == 'save_permissions') {
 
 <?=Loader::element('permission/duration', array('pd' => $pd)); ?>
 
-<? } ?>
+<?php } ?>
 
 <div class="dialog-buttons">
 	<input type="button" onclick="jQuery.fn.dialog.closeTop()" value="<?=t('Cancel')?>" class="btn" />
@@ -124,7 +124,7 @@ if ($_POST['task'] == 'save_permissions') {
 			if (r.error) {
 				ccmAlert.notice('<?=t("Error")?>', r.message);
 			} else {
-				if (typeof(ccm_addAccessEntity) == 'function') { 
+				if (typeof(ccm_addAccessEntity) == 'function') {
 					ccm_addAccessEntity(r.peID, r.pdID, '<?=addslashes($_REQUEST["accessType"])?>');
 				} else {
 					alert(r.peID);
@@ -133,7 +133,7 @@ if ($_POST['task'] == 'save_permissions') {
 			}
 		}
 	});
-	
+
 </script>
 
 

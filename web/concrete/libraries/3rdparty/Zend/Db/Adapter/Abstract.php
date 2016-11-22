@@ -240,7 +240,7 @@ abstract class Zend_Db_Adapter_Abstract
         if (array_key_exists(Zend_Db::FETCH_MODE, $options)) {
             if (is_string($options[Zend_Db::FETCH_MODE])) {
                 $constant = 'Zend_Db::FETCH_' . strtoupper($options[Zend_Db::FETCH_MODE]);
-                if(defined($constant)) {
+                if (defined($constant)) {
                     $options[Zend_Db::FETCH_MODE] = constant($constant);
                 }
             }
@@ -363,7 +363,7 @@ abstract class Zend_Db_Adapter_Abstract
         if ($profilerIsObject = is_object($profiler)) {
             if ($profiler instanceof Zend_Db_Profiler) {
                 $profilerInstance = $profiler;
-            } else if ($profiler instanceof Zend_Config) {
+            } elseif ($profiler instanceof Zend_Config) {
                 $profiler = $profiler->toArray();
             } else {
                 /**
@@ -385,7 +385,7 @@ abstract class Zend_Db_Adapter_Abstract
             if (isset($profiler['instance'])) {
                 $profilerInstance = $profiler['instance'];
             }
-        } else if (!$profilerIsObject) {
+        } elseif (!$profilerIsObject) {
             $enabled = (bool) $profiler;
         }
 
@@ -884,7 +884,8 @@ abstract class Zend_Db_Adapter_Abstract
                     // ANSI SQL-style hex literals (e.g. x'[\dA-F]+')
                     // are not supported here, because these are string
                     // literals, not numeric literals.
-                    if (preg_match('/^(
+                    if (preg_match(
+                        '/^(
                           [+-]?                  # optional sign
                           (?:
                             0[Xx][\da-fA-F]+     # ODBC-style hexadecimal
@@ -892,7 +893,9 @@ abstract class Zend_Db_Adapter_Abstract
                             (?:[eE][+-]?\d+)?    # optional exponent on decimals or octals
                           )
                         )/x',
-                        (string) $value, $matches)) {
+                        (string) $value,
+                        $matches
+                    )) {
                         $quotedValue = $matches[1];
                     }
                     break;
@@ -961,7 +964,7 @@ abstract class Zend_Db_Adapter_Abstract
      * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
      * @return string The quoted identifier.
      */
-    public function quoteIdentifier($ident, $auto=false)
+    public function quoteIdentifier($ident, $auto = false)
     {
         return $this->_quoteIdentifierAs($ident, null, $auto);
     }
@@ -974,7 +977,7 @@ abstract class Zend_Db_Adapter_Abstract
      * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
      * @return string The quoted identifier and alias.
      */
-    public function quoteColumnAs($ident, $alias, $auto=false)
+    public function quoteColumnAs($ident, $alias, $auto = false)
     {
         return $this->_quoteIdentifierAs($ident, $alias, $auto);
     }
@@ -1041,7 +1044,7 @@ abstract class Zend_Db_Adapter_Abstract
      * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
      * @return string        The quoted identifier and alias.
      */
-    protected function _quoteIdentifier($value, $auto=false)
+    protected function _quoteIdentifier($value, $auto = false)
     {
         if ($auto === false || $this->_autoQuoteIdentifiers === true) {
             $q = $this->getQuoteIdentifierSymbol();

@@ -31,24 +31,25 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Attr
 				?></th>
 			<? } ?>
 		</tr>
-		<?php foreach($types as $at) { ?>
+		<?php foreach ($types as $at) {
+} ?>
 
-			<tr>
-				<td><?=$at->getAttributeTypeDisplayName()?></td>
-				<? foreach($categories as $cat) { ?>
-					<td style="width: 1px; text-align: center"><?=$form->checkbox($cat->getAttributeKeyCategoryHandle() . '[]', $at->getAttributeTypeID(), $at->isAssociatedWithCategory($cat))?></td>
-				<? } ?>
-			</tr>
+            <tr>
+                <td><?=$at->getAttributeTypeDisplayName()?></td>
+                <? foreach($categories as $cat) { ?>
+                    <td style="width: 1px; text-align: center"><?=$form->checkbox($cat->getAttributeKeyCategoryHandle() . '[]', $at->getAttributeTypeID(), $at->isAssociatedWithCategory($cat))?></td>
+                <? } ?>
+            </tr>
 
-		<? } ?>
+        <? } ?>
 
-	</table>
-	<div class="well clearfix">
-	<?
-	$b1 = $interface->submit(t('Save'), 'attribute_type_associations_form', 'right', 'primary');
-	print $b1;
-	?>
-	</div>
+    </table>
+    <div class="well clearfix">
+    <?
+    $b1 = $interface->submit(t('Save'), 'attribute_type_associations_form', 'right', 'primary');
+    print $b1;
+    ?>
+    </div>
 </form>
 
 <h3><?=t('Custom Attribute Types')?></h3>
@@ -56,20 +57,20 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Attr
 $ch = Loader::helper('concrete/interface');
 $types = PendingAttributeType::getList(); ?>
 <? if (count($types) == 0) { ?>
-	<?=t('There are no available attribute types awaiting installation.')?>
+    <?=t('There are no available attribute types awaiting installation.')?>
 <? } else { ?>
-	<ul id="ccm-block-type-list">
-		<? foreach($types as $at) { ?>
-			<li class="ccm-block-type ccm-block-type-available">
-				<form id="attribute_type_install_form_<?=$at->getAttributeTypeHandle()?>" style="margin: 0px" method="post" action="<?=$this->action('add_attribute_type')?>">
-					<?
-					print $form->hidden("atHandle", $at->getAttributeTypeHandle());
-					?>
-					<p style="background-image: url(<?=$at->getAttributeTypeIconSRC()?>)" class="ccm-block-type-inner"><?=$ch->submit(t("Install"), 'submit', 'right', 'small')?><?=$at->getAttributeTypeDisplayName()?></p>
-				</form>
-			</li>
-		<? } ?>
-	</ul>
+    <ul id="ccm-block-type-list">
+        <? foreach($types as $at) { ?>
+            <li class="ccm-block-type ccm-block-type-available">
+                <form id="attribute_type_install_form_<?=$at->getAttributeTypeHandle()?>" style="margin: 0px" method="post" action="<?=$this->action('add_attribute_type')?>">
+                    <?
+                    print $form->hidden("atHandle", $at->getAttributeTypeHandle());
+                    ?>
+                    <p style="background-image: url(<?=$at->getAttributeTypeIconSRC()?>)" class="ccm-block-type-inner"><?=$ch->submit(t("Install"), 'submit', 'right', 'small')?><?=$at->getAttributeTypeDisplayName()?></p>
+                </form>
+            </li>
+        <? } ?>
+    </ul>
 
 <? } ?>
 

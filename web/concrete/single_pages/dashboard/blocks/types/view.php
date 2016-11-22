@@ -8,18 +8,18 @@
 <?php if ($this->controller->getTask() == 'inspect' || $this->controller->getTask() == 'refresh') { ?>
 
 <div class="ccm-pane-body">
-	
+
 	<h3><img src="<?=$ci->getBlockTypeIconURL($bt)?>" /> <?=t($bt->getBlockTypeName())?></h3>
-		
+
 	<h5><?=t('Description')?></h5>
 	<p><?=t($bt->getBlockTypeDescription())?></p>
 
 	<h5><?=t('Usage Count')?></h5>
 	<p><?=$num?></p>
-	
+
 	<h5><?php echo t('Usage Count on Active Pages')?></h5>
 	<p><?php echo $numActive?></p>
-	
+
 	<?php if ($bt->isBlockTypeInternal()) { ?>
 	<h5><?=t('Internal')?></h5>
 	<p><?=t('This is an internal block type.')?></p>
@@ -33,15 +33,15 @@
 	<?php
 	$u = new User();
 	if ($u->isSuperUser()) {
-	
+
 		$removeBTConfirm = t('This will remove all instances of the %s block type. This cannot be undone. Are you sure?', $bt->getBlockTypeHandle());
-		
+
 		print $ch->button_js(t('Remove'), 'removeBlockType()', 'right', 'error');?>
 
 		<script type="text/javascript">
 		removeBlockType = function() {
-			if (confirm('<?=$removeBTConfirm?>')) { 
-				location.href = "<?=$this->url('/dashboard/blocks/types', 'uninstall', $bt->getBlockTypeID(), $valt->generate('uninstall'))?>";				
+			if (confirm('<?=$removeBTConfirm?>')) {
+				location.href = "<?=$this->url('/dashboard/blocks/types', 'uninstall', $bt->getBlockTypeID(), $valt->generate('uninstall'))?>";
 			}
 		}
 		</script>
@@ -49,7 +49,7 @@
 	<?php } else { ?>
 		<?php print $ch->button_js(t('Remove'), 'alert(\'' . t('Only the super user may remove block types.') . '\')', 'right', 'disabled error');?>
 	<?php } ?>
-		
+
 </div>
 
 <?php } else { ?>
@@ -59,7 +59,7 @@
 	<h5><?=t('Awaiting Installation')?></h5>
 	<?php if (count($availableBlockTypes) > 0) { ?>
 		<ul id="ccm-block-type-list">
-		<?php	foreach ($availableBlockTypes as $bt) { 
+		<?php	foreach ($availableBlockTypes as $bt) {
 			$btIcon = $ci->getBlockTypeIconURL($bt);
 			?>
 			<li class="ccm-block-type ccm-block-type-available">
@@ -70,7 +70,7 @@
 	<?php } else { ?>
 		<p><?=t('No custom block types are awaiting installation.')?></p>
 	<?php } ?>
-	
+
     <?php if (ENABLE_MARKETPLACE_SUPPORT == true) { ?>
 	<div class="well" style="padding:10px 20px;">
         <h3><?=t('More Blocks')?></h3>
@@ -78,10 +78,10 @@
         <p><a class="btn success" href="<?=$this->url('/dashboard/extend/add-ons')?>"><?=t("More Add-ons")?></a></p>
     </div>
     <?php } ?>
-    
+
 	<h3><?=t('Installed Block Types')?></h3>
 	<div id="ccm-block-type-list-installed" class="ccm-block-type-sortable-list">
-		<?php foreach($normalBlockTypes as $bt) { 
+		<?php foreach($normalBlockTypes as $bt) {
 			$btIcon = $ci->getBlockTypeIconURL($bt);
 			$btID = $bt->getBlockTypeID();
 			?>
@@ -116,23 +116,23 @@
 			?>
 		</form>
 	</div>
-	
+
 	<h5><?=t('Internal Block Types')?></h5>
 	<ul id="ccm-block-type-list">
-		<?php foreach($internalBlockTypes as $bt) { 
+		<?php foreach($internalBlockTypes as $bt) {
 			$btIcon = $ci->getBlockTypeIconURL($bt);
-			?>	
+			?>
 			<li class="ccm-block-type ccm-block-type-available">
 				<a style="background-image: url(<?=$btIcon?>)" class="ccm-block-type-inner" href="<?=$this->action('inspect', $bt->getBlockTypeID())?>"><?=t($bt->getBlockTypeName())?></a>
 				<div class="ccm-block-type-description"  id="ccm-bt-help<?=$bt->getBlockTypeID()?>"><?=t($bt->getBlockTypeDescription())?></div>
 			</li>
 		<?php } ?>
 	</ul>
-	
-	
+
+
 
 </div>
-	
+
 <?php } ?>
 </div>
 </div>

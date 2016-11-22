@@ -24,12 +24,12 @@ class Concrete5_Library_Update {
 			foreach($updates as $up) {
 				if (version_compare($up->getUpdateVersion(), $multiSiteVersion, '>')) {
 					$multiSiteVersion = $up->getUpdateVersion();
-				}	
+				}
 			}
 			Config::save('APP_VERSION_LATEST', $multiSiteVersion);
 			return $multiSiteVersion;
 		}
-		
+
 		$d = Loader::helper('date');
 		// first, we check session
 		$queryWS = false;
@@ -52,7 +52,7 @@ class Concrete5_Library_Update {
 		} else {
 			$queryWS = true;
 		}
-		
+
 		if ($queryWS) {
 			Loader::library('marketplace');
 			$mi = Marketplace::getInstance();
@@ -61,22 +61,22 @@ class Concrete5_Library_Update {
 			}
 			$update = Update::getLatestAvailableUpdate();
 			$versionNum = $update->version;
-			
+
 			if ($versionNum) {
 				Config::save('APP_VERSION_LATEST', $versionNum);
 				if (version_compare($versionNum, APP_VERSION, '>')) {
 					Loader::model('system_notification');
 					SystemNotification::add(SystemNotification::SN_TYPE_CORE_UPDATE, t('A new version of concrete5 is now available.'), '', $update->notes, View::url('/dashboard/system/backup_restore/update'));
-				}		
+				}
 			} else {
 				// we don't know so we're going to assume we're it
 				Config::save('APP_VERSION_LATEST', APP_VERSION);
 			}
 		}
-		
+
 		return $versionNum;
 	}
-	
+
 	public function getApplicationUpdateInformation() {
 		$r = Cache::get('APP_UPDATE_INFO', false);
 		if (!is_object($r)) {
@@ -84,13 +84,13 @@ class Concrete5_Library_Update {
 		}
 		return $r;
 	}
-		
+
 	protected function getLatestAvailableUpdate() {
 		$obj = new stdClass;
 		$obj->notes = false;
 		$obj->url = false;
 		$obj->date = false;
-		
+
 		if (function_exists('curl_init')) {
 			$curl_handle = @curl_init();
 
@@ -111,7 +111,7 @@ class Concrete5_Library_Update {
 			@curl_setopt($curl_handle, CURLOPT_POST, true);
 			@curl_setopt($curl_handle, CURLOPT_POSTFIELDS, 'LOCALE=' . ACTIVE_LOCALE . '&BASE_URL_FULL=' . BASE_URL . '/' . DIR_REL . '&APP_VERSION=' . APP_VERSION);
 			$resp = @curl_exec($curl_handle);
-			
+
 			$xml = @simplexml_load_string($resp);
 			if ($xml === false) {
 				// invalid. That means it's old and it's just the version
@@ -122,18 +122,18 @@ class Concrete5_Library_Update {
 				$obj->notes = (string) $xml->notes;
 				$obj->url = (string) $xml->url;
 				$obj->date = (string) $xml->date;
-			}		
+			}
 
 			Cache::set('APP_UPDATE_INFO', false, $obj);
 
 		} else {
 			$obj->version = APP_VERSION;
 		}
-		
+
 		return $obj;
 	}
 
-	/** 
+	/**
 	 * Looks in the designated updates location for all directories, ascertains what
 	 * version they represent, and finds all versions greater than the currently installed version of
 	 * concrete5
@@ -150,7 +150,7 @@ class Concrete5_Library_Update {
 						$updates[] = $obj;
 					}
 				}
-			}				
+			}
 		}
 		return $updates;
 	}

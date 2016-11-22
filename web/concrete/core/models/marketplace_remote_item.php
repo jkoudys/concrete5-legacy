@@ -12,13 +12,13 @@
 
 class Concrete5_Model_MarketplaceRemoteItem extends Object {
 
-	protected $price=0.00;	
+	protected $price=0.00;
 	protected $remoteCID=0;
 	protected $remoteURL='';
 	protected $remoteFileURL='';
 	protected $remoteIconURL='';
 	protected $isLicensedToSite = false;
-	
+
 	public function setPropertiesFromJSONObject($obj) {
 		foreach($obj as $prop => $value) {
 			$this->{$prop} = $value;
@@ -40,7 +40,7 @@ class Concrete5_Model_MarketplaceRemoteItem extends Object {
 		}
 	}
 	public function getMarketplaceItemVersionForThisSite() {return $this->siteLatestAvailableVersion;}
-	
+
 	public function getAverageRating() {return $this->rating;}
 	public function getVersionHistory() {return $this->versionHistory;}
 	public function getTotalRatings() {
@@ -74,17 +74,17 @@ class Concrete5_Model_MarketplaceRemoteItem extends Object {
 		if ($this->price == '' || $this->price == '0' || $this->price == '0.00') {
 			return false;
 		} else if ($this->isLicensedToSite()) {
-			return false;	
+			return false;
 		} else {
 			return true;
 		}
 	}
-	
+
 	public function getVersion() {return $this->pkgVersion;}
-	
+
 	public function downloadUpdate() {
 		$pkg = Package::getByHandle($this->getHandle());
-		
+
 		$fileURL = $this->getRemoteFileURL();
 		if (empty($fileURL)) {
 			return array(Package::E_PACKAGE_NOT_FOUND);
@@ -96,12 +96,12 @@ class Concrete5_Model_MarketplaceRemoteItem extends Object {
 		} else if ($file == Package::E_PACKAGE_SAVE) {
 			return array($file);
 		}
-		
+
 		$r = $pkg->backup();
 		if (is_array($r)) {
 			return $r;
 		}
-			
+
 		try {
 			Loader::model('package_archive');
 			$am = new PackageArchive($this->getHandle());
@@ -122,7 +122,7 @@ class Concrete5_Model_MarketplaceRemoteItem extends Object {
 		} else if ($file == Package::E_PACKAGE_INVALID_APP_VERSION) {
 			return array($file);
 		}
-	
+
 		try {
 			Loader::model('package_archive');
 			$am = new PackageArchive($this->getHandle());
@@ -130,7 +130,7 @@ class Concrete5_Model_MarketplaceRemoteItem extends Object {
 		} catch (Exception $e) {
 			return array($e->getMessage());
 		}
-	
+
 		if ($install) {
 			$tests = Package::testForInstall($this->getHandle());
 			if (is_array($tests)) {
@@ -145,7 +145,7 @@ class Concrete5_Model_MarketplaceRemoteItem extends Object {
 			}
 		}
 	}
-	
+
 	public function enableFreeLicense() {
 		$fh = Loader::helper('file');
 		$csToken = Config::get('MARKETPLACE_SITE_TOKEN');
@@ -153,11 +153,11 @@ class Concrete5_Model_MarketplaceRemoteItem extends Object {
 		$url = MARKETPLACE_ITEM_FREE_LICENSE_WS."?mpID=" . $this->mpID . "&csToken={$csToken}&csiURL=" . $csiURL . "&csiVersion=" . APP_VERSION;
 		$fh->getContents($url);
 	}
-	
+
 	protected static function getRemotePackageObject($method, $identifier) {
 		$fh = Loader::helper('file');
 
-		// Retrieve the URL contents 
+		// Retrieve the URL contents
 		$csToken = Config::get('MARKETPLACE_SITE_TOKEN');
 		$csiURL = urlencode(BASE_URL . DIR_REL);
 		$url = MARKETPLACE_ITEM_INFORMATION_WS."?" . $method . "=" . $identifier . "&csToken={$csToken}&csiURL=" . $csiURL . "&csiVersion=" . APP_VERSION;
@@ -172,28 +172,28 @@ class Concrete5_Model_MarketplaceRemoteItem extends Object {
 				if ($mi->getMarketplaceItemID() > 0) {
 					return $mi;
 				}
-			} 
+			}
 		} catch (Exception $e) {
 			throw new Exception(t('Unable to connect to marketplace to retrieve item'));
 		}
 	}
-	
+
 	public static function getByHandle($mpHandle) {
 		return MarketplaceRemoteItem::getRemotePackageObject('mpHandle', $mpHandle);
 	}
-	
+
 	public static function getByID($mpID) {
 		return MarketplaceRemoteItem::getRemotePackageObject('mpID', $mpID);
 	}
 }
 
 class Concrete5_Model_MarketplaceRemoteItemList extends ItemList {
-	
+
 	protected $includeInstalledItems = true;
 	protected $params = array();
 	protected $type = 'themes';
 	protected $itemsPerPage = 20;
-	
+
 	public static function getItemSets($type) {
 		$url = MARKETPLACE_REMOTE_ITEM_LIST_WS;
 		$url .= $type . '/-/get_remote_item_sets';
@@ -211,16 +211,16 @@ class Concrete5_Model_MarketplaceRemoteItemList extends ItemList {
 			}
 		}
 		return $sets;
-	}	
-	
+	}
+
 	public function setIncludeInstalledItems($pp) {
 		$this->includeInstalledItems = $pp;
 	}
-	
+
 	public function setType($type) {
 		$this->type = $type;
 	}
-	
+
 	public function filterByKeywords($keywords) {
 		$this->params['keywords'] = $keywords;
 	}
@@ -228,11 +228,11 @@ class Concrete5_Model_MarketplaceRemoteItemList extends ItemList {
 	public function filterByMarketplaceItemID($mpID) {
 		$this->params['mpID'] = $mpID;
 	}
-	
+
 	public function sortBy($sortBy) {
 		$this->params['sort'] = $sortBy;
 	}
-	
+
 	public function filterBySet($set) {
 		$this->params['set'] = $set;
 	}
@@ -240,11 +240,11 @@ class Concrete5_Model_MarketplaceRemoteItemList extends ItemList {
 	public function filterByIsFeaturedRemotely($r) {
 		$this->params['is_featured_remotely'] = $r;
 	}
-	
+
 	public function filterByCompatibility($r) {
 		$this->params['is_compatible'] = $r;
 	}
-	
+
 	public function execute() {
 		$params = $this->params;
 		$params['version'] = APP_VERSION;
@@ -252,7 +252,7 @@ class Concrete5_Model_MarketplaceRemoteItemList extends ItemList {
 		Loader::library("marketplace");
 		$mi = Marketplace::getInstance();
 		$params['csToken'] = $mi->getSiteToken();
-		
+
 		if ($this->includeInstalledItems) {
 			$params['includeInstalledItems'] = 1;
 		} else {
@@ -266,16 +266,16 @@ class Concrete5_Model_MarketplaceRemoteItemList extends ItemList {
 		if (isset($_REQUEST[$this->queryStringPagingVariable])) {
 			$params[$this->queryStringPagingVariable] = $_REQUEST[$this->queryStringPagingVariable];
 		}
-		
+
 		$uh = Loader::helper('url');
-		
+
 		$url = $uh->buildQuery(MARKETPLACE_REMOTE_ITEM_LIST_WS . $this->type . '/-/get_remote_list', $params);
 		$r = Loader::helper('file')->getContents($url);
 		$r2 = @Loader::helper('json')->decode($r);
-				
+
 		$total = 0;
 		$items = array();
-		
+
 		if (is_object($r2)) {
 			$items = $r2->items;
 			$total = $r2->total;
@@ -284,7 +284,7 @@ class Concrete5_Model_MarketplaceRemoteItemList extends ItemList {
 		$this->total = $total;
 		$this->setItems($items);
 	}
-	
+
 	public function get($itemsToGet = 0, $offset = 0) {
 		$this->start = $offset;
 		$items = $this->items;
@@ -296,15 +296,15 @@ class Concrete5_Model_MarketplaceRemoteItemList extends ItemList {
 		}
 		return $marketplaceItems;
 	}
-	
-	
-	
+
+
+
 }
 
 class Concrete5_Model_MarketplaceRemoteItemSet extends Object {
-	
+
 	public function getMarketplaceRemoteSetName() {return $this->name;}
 	public function getMarketplaceRemoteSetID() {return $this->id;}
-	
+
 
 }

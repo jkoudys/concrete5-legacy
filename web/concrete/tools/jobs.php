@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -12,7 +12,7 @@ $r->results = array();
 
 if (Job::authenticateRequest($_REQUEST['auth'])) {
 
-	// Legacy 
+	// Legacy
 	if ($_REQUEST['jID']) {
 		$j = Job::getByID($_REQUEST['jID']);
 		$obj = $j->executeJob();
@@ -25,7 +25,7 @@ if (Job::authenticateRequest($_REQUEST['auth'])) {
 		print $json->encode($obj);
 		exit;
 	}
-        
+
 	if ($_REQUEST['jsID']) {
 		$js = JobSet::getByID($_REQUEST['jsID']);
 	} else {
@@ -44,5 +44,5 @@ if (Job::authenticateRequest($_REQUEST['auth'])) {
 		print $json->encode($r);
 		exit;
 	}
-	
+
 }

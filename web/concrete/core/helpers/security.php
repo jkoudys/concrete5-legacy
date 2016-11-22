@@ -3,7 +3,7 @@
 /**
  * Helper class for sanitizing input and escaping output.
  * @package Helpers
- * @category Concrete 
+ * @category Concrete
  * @subpackage Security
  * @author Chris Rosser <chris@bluefuton.com>
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
@@ -27,5 +27,5 @@ class Concrete5_Helper_Security {
     public function sanitizeEmail($email) {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
-    
+
 }

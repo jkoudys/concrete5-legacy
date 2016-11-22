@@ -2,14 +2,14 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_PermissionAccess extends Object {
-	
+
 	protected $paID;
 	protected $paIDList = array();
-	
+
 	public function setPermissionKey($permissionKey) {
 		$this->pk = $permissionKey;
 	}
-	
+
 	public function getPermissionObject() {
 		return $this->pk->getPermissionObject();
 	}
@@ -17,10 +17,10 @@ class Concrete5_Model_PermissionAccess extends Object {
 	public function getPermissionObjectToCheck() {
 		return $this->pk->getPermissionObjectToCheck();
 	}
-		
+
 	public function getPermissionAccessID() {return $this->paID;}
 	public function isPermissionAccessInUse() {return $this->paIsInUse;}
-	
+
 	protected function deliverAccessListItems($q, $accessType, $filterEntities) {
 		$db = Loader::db();
 		$class = str_replace('PermissionKey', 'PermissionAccessListItem', get_class($this->pk));
@@ -44,7 +44,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 		}
  		return $list;
 	}
-	
+
 	public function validateAndFilterAccessEntities($accessEntities) {
 		$entities = array();
 		foreach($accessEntities as $ae) {
@@ -54,7 +54,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 		}
 		return $entities;
 	}
-	
+
 	public function validateAccessEntities($accessEntities) {
 		$valid = false;
 		$accessEntities = $this->validateAndFilterAccessEntities($accessEntities);
@@ -70,7 +70,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 		}
 		return $valid;
 	}
-	
+
 	public function validate() {
 		$u = new User();
 		if ($u->isSuperUser()) {
@@ -79,7 +79,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 		$accessEntities = $u->getUserAccessEntityObjects();
 		return $this->validateAccessEntities($accessEntities);
 	}
-	
+
 	public static function createByMerge($permissions) {
 		$class = get_class($permissions[0]);
 		$p = new $class();
@@ -90,7 +90,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 		$p->paID = -1;
 		return $p;
 	}
-	
+
 	public function getAccessListItems($accessType = PermissionKey::ACCESS_TYPE_INCLUDE, $filterEntities = array()) {
 		if (count($this->paIDList) > 0) {
 			$q = 'select paID, peID, pdID, accessType from PermissionAccessList where paID in (' . implode(',', $this->paIDList) . ')';
@@ -104,7 +104,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 			$items = CacheLocal::getEntry('permission_access_list_items', $this->getPermissionAccessID() . $filter . strtolower(get_class($this->pk)));
 			if (is_array($items)) {
 				return $items;
-			}				
+			}
 			$q = 'select paID, peID, pdID, accessType from PermissionAccessList where paID = ' . $this->getPermissionAccessID();
 			$items = $this->deliverAccessListItems($q, $accessType, $filterEntities);
 			CacheLocal::set('permission_access_list_items', $this->getPermissionAccessID() . $filter . strtolower(get_class($this->pk)), $items);
@@ -112,7 +112,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 		}
 	}
 
-	protected function buildAssignmentFilterString($accessType, $filterEntities) { 
+	protected function buildAssignmentFilterString($accessType, $filterEntities) {
 		$peIDs = '';
 		$filters = array();
 		if (count($filterEntities) > 0) {
@@ -123,12 +123,12 @@ class Concrete5_Model_PermissionAccess extends Object {
 		}
 		if ($accessType == 0) {
 			$accessType = '';
-		} else { 
+		} else {
 			$accessType = ' and accessType = ' . $accessType;
 		}
 		return $peIDs . ' ' . $accessType . ' order by accessType desc'; // we order desc so that excludes come last (-1)
 	}
-	
+
 	public function clearWorkflows() {
 		$db = Loader::db();
 		$db->Execute('delete from PermissionAccessWorkflows where paID = ?', array($this->getPermissionAccessID()));
@@ -137,7 +137,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 	public function attachWorkflow(Workflow $wf) {
 		$db = Loader::db();
 		$db->Replace('PermissionAccessWorkflows', array('paID' => $this->getPermissionAccessID(), 'wfID' => $wf->getWorkflowID()), array('paID', 'wfID'), true);
-	}	
+	}
 
 	public function getWorkflows() {
 		$db = Loader::db();
@@ -181,7 +181,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 		if ($durationObject instanceof PermissionDuration) {
 			$pdID = $durationObject->getPermissionDurationID();
 		}
-		
+
 		$db->Replace('PermissionAccessList', array(
 			'paID' => $this->getPermissionAccessID(),
 			'peID' => $pae->getAccessEntityID(),
@@ -192,9 +192,9 @@ class Concrete5_Model_PermissionAccess extends Object {
 
 	public function removeListItem(PermissionAccessEntity $pe) {
 		$db = Loader::db();
-		$db->Execute('delete from PermissionAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));	
+		$db->Execute('delete from PermissionAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));
 	}
-	
+
 	public function save() {}
 
 	public static function create(PermissionKey $pk) {
@@ -202,7 +202,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 		$db->Execute('insert into PermissionAccess (paIsInUse) values (0)');
 		return PermissionAccess::getByID($db->Insert_ID(), $pk);
 	}
-	
+
 	public static function getByID($paID, PermissionKey $pk, $checkPA = true) {
 		$db = Loader::db();
 		$pa = PermissionCache::getPermissionAccessObject($paID, $pk);
@@ -227,5 +227,5 @@ class Concrete5_Model_PermissionAccess extends Object {
 		PermissionCache::addPermissionAccessObject($paID, $pk, $obj);
 		return $obj;
 	}
-	
+
 }

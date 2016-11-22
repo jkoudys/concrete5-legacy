@@ -1,11 +1,11 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $p = Page::getByPath('/dashboard/workflow/list');
 $cp = new Permissions($p);
 $json = Loader::helper('json');
 $workflow = Workflow::getByID($_REQUEST['wfID']);
 
-if ($cp->canViewPage()) { 
+if ($cp->canViewPage()) {
 
 	if ($_REQUEST['task'] == 'add_access_entity' && Loader::helper("validation/token")->validate('add_access_entity')) {
 		$pk = BasicWorkflowPermissionKey::getByID($_REQUEST['pkID']);

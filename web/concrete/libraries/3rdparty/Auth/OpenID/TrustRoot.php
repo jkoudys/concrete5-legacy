@@ -20,8 +20,9 @@ require_once 'Auth/OpenID/Discover.php';
  *
  * @access private
  */
-define('Auth_OpenID___TLDs',
-       '/\.(ac|ad|ae|aero|af|ag|ai|al|am|an|ao|aq|ar|arpa|as|asia' .
+define(
+    'Auth_OpenID___TLDs',
+    '/\.(ac|ad|ae|aero|af|ag|ai|al|am|an|ao|aq|ar|arpa|as|asia' .
        '|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|biz|bj|bm|bn|bo|br' .
        '|bs|bt|bv|bw|by|bz|ca|cat|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co' .
        '|com|coop|cr|cu|cv|cx|cy|cz|de|dj|dk|dm|do|dz|ec|edu|ee|eg' .
@@ -38,15 +39,19 @@ define('Auth_OpenID___TLDs',
        '|vg|vi|vn|vu|wf|ws|xn--0zwm56d|xn--11b5bs3a9aj6g' .
        '|xn--80akhbyknj4f|xn--9t4b11yi5a|xn--deba0ad|xn--g6w251d' .
        '|xn--hgbk6aj7f53bba|xn--hlcj6aya9esc7a|xn--jxalpdlp' .
-       '|xn--kgbechtv|xn--zckzah|ye|yt|yu|za|zm|zw)\.?$/');
+    '|xn--kgbechtv|xn--zckzah|ye|yt|yu|za|zm|zw)\.?$/'
+);
 
-define('Auth_OpenID___HostSegmentRe',
-       "/^(?:[-a-zA-Z0-9!$&'\\(\\)\\*+,;=._~]|%[a-zA-Z0-9]{2})*$/");
+define(
+    'Auth_OpenID___HostSegmentRe',
+    "/^(?:[-a-zA-Z0-9!$&'\\(\\)\\*+,;=._~]|%[a-zA-Z0-9]{2})*$/"
+);
 
 /**
  * A wrapper for trust-root related functions
  */
-class Auth_OpenID_TrustRoot {
+class Auth_OpenID_TrustRoot
+{
     /*
      * Return a discovery URL for this realm.
      *
@@ -74,8 +79,12 @@ class Auth_OpenID_TrustRoot {
 
             $www_domain = 'www' . $parsed['host'];
 
-            return sprintf('%s://%s%s', $parsed['scheme'],
-                           $www_domain, $parsed['path']);
+            return sprintf(
+                '%s://%s%s',
+                $parsed['scheme'],
+                $www_domain,
+                $parsed['path']
+            );
         } else {
             return $parsed['unparsed'];
         }
@@ -134,19 +143,19 @@ class Auth_OpenID_TrustRoot {
         $host = strtolower($parts['host']);
         $hostparts = explode('*', $host);
         switch (count($hostparts)) {
-        case 1:
-            $parts['wildcard'] = false;
-            break;
-        case 2:
-            if ($hostparts[0] ||
+            case 1:
+                $parts['wildcard'] = false;
+                break;
+            case 2:
+                if ($hostparts[0] ||
                 ($hostparts[1] && substr($hostparts[1], 0, 1) != '.')) {
+                    return false;
+                }
+                $host = $hostparts[1];
+                $parts['wildcard'] = true;
+                break;
+            default:
                 return false;
-            }
-            $host = $hostparts[1];
-            $parts['wildcard'] = true;
-            break;
-        default:
-            return false;
         }
         if (strpos($host, ':') !== false) {
             return false;
@@ -394,9 +403,12 @@ function Auth_OpenID_returnToMatches($allowed_return_to_urls, $return_to)
  * Given a relying party discovery URL return a list of return_to
  * URLs.
  */
-function Auth_OpenID_getAllowedReturnURLs($relying_party_url, $fetcher,
-              $discover_function=null)
-{
+function Auth_OpenID_getAllowedReturnURLs(
+    $relying_party_url,
+    $fetcher,
+    $discover_function = null
+) {
+
     if ($discover_function === null) {
         $discover_function = array('Auth_Yadis_Yadis', 'discover');
     }
@@ -404,16 +416,22 @@ function Auth_OpenID_getAllowedReturnURLs($relying_party_url, $fetcher,
     $xrds_parse_cb = array('Auth_OpenID_ServiceEndpoint', 'consumerFromXRDS');
 
     list($rp_url_after_redirects, $endpoints) =
-        Auth_Yadis_getServiceEndpoints($relying_party_url, $xrds_parse_cb,
-                                       $discover_function, $fetcher);
+        Auth_Yadis_getServiceEndpoints(
+            $relying_party_url,
+            $xrds_parse_cb,
+            $discover_function,
+            $fetcher
+        );
 
     if ($rp_url_after_redirects != $relying_party_url) {
         // Verification caused a redirect
         return false;
     }
 
-    call_user_func_array($discover_function,
-                         array($relying_party_url, $fetcher));
+    call_user_func_array(
+        $discover_function,
+        array($relying_party_url, $fetcher)
+    );
 
     $return_to_urls = array();
     $matching_endpoints = Auth_OpenID_extractReturnURL($endpoints);
@@ -435,17 +453,23 @@ function Auth_OpenID_getAllowedReturnURLs($relying_party_url, $fetcher,
  *
  * @return true if the return_to URL is valid for the realm
  */
-function Auth_OpenID_verifyReturnTo($realm_str, $return_to, $fetcher,
-              $_vrfy='Auth_OpenID_getAllowedReturnURLs')
-{
+function Auth_OpenID_verifyReturnTo(
+    $realm_str,
+    $return_to,
+    $fetcher,
+    $_vrfy = 'Auth_OpenID_getAllowedReturnURLs'
+) {
+
     $disco_url = Auth_OpenID_TrustRoot::buildDiscoveryURL($realm_str);
 
     if ($disco_url === false) {
         return false;
     }
 
-    $allowable_urls = call_user_func_array($_vrfy,
-                           array($disco_url, $fetcher));
+    $allowable_urls = call_user_func_array(
+        $_vrfy,
+        array($disco_url, $fetcher)
+    );
 
     // The realm_str could not be parsed.
     if ($allowable_urls === false) {
@@ -458,4 +482,3 @@ function Auth_OpenID_verifyReturnTo($realm_str, $return_to, $fetcher,
         return false;
     }
 }
-

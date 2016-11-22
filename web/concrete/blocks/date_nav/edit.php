@@ -1,7 +1,7 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
-if ($c->getCollectionID() != $cParentID && (!$cThis) && ($cParentID != 0)) { 
+if ($c->getCollectionID() != $cParentID && (!$cThis) && ($cParentID != 0)) {
 	$isOtherPage = true;
 }
 
@@ -23,4 +23,4 @@ if($b){
 $data=array( 'c'=>$c, 'b'=>$b, 'bID'=>$bID, 'bCID'=>$bCID, 'uh'=>$uh, 'isOtherPage'=>$isOtherPage);
 $data['controller']=$controller;
 $data = array_merge($controller->getSets(), $data);
-$bt->inc('form_setup_html.php', $data ); 
+$bt->inc('form_setup_html.php', $data );

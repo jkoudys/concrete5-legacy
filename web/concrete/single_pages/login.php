@@ -54,7 +54,7 @@ $(function() {
 			</div>
 		</div>
 	</form>
-	
+
 <?php } elseif ($validated) { ?>
 	<div class="row">
 		<div class="span10 offset1">
@@ -152,14 +152,14 @@ $(function() {
 				<fieldset>
 					<legend><?php echo t('Fill in missing fields'); ?></legend>
 					<p><?php echo t('You must provide the following information before you may login.'); ?></p>
-					<?php 
+					<?php
 					$attribs = UserAttributeKey::getRegistrationList();
 					$af = Loader::helper('form/attribute');
 					$i = 0;
-					foreach($unfilledAttributes as $ak) { 
-						if ($i > 0) { 
+					foreach($unfilledAttributes as $ak) {
+						if ($i > 0) {
 						}
-						echo $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	
+						echo $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());
 						$i++;
 					}
 					echo $form->hidden('uName', Loader::helper('text')->entities($_POST['uName']));

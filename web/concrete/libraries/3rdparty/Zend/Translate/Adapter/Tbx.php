@@ -33,7 +33,8 @@ require_once 'Zend/Translate/Adapter.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter {
+class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter
+{
     // Internal variables
     private $_file        = false;
     private $_cleared     = array();
@@ -69,9 +70,11 @@ class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter {
         xml_set_character_data_handler($this->_file, "_contentElement");
 
         if (!xml_parse($this->_file, file_get_contents($filename))) {
-            $ex = sprintf('XML error: %s at line %d',
-                          xml_error_string(xml_get_error_code($this->_file)),
-                          xml_get_current_line_number($this->_file));
+            $ex = sprintf(
+                'XML error: %s at line %d',
+                xml_error_string(xml_get_error_code($this->_file)),
+                xml_get_current_line_number($this->_file)
+            );
             xml_parser_free($this->_file);
             require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception($ex);
@@ -84,12 +87,12 @@ class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter {
     {
         if ($this->_term !== null) {
             $this->_content .= "<".$name;
-            foreach($attrib as $key => $value) {
+            foreach ($attrib as $key => $value) {
                 $this->_content .= " $key=\"$value\"";
             }
             $this->_content .= ">";
         } else {
-            switch(strtolower($name)) {
+            switch (strtolower($name)) {
                 case 'termentry':
                     $this->_termentry = null;
                     break;

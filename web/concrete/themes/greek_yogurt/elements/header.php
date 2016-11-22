@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php  defined('C5_EXECUTE') or die('Access Denied.'); ?>
 <!DOCTYPE html>
 <html lang="<?=LANGUAGE?>">
 
@@ -24,28 +24,28 @@
 
 <div id="main-container" class="container_24">
 
-	<div id="header">
-	
-	
-		<?php 
-		$a = new GlobalArea('Site Name');
-		$a->display();
-		?>
+    <div id="header">
 
-		<?php 
-		$a = new GlobalArea('Header Nav');
-		$a->display();
-		?>
-		
-		<div id="header-image">
-		
-			<?php 
-			$a = new Area('Header Image');
-			$a->display($c);
-			?>
-		
-		</div>
-		
-	</div>
-	
-	<div class="clear"></div>
+
+        <?php
+        $a = new GlobalArea('Site Name');
+        $a->display();
+        ?>
+
+        <?php
+        $a = new GlobalArea('Header Nav');
+        $a->display();
+        ?>
+
+        <div id="header-image">
+
+            <?php
+            $a = new Area('Header Image');
+            $a->display($c);
+            ?>
+
+        </div>
+
+    </div>
+
+    <div class="clear"></div>

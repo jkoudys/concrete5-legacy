@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $dh = Loader::helper('concrete/dashboard/sitemap');
 if (!$dh->canRead()) {
@@ -19,7 +19,7 @@ if ($_POST['process']) {
 		$c->delete();
 		$q->deleteMessage($p);
 	}
-	$obj->totalItems = $q->count();	
+	$obj->totalItems = $q->count();
 	if ($q->count() == 0) {
 		$q->deleteQueue('delete_page');
 	}
@@ -30,9 +30,9 @@ if ($_POST['process']) {
 	if ($c->getCollectionPath() == TRASH_PAGE_PATH) {
 		$isEmptyTrash = true;
 	}
-	if (is_object($c) && !$c->isError()) { 
+	if (is_object($c) && !$c->isError()) {
 		$cp = new Permissions($c);
-		if ($cp->canDeletePage()) { 
+		if ($cp->canDeletePage()) {
 			$c->queueForDeletion();
 		}
 	}

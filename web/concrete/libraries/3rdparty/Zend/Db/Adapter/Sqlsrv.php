@@ -135,8 +135,7 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
             'Database' => $this->_config['dbname'],
         );
 
-        if (isset($this->_config['username']) && isset($this->_config['password']))
-        {
+        if (isset($this->_config['username']) && isset($this->_config['password'])) {
             $connectionInfo += array(
                 'UID'      => $this->_config['username'],
                 'PWD'      => $this->_config['password'],
@@ -217,8 +216,7 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
         $sql = null;
 
         // Default transaction level in sql server
-        if ($level === null)
-        {
+        if ($level === null) {
             $level = SQLSRV_TXN_READ_COMMITTED;
         }
 
@@ -437,7 +435,7 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
         $sql    = "exec sp_columns @table_name = " . $this->quoteIdentifier($tableName, true);
         $stmt   = $this->query($sql);
         $result = $stmt->fetchAll(Zend_Db::FETCH_NUM);
-        
+
         // ZF-7698
         $stmt->closeCursor();
 
@@ -597,8 +595,8 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
      * @return string
      * @throws Zend_Db_Adapter_Sqlsrv_Exception
      */
-     public function limit($sql, $count, $offset = 0)
-     {
+    public function limit($sql, $count, $offset = 0)
+    {
         $count = intval($count);
         if ($count <= 0) {
             require_once 'Zend/Db/Adapter/Exception.php';

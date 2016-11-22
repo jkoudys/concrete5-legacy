@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="ccm-ui">
-<? 
+<?php
 
 Loader::model('collection_attributes');
 Loader::model('collection_types');
@@ -29,11 +29,11 @@ $(function() {
 			if (r != null && r.rel == 'SITEMAP') {
 				jQuery.fn.dialog.hideLoader();
 				jQuery.fn.dialog.closeTop();
-				<? if ($_REQUEST['display_mode'] == 'explore') { ?>
+				<?php if ($_REQUEST['display_mode'] == 'explore') { ?>
 					ccmSitemapExploreNode('<?=$_REQUEST['instance_id']?>', 'explore', '<?=$_REQUEST['select_mode']?>', resp.cParentID);
-				<? } else { ?>
+				<?php } else { ?>
 					deleteBranchFade(r.cID);
-				<? } ?>
+				<?php } ?>
 	 			ccmAlert.hud(ccmi18n_sitemap.deletePageSuccessMsg, 2000, 'delete_small', ccmi18n_sitemap.deletePage);
 			} else {
 				window.location.href = '<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=' + r.cParentID;
@@ -43,14 +43,14 @@ $(function() {
 });
 </script>
 
-	<form class="form-stacked" method="post" id="ccm-delete-external-link-form" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$cID?>&<?=Loader::helper('validation/token')->getParameter()?>">		
-	
+	<form class="form-stacked" method="post" id="ccm-delete-external-link-form" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$cID?>&<?=Loader::helper('validation/token')->getParameter()?>">
+
 	<?=t('Remove this alias or external link?')?>
 
 	<div class="ccm-buttons dialog-buttons">
 	<input type="button" class="btn" value="<?=t('Cancel')?>" onclick="jQuery.fn.dialog.closeTop()" />
 	<a href="javascript:void(0)" onclick="$('#ccm-delete-external-link-form').submit()" class="btn ccm-button-right accept error"><span><?=('Delete')?></span></a>
-	</div>	
+	</div>
 	<input type="hidden" name="display_mode" value="<?=$_REQUEST['display_mode']?>" />
 	<input type="hidden" name="instance_id" value="<?=$_REQUEST['instance_id']?>" />
 	<input type="hidden" name="select_mode" value="<?=$_REQUEST['select_mode']?>" />
@@ -60,5 +60,5 @@ $(function() {
 
 
 </form>
-<? } ?>
+<?php } ?>
 </div>

@@ -7,8 +7,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-abstract class Concrete5_Model_PageWorkflowRequest extends WorkflowRequest {  
-	
+abstract class Concrete5_Model_PageWorkflowRequest extends WorkflowRequest {
+
 	public function setRequestedPage($c) {
 		if(($c instanceof Page) && $c->isAlias() && (!$c->isExternalLink()) && ($c->getCollectionPointerOriginalID() > 0)) {
 			$this->cID = $c->getCollectionPointerOriginalID();
@@ -17,7 +17,7 @@ abstract class Concrete5_Model_PageWorkflowRequest extends WorkflowRequest {
 			$this->cID = $c->getCollectionID();
 		}
 	}
-	
+
 	public function getRequestedPageID() {
 		return $this->cID;
 	}
@@ -29,11 +29,11 @@ abstract class Concrete5_Model_PageWorkflowRequest extends WorkflowRequest {
 		$c = Page::getByID($this->cID, 'RECENT');
 		return $c->getVersionID();
 	}
-	
+
 	public function setRequestedPageVersionID($cvID) {
 		$this->cvID = $cvID;
 	}
-	
+
 	public function addWorkflowProgress(Workflow $wf) {
 		Loader::model('workflow/progress/categories/page');
 		$pwp = PageWorkflowProgress::add($wf, $this);
@@ -55,7 +55,7 @@ abstract class Concrete5_Model_PageWorkflowRequest extends WorkflowRequest {
 		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $c->getCollectionID());
 		return $wpr;
 	}
-	
+
 }
 
 

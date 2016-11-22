@@ -1,10 +1,10 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ini_set('memory_limit', -1);
 set_time_limit(0);
 
 $tp = new TaskPermission();
-if (!$tp->canAccessUserSearchExport()) { 
+if (!$tp->canAccessUserSearchExport()) {
 	die(t("You have no access to user export."));
 }
 
@@ -18,7 +18,7 @@ header("Content-Type: application/vnd.ms-excel");
 header("Cache-control: private");
 header("Pragma: public");
 $date = date('Ymd');
-header("Content-Disposition: inline; filename=user_report_{$date}.xls"); 
+header("Content-Disposition: inline; filename=user_report_{$date}.xls");
 header("Content-Title: User Report - Run on {$date}");
 
 echo '<meta http-equiv="Content-Type" content="text/html; charset=' . APP_CHARSET . '">';
@@ -32,7 +32,7 @@ foreach($attribs as $ak) {
 	echo("<td><b>" . $ak->getAttributeKeyDisplayName() . "</b></td>");
 }
 echo("</tr>");
-foreach($users as $ui) { 
+foreach($users as $ui) {
 	echo("<tr>");
 	echo("<td>{$ui->getUserName()}</td>");
 	echo("<td>{$ui->getUserEmail()}</td>");

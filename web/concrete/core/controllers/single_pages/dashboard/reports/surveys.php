@@ -21,26 +21,26 @@ class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 			$this->redirect('/dashboard/reports/surveys');
 		}
 	}
-	
-	public function view() { 	
+
+	public function view() {
 		// Prepare the database query
 		$db = Loader::db();
-		
+
 		$sl = new SurveyList();
 		$slResults = $sl->getPage();
-		
+
 		// Store data in variable stored in larger scope
-		$this->set('surveys', $slResults);	
+		$this->set('surveys', $slResults);
 		$this->set('surveyList', $sl);
-	}	
-	
-	public function getSurveyDetails($bID, $cID) {				
+	}
+
+	public function getSurveyDetails($bID, $cID) {
 		// Load the data from the database
 		$db = Loader::db();
 		$v = array(intval($bID), intval($cID));
-		$q = 
-			'SELECT 
-				btSurveyOptions.optionName, Users.uName, ipAddress, timestamp, question 
+		$q =
+			'SELECT
+				btSurveyOptions.optionName, Users.uName, ipAddress, timestamp, question
 			FROM
 				(
 						(
@@ -55,11 +55,11 @@ class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 				AND
 				btSurveyResults.cID = ?';
 		$r = $db->query($q, $v);
-		
+
 		// Set default information in case query returns nothing
 		$current_survey = 'Unknown Survey';
 		$details = array();
-		
+
 		if ($row = $r->fetchRow()) {
 			// Build array of information we need
 			$i = 0;

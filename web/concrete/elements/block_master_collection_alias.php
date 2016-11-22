@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 global $c;
 
@@ -14,41 +14,41 @@ $dh = Loader::helper('date');
 <div class="ccm-ui">
 <form method="post" id="ccmBlockMasterCollectionForm" action="<?=$b->getBlockMasterCollectionAliasAction()?>">
 
-	<? if (count($cList) == 0) { ?>
-	
+	<?php if (count($cList) == 0) { ?>
+
 	<?=t("There are no pages of this type added to your website. If there were, you'd be able to choose which of those pages this block appears on.")?>
-	
-	<? } else { ?>
-	
+
+	<?php } else { ?>
+
 	<p><?=t("Choose which pages below this particular block should appear on. Any previously selected blocks may also be removed using the checkbox. Click the checkbox in the header to select/deselect all pages.")?></p>
 	<br/>
-		
+
 		<table class="table-striped table table-bordered" >
 		<tr>
 			<th>ID</th>
 			<th><?=t('Name')?></th>
 			<th ><?=t('Date Created')?></th>
-			<th ><?=t('Date Modified')?></th>			
-			<th ><input type="checkbox" id="mc-cb-all" /></th>			
+			<th ><?=t('Date Modified')?></th>
+			<th ><input type="checkbox" id="mc-cb-all" /></th>
 		</tr>
-	
-	<?
-		
+
+	<?php
+
 		foreach($cList as $p) { ?>
 			<tr class="active">
 			<td><?=$p->getCollectionID()?></td>
 			<td><a href="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$p->getCollectionID()?>" target="_blank"><?=$p->getCollectionName()?></a></td>
 			<td ><?=$dh->formatDate($p->getCollectionDateAdded(), false)?></td>
-			<td ><? if ($b->isAlias($p)) { ?> <input type="hidden" name="checkedCIDs[]" value="<?=$p->getCollectionID()?>" /><? } ?><?=$dh->formatDate($p->getCollectionDateLastModified(), false)?></td>
-			<td ><input class="mc-cb" type="checkbox" name="cIDs[]" value="<?=$p->getCollectionID()?>" <? if ($b->isAlias($p)) { ?> checked <? } ?> /></td>
+			<td ><?php if ($b->isAlias($p)) { ?> <input type="hidden" name="checkedCIDs[]" value="<?=$p->getCollectionID()?>" /><?php } ?><?=$dh->formatDate($p->getCollectionDateLastModified(), false)?></td>
+			<td ><input class="mc-cb" type="checkbox" name="cIDs[]" value="<?=$p->getCollectionID()?>" <?php if ($b->isAlias($p)) { ?> checked <?php } ?> /></td>
 			</tr>
-		
-		<? } ?>
-	
+
+		<?php } ?>
+
 		</table>
-		
-	<? } ?>
-	
+
+	<?php } ?>
+
 	<div class="dialog-buttons">
 	<a href="#" class="ccm-dialog-close ccm-button-left btn cancel"><?=t('Cancel')?></a>
 	<a href="javascript:void(0)" onclick="$('#ccmBlockMasterCollectionForm').submit()" class="btn primary ccm-button-right accept"><?=t('Save')?></a>

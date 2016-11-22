@@ -3,7 +3,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Library_PageCacheRecord {
-	
+
 	public function __construct(Page $c, $content, $lifetime) {
 		$cache = PageCache::getLibrary();
 		$this->setCacheRecordLifetime($lifetime);
@@ -55,6 +55,6 @@ class Concrete5_Library_PageCacheRecord {
 			$cache->purgeByRecord($this);
 		}
 	}
-	
+
 
 }

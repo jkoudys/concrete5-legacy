@@ -13,11 +13,11 @@
 			<?=$form->text('DIR_FILES_UPLOADED', DIR_FILES_UPLOADED, array('rows'=>'2','class' => 'span5'))?>
 			</div>
 			</div>
-			
+
 			</fieldset>
 			<fieldset>
 			<legend><?=t('Alternate Storage Directory')?></legend>
-			
+
 			<div class="control-group">
 			<label for="fslName" class="control-label"><?=t('Location Name')?></label>
 			<div class="controls">
@@ -31,10 +31,10 @@
 			</fieldset>
 	</div>
 	<div class="ccm-pane-footer">
-		<?php		
+		<?php
 			$b1 = $concrete_interface->submit(t('Save'), 'file-storage', 'right', 'primary');
 			print $b1;
-		?>		
+		?>
 		<?php if (is_object($fsl)) { ?>
 			<button type="submit" name="delete" value="1" onclick="return confirm('<?=t('Are you sure? (Note: this will not remove any files, it will simply remove the pointer to the directory, and reset any files that are set to this location.)')?>')" class="pull-right btn btn-danger"><?=t('Delete Alternate')?></button>
 		<?php } ?>

@@ -31,7 +31,8 @@ require_once 'Auth/OpenID/HMAC.php';
  *
  * @package OpenID
  */
-class Auth_OpenID_DumbStore extends Auth_OpenID_OpenIDStore {
+class Auth_OpenID_DumbStore extends Auth_OpenID_OpenIDStore
+{
 
     /**
      * Creates a new {@link Auth_OpenID_DumbStore} instance. For the security
@@ -96,4 +97,3 @@ class Auth_OpenID_DumbStore extends Auth_OpenID_OpenIDStore {
         return $this->auth_key;
     }
 }
-

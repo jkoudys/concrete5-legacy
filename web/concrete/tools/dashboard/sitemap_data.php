@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 $dh = Loader::helper('concrete/dashboard/sitemap');
@@ -30,7 +30,7 @@ if (isset($_REQUEST['show_system'])) {
 	exit;
 }
 
-if (!$_REQUEST['keywords']) { // if there ARE keywords then we don't want to cache the node 
+if (!$_REQUEST['keywords']) { // if there ARE keywords then we don't want to cache the node
 	if (!is_array($_SESSION['dsbSitemapNodes'])) {
 		$_SESSION['dsbSitemapNodes'] = array();
 		if (isset($_REQUEST['node'])) {
@@ -44,17 +44,17 @@ if (!$_REQUEST['keywords']) { // if there ARE keywords then we don't want to cac
 				unset($_SESSION['dsbSitemapNodes'][$i]);
 			}
 		}
-		
+
 		// rescan the nodes
 		$tempArray = array();
 		foreach($_SESSION['dsbSitemapNodes'] as $dsb) {
 			$tempArray[] = $dsb;
 		}
 		$_SESSION['dsbSitemapNodes'] = $tempArray;
-		
+
 		$js = Loader::helper('json');
 		print $js->encode(array());
-		
+
 		unset($tempArray);
 		exit;
 	} else {

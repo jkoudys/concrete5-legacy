@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Contains the file attribute key and value objects.
@@ -10,7 +10,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 /**
- * An object that represents metadata added to files. 
+ * An object that represents metadata added to files.
  * @author Andrew Embler <andrew@concrete5.org>
  * @package Pages
  * @category Concrete

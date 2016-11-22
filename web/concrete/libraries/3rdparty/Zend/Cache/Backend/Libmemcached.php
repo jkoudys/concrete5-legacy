@@ -256,9 +256,9 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
             case Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG:
                 $this->_log(self::TAGS_UNSUPPORTED_BY_CLEAN_OF_LIBMEMCACHED_BACKEND);
                 break;
-               default:
+            default:
                 Zend_Cache::throwException('Invalid mode for clean() method');
-                   break;
+                break;
         }
     }
 
@@ -480,5 +480,4 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
             'get_list' => false
         );
     }
-
 }

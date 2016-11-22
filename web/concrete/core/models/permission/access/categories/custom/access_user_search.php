@@ -18,7 +18,7 @@ class Concrete5_Model_AccessUserSearchUserPermissionAccess extends PermissionAcc
 		}
 		return $newPA;
 	}
-	
+
 	public function getAccessListItems($accessType = PermissionKey::ACCESS_TYPE_INCLUDE, $filterEntities = array()) {
 		$db = Loader::db();
 		$list = parent::getAccessListItems($accessType, $filterEntities);
@@ -26,7 +26,7 @@ class Concrete5_Model_AccessUserSearchUserPermissionAccess extends PermissionAcc
 			$pe = $l->getAccessEntityObject();
 			if ($this->permissionObjectToCheck instanceof Page && $l->getAccessType() == PermissionKey::ACCESS_TYPE_INCLUDE) {
 				$permission = 'A';
-			} else { 
+			} else {
 				$permission = $db->GetOne('select permission from ' . $this->dbTableAccessList . ' where peID = ? and paID = ?', array($pe->getAccessEntityID(), $l->getPermissionAccessID()));
 				if ($permission != 'N' && $permission != 'C') {
 					$permission = 'A';
@@ -34,7 +34,7 @@ class Concrete5_Model_AccessUserSearchUserPermissionAccess extends PermissionAcc
 
 			}
 			$l->setGroupsAllowedPermission($permission);
-			if ($permission == 'C') { 
+			if ($permission == 'C') {
 				$gIDs = $db->GetCol('select gID from ' . $this->dbTableAccessListCustom . ' where peID = ? and paID = ?', array($pe->getAccessEntityID(), $l->getPermissionAccessID()));
 				$l->setGroupsAllowedArray($gIDs);
 			}
@@ -50,37 +50,37 @@ class Concrete5_Model_AccessUserSearchUserPermissionAccess extends PermissionAcc
 		$db = Loader::db();
 		$db->Execute('delete from ' . $this->dbTableAccessList . ' where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from ' . $this->dbTableAccessListCustom . ' where paID = ?', array($this->getPermissionAccessID()));
-		if (is_array($args['groupsIncluded'])) { 
+		if (is_array($args['groupsIncluded'])) {
 			foreach($args['groupsIncluded'] as $peID => $permission) {
 				$v = array($peID, $this->getPermissionAccessID(), $permission);
 				$db->Execute('insert into ' . $this->dbTableAccessList . ' (peID, paID, permission) values (?, ?, ?)', $v);
 			}
 		}
-		
-		if (is_array($args['groupsExcluded'])) { 
+
+		if (is_array($args['groupsExcluded'])) {
 			foreach($args['groupsExcluded'] as $peID => $permission) {
 				$v = array($peID, $this->getPermissionAccessID(), $permission);
 				$db->Execute('insert into ' . $this->dbTableAccessList . ' (peID, paID, permission) values (?, ?, ?)', $v);
 			}
 		}
 
-		if (is_array($args['gIDInclude'])) { 
+		if (is_array($args['gIDInclude'])) {
 			foreach($args['gIDInclude'] as $peID => $gIDs) {
-				foreach($gIDs as $gID) { 
+				foreach($gIDs as $gID) {
 				$v = array($peID, $this->getPermissionAccessID(), $gID);
 					$db->Execute('insert into ' . $this->dbTableAccessListCustom . ' (peID, paID, gID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 
-		if (is_array($args['gIDExclude'])) { 
+		if (is_array($args['gIDExclude'])) {
 			foreach($args['gIDExclude'] as $peID => $gIDs) {
-				foreach($gIDs as $gID) { 
+				foreach($gIDs as $gID) {
 				$v = array($peID, $this->getPermissionAccessID(), $gID);
 					$db->Execute('insert into ' . $this->dbTableAccessListCustom . ' (peID, paID, gID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 	}
-	
+
 }

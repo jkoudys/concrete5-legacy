@@ -1,12 +1,12 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
-<?
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php
 $searchFields = array(
 	'' => '** ' . t('Fields'),
 	'date_added' => t('Registered Between'),
 	'is_active' => t('Activated Users')
 );
 
-if (PERMISSIONS_MODEL == 'advanced') { 
+if (PERMISSIONS_MODEL == 'advanced') {
 	$searchFields['group_set'] = t('Group Set');
 }
 
@@ -19,9 +19,9 @@ foreach($searchFieldAttributes as $ak) {
 
 ?>
 
-<? $form = Loader::helper('form'); ?>
+<?php $form = Loader::helper('form'); ?>
 
-	
+
 	<div id="ccm-user-search-field-base-elements" style="display: none">
 
 		<span class="ccm-search-option ccm-search-option-type-date_time"  search-field="date_added">
@@ -33,25 +33,25 @@ foreach($searchFieldAttributes as $ak) {
 		<span class="ccm-search-option"  search-field="is_active">
 		<?=$form->select('active', array('0' => t('Inactive Users'), '1' => t('Active Users')), array('style' => 'vertical-align: middle'))?>
 		</span>
-		
-		<? if (PERMISSIONS_MODEL == 'advanced') { 
+
+		<?php if (PERMISSIONS_MODEL == 'advanced') {
 			$gsl = new GroupSetList();
 			$groupsets = array();
-			foreach($gsl->get() as $gs) { 
+			foreach($gsl->get() as $gs) {
 				$groupsets[$gs->getGroupSetID()] = $gs->getGroupSetDisplayName();
 			}
 		?>
 		<span class="ccm-search-option"  search-field="group_set">
 		<?=$form->select('gsID', $groupsets)?>
 		</span>
-		<? } ?>
-		
-		<? foreach($searchFieldAttributes as $sfa) { 
+		<?php } ?>
+
+		<?php foreach($searchFieldAttributes as $sfa) {
 			$sfa->render('search'); ?>
-		<? } ?>
-		
+		<?php } ?>
+
 	</div>
-	
+
 	<form class="form-horizontal" method="get" id="ccm-user-advanced-search" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/users/search_results">
 	<?=$form->hidden('mode', $mode); ?>
 	<?=$form->hidden('searchType', $searchType); ?>
@@ -65,29 +65,29 @@ foreach($searchFieldAttributes as $ak) {
 			<?=$form->text('keywords', $_REQUEST['keywords'], array('placeholder' => t('Username or Email'), 'style'=> 'width: 140px')); ?>
 		</div>
 		</div>
-				
-		<? 
+
+		<?php
 		$pk = PermissionKey::getByHandle('access_user_search');
 		Loader::model('search/group');
 		$gl = new GroupSearch();
 		$gl->setItemsPerPage(-1);
 		$g1 = $gl->getPage();
-		?>		
+		?>
 
 		<div class="span4" style="width:280px">
 			<?=$form->label('gID', t('Group(s)'))?>
 			<div class="controls">
 				<select multiple name="gID[]" class="chosen-select" style="width: 220px">
-					<? foreach($g1 as $g) {
+					<?php foreach($g1 as $g) {
 						if ($pk->validate($g['gID'])) { ?>
-						<option value="<?=$g['gID']?>"  <? if (is_array($_REQUEST['gID']) && in_array($g['gID'], $_REQUEST['gID'])) { ?> selected="selected" <? } ?>><?=h(tc('GroupName', $g['gName']))?></option>
-					<? 
+						<option value="<?=$g['gID']?>"  <?php if (is_array($_REQUEST['gID']) && in_array($g['gID'], $_REQUEST['gID'])) { ?> selected="selected" <?php } ?>><?=h(tc('GroupName', $g['gName']))?></option>
+					<?php
 						}
 					} ?>
 				</select>
 			</div>
 		</div>
-		
+
 		<div class="span3">
 		<?=$form->label('numResults', t('# Per Page'))?>
 		<div class="controls">
@@ -103,7 +103,7 @@ foreach($searchFieldAttributes as $ak) {
 		<?=$form->submit('ccm-search-users', t('Search'), array('style' => 'margin-left: 10px'))?>
 
 		</div>
-		
+
 	</div>
 
 	<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-closed"><?=t('Advanced Search')?></a>
@@ -119,7 +119,7 @@ foreach($searchFieldAttributes as $ak) {
 			<td width="100%">
 			<input type="hidden" value="" class="ccm-user-selected-field" name="selectedSearchField[]" />
 			<div class="ccm-selected-field-content">
-				<?=t('Select Search Field.')?>				
+				<?=t('Select Search Field.')?>
 			</div></td>
 			<td><a href="javascript:void(0)" class="ccm-search-remove-option"><img src="<?=ASSETS_URL_IMAGES?>/icons/remove_minus.png" width="16" height="16" /></a></td>
 		</tr>
@@ -130,12 +130,12 @@ foreach($searchFieldAttributes as $ak) {
 			<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/users/customize_search_columns" id="ccm-list-view-customize"><span class="ccm-menu-icon ccm-icon-properties"></span><?=t('Customize Results')?></a>
 		</div>
 
-	</div>	
+	</div>
 
-</form>	
+</form>
 
 <script type="text/javascript">
-$(function() { 
-	ccm_setupUserSearch('<?=$searchInstance?>'); 
+$(function() {
+	ccm_setupUserSearch('<?=$searchInstance?>');
 });
 </script>

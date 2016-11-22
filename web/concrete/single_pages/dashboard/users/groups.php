@@ -20,19 +20,19 @@ function checkExpirationOptions($g) {
 
 if ($_REQUEST['task'] == 'edit') {
 	$g = Group::getByID(intval($_REQUEST['gID']));
-	if (is_object($g)) { 		
+	if (is_object($g)) {
 		if ($_POST['update']) {
-		
+
 			$gName = $_POST['gName'];
 			$gDescription = $_POST['gDescription'];
-			
+
 		} else {
-			
+
 			$gName = $g->getGroupName();
 			$gDescription = $g->getGroupDescription();
-		
+
 		}
-		
+
 		$editMode = true;
 	}
 }
@@ -77,7 +77,7 @@ if ($tp->canAccessGroupSearch()) { ?>
 
 	<a href="<?php echo View::url('/dashboard/users/add_group')?>" style="float: right; position:relative;top:-5px"  class="btn primary"><?php echo t("Add Group")?></a>
 
-<?php if (count($gResults) > 0) { 
+<?php if (count($gResults) > 0) {
 	$gl->displaySummary();
 $gp = new Permissions();
 $canEditGroups = $gp->canEditGroups();
@@ -88,9 +88,9 @@ $canEditGroups = $gp->canEditGroups();
 	</style>
 
 <?php
-	
+
 foreach ($gResults as $g) { ?>
-	
+
 	<div class="ccm-group">
 		<<?php if ($canEditGroups) { ?>a<?php } else {?>span<?php } ?> class="ccm-group-inner" <?php if ($canEditGroups) { ?>href="<?=$this->url('/dashboard/users/groups?task=edit&gID=' . $g['gID'])?>"<?php } ?> style="background-image: url(<?=ASSETS_URL_IMAGES?>/icons/group.png)"><?=h(tc('GroupName', $g['gName']))?><?php if ($canEditGroups) { ?></a><?php } else {?></span><?php } ?>
 		<?php if ($g['gDescription']) { ?>
@@ -104,7 +104,7 @@ foreach ($gResults as $g) { ?>
 } else { ?>
 
 	<p><?=t('No groups found.')?></p>
-	
+
 <?php } ?>
 </div>
 <?php if ($gl->requiresPaging()) { ?>
@@ -134,13 +134,13 @@ foreach ($gResults as $g) { ?>
 
 	$delConfirmJS = t('Are you sure you want to permanently remove this group?');
 	if($u->isSuperUser() == false){ ?>
-		<?=t('You must be logged in as %s to remove groups.', USER_SUPER)?>			
-	<?php }else{ ?>   
+		<?=t('You must be logged in as %s to remove groups.', USER_SUPER)?>
+	<?php }else{ ?>
 
 		<script type="text/javascript">
 		deleteGroup = function() {
-			if (confirm('<?=$delConfirmJS?>')) { 
-				location.href = "<?=$this->url('/dashboard/users/groups', 'delete', intval($_REQUEST['gID']), $valt->generate('delete_group_' . intval($_REQUEST['gID']) ))?>";				
+			if (confirm('<?=$delConfirmJS?>')) {
+				location.href = "<?=$this->url('/dashboard/users/groups', 'delete', intval($_REQUEST['gID']), $valt->generate('delete_group_' . intval($_REQUEST['gID']) ))?>";
 			}
 		}
 		</script>
@@ -154,7 +154,7 @@ foreach ($gResults as $g) { ?>
 		<input type="text" name="gName" class="span6" value="<?=Loader::helper('text')->entities($gName)?>" />
 	</div>
 	</div>
-	
+
 	<div class="control-group">
 	<?=$form->label('gDescription', t('Description'))?>
 	<div class="controls">
@@ -170,19 +170,19 @@ foreach ($gResults as $g) { ?>
 		<label class="checkbox">
 		<?=$form->checkbox('gUserExpirationIsEnabled', 1, $g->isGroupExpirationEnabled())?>
 		<span><?=t('Automatically remove users from this group')?></span></label>
-		
+
 	</div>
-	
+
 	<div class="controls" style="padding-left: 18px">
 		<?=$form->select("gUserExpirationMethod", array(
 			'SET_TIME' => t('at a specific date and time'),
 				'INTERVAL' => t('once a certain amount of time has passed')
-			
-		), $g->getGroupExpirationMethod(), array('disabled' => true));?>	
-	</div>	
+
+		), $g->getGroupExpirationMethod(), array('disabled' => true));?>
 	</div>
-	
-	
+	</div>
+
+
 	<div id="gUserExpirationSetTimeOptions" style="display: none">
 	<div class="control-group">
 	<?=$form->label('gUserExpirationSetDateTime', t('Expiration Date'))?>
@@ -217,7 +217,7 @@ foreach ($gResults as $g) { ?>
 	</div>
 	</div>
 	</div>
-	
+
 	<div id="gUserExpirationAction" style="display: none">
 	<div class="clearfix">
 	<?=$form->label('gUserExpirationAction', t('Expiration Action'))?>
@@ -226,7 +226,7 @@ foreach ($gResults as $g) { ?>
 	'REMOVE' => t('Remove the user from this group'),
 		'DEACTIVATE' => t('Deactivate the user account'),
 		'REMOVE_DEACTIVATE' => t('Remove the user from the group and deactivate the account')
-	), $g->getGroupExpirationAction());?>	
+	), $g->getGroupExpirationAction());?>
 	</div>
 	</div>
 	</div>
@@ -255,14 +255,14 @@ ccm_checkGroupExpirationOptions = function() {
 				$("#gUserExpirationSetTimeOptions").show();
 				$("#gUserExpirationIntervalOptions").hide();
 				break;
-			case 'INTERVAL': 
+			case 'INTERVAL':
 				$("#gUserExpirationSetTimeOptions").hide();
 				$("#gUserExpirationIntervalOptions").show();
-				break;				
+				break;
 		}
 		$("#gUserExpirationAction").show();
 	} else {
-		sel.attr('disabled', true);	
+		sel.attr('disabled', true);
 		$("#gUserExpirationSetTimeOptions").hide();
 		$("#gUserExpirationIntervalOptions").hide();
 		$("#gUserExpirationAction").hide();

@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 $pk = PermissionKey::getByHandle('empty_trash');
@@ -14,12 +14,12 @@ if (is_object($trash) && !$trash->isError()) {
 	$pl->filterByParentID($trash->getCollectionID());
 	$pl->includeInactivePages();
 	$pl->displayUnapprovedPages();
-	$pages = $pl->get();	
+	$pages = $pl->get();
 	foreach($pages as $pc) {
 		$cp = new Permissions($pc);
 		if ($cp->canDeletePage()) {
 			$i++;
-			$pc->delete();			
+			$pc->delete();
 		}
 	}
 }

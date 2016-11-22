@@ -10,7 +10,7 @@ class Concrete5_Model_ViewUserAttributesUserPermissionKey extends UserPermission
 			$list = $this->getAccessListItems(UserPermissionKey::ACCESS_TYPE_ALL, $accessEntities);
 			$list = PermissionDuration::filterByActive($list);
 		}
-		
+
 		$db = Loader::db();
 		$allakIDs = $db->GetCol('select akID from UserAttributeKeys');
 		$akIDs = array();
@@ -21,7 +21,7 @@ class Concrete5_Model_ViewUserAttributesUserPermissionKey extends UserPermission
 			if ($l->getAttributesAllowedPermission() == 'C') {
 				if ($l->getAccessType() == PermissionKey::ACCESS_TYPE_EXCLUDE) {
 					$akIDs = array_values(array_diff($akIDs, $l->getAttributesAllowedArray()));
-				} else { 
+				} else {
 					$akIDs = array_unique(array_merge($akIDs, $l->getAttributesAllowedArray()));
 				}
 			}
@@ -29,11 +29,11 @@ class Concrete5_Model_ViewUserAttributesUserPermissionKey extends UserPermission
 				$akIDs = $allakIDs;
 			}
 		}
-		
+
 		return $akIDs;
 	}
-	
-	
+
+
 	public function getMyAssignment() {
 		$u = new User();
 		$asl = new ViewUserAttributesUserPermissionAssignment();
@@ -46,7 +46,7 @@ class Concrete5_Model_ViewUserAttributesUserPermissionKey extends UserPermission
 		if (!is_object($pae)) {
 			return $asl;
 		}
-		
+
 		$accessEntities = $u->getUserAccessEntityObjects();
 		$accessEntities = $pae->validateAndFilterAccessEntities($accessEntities);
 		$list = $this->getAccessListItems(UserPermissionKey::ACCESS_TYPE_ALL, $accessEntities);
@@ -64,12 +64,12 @@ class Concrete5_Model_ViewUserAttributesUserPermissionKey extends UserPermission
 			if ($l->getAttributesAllowedPermission() == 'A') {
 				$asl->setAttributesAllowedPermission('A');
 			}
-		}	
-		
+		}
+
 		$asl->setAttributesAllowedArray($this->getAllowedAttributeKeyIDs($list));
 		return $asl;
 	}
-	
+
 	public function validate($obj = false) {
 		$u = new User();
 		if ($u->isSuperUser()) {
@@ -87,7 +87,7 @@ class Concrete5_Model_ViewUserAttributesUserPermissionKey extends UserPermission
 		} else {
 			return count($types) > 0;
 		}
-	}	
+	}
 
-	
+
 }

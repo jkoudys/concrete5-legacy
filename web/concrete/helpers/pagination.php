@@ -9,5 +9,6 @@
  * @license    http://www.concrete5.org/license/     MIT License
  */
 
-class PaginationHelper extends Concrete5_Helper_Pagination {
+class PaginationHelper extends Concrete5_Helper_Pagination
+{
 }

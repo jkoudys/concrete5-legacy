@@ -19,4 +19,7 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class FormPageSelectorHelper extends Concrete5_Helper_Form_PageSelector {}
+class FormPageSelectorHelper extends Concrete5_Helper_Form_PageSelector
+{
+
+}

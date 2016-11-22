@@ -9,15 +9,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Job_IndexSearch extends Job {
 
 	public $jNotUninstallable=1;
-	
+
 	public function getJobName() {
 		return t("Index Search Engine - Updates");
 	}
-	
+
 	public function getJobDescription() {
 		return t("Index the site to allow searching to work quickly and accurately. Only reindexes pages that have changed since last indexing.");
 	}
-	
+
 	public function run() {
 		Cache::disableCache();
 

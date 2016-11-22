@@ -7,8 +7,8 @@ class Concrete5_Model_PermissionResponse {
 	protected $customClassObjects = array();
 	protected $category;
 	static $cache = array();
-	
-	public function setPermissionObject($object) { 
+
+	public function setPermissionObject($object) {
 		$this->object = $object;
 	}
 	public function getPermissionObject() {
@@ -17,15 +17,15 @@ class Concrete5_Model_PermissionResponse {
 	public function setPermissionCategoryObject($category) {
 		$this->category = $category;
 	}
-	
+
 	public function testForErrors() { }
-	
+
 	public static function getResponse($object) {
 		$r = PermissionCache::getResponse($object);
 		if (is_object($r)) {
 			return $r;
 		}
-		
+
 		if (method_exists($object, 'getPermissionObjectPermissionKeyCategoryHandle')) {
 			$objectClass = Loader::helper('text')->camelcase($object->getPermissionObjectPermissionKeyCategoryHandle());
 			$handle = $object->getPermissionObjectPermissionKeyCategoryHandle();
@@ -47,12 +47,12 @@ class Concrete5_Model_PermissionResponse {
 		$pr = new $c1();
 		$pr->setPermissionObject($object);
 		$pr->setPermissionCategoryObject($category);
-		
+
 		PermissionCache::addResponse($object, $pr);
-		
+
 		return $pr;
 	}
-	
+
 	public function validate($permission, $args = array()) {
 		$u = new User();
 		if ($u->isSuperUser()) {
@@ -69,12 +69,12 @@ class Concrete5_Model_PermissionResponse {
 		$pk->setPermissionObject($this->object);
 		return call_user_func_array(array($pk, 'validate'), $args);
 	}
-	
+
 	public function __call($f, $a) {
 		$permission = substr($f, 3);
 		$permission = Loader::helper('text')->uncamelcase($permission);
 		return $this->validate($permission, $a);
 	}
-	
+
 
 }

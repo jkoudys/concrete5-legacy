@@ -576,7 +576,7 @@ class Concrete5_Helper_Date {
 		}
 		// Special chars that need to be escaped in the DatePicker format string
 		$datepickerSpecials = array('d', 'o', 'D', 'm', 'M', 'y', '@', '!', '\'');
-		// Map from php to DatePicker format 
+		// Map from php to DatePicker format
 		$map = array(
 			'j' => 'd',
 			'd' => 'dd',

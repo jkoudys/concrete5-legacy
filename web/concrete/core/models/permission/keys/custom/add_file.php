@@ -16,7 +16,7 @@ class Concrete5_Model_AddFileFileSetPermissionKey extends FileSetPermissionKey  
 		if (!is_object($pae)) {
 			return array();
 		}
-	
+
 		$accessEntities = $u->getUserAccessEntityObjects();
 		$accessEntities = $pae->validateAndFilterAccessEntities($accessEntities);
 		$list = $this->getAccessListItems(FileSetPermissionKey::ACCESS_TYPE_ALL, $accessEntities);
@@ -33,10 +33,10 @@ class Concrete5_Model_AddFileFileSetPermissionKey extends FileSetPermissionKey  
 				$extensions = Loader::helper('concrete/file')->getAllowedFileExtensions();
 			}
 		}
-		
+
 		return $extensions;
 	}
-	
+
 	public function validate($extension = false) {
 		$extensions = $this->getAllowedFileExtensions();
 		if ($ext != false) {
@@ -45,6 +45,6 @@ class Concrete5_Model_AddFileFileSetPermissionKey extends FileSetPermissionKey  
 			return count($extensions) > 0;
 		}
 	}
-	
+
 
 }

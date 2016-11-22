@@ -12,11 +12,11 @@ class Concrete5_Controller_Dashboard_Blocks_Types extends Controller {
 	public function on_before_render() {
 		$this->set('error', $this->error);
 	}
-	
+
 	public function view() {
 		$btAvailableArray = BlockTypeList::getAvailableList();
 		$btInstalledArray = BlockTypeList::getInstalledList();
-		$internalBlockTypes = array();		
+		$internalBlockTypes = array();
 		$normalBlockTypes = array();
 		foreach($btInstalledArray as $_bt) {
 			if ($_bt->isInternalBlockType()) {
@@ -29,7 +29,7 @@ class Concrete5_Controller_Dashboard_Blocks_Types extends Controller {
 		$this->set('normalBlockTypes', $normalBlockTypes);
 		$this->set('availableBlockTypes', $btAvailableArray);
 	}
-	
+
 	public function reset_display_order() {
 		if ($this->post()) {
 			BlockTypeList::resetBlockTypeDisplayOrder();
@@ -37,12 +37,12 @@ class Concrete5_Controller_Dashboard_Blocks_Types extends Controller {
 		}
 		$this->view();
 	}
-	
+
 	public function refresh($btID = 0) {
 		if ($btID > 0) {
 			$bt = BlockType::getByID($btID);
 		}
-		
+
 		if (isset($bt) && ($bt instanceof BlockType)) {
 			try {
 				$bt->refresh();
@@ -54,13 +54,13 @@ class Concrete5_Controller_Dashboard_Blocks_Types extends Controller {
 			$this->inspect($btID);
 		}
 	}
-	
+
 	public function install($btHandle = null) {
 		$tp = new TaskPermission();
-		if ($tp->canInstallPackages()) { 
+		if ($tp->canInstallPackages()) {
 			try {
 				$resp = BlockType::installBlockType($btHandle);
-				
+
 				if ($resp != '') {
 					$this->error->add($resp);
 				} else {
@@ -73,17 +73,17 @@ class Concrete5_Controller_Dashboard_Blocks_Types extends Controller {
 		} else {
 			$this->error->add(t('You do not have permission to install custom block types or add-ons.'));
 			$this->set('error', $this->error);
-		}		
+		}
 		$this->view();
 	}
-	
+
 	public function uninstall($btID = 0, $token = '') {
 		$valt = Loader::helper('validation/token');
 
 		if ($btID > 0) {
 			$bt = BlockType::getByID($btID);
 		}
-		
+
 		$u = new User();
 		if (!$u->isSuperUser()) {
 			$this->error->add(t('Only the super user may remove block types.'));
@@ -99,18 +99,18 @@ class Concrete5_Controller_Dashboard_Blocks_Types extends Controller {
 		} else {
 			$this->error->add('Invalid block type.');
 		}
-		
+
 		if ($this->error->has()) {
 			$this->set('error', $this->error);
 		}
 		$this->inspect($btID);
 	}
 
-	public function inspect($btID = 0) { 
+	public function inspect($btID = 0) {
 		if ($btID > 0) {
 			$bt = BlockType::getByID($btID);
 		}
-		
+
 		if (isset($bt) && ($bt instanceof BlockType)) {
 			$this->set('bt', $bt);
 			$this->set('num', $bt->getCount());
@@ -127,5 +127,5 @@ class Concrete5_Controller_Dashboard_Blocks_Types extends Controller {
 	}
 
 
-	
+
 }

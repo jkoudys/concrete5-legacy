@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $form = Loader::helper('form');
 ?>
@@ -11,7 +11,7 @@ $form = Loader::helper('form');
 		<?=$form->text('marketplaceRemoteItemKeywords', array('style' => 'width: 140px'))?>
 	</div>
 	</div>
-	
+
 	<div class="span4">
 	<?=$form->label('marketplaceRemoteItemSetID', t('Category'))?>
 	<div class="controls">
@@ -24,9 +24,9 @@ $form = Loader::helper('form');
 		<?=$form->submit('submit', t('Search'))?>
 	</div>
 </div>
-<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-<? if ($_REQUEST['marketplaceRemoteItemSortBy'] || $_REQUEST['marketplaceIncludeOnlyCompatibleAddons']) { ?>open<? } else{ ?>closed<? } ?>"><?=t('More Options')?></a>
+<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-<?php if ($_REQUEST['marketplaceRemoteItemSortBy'] || $_REQUEST['marketplaceIncludeOnlyCompatibleAddons']) { ?>open<?php } else{ ?>closed<?php } ?>"><?=t('More Options')?></a>
 
-<div class="control-group ccm-pane-options-content" <? if ($_REQUEST['marketplaceRemoteItemSortBy'] || $_REQUEST['marketplaceIncludeOnlyCompatibleAddons']) { ?>style="display: block" <? } ?>>
+<div class="control-group ccm-pane-options-content" <?php if ($_REQUEST['marketplaceRemoteItemSortBy'] || $_REQUEST['marketplaceIncludeOnlyCompatibleAddons']) { ?>style="display: block" <?php } ?>>
 	<br/>
 	<table class="table table-striped ccm-search-advanced-fields">
 	<tr>
@@ -45,7 +45,7 @@ $form = Loader::helper('form');
 	</td>
 	</tr>
 	</table>
-	
-</div>	
 
-</form>	
+</div>
+
+</form>

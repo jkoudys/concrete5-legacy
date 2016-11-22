@@ -22,8 +22,8 @@ class Concrete5_Model_AddSubpagePagePermissionAccess extends PagePermissionAcces
 	public function removeListItem(PermissionAccessEntity $pe) {
 		parent::removeListItem($pe);
 		$db = Loader::db();
-		$db->Execute('delete from PagePermissionPageTypeAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));	
-		$db->Execute('delete from PagePermissionPageTypeAccessListCustom where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));	
+		$db->Execute('delete from PagePermissionPageTypeAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));
+		$db->Execute('delete from PagePermissionPageTypeAccessListCustom where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));
 	}
 
 	public function save($args) {
@@ -31,7 +31,7 @@ class Concrete5_Model_AddSubpagePagePermissionAccess extends PagePermissionAcces
 		$db = Loader::db();
 		$db->Execute('delete from PagePermissionPageTypeAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from PagePermissionPageTypeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
-		if (is_array($args['pageTypesIncluded'])) { 
+		if (is_array($args['pageTypesIncluded'])) {
 			foreach($args['pageTypesIncluded'] as $peID => $permission) {
 				$ext = 0;
 				if (!empty($args['allowExternalLinksIncluded'][$peID])) {
@@ -41,8 +41,8 @@ class Concrete5_Model_AddSubpagePagePermissionAccess extends PagePermissionAcces
 				$db->Execute('insert into PagePermissionPageTypeAccessList (paID, peID, permission, externalLink) values (?, ?, ?, ?)', $v);
 			}
 		}
-		
-		if (is_array($args['pageTypesExcluded'])) { 
+
+		if (is_array($args['pageTypesExcluded'])) {
 			foreach($args['pageTypesExcluded'] as $peID => $permission) {
 				$ext = 0;
 				if (!empty($args['allowExternalLinksExcluded'][$peID])) {
@@ -53,18 +53,18 @@ class Concrete5_Model_AddSubpagePagePermissionAccess extends PagePermissionAcces
 			}
 		}
 
-		if (is_array($args['ctIDInclude'])) { 
+		if (is_array($args['ctIDInclude'])) {
 			foreach($args['ctIDInclude'] as $peID => $ctIDs) {
-				foreach($ctIDs as $ctID) { 
+				foreach($ctIDs as $ctID) {
 					$v = array($this->getPermissionAccessID(), $peID, $ctID);
 					$db->Execute('insert into PagePermissionPageTypeAccessListCustom (paID, peID, ctID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 
-		if (is_array($args['ctIDExclude'])) { 
+		if (is_array($args['ctIDExclude'])) {
 			foreach($args['ctIDExclude'] as $peID => $ctIDs) {
-				foreach($ctIDs as $ctID) { 
+				foreach($ctIDs as $ctID) {
 					$v = array($this->getPermissionAccessID(), $peID, $ctID);
 					$db->Execute('insert into PagePermissionPageTypeAccessListCustom (paID, peID, ctID) values (?, ?, ?)', $v);
 				}
@@ -81,7 +81,7 @@ class Concrete5_Model_AddSubpagePagePermissionAccess extends PagePermissionAcces
 		foreach($list as $l) {
 			$pe = $l->getAccessEntityObject();
 			$prow = $db->GetRow('select permission, externalLink from PagePermissionPageTypeAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $l->getPermissionAccessID()));
-			if (is_array($prow) && $prow['permission']) { 
+			if (is_array($prow) && $prow['permission']) {
 				$l->setPageTypesAllowedPermission($prow['permission']);
 				$l->setAllowExternalLinks($prow['externalLink']);
 				$permission = $prow['permission'];
@@ -92,7 +92,7 @@ class Concrete5_Model_AddSubpagePagePermissionAccess extends PagePermissionAcces
 				$l->setPageTypesAllowedPermission('N');
 				$l->setAllowExternalLinks(0);
 			}
-			if ($permission == 'C') { 
+			if ($permission == 'C') {
 				$ctIDs = $db->GetCol('select ctID from PagePermissionPageTypeAccessListCustom where peID = ? and paID = ?', array($pe->getAccessEntityID(), $l->getPermissionAccessID()));
 				$l->setPageTypesAllowedArray($ctIDs);
 			}

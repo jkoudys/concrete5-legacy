@@ -6,5 +6,5 @@ class Concrete5_Controller_Dashboard_Extend extends Controller {
 		$this->redirect('/dashboard/extend/install');
 	}
 
-	
+
 }

@@ -284,12 +284,12 @@ class Zend_Cache_Manager
             $current['backend']['name'] = $options['backend']['name'];
         }
         if (isset($options['frontend']['options'])) {
-            foreach ($options['frontend']['options'] as $key=>$value) {
+            foreach ($options['frontend']['options'] as $key => $value) {
                 $current['frontend']['options'][$key] = $value;
             }
         }
         if (isset($options['backend']['options'])) {
-            foreach ($options['backend']['options'] as $key=>$value) {
+            foreach ($options['backend']['options'] as $key => $value) {
                 $current['backend']['options'][$key] = $value;
             }
         }

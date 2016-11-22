@@ -5,9 +5,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 $nh = Loader::helper('validation/numbers');
 if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_GET['cID'])) {
 	$c = Page::getByID($_GET['cID']);
-	if (is_object($c) && !$c->isError()) { 
+	if (is_object($c) && !$c->isError()) {
 		$a = Area::get($c, $_GET['arHandle']);
-			
+
 		//edit survey mode
 		$b = Block::getByID($_GET['bID'],$c, $a);
 		if ($b->getBlockTypeHandle() == BLOCK_HANDLE_SCRAPBOOK_PROXY) {
@@ -17,31 +17,31 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 
 		$controller = new PageListBlockController($b);
 		$rssUrl = $controller->getRssUrl($b);
-		
+
 		$bp = new Permissions($b);
 		if( $bp->canViewBlock() && $controller->rss) {
-	
+
 			$cArray = $controller->getPages();
 			$nh = Loader::helper('navigation');
-	
+
 			header('Content-type: text/xml');
 			echo "<" . "?" . "xml version=\"1.0\"?>\n";
-	
+
 	?>
 			<rss version="2.0">
 			  <channel>
 				<title><?=$controller->rssTitle?></title>
 				<link><?=Loader::helper('navigation')->getLinkToCollection($c, true)?></link>
-				<description><?=$controller->rssDescription?></description> 
+				<description><?=$controller->rssDescription?></description>
 	<?
 			for ($i = 0; $i < count($cArray); $i++ ) {
-				$cobj = $cArray[$i]; 
+				$cobj = $cArray[$i];
 				$title = $cobj->getCollectionName();
                                 ?>
 				<item>
 				  <title><?=htmlspecialchars($title);?></title>
 				  <link>
-					<?= BASE_URL.$nh->getLinkToCollection($cobj) ?>		  
+					<?= BASE_URL.$nh->getLinkToCollection($cobj) ?>
 				  </link>
 				  <description><![CDATA[
 					<?php
@@ -50,7 +50,7 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 					$a->display($cobj);
 					?>
 				  ]]></description>
-                                  <? 
+                                  <?
                                     $tags = preg_split('/\n/', $cobj->getAttribute('tags'));
                                     if ($tags) {
 										foreach($tags as $tag) {
@@ -67,14 +67,14 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 			<? } ?>
 				 </channel>
 			</rss>
-			
-	<?	} else {  	
+
+	<?	} else {
 			$v = View::getInstance();
 			$v->renderError(t('Permission Denied'), t("This page list doesn't use the custom blog template, or you don't have permission to access this RSS feed"));
 			exit;
 		}
 	}
-	
+
 } else {
 	echo t("You don't have permission to access this RSS feed");
 }

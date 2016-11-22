@@ -1,4 +1,4 @@
-<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?php $c = Page::getCurrentPage(); ?>
 
 <div class="ccm-ui"><!-- Open C5 UI Wrapper -->
@@ -7,7 +7,7 @@
 		<li class="ccm-nav-active"><a id="ccm-pagelist-tab-add" href="javascript:void(0);"><?=($bID>0)? t('Edit') : t('Add') ?></a></li>
 		<li class=""><a id="ccm-pagelist-tab-preview"  href="javascript:void(0);"><?=t('Preview')?></a></li>
 	</ul>
-	
+
 	<input type="hidden" name="pageListToolsDir" value="<?=$uh->getBlockTypeToolsURL($bt)?>/" />
 	<div id="ccm-pagelistPane-add" class="ccm-pagelistPane">
 		<div class="ccm-block-field-group">
@@ -17,7 +17,7 @@
 		  <?=t('pages of type')?>
 		  <?php
 				$ctArray = CollectionType::getList();
-		
+
 				if (is_array($ctArray)) { ?>
 		  <select name="ctID" id="selectCTID">
 			<option value="0">** <?php echo t('All')?> **</option>
@@ -29,9 +29,9 @@
 		  </select>
 		  <?php } ?>
 		</div>
-		<div class="ccm-block-field-group">  
+		<div class="ccm-block-field-group">
 		  <h2><?=t('Filter')?></h2>
-		  
+
 		  <?php
 		  Loader::model('attribute/categories/collection');
 		  $cadf = CollectionAttributeKey::getByHandle('is_featured');
@@ -47,7 +47,7 @@
 			<input type="checkbox" name="displayAliases" value="1" <?php if ($displayAliases == 1) { ?> checked <?php } ?> />
 			<?=t('Display page aliases.')?>
 		  </label>
-			
+
 		</div>
 		<div class="ccm-block-field-group">
 			<h2><?=t('Pagination')?></h2>
@@ -64,19 +64,19 @@
 				<input type="radio" name="cParentID" id="cEverywhereField" value="0" <?php if ($cParentID == 0) { ?> checked<?php } ?> />
 				<?=t('everywhere')?>
 			</label>
-				
+
 		  	<label class="radio inline">
 				<input type="radio" name="cParentID" id="cThisPageField" value="<?=$c->getCollectionID()?>" <?php if ($cParentID == $c->getCollectionID() || $cThis) { ?> checked<?php } ?>>
 				<?=t('beneath this page')?>
 			</label>
-				
+
 		  	<label class="radio inline">
 				<input type="radio" name="cParentID" id="cOtherField" value="OTHER" <?php if ($isOtherPage) { ?> checked<?php } ?>>
 				<?=t('beneath another page')?>
 			</label>
-				
+
 				<div class="ccm-page-list-page-other" <?php if (!$isOtherPage) { ?> style="display: none" <?php } ?>>
-				
+
 				<?php $form = Loader::helper('form/page_selector');
 				if ($isOtherPage) {
 					print $form->selectPage('cParentIDValue', $cParentID);
@@ -84,9 +84,9 @@
 					print $form->selectPage('cParentIDValue');
 				}
 				?>
-				
+
 				</div>
-				
+
 				<div class="ccm-page-list-all-descendents" style="margin: 5px 0 0 0px;<?php echo (!$isOtherPage && !$cThis) ? ' display: none;' : ''; ?>">
 					<label class="checkbox">
 						<input type="checkbox" name="includeAllDescendents" id="includeAllDescendents" value="1" <?php echo $includeAllDescendents ? 'checked="checked"' : '' ?> />
@@ -105,14 +105,14 @@
 			<option value="alpha_desc" <?php if ($orderBy == 'alpha_desc') { ?> selected <?php } ?>><?=t('in reverse alphabetical order')?></option>
 		  </select>
 		</div>
-		
+
 		<div class="ccm-block-field-group">
 		  <h2><?=t('Provide RSS Feed')?></h2>
 		   <label class="radio inline">
-			   <input id="ccm-pagelist-rssSelectorOn" type="radio" name="rss" class="rssSelector" value="1" <?=($rss?"checked=\"checked\"":"")?>/> <?=t('Yes')?>   
+			   <input id="ccm-pagelist-rssSelectorOn" type="radio" name="rss" class="rssSelector" value="1" <?=($rss?"checked=\"checked\"":"")?>/> <?=t('Yes')?>
 		   </label>
 		   <label class="radio inline">
-		   		<input type="radio" name="rss" class="rssSelector" value="0" <?=($rss?"":"checked=\"checked\"")?>/> <?=t('No')?>   
+		   		<input type="radio" name="rss" class="rssSelector" value="0" <?=($rss?"":"checked=\"checked\"")?>/> <?=t('No')?>
 		   </label>
 		   <div id="ccm-pagelist-rssDetails" <?=($rss?"":"style=\"display:none;\"")?>>
 			   <strong><?=t('RSS Feed Title')?></strong><br />
@@ -121,23 +121,23 @@
 			   <textarea name="rssDescription" style="width:250px" ><?=$rssDescription?></textarea>
 		   </div>
 		</div>
-		
+
 		<style type="text/css">
 		#ccm-pagelist-truncateTxt.faintText{ color:#999; }
 		<?php if($truncateChars==0 && !$truncateSummaries) $truncateChars=128; ?>
 		</style>
 		<div class="ccm-block-field-group">
-		   <h2><?=t('Truncate Summaries')?></h2>	  
-		   <input id="ccm-pagelist-truncateSummariesOn" name="truncateSummaries" type="checkbox" value="1" <?=($truncateSummaries?"checked=\"checked\"":"")?> /> 
+		   <h2><?=t('Truncate Summaries')?></h2>
+		   <input id="ccm-pagelist-truncateSummariesOn" name="truncateSummaries" type="checkbox" value="1" <?=($truncateSummaries?"checked=\"checked\"":"")?> />
 		   <span id="ccm-pagelist-truncateTxt" <?=($truncateSummaries?"":"class=\"faintText\"")?>>
-		   		<?=t('Truncate descriptions after')?> 
-				<input id="ccm-pagelist-truncateChars" <?=($truncateSummaries?"":"disabled=\"disabled\"")?> type="text" name="truncateChars" size="3" value="<?=intval($truncateChars)?>" /> 
+		   		<?=t('Truncate descriptions after')?>
+				<input id="ccm-pagelist-truncateChars" <?=($truncateSummaries?"":"disabled=\"disabled\"")?> type="text" name="truncateChars" size="3" value="<?=intval($truncateChars)?>" />
 				<?=t('characters')?>
 		   </span>
 		</div>
-		
+
 	</div>
-	
+
 	<div id="ccm-pagelistPane-preview" style="display:none" class="ccm-preview-pane ccm-pagelistPane">
 		<div id="pagelist-preview-content"><?=t('Preview Pane')?></div>
 	</div>

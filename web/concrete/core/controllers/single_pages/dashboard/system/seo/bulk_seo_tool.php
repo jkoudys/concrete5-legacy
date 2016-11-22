@@ -1,22 +1,22 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_System_Seo_BulkSeoTool extends Controller {
-	
+
 	public $helpers = array('form', 'concrete/interface');
-	
+
 	public function view() {
 		$html = Loader::helper('html');
 		$pageList = $this->getRequestedSearchResults();
 		if (is_object($pageList)) {
 			$pages = $pageList->getPage();
-					
-			$this->set('pageList', $pageList);		
-			$this->set('pages', $pages);		
+
+			$this->set('pageList', $pageList);
+			$this->set('pages', $pages);
 			$this->set('searchInstance', $searchInstance);
 			$this->set('pagination', $pageList->getPagination());
 		}
 	}
-	
+
 	public function saveRecord() {
 		$text = Loader::helper('text');
         $success = false;
@@ -39,18 +39,18 @@ class Concrete5_Controller_Dashboard_System_Seo_BulkSeoTool extends Controller {
         echo Loader::helper('json')->encode($result);
         exit;
     }
-	
+
 	public function getRequestedSearchResults() {
-	
+
 		$dh = Loader::helper('concrete/dashboard/sitemap');
 		if (!$dh->canRead()) {
 			return false;
 		}
-		
+
 		$pageList = new PageList();
 		$pageList->ignoreAliases();
 		$pageList->enableStickySearchRequest();
-		
+
 		if ($_REQUEST['submit_search']) {
 			$pageList->resetSearchRequest();
 		}
@@ -62,9 +62,9 @@ class Concrete5_Controller_Dashboard_System_Seo_BulkSeoTool extends Controller {
 
 		$columns = PageSearchColumnSet::getCurrent();
 		$this->set('columns', $columns);
-		
+
 		$cvName = htmlentities($req['cvName'], ENT_QUOTES, APP_CHARSET);
-		
+
 		if ($cvName != '') {
 			$pageList->filterByName($cvName);
 		}
@@ -96,17 +96,17 @@ class Concrete5_Controller_Dashboard_System_Seo_BulkSeoTool extends Controller {
 			$this->set('keywordCheck', true);
 			$parentDialogOpen = 1;
 		}
-		
+
 		if ($_REQUEST['noDescription'] == 1){
 			$pageList->filter('CollectionSearchIndexAttributes.ak_meta_description', NULL ,'=');
 			$this->set('descCheck', true);
 			$parentDialogOpen = 1;
 		}
-		
+
 		$this->set('searchRequest', $req);
 		$this->set('parentDialogOpen', $parentDialogOpen);
-		
+
 		return $pageList;
 	}
 }
-	
+

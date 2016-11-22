@@ -333,7 +333,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = func_get_args();
             $temp['allow'] = array_shift($options);
             if (!empty($options)) {
@@ -455,7 +455,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
      *
      * @param boolean $allowed Set allowed to true to validate IDNs, and false to not validate them
      */
-    public function setValidateIdn ($allowed)
+    public function setValidateIdn($allowed)
     {
         $this->_options['idn'] = (bool) $allowed;
         return $this;
@@ -478,7 +478,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
      *
      * @param boolean $allowed Set allowed to true to validate TLDs, and false to not validate them
      */
-    public function setValidateTld ($allowed)
+    public function setValidateTld($allowed)
     {
         $this->_options['tld'] = (bool) $allowed;
         return $this;
@@ -503,7 +503,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
 
         $this->_setValue($value);
         // Check input against IP address schema
-        
+
         if (preg_match('/^[0-9a-f:.]*$/i', $value) &&
             $this->_options['ip']->setTranslator($this->getTranslator())->isValid($value)) {
             if (!($this->_options['allow'] & self::ALLOW_IP)) {
@@ -515,12 +515,12 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         }
 
         // RFC3986 3.2.2 states:
-        // 
+        //
         //     The rightmost domain label of a fully qualified domain name
-        //     in DNS may be followed by a single "." and should be if it is 
+        //     in DNS may be followed by a single "." and should be if it is
         //     necessary to distinguish between the complete domain name and
         //     some local domain.
-        //     
+        //
         // Strip trailing '.' since it is not necessary to validate a non-IP
         // hostname.
         //
@@ -528,7 +528,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         if (substr($value, -1) === '.') {
             $value = substr($value, 0, strlen($value)-1);
         }
-        
+
         // Check input against DNS hostname schema
         $domainParts = explode('.', $value);
         if ((count($domainParts) > 1) && (strlen($value) >= 4) && (strlen($value) <= 254)) {
@@ -542,7 +542,6 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
                 if (preg_match('/([^.]{2,10})$/i', end($domainParts), $matches) ||
                     (end($domainParts) == 'ایران') || (end($domainParts) == '中国') ||
                     (end($domainParts) == '公司') || (end($domainParts) == '网络')) {
-
                     reset($domainParts);
 
                     // Hostname characters are: *(label dot)(label dot label); max 254 chars
@@ -596,7 +595,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
 
                         // Check each domain part
                         $checked = false;
-                        foreach($regexChars as $regexKey => $regexChar) {
+                        foreach ($regexChars as $regexKey => $regexChar) {
                             $status = @preg_match($regexChar, $domainPart);
                             if ($status > 0) {
                                 $length = 63;
@@ -637,7 +636,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
             if ($status && ($this->_options['allow'] & self::ALLOW_DNS)) {
                 return true;
             }
-        } else if ($this->_options['allow'] & self::ALLOW_DNS) {
+        } elseif ($this->_options['allow'] & self::ALLOW_DNS) {
             $this->_error(self::INVALID_HOSTNAME);
         }
 
@@ -711,7 +710,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         $char  = 0x80;
 
         for ($indexe = ($separator) ? ($separator + 1) : 0; $indexe < $lengthe; ++$lengthd) {
-            for ($old_index = $index, $pos = 1, $key = 36; 1 ; $key += 36) {
+            for ($old_index = $index, $pos = 1, $key = 36; 1; $key += 36) {
                 $hex   = ord($encoded[$indexe++]);
                 $digit = ($hex - 48 < 10) ? $hex - 22
                        : (($hex - 65 < 26) ? $hex - 65

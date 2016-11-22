@@ -1,13 +1,13 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_PermissionCache {
-	
+
 	static $enabled = true;
 
 	public static function disable() {
 		PermissionCache::$enabled = false;
 	}
-	
+
 	public static function getResponse($object) {
 		if (!PermissionCache::$enabled) {
 			return false;
@@ -55,7 +55,7 @@ class Concrete5_Model_PermissionCache {
 			$cl->cache[$identifier] = $obj;
 		}
 	}
-	
+
 	public static function validate(PermissionKey $pk) {
 		if (!PermissionCache::$enabled) {
 			return -1;
@@ -64,7 +64,7 @@ class Concrete5_Model_PermissionCache {
 		if (!$cl->enabled) {
 			return -1;
 		}
-		
+
 		$object = $pk->getPermissionObject();
 		if (is_object($object)) {
 			$identifier = 'pk:' . $pk->getPermissionKeyHandle() . ':' . $object->getPermissionObjectIdentifier();
@@ -94,7 +94,7 @@ class Concrete5_Model_PermissionCache {
 			$cl->cache[$identifier] = $valid;
 		}
 	}
-	
+
 	public static function addAccessObject(PermissionKey $pk, $object, $pa) {
 		if (!PermissionCache::$enabled) {
 			return false;
@@ -130,7 +130,7 @@ class Concrete5_Model_PermissionCache {
 		}
 		return false;
 	}
-	
+
 
 
 

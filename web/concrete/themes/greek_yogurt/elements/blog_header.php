@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php  defined('C5_EXECUTE') or die('Access Denied.'); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,14 +26,14 @@
 <div id="main-container" class="container_24">
 
 	<div id="header">
-	
+
 		<h1><a href="<?php echo DIR_REL?>/"><?php echo h(SITE) ?></a></h1>
-		
-		<?php 
-		$a = new Area('Header Nav');
-		$a->display($c);
-		?>
-		
+
+		<?php
+        $a = new Area('Header Nav');
+        $a->display($c);
+        ?>
+
 	</div>
-	
+
 	<div class="clear"></div>

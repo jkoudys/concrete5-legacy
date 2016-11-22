@@ -146,5 +146,4 @@ class Zend_Validate_Alpha extends Zend_Validate_Abstract
 
         return true;
     }
-
 }

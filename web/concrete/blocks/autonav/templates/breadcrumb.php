@@ -6,7 +6,7 @@ for ($i = 0; $i < count($navItems); $i++) {
 	if ($i > 0) {
 		echo ' <span class="ccm-autonav-breadcrumb-sep">&gt;</span> ';
 	}
-	
+
 	if ($ni->isCurrent) {
 		echo $ni->name;
 	} else {

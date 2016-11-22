@@ -1,7 +1,7 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_UserValidationHash {
-		
+
 	/**
 	 * generates a random string
 	 * @return string
@@ -9,7 +9,7 @@ class Concrete5_Model_UserValidationHash {
 	protected static function generate() {
 		return Loader::helper('validation/identifier')->getString(64);
 	}
-	
+
 	/**
 	 * Removes old entries for the supplied type
 	*/
@@ -29,8 +29,8 @@ class Concrete5_Model_UserValidationHash {
 		$db = loader::db();
 		$db->query('DELETE FROM UserValidationHashes WHERE type = ? AND uDateGenerated <= ?', array($type, $lifetime));
 	}
-	
-	
+
+
 	/**
 	 * adds a hash to the lookup table for a user and type, removes any other existing hashes for the same user and type
 	 * @param int $uID
@@ -47,7 +47,7 @@ class Concrete5_Model_UserValidationHash {
 		$db->Execute("insert into UserValidationHashes (uID, uHash, uDateGenerated, type) values (?, ?, ?, ?)", array($uID, $hash, time(), intval($type)));
 		return $hash;
 	}
-	
+
 	/**
 	 * gets the users id for a given hash and type
 	 * @param string $hash

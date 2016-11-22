@@ -381,7 +381,7 @@ class Zend_Locale
             if ($language !== 'C') {
                 if (strpos($language, '.') !== false) {
                     $language = substr($language, 0, strpos($language, '.'));
-                } else if (strpos($language, '@') !== false) {
+                } elseif (strpos($language, '@') !== false) {
                     $language = substr($language, 0, strpos($language, '@'));
                 }
 
@@ -439,8 +439,11 @@ class Zend_Locale
 
         foreach ($accepted as $accept) {
             $match  = null;
-            $result = preg_match('/^([a-z]{1,8}(?:[-_][a-z]{1,8})*)(?:;\s*q=(0(?:\.[0-9]{1,3})?|1(?:\.0{1,3})?))?$/i',
-                                 $accept, $match);
+            $result = preg_match(
+                '/^([a-z]{1,8}(?:[-_][a-z]{1,8})*)(?:;\s*q=(0(?:\.[0-9]{1,3})?|1(?:\.0{1,3})?))?$/i',
+                $accept,
+                $match
+            );
 
             if ($result < 1) {
                 continue;
@@ -830,7 +833,7 @@ class Zend_Locale
             trigger_error('You are running Zend_Locale in compatibility mode... please migrate your scripts', E_USER_NOTICE);
             if (isset(self::$_localeData[$locale]) === true) {
                 return $locale;
-            } else if (!$strict) {
+            } elseif (!$strict) {
                 $locale = explode('_', $locale);
                 if (isset(self::$_localeData[$locale[0]]) === true) {
                     return $locale[0];
@@ -839,7 +842,7 @@ class Zend_Locale
         } else {
             if (isset(self::$_localeData[$locale]) === true) {
                 return true;
-            } else if (!$strict) {
+            } elseif (!$strict) {
                 $locale = explode('_', $locale);
                 if (isset(self::$_localeData[$locale[0]]) === true) {
                     return true;
@@ -1058,7 +1061,7 @@ class Zend_Locale
             return '';
         }
 
-        foreach($parts as $key => $value) {
+        foreach ($parts as $key => $value) {
             if ((strlen($value) < 2) || (strlen($value) > 3)) {
                 unset($parts[$key]);
             }

@@ -106,7 +106,7 @@ $dh = Loader::helper('date');
 		<form action="<?=$this->action('update_job_schedule')?>" method="post">
 			<?=$form->hidden('jID', $j->getJobID());?>
 			<h4><?=t('Run Job')?></h4>
-			
+
 			<label class="radio">
 				<input type="radio" name="isScheduled" class="ccm-jobs-automation-schedule-type" value="1" <?=($j->isScheduled?'checked="checked"':'')?> />
 				<?=t('When people browse to the page.  (which runs after the main rendering request of the page.)')?>
@@ -122,7 +122,7 @@ $dh = Loader::helper('date');
 					</div>
 				</div>
 			</fieldset>
-			
+
 			<label class="radio">
 				<input type="radio" name="isScheduled" class="ccm-jobs-automation-schedule-type" value="0" <?=($j->isScheduled?'':'checked="checked"')?> />
 				<?=t('Through Cron')?>
@@ -134,24 +134,24 @@ $dh = Loader::helper('date');
 						<h4><?=t('No Queueing')?></h4>
 						<div><textarea style="width: 560px" rows="2" class="ccm-default-jobs-url"><?=BASE_URL . $this->url('/tools/required/jobs?auth=' . $auth . '&jID=' . $j->getJobID())?></textarea></div>
 						<div class="alert alert-info"><?=t('This will treat the job as though it were like any other concrete5 job. The entire job will be run at once.')?></div>
-			
+
 						<h4><?=t('Queueing')?></h4>
 						<p><?=t("First, schedule this URL for when you'd like this job to run:")?></p>
 						<div><textarea style="width: 560px" rows="2" class="ccm-default-jobs-url"><?=BASE_URL . REL_DIR_FILES_TOOLS_REQUIRED . '/jobs/run_single?auth=' . $auth . '&jID=' . $j->getJobID()?></textarea></div>
 						<p><?=t('Then, make sure this URL is scheduled to run frequently, like every 3-5 minutes:')?></p>
 						<div><textarea style="width: 560px" rows="2" class="ccm-default-jobs-url"><?=BASE_URL . REL_DIR_FILES_TOOLS_REQUIRED . '/jobs/check_queue?auth=' . $auth?></textarea></div>
 						<div class="alert alert-info"><?=t('The first URL starts the process - the second ensures that it completes in batches.')?></div>
-			
+
 					<? } else { ?>
 						<p><?=t('To run the "%s" job, automate the following URL using cron or a similar system:', $j->getJobName())?></p><br/>
 						<div><textarea style="width: 560px" rows="2" class="ccm-default-jobs-url"><?=BASE_URL . $this->url('/tools/required/jobs/run_single?auth=' . $auth . '&jID=' . $j->getJobID())?></textarea></div>
-					<? } ?>	
+					<? } ?>
 				</div>
 			</fieldset>
 			<div class="ccm-pane-footer">
 				<div class="ccm-buttons">
 					<input type="submit" value="<?php echo t('Save'); ?>" class="btn ccm-button-v2 primary ccm-button-v2-right">
-				</div>	
+				</div>
 			</div>
 		</form>
 	</div>
@@ -167,26 +167,26 @@ $dh = Loader::helper('date');
 	<h4><?=t('Awaiting Installation')?></h4>
 	<table class="table table-striped">
 	<thead>
-		<tr> 
+		<tr>
 			<th><?=t('Name')?></th>
-			<th><?=t('Description')?></th> 
+			<th><?=t('Description')?></th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
 		<?foreach($availableJobs as $availableJobName => $job):?>
-		<tr> 
+		<tr>
 			<td><?=$job->getJobName() ?></td>
-			<td><?=$job->getJobDescription() ?></td> 
+			<td><?=$job->getJobDescription() ?></td>
 			<td><?if(!$job->invalid):?>
 				<a href="<?=$this->action('install', $job->jHandle)?>" class="btn btn-small pull-right"><?=t('Install')?></a>
 			<?endif?></td>
-		</tr>	
+		</tr>
 		<?endforeach?>
 	</tbody>
 	</table>
 <? } ?>
-<? 
+<?
 $djs = JobSet::getDefault();
 if (is_object($djs)) { ?>
 <div class="well">
@@ -209,7 +209,7 @@ if (is_object($djs)) { ?>
 		<div class="span-pane-half">
 
 		<form class="form-vertical" method="post" action="<?php echo $this->action('update_set')?>">
-			
+
 			<input type="hidden" name="jsID" value="<?php echo $set->getJobSetID()?>" />
 
 			<?php echo Loader::helper('validation/token')->output('update_set')?>
@@ -244,9 +244,9 @@ if (is_object($djs)) { ?>
 				<p><?php echo t('Warning, this cannot be undone. No jobs will be deleted but they will no longer be grouped together.')?></p>
 			</div>
 			</div>
-			
+
 			<input type="hidden" name="jsID" value="<?php echo $set->getJobSetID()?>" />
-			<?php echo Loader::helper('validation/token')->output('delete_set')?>		
+			<?php echo Loader::helper('validation/token')->output('delete_set')?>
 			<div class="clearfix">
 				<?php echo $form->submit('submit', t('Delete Job Set'), array('class' => 'danger'))?>
 			</div>
@@ -256,23 +256,23 @@ if (is_object($djs)) { ?>
 		</div>
 
 		<div class="span-pane-half">
-	
+
 		<form class="form-vertical" method="post" action="<?php echo $this->action('update_set_jobs')?>">
 			<input type="hidden" name="jsID" value="<?php echo $set->getJobSetID()?>" />
 			<?php echo Loader::helper('validation/token')->output('update_set_jobs')?>
 
 		<fieldset>
 			<legend><?=t('Jobs')?></legend>
-			
-	
-			<?php 
+
+
+			<?php
 			$list = $set->getJobs();
 			if (count($installedJobs) > 0) { ?>
-	
+
 				<div class="control-group">
 					<div class="controls">
-	
-						<?php foreach($installedJobs as $g) { 	
+
+						<?php foreach($installedJobs as $g) {
 
 						?>
 								<label class="checkbox">
@@ -282,7 +282,7 @@ if (is_object($djs)) { ?>
 						<?php } ?>
 					</div>
 				</div>
-		
+
 				<div class="control-group">
 					<div class="controls">
 					<?php echo $form->submit('submit', t('Update Jobs'), array('class' => ''))?>
@@ -317,7 +317,7 @@ if (is_object($djs)) { ?>
 					</div>
 				</div>
 			</fieldset>
-			
+
 			<label class="radio">
 				<input type="radio" name="isScheduled" class="ccm-jobs-automation-schedule-type" value="0" <?=($set->isScheduled?'':'checked="checked"')?> />
 				<?=t('Through Cron')?>
@@ -341,22 +341,22 @@ if (is_object($djs)) { ?>
 
 
 	<?php if (count($jobSets) > 0) { ?>
-	
+
 		<div class="ccm-attribute-sortable-set-list">
-		
+
 			<?php foreach($jobSets as $j) { ?>
 				<div class="ccm-group" id="asID_<?php echo $j->getJobSetID()?>">
 					<a class="ccm-group-inner" href="<?php echo $this->url('/dashboard/system/optimization/jobs', 'edit_set', $j->getJobSetID())?>" style="background-image: url(<?php echo ASSETS_URL_IMAGES?>/icons/group.png)"><?php echo $j->getJobSetDisplayName()?></a>
 				</div>
 			<?php } ?>
 		</div>
-	
+
 	<?php } else { ?>
 		<p><?php echo t('You have not added any Job sets.')?></p>
 	<?php } ?>
 
 	<br/>
-	
+
 	<h4><?=t('Add Set')?></h4>
 
 	<?php echo Loader::helper('validation/token')->output('add_set')?>
@@ -371,11 +371,11 @@ if (is_object($djs)) { ?>
 		<label class="control-label"><?=t('Jobs')?></label>
 		<div class="controls">
 		<? foreach($installedJobs as $j) { ?>
-			<label class="checkbox"><?=$form->checkbox('jID[]', $j->getJobID())?> <span><?=$j->getJobName()?></span></label>			
+			<label class="checkbox"><?=$form->checkbox('jID[]', $j->getJobID())?> <span><?=$j->getJobName()?></span></label>
 		<? } ?>
 		</div>
 	</div>
-	
+
 	<div class="control-group">
 		<label></label>
 		<div class="controls">
@@ -413,7 +413,7 @@ jQuery.fn.showLoading = function() {
 		} else {
 			row.find('td').css('background-color', '#ccc');
 			row.attr('data-color', '#ccc');
-		}			
+		}
 	}, 500);
 }
 
@@ -475,7 +475,7 @@ $(function() {
 				}
 			);
 		} else {
-			$.ajax({ 
+			$.ajax({
 				url: CCM_TOOLS_PATH + '/jobs/run_single',
 				data: params,
 				dataType: 'json',
@@ -486,7 +486,7 @@ $(function() {
 			});
 		}
 	});
-	
+
 	$('.ccm-jobs-automation-schedule-type').click(function() {
 		if($(this).val() == 1) {
 			$(this).parent().siblings('.ccm-jobs-automation-schedule-cron').hide();

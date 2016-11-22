@@ -1,7 +1,7 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class SitemapConcreteInterfaceMenuItemController extends ConcreteInterfaceMenuItemController {
-	
+
 	public function displayItem() {
 		$u = new User();
 		if ($u->isRegistered()) {

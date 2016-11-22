@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -24,7 +24,7 @@ if (!$canContinue) {
 	print t('Access Denied');
 	exit;
 }
-	
+
 $c->loadVersionObject('RECENT');
 require_once(DIR_FILES_ELEMENTS_CORE . '/dialog_header.php');
 

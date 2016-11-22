@@ -1,2 +1,4 @@
 <?php
-	class SignupRequest extends Concrete5_Model_SignupRequest {}	
+class SignupRequest extends Concrete5_Model_SignupRequest
+{
+}

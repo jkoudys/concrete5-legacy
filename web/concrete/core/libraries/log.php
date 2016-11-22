@@ -11,7 +11,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 class Concrete5_Library_Log {
 
 	private $log;
@@ -20,7 +20,7 @@ class Concrete5_Library_Log {
 	private $session = false;
 	private $sessionText = null;
 	private $isInternal = false;
-	
+
 	public function __construct($log = null, $session = true, $internal = false) {
 		$th = Loader::helper('text');
 		if ($log == null) {
@@ -31,7 +31,7 @@ class Concrete5_Library_Log {
 		$this->session = $session;
 		$this->isInternal = $internal;
 	}
-	
+
 	public function write($message) {
 		$this->sessionText .= $message . "\n";
 		if (!$this->session) {
@@ -47,8 +47,8 @@ class Concrete5_Library_Log {
 		$l = new Log($namespace, false);
 		$l->write($message);
 	}
-	
-	/** 
+
+	/**
 	 * Removes all "custom" log entries - these are entries that an app owner has written and don't have a builtin C5 type
 	 */
 	public function clearCustom() {
@@ -56,7 +56,7 @@ class Concrete5_Library_Log {
 		$db->Execute("delete from Logs where logIsInternal = 0");
 	}
 
-	/** 
+	/**
 	 * Removes log entries by type- these are entries that an app owner has written and don't have a builtin C5 type
 	 * @param string $type Is a lowercase string that uses underscores instead of spaces, e.g. sent_emails
 	 */
@@ -64,14 +64,14 @@ class Concrete5_Library_Log {
 		$db = Loader::db();
 		$db->Execute("delete from Logs where logType = ?", array($type));
 	}
-	
+
 	public function clearInternal() {
 		$db = Loader::db();
 		$db->Execute("delete from Logs where logIsInternal = 1");
 	}
 
-	
-	/** 
+
+	/**
 	 * Removes all log entries
 	 */
 	public function clearAll() {
@@ -79,7 +79,7 @@ class Concrete5_Library_Log {
 		$db->Execute("delete from Logs");
 	}
 
-	
+
 	public function close() {
 		$u = new User();
 
@@ -88,16 +88,16 @@ class Concrete5_Library_Log {
 		$db->Execute("insert into Logs (logType, logText, logIsInternal, logUserID) values (?, ?, ?, ?)", $v);
 		$this->sessionText = '';
 	}
-	
-	/** 
+
+	/**
 	 * Renames a log file and moves it to the log archive.
 	 */
 	public function archive() {
 
 	}
-	
-	/** 
-	 * Returns the total number of entries matching this type 
+
+	/**
+	 * Returns the total number of entries matching this type
 	 */
 	public static function getTotal($keywords, $type) {
 		$db = Loader::db();
@@ -112,8 +112,8 @@ class Concrete5_Library_Log {
 		}
 		return $r;
 	}
-	
-	/** 
+
+	/**
 	 * Returns a list of log entries
 	 */
 	public static function getList($keywords, $type, $limit) {
@@ -127,15 +127,15 @@ class Concrete5_Library_Log {
 		} else {
 			$r = $db->Execute('select logID from Logs where 1=1 ' . $kw . ' order by timestamp desc, logID desc limit ' . $limit);
 		}
-		
+
 		$entries = array();
 		while ($row = $r->FetchRow()) {
 			$entries[] = LogEntry::getByID($row['logID']);
 		}
 		return $entries;
 	}
-	
-	/** 
+
+	/**
 	 * Returns an array of distinct log types
 	 */
 	public static function getTypeList() {
@@ -146,10 +146,10 @@ class Concrete5_Library_Log {
 		}
 		return $lt;
 	}
-	
+
 	public function getName() { return $this->name;}
-	
-	/** 
+
+	/**
 	 * Returns all the log files in the directory
 	 */
 	public static function getLogs() {

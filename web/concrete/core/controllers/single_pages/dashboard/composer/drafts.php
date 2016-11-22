@@ -8,9 +8,9 @@ class Concrete5_Controller_Dashboard_Composer_Drafts extends Controller {
 		$this->set('disableThirdLevelNav', true);
 		$this->set('drafts', ComposerPage::getMyDrafts());
 	}
-	
+
 	public function draft_discarded() {
 		$this->set('message', t('Draft deleted.'));
 	}
-	
+
 }

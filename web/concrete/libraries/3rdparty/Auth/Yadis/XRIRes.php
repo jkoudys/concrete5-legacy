@@ -7,7 +7,8 @@
 require_once 'Auth/Yadis/XRDS.php';
 require_once 'Auth/Yadis/XRI.php';
 
-class Auth_Yadis_ProxyResolver {
+class Auth_Yadis_ProxyResolver
+{
     function Auth_Yadis_ProxyResolver($fetcher, $proxy_url = null)
     {
         $this->fetcher = $fetcher;
@@ -51,8 +52,10 @@ class Auth_Yadis_ProxyResolver {
             if (!$xrds) {
                 continue;
             }
-            $canonicalID = Auth_Yadis_getCanonicalID($xri,
-                                                         $xrds);
+            $canonicalID = Auth_Yadis_getCanonicalID(
+                $xri,
+                $xrds
+            );
 
             if ($canonicalID === false) {
                 return null;
@@ -68,5 +71,3 @@ class Auth_Yadis_ProxyResolver {
         return array($canonicalID, $services);
     }
 }
-
-

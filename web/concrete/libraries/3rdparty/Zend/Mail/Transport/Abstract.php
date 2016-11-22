@@ -233,9 +233,8 @@ abstract class Zend_Mail_Transport_Abstract
     protected function _buildBody()
     {
         if (($text = $this->_mail->getBodyText())
-            && ($html = $this->_mail->getBodyHtml()))
-        {
-            // Generate unique boundary for multipart/alternative
+            && ($html = $this->_mail->getBodyHtml())) {
+        // Generate unique boundary for multipart/alternative
             $mime = new Zend_Mime(null);
             $boundaryLine = $mime->boundaryLine($this->EOL);
             $boundaryEnd  = $mime->mimeEnd($this->EOL);

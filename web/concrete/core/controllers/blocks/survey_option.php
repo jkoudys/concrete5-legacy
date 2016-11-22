@@ -1,7 +1,7 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
- * An object that represents an option in a survey. 
+ * An object that represents an option in a survey.
  *
  * @package Blocks
  * @subpackage Survey
@@ -14,11 +14,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Block_SurveyOption {
 
 	public $optionID, $optionName, $displayOrder;
-	
+
 	function getOptionID() {return $this->optionID;}
 	function getOptionName() {return $this->optionName;}
 	function getOptionDisplayOrder() {return $this->displayOrder;}
-	
+
 	function getResults() {
 		$db = Loader::db();
 		$v = array($this->optionID, intval($this->cID));

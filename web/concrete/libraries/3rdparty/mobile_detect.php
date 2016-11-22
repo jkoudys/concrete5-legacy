@@ -662,7 +662,7 @@ class Mobile_Detect
         //Only save HTTP headers. In PHP land, that means only _SERVER vars that
         //start with HTTP_.
         foreach ($httpHeaders as $key => $value) {
-            if (substr($key,0,5) == 'HTTP_') {
+            if (substr($key, 0, 5) == 'HTTP_') {
                 $this->httpHeaders[$key] = $value;
             }
         }
@@ -745,7 +745,6 @@ class Mobile_Detect
             }
 
             return $this->userAgent = (!empty($this->userAgent) ? trim($this->userAgent) : null);
-
         }
     }
 
@@ -862,7 +861,6 @@ class Mobile_Detect
         }
 
         return $rules;
-
     }
 
     /**
@@ -930,10 +928,10 @@ class Mobile_Detect
     {
 
         foreach ($this->getMobileHeaders() as $mobileHeader => $matchType) {
-            if ( isset($this->httpHeaders[$mobileHeader]) ) {
-                if ( is_array($matchType['matches']) ) {
+            if (isset($this->httpHeaders[$mobileHeader])) {
+                if (is_array($matchType['matches'])) {
                     foreach ($matchType['matches'] as $_match) {
-                        if ( strpos($this->httpHeaders[$mobileHeader], $_match) !== false ) {
+                        if (strpos($this->httpHeaders[$mobileHeader], $_match) !== false) {
                             return true;
                         }
                     }
@@ -946,7 +944,6 @@ class Mobile_Detect
         }
 
         return false;
-
     }
 
     /**
@@ -1046,7 +1043,6 @@ class Mobile_Detect
         } else {
             return $this->matchDetectionRulesAgainstUA();
         }
-
     }
 
     /**
@@ -1184,13 +1180,11 @@ class Mobile_Detect
 
         // Check if the property exists in the properties array.
         if (array_key_exists($propertyName, $properties)) {
-
             // Prepare the pattern to be matched.
             // Make sure we always deal with an array (string is converted).
             $properties[$propertyName] = (array) $properties[$propertyName];
 
             foreach ($properties[$propertyName] as $propertyMatchString) {
-
                 $propertyPattern = str_replace('[VER]', self::VER, $propertyMatchString);
 
                 // Escape the special character which is the delimiter.
@@ -1204,9 +1198,7 @@ class Mobile_Detect
 
                     return $version;
                 }
-
             }
-
         }
 
         return false;
@@ -1221,8 +1213,7 @@ class Mobile_Detect
     {
         $isMobile = $this->isMobile();
 
-        if (
-            // Apple iOS 4-7.0 – Tested on the original iPad (4.3 / 5.0), iPad 2 (4.3 / 5.1 / 6.1), iPad 3 (5.1 / 6.0), iPad Mini (6.1), iPad Retina (7.0), iPhone 3GS (4.3), iPhone 4 (4.3 / 5.1), iPhone 4S (5.1 / 6.0), iPhone 5 (6.0), and iPhone 5S (7.0)
+        if (// Apple iOS 4-7.0 – Tested on the original iPad (4.3 / 5.0), iPad 2 (4.3 / 5.1 / 6.1), iPad 3 (5.1 / 6.0), iPad Mini (6.1), iPad Retina (7.0), iPhone 3GS (4.3), iPhone 4 (4.3 / 5.1), iPhone 4S (5.1 / 6.0), iPhone 5 (6.0), and iPhone 5S (7.0)
             $this->isIOS() && $this->version('iPad', self::VERSION_TYPE_FLOAT)>=4.3 ||
             $this->isIOS() && $this->version('iPhone', self::VERSION_TYPE_FLOAT)>=4.3 ||
             $this->isIOS() && $this->version('iPod', self::VERSION_TYPE_FLOAT)>=4.3 ||
@@ -1292,12 +1283,11 @@ class Mobile_Detect
 
             // Opera Desktop 10-12 - Tested on OS X 10.7 and Windows 7
             $this->version('Opera', self::VERSION_TYPE_FLOAT)>=10 && !$isMobile
-        ){
+        ) {
             return self::MOBILE_GRADE_A;
         }
 
-        if (
-            $this->isIOS() && $this->version('iPad', self::VERSION_TYPE_FLOAT)<4.3 ||
+        if ($this->isIOS() && $this->version('iPad', self::VERSION_TYPE_FLOAT)<4.3 ||
             $this->isIOS() && $this->version('iPhone', self::VERSION_TYPE_FLOAT)<4.3 ||
             $this->isIOS() && $this->version('iPod', self::VERSION_TYPE_FLOAT)<4.3 ||
 
@@ -1313,12 +1303,11 @@ class Mobile_Detect
 
             // @todo: report this (tested on Nokia N71)
             $this->version('Opera Mobi', self::VERSION_TYPE_FLOAT)>=11 && $this->is('SymbianOS')
-        ){
+        ) {
             return self::MOBILE_GRADE_B;
         }
 
-        if (
-            // Blackberry 4.x - Tested on the Curve 8330
+        if (// Blackberry 4.x - Tested on the Curve 8330
             $this->version('BlackBerry', self::VERSION_TYPE_FLOAT)<=5.0 ||
             // Windows Mobile - Tested on the HTC Leo (WinMo 5.2)
             $this->match('MSIEMobile|Windows CE.*Mobile') || $this->version('Windows Mobile', self::VERSION_TYPE_FLOAT)<=5.2 ||
@@ -1330,7 +1319,7 @@ class Mobile_Detect
 
             // Internet Explorer 7 and older - Tested on Windows XP
             $this->version('IE', self::VERSION_TYPE_FLOAT)<=7.0 && !$isMobile
-        ){
+        ) {
             return self::MOBILE_GRADE_C;
         }
 

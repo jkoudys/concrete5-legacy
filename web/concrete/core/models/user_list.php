@@ -1,10 +1,10 @@
 <?php
 
-defined('C5_EXECUTE') or die("Access Denied."); 
+defined('C5_EXECUTE') or die("Access Denied.");
 
 /**
  * An object that allows a filtered list of users to be returned.
- * @package Files 
+ * @package Files
  * @author Tony Trupp <tony@concrete5.org>
  * @category Concrete
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
@@ -12,39 +12,39 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-class Concrete5_Model_UserList extends DatabaseItemList { 
+class Concrete5_Model_UserList extends DatabaseItemList {
 
 	protected $attributeFilters = array();
 	protected $autoSortColumns = array('uName', 'uEmail', 'uDateAdded', 'uLastLogin', 'uNumLogins', 'uLastOnline');
 	protected $itemsPerPage = 10;
 	protected $attributeClass = 'UserAttributeKey';
-	
+
 	public $showInactiveUsers;
 	public $showInvalidatedUsers=0;
 	public $searchAgainstEmail=0;
-	
+
 	//Filter by uName
 	public function filterByUserName($username) {
 		$this->filter('u.uName', $username, '=');
 	}
-	
+
 	public function filterByKeywords($keywords) {
 		$db = Loader::db();
 		$qkeywords = $db->quote('%' . $keywords . '%');
 		$keys = UserAttributeKey::getSearchableIndexedList();
-		$emailSearchStr=' OR u.uEmail like '.$qkeywords.' ';	
+		$emailSearchStr=' OR u.uEmail like '.$qkeywords.' ';
 		$attribsStr = '';
 		foreach ($keys as $ak) {
-			$cnt = $ak->getController();			
+			$cnt = $ak->getController();
 			$attribsStr.=' OR ' . $cnt->searchKeywords($keywords);
 		}
 		$this->filter(false, '( u.uName like ' . $qkeywords . $emailSearchStr . $attribsStr . ')');
 	}
-	
-	public function filterByGroup($groupName='', $inGroup = true){ 
-		$group=Group::getByName($groupName); 
+
+	public function filterByGroup($groupName='', $inGroup = true){
+		$group=Group::getByName($groupName);
 		$tbl='ug_'.$group->getGroupID();
-		$this->addToQuery("left join UserGroups $tbl on {$tbl}.uID = u.uID ");	
+		$this->addToQuery("left join UserGroups $tbl on {$tbl}.uID = u.uID ");
 		if ($inGroup) {
 			$this->filter(false, "{$tbl}.gID=".intval($group->getGroupID()) );
 		} else {
@@ -61,41 +61,41 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 		$this->filter('u.uID',$uID,'!=');
 	}
 
-	public function filterByGroupID($gID){ 
+	public function filterByGroupID($gID){
 		if (!Loader::helper('validation/numbers')->integer($gID)) {
 			$gID = 0;
 		}
 		$tbl='ug_'.$gID;
-		$this->addToQuery("left join UserGroups $tbl on {$tbl}.uID = u.uID ");			
+		$this->addToQuery("left join UserGroups $tbl on {$tbl}.uID = u.uID ");
 		$this->filter(false, "{$tbl}.gID=".$gID);
 	}
 
 	public function filterByDateAdded($date, $comparison = '=') {
 		$this->filter('u.uDateAdded', $date, $comparison);
 	}
-	
+
 	// Returns an array of userInfo objects based on current filter settings
 	public function get($itemsToGet = 100, $offset = 0) {
-		$userInfos = array(); 
+		$userInfos = array();
 		$this->createQuery();
 		$r = parent::get( $itemsToGet, intval($offset));
 		foreach($r as $row) {
-			$ui = UserInfo::getByID($row['uID']);			
+			$ui = UserInfo::getByID($row['uID']);
 			$userInfos[] = $ui;
 		}
 		return $userInfos;
-	}	
-	
-	public function getTotal(){ 
+	}
+
+	public function getTotal(){
 		$this->createQuery();
 		return parent::getTotal();
-	}	
-	
+	}
+
 	public function filterByIsActive($val) {
 		$this->showInactiveUsers = $val;
 		$this->filter('u.uIsActive', $val);
-	}	
-	
+	}
+
 	//this was added because calling both getTotal() and get() was duplicating some of the query components
 	protected function createQuery(){
 		if(!$this->queryCreated){
@@ -105,8 +105,8 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 			$this->setupAttributeFilters("left join UserSearchIndexAttributes on (UserSearchIndexAttributes.uID = u.uID)");
 			$this->queryCreated=1;
 		}
-	}	
-	
+	}
+
 	protected function setBaseQuery() {
 		$this->setQuery('SELECT DISTINCT u.uID, u.uName FROM Users u ');
 	}
@@ -121,14 +121,14 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 			} else {
 				$this->filterByAttribute($attrib, $a[0]);
 			}
-		}			
+		}
 	}
 
 }
 
 class UserSearchDefaultColumnSet extends DatabaseItemListColumnSet {
-	protected $attributeClass = 'UserAttributeKey';	
-	
+	protected $attributeClass = 'UserAttributeKey';
+
 	public function getUserName($ui) {
 		return '<a href="' . View::url('/dashboard/users/search') . '?uID=' . $ui->getUserID() . '">' . $ui->getUserName() . '</a>';
 	}
@@ -136,16 +136,16 @@ class UserSearchDefaultColumnSet extends DatabaseItemListColumnSet {
 	public function getUserEmail($ui) {
 		return '<a href="mailto:' . $ui->getUserEmail() . '">' . $ui->getUserEmail() . '</a>';
 	}
-	
+
 	public static function getUserDateAdded($ui) {
 		return Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_USERS', $ui->getUserDateAdded());
 	}
-	
+
 	public function __construct() {
 		$this->addColumn(new DatabaseItemListColumn('uName', t('Username'), array('UserSearchDefaultColumnSet', 'getUserName')));
 		$this->addColumn(new DatabaseItemListColumn('uEmail', t('Email'), array('UserSearchDefaultColumnSet', 'getUserEmail')));
 		$this->addColumn(new DatabaseItemListColumn('uDateAdded', t('Signup Date'), array('UserSearchDefaultColumnSet', 'getUserDateAdded')));
-		$this->addColumn(new DatabaseItemListColumn('uNumLogins', t('# Logins'), 'getNumLogins')); 
+		$this->addColumn(new DatabaseItemListColumn('uNumLogins', t('# Logins'), 'getNumLogins'));
 		$date = $this->getColumnByKey('uDateAdded');
 		$this->setDefaultSortColumn($date, 'desc');
 	}
@@ -175,7 +175,7 @@ class UserSearchColumnSet extends DatabaseItemListColumnSet {
 		}
 		return $columns;
 	}
-	
+
 	public function getCurrent() {
 		$u = new User();
 		$fldc = $u->config('USER_LIST_DEFAULT_COLUMNS');

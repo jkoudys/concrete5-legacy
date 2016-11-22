@@ -18,18 +18,18 @@
 		protected $btCacheBlockOutputForRegisteredUsers = true;
 		protected $btCacheBlockOutputLifetime = 7200;
 
-		protected $btIsInternal = true;		
+		protected $btIsInternal = true;
 		protected $btInterfaceWidth = 300;
 		protected $btInterfaceHeight = 100;
-		
+
 		public function getBlockTypeDescription() {
 			return t("Features an add-on from concrete5.org.");
 		}
-		
+
 		public function getBlockTypeName() {
 			return t("Dashboard Featured Add-On");
 		}
-		
+
 		public function view() {
 			Loader::model('marketplace_remote_item');
 			$mri = new MarketplaceRemoteItemList();
@@ -42,5 +42,5 @@
 				$this->set('remoteItem', $items[0]);
 			}
 		}
-		
+
 	}

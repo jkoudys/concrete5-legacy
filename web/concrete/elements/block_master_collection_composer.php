@@ -18,7 +18,7 @@ $txt = Loader::helper('text');
 	</ul>
 	</div>
 	</div>
-	
+
 	<div class="clearfix">
 	<?=$form->label('bName', t('Block Name'))?>
 	<div class="input">
@@ -37,30 +37,30 @@ $txt = Loader::helper('text');
 			<?
 			foreach($templates as $tpl) {
 				?><option value="<?=$tpl->getTemplateFileFilename()?>" <? if ($b->getBlockComposerFilename() == $tpl->getTemplateFileFilename()) { ?> selected <? } ?>><?=$tpl->getTemplateFileDisplayName()?></option><?php
-			}
-			?>
-		</select>
-	</div>
-	</div>
-	
-	<? } ?>
+                }
+            ?>
+        </select>
+    </div>
+    </div>
+
+    <? } ?>
 <?
 $valt = Loader::helper('validation/token');
 $valt->output();
 ?>
 
-		<div class="dialog-buttons">
-		<a href="#" class="ccm-dialog-close ccm-button-left cancel btn"><?=t('Cancel')?></a>
-		<a href="javascript:void(0)" onclick="$('#ccmComposerCustomTemplateForm').submit()" class="ccm-button-right accept primary btn"><?=t('Update')?></a>
-		</div>
+        <div class="dialog-buttons">
+        <a href="#" class="ccm-dialog-close ccm-button-left cancel btn"><?=t('Cancel')?></a>
+        <a href="javascript:void(0)" onclick="$('#ccmComposerCustomTemplateForm').submit()" class="ccm-button-right accept primary btn"><?=t('Update')?></a>
+        </div>
 
 </form>
 </div>
 
 <script type="text/javascript">
 $(function() {
-	$('#ccmComposerCustomTemplateForm').each(function() {
-		ccm_setupBlockForm($(this), '<?=$b->getBlockID()?>', 'edit');
-	});
+    $('#ccmComposerCustomTemplateForm').each(function() {
+        ccm_setupBlockForm($(this), '<?=$b->getBlockID()?>', 'edit');
+    });
 });
 </script>

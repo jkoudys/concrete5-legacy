@@ -21,13 +21,13 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Form_DateTime {
 
-	/** 
+	/**
 	 * Takes a "field" and grabs all the corresponding disparate fields from $_POST and translates into a timestamp
 	 * @param string $field The name of the field to translate
 	 * @param array $arr = null The array containing the value. If null (default) we'll use $_POST
 	 * @return string|false $dateTime In case of success returns the timestamp (in the format 'Y-m-d H:i:s' or 'Y-m-d'), otherwise returns false ($field value is not in the array) or '' (if $field value is empty).
 	 * If $field has both date and time, the resulting value will be converted fro user timezone to system timezone.
-	 * If $field has only date and not time, no timezone conversion will occur. 
+	 * If $field has only date and not time, no timezone conversion will occur.
 	 */
 	public function translate($field, $arr = null) {
 		if ($arr == null) {
@@ -77,7 +77,7 @@ class Concrete5_Helper_Form_DateTime {
 		}
 	}
 
-	/** 
+	/**
 	 * Creates form fields and JavaScript calendar includes for a particular item
 	 * <code>
 	 *     $dateHelper->datetime('yourStartDate', '2008-07-12 3:00:00');
@@ -102,7 +102,7 @@ class Concrete5_Helper_Form_DateTime {
 			$_m = $prefix . '_m';
 			$_a = $prefix . '_a';
 		}
-		
+
 		$dfh = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? 'h' : 'H';
 		$dfhe = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '12' : '23';
 		$dfhs = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '1' : '0';
@@ -124,7 +124,7 @@ class Concrete5_Helper_Form_DateTime {
 			} else {
 				$disabled = 'disabled';
 			}
-			
+
 			$html .= '<input type="checkbox" id="' . $id . '_activate" class="ccm-activate-date-time" ccm-date-time-id="' . $id . '" name="' . $_activate . '" ' . $activated . ' />';
 		}
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '_dt" name="' . $_dt . '" class="ccm-input-date" value="' . $dt . '" ' . $disabled . ' /></span>';
@@ -174,11 +174,11 @@ class Concrete5_Helper_Form_DateTime {
 			$html .= '</select>';
 		}
 		$html .= '</span>';
-		if ($calendarAutoStart) { 
+		if ($calendarAutoStart) {
 			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ dateFormat: ' . Loader::helper('json')->encode($dateHelper->getJQueryUIDatePickerFormat()) . ', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		// first we add a calendar input
-		
+
 		if ($includeActivation) {
 			$html .=<<<EOS
 			<script type="text/javascript">$("#{$id}_activate").click(function() {
@@ -200,13 +200,13 @@ class Concrete5_Helper_Form_DateTime {
 			});
 			</script>
 EOS;
-			
+
 		}
 		return $html;
-	
+
 	}
-	
-	/** 
+
+	/**
 	 * Creates form fields and JavaScript calendar includes for a particular item but includes only calendar controls (no time.)
 	 * <code>
 	 *     $dateHelper->date('yourStartDate', '2008-07-12 3:00:00');
@@ -233,11 +233,11 @@ EOS;
 		$html = '';
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '" name="' . $field . '" class="ccm-input-date" value="' . $dt . '"  /></span>';
 
-		if ($calendarAutoStart) { 
+		if ($calendarAutoStart) {
 			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ dateFormat: ' . Loader::helper('json')->encode($dateHelper->getJQueryUIDatePickerFormat()) . ', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		return $html;
-	
-	}	
+
+	}
 
 }

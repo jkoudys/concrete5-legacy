@@ -435,5 +435,4 @@ class Zend_Db_Statement_Pdo extends Zend_Db_Statement implements IteratorAggrega
             throw new Zend_Db_Statement_Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
-
 }

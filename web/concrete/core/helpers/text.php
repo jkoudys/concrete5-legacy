@@ -260,7 +260,8 @@ class Concrete5_Helper_Text
         $output = preg_replace(
             "/(http:\/\/|https:\/\/|(www\.))(([^\s<]{4,80})[^\s<]*)/",
             '<a href="http://$2$3" ' . $target . ' rel="nofollow">http://$2$4</a>',
-            $input);
+            $input
+        );
         return ($output);
     }
 
@@ -278,12 +279,14 @@ class Concrete5_Helper_Text
         $output = preg_replace(
             '/([\.|\,|\:|\¡|\¿|\>|\{|\(]?)@{1}(\w*)([\.|\,|\:|\!|\?|\>|\}|\)]?)\s/i',
             "$1<a href=\"http://twitter.com/$2\" " . $target . " class=\"twitter-username\">@$2</a>$3 ",
-            $input);
+            $input
+        );
         if ($withSearch) {
             $output = preg_replace(
                 '/([\.|\,|\:|\¡|\¿|\>|\{|\(]?)#{1}(\w*)([\.|\,|\:|\!|\?|\>|\}|\)]?)\s/i',
                 "$1<a href=\"http://search.twitter.com/search?q=%23$2\" " . $target . " class=\"twitter-search\">#$2</a>$3 ",
-                $input);
+                $input
+            );
         }
         return $output;
     }
@@ -316,8 +319,10 @@ class Concrete5_Helper_Text
             return preg_match(
                 "#^" . strtr(
                     preg_quote($pattern, '#'),
-                    array('\*' => '.*', '\?' => '.', '\[' => '[', '\]' => ']')) . "$#i",
-                $string);
+                    array('\*' => '.*', '\?' => '.', '\[' => '[', '\]' => ']')
+                ) . "$#i",
+                $string
+            );
         } else {
             return fnmatch($pattern, $string);
         }
@@ -426,5 +431,4 @@ class Concrete5_Helper_Text
             $this->appendXML($node, $ch);
         }
     }
-
 }

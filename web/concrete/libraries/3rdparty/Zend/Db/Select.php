@@ -718,7 +718,7 @@ class Zend_Db_Select
     {
         if ($part == null) {
             $this->_parts = self::$_partsInit;
-        } else if (array_key_exists($part, self::$_partsInit)) {
+        } elseif (array_key_exists($part, self::$_partsInit)) {
             $this->_parts[$part] = self::$_partsInit[$part];
         }
         return $this;
@@ -768,7 +768,7 @@ class Zend_Db_Select
 
         if (empty($name)) {
             $correlationName = $tableName = '';
-        } else if (is_array($name)) {
+        } elseif (is_array($name)) {
             // Must be array($correlationName => $tableName) or array($ident, ...)
             foreach ($name as $_correlationName => $_tableName) {
                 if (is_string($_correlationName)) {
@@ -782,10 +782,10 @@ class Zend_Db_Select
                 }
                 break;
             }
-        } else if ($name instanceof Zend_Db_Expr|| $name instanceof Zend_Db_Select) {
+        } elseif ($name instanceof Zend_Db_Expr|| $name instanceof Zend_Db_Select) {
             $tableName = $name;
             $correlationName = $this->_uniqueCorrelation('t');
-        } else if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $name, $m)) {
+        } elseif (preg_match('/^(.+)\s+AS\s+(.+)$/i', $name, $m)) {
             $tableName = $m[1];
             $correlationName = $m[2];
         } else {
@@ -904,7 +904,7 @@ class Zend_Db_Select
             $c = is_string($k) ? $k : end($name);
         } else {
             // Extract just the last name of a qualified table name
-            $dot = strrpos($name,'.');
+            $dot = strrpos($name, '.');
             $c = ($dot === false) ? $name : substr($name, $dot+1);
         }
         for ($i = 2; array_key_exists($c, $this->_parts[self::FROM]); ++$i) {
@@ -954,7 +954,6 @@ class Zend_Db_Select
         }
 
         if ($columnValues) {
-
             // should we attempt to prepend or insert these values?
             if ($afterCorrelationName === true || is_string($afterCorrelationName)) {
                 $tmpColumns = $this->_parts[self::COLUMNS];
@@ -1233,12 +1232,12 @@ class Zend_Db_Select
             $order = array();
             foreach ($this->_parts[self::ORDER] as $term) {
                 if (is_array($term)) {
-                    if(is_numeric($term[0]) && strval(intval($term[0])) == $term[0]) {
+                    if (is_numeric($term[0]) && strval(intval($term[0])) == $term[0]) {
                         $order[] = (int)trim($term[0]) . ' ' . $term[1];
                     } else {
                         $order[] = $this->_adapter->quoteIdentifier($term[0], true) . ' ' . $term[1];
                     }
-                } else if (is_numeric($term) && strval(intval($term)) == $term) {
+                } elseif (is_numeric($term) && strval(intval($term)) == $term) {
                     $order[] = (int)trim($term);
                 } else {
                     $order[] = $this->_adapter->quoteIdentifier($term, true);
@@ -1352,5 +1351,4 @@ class Zend_Db_Select
         }
         return (string)$sql;
     }
-
 }

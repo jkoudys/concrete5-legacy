@@ -1,14 +1,14 @@
-<? 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 </div>
 
-<? 
+<?php
 
 // simple file that controls the adding of blocks.
 
 // $blockTypes is an array using the btID as the key and btHandle as the value.
-// It is defined within Area->_getAreaAddBlocks(), which then calls a 
+// It is defined within Area->_getAreaAddBlocks(), which then calls a
 // function in Content to include the file
 
 // note, we're also passed an area & collection object from the original function
@@ -29,12 +29,12 @@ if (!$c->isArrangeMode()) { ?>
 	ccm_areaMenuObj<?=$a->getAreaID()?>.aID = <?=$a->getAreaID()?>;
 	ccm_areaMenuObj<?=$a->getAreaID()?>.arHandle = "<?=$arHandle?>";
 	ccm_areaMenuObj<?=$a->getAreaID()?>.maximumBlocks = <?=$a->maximumBlocks?>;
-    <? Loader::element('block_area_permissions_js', array('a' => $a, 'ap' => $ap, 'c' => $c, 'cp' => $cp)); ?> 
+    <?php Loader::element('block_area_permissions_js', array('a' => $a, 'ap' => $ap, 'c' => $c, 'cp' => $cp)); ?>
 	$(function() {ccm_menuInit(ccm_areaMenuObj<?=$a->getAreaID()?>)});
 	</script>
-	<? if ($a->isGlobalArea()) { ?>
+	<?php if ($a->isGlobalArea()) { ?>
 		<div id="a<?=$a->getAreaID()?>controls" class="ccm-add-block"><?=t('Add To Sitewide %s', tc('AreaName', $arHandle))?></div>
-	<? } else { ?>
+	<?php } else { ?>
 		<div id="a<?=$a->getAreaID()?>controls" class="ccm-add-block"><?=t('Add To %s', tc('AreaName', $arHandle))?></div>
-	<? } ?>
-<? } ?>
+	<?php } ?>
+<?php } ?>

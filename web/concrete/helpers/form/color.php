@@ -19,4 +19,7 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class FormColorHelper extends Concrete5_Helper_Form_Color {}
+class FormColorHelper extends Concrete5_Helper_Form_Color
+{
+
+}

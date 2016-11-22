@@ -1,12 +1,14 @@
 <?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class ConcreteUpgradeVersion5631Helper {
+class ConcreteUpgradeVersion5631Helper
+{
 
-	public $dbRefreshTables = array(
-		'Users'
-	);
+    public $dbRefreshTables = array(
+        'Users'
+    );
 
-	public function run() {}
-
+    public function run()
+    {
+    }
 }

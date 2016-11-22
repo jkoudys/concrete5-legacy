@@ -18,11 +18,11 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Json {
 
-	
-	/** 
+
+	/**
 	 * Decodes a JSON string into a php variable
 	 * @param string $string
-	 * @param bool $assoc [default: false] When true, returned objects will be converted into associative arrays, when false they'll be converted into stdClass instances. 
+	 * @param bool $assoc [default: false] When true, returned objects will be converted into associative arrays, when false they'll be converted into stdClass instances.
 	 * @return mixed
 	 */
 	public function decode($string, $assoc = false) {
@@ -34,9 +34,9 @@ class Concrete5_Helper_Json {
 			return $sjs->decode($string);
 		}
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Encodes a data structure into a JSON string
 	 * @param mixed $mixed
 	 * @return string
@@ -50,7 +50,7 @@ class Concrete5_Helper_Json {
 			return $sjs->encode($mixed);
 		}
 	}
-	
+
 
 
 }

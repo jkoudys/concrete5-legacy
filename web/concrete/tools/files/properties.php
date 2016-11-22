@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -181,15 +181,15 @@ $dateHelper = Loader::helper('date');
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-file-properties-wrapper">
-<? } ?>
+<?php } ?>
 
 <div class="ccm-ui ccm-file-properties-tabs" id="ccm-file-properties-tab-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>">
 
 <ul class="tabs">
 <li class="active"><a href="javascript:void(0)" id="ccm-file-properties-details-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>"><?=t('Details')?></a></li>
-<? if (!$previewMode) { ?>
+<?php if (!$previewMode) { ?>
 	<li><a href="javascript:void(0)" id="ccm-file-properties-versions-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>"><?=t('Versions')?></a></li>
-<? } ?>
+<?php } ?>
 <li><a href="javascript:void(0)" id="ccm-file-properties-statistics-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>"><?=t('Statistics')?></a></li>
 </ul>
 
@@ -205,7 +205,7 @@ $("#ccm-file-properties-tab-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?> ul
 
 <div class="ccm-file-properties-details-tab" id="ccm-file-properties-details-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>-tab">
 
-<?
+<?php
 if (!$previewMode && $fp->canEditFileContents()) {
 	$h = Loader::helper('concrete/interface');
 	$b1 = $h->button_js(t('Rescan'), 'ccm_alRescanFiles(' . $f->getFileID() . ')');
@@ -237,7 +237,7 @@ if (!$previewMode && $fp->canEditFileContents()) {
 	<td width="100%" colspan="2"><?=h(BASE_URL . View::url('/download_file', $fv->getFileID()))?></td>
 </tr>
 
-<?
+<?php
 $oc = $f->getOriginalPageObject();
 if (is_object($oc)) {
 	$fileManager = Page::getByPath('/dashboard/files/search');
@@ -253,7 +253,7 @@ if (is_object($oc)) {
 	<td><strong><?=t('Page Added To')?></strong></td>
 	<td width="100%" colspan="2"><a href="<?=Loader::helper('navigation')->getLinkToCollection($oc)?>" target="_blank"><?=$ocName?></a></td>
 </tr>
-<? } ?>
+<?php } ?>
 
 <tr>
 	<td><strong><?=t('Type')?></strong></td>
@@ -267,7 +267,7 @@ if (is_object($oc)) {
 	<td><strong><?=t('Date Added')?></strong></td>
 	<td colspan="2"><?=t('Added by <strong>%s</strong> on %s', $fv->getAuthorName(), $dateHelper->formatSpecial('FILE_PROPERTIES', $f->getDateAdded()))?></td>
 </tr>
-<?
+<?php
 Loader::model("file_storage_location");
 $fsl = FileStorageLocation::getByID(FileStorageLocation::ALTERNATE_ID);
 if (is_object($fsl)) {
@@ -285,7 +285,7 @@ if (!isset($sli)) {
 	<td><strong><?=t('Location')?></strong></td>
 	<td colspan="2"><?=$sli?></td>
 </tr>
-<?
+<?php
 printCorePropertyRow(t('Title'), 'fvTitle', $fv->getTitle(), $form->text('fvTitle', $fv->getTitle()));
 printCorePropertyRow(t('Description'), 'fvDescription', $fv->getDescription(), $form->textarea('fvDescription', $fv->getDescription()));
 printCorePropertyRow(t('Tags'), 'fvTags', $fv->getTags(), $form->textarea('fvTags', $fv->getTags()));
@@ -295,7 +295,7 @@ printCorePropertyRow(t('Tags'), 'fvTags', $fv->getTags(), $form->textarea('fvTag
 </table>
 
 
-<?
+<?php
 $attribs = FileAttributeKey::getImporterList($fv);
 $ft = $fv->getType();
 
@@ -305,7 +305,7 @@ if (count($attribs) > 0) { ?>
 
 <h4><?=t('%s File Properties', $ft)?></h4>
 <table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
-<?
+<?php
 
 foreach($attribs as $at) {
 
@@ -315,9 +315,9 @@ foreach($attribs as $at) {
 
 ?>
 </table>
-<? } ?>
+<?php } ?>
 
-<?
+<?php
 $attribs = FileAttributeKey::getUserAddedList();
 
 if (count($attribs) > 0) { ?>
@@ -326,7 +326,7 @@ if (count($attribs) > 0) { ?>
 
 <h4><?=t('Other Properties')?></h4>
 <table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
-<?
+<?php
 
 foreach($attribs as $at) {
 
@@ -336,7 +336,7 @@ foreach($attribs as $at) {
 
 ?>
 </table>
-<? } ?>
+<?php } ?>
 
 <br/>
 
@@ -350,7 +350,7 @@ foreach($attribs as $at) {
 
 </div>
 
-<? if (!$previewMode) { ?>
+<?php if (!$previewMode) { ?>
 
 	<div class="ccm-file-properties-details-tab" id="ccm-file-properties-versions-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>-tab" style="display: none">
 
@@ -364,14 +364,14 @@ foreach($attribs as $at) {
 			<th><?=t('Comments')?></th>
 			<th><?=t('Creator')?></th>
 			<th><?=t('Added On')?></th>
-			<? if ($fp->canEditFileContents()) { ?>
+			<?php if ($fp->canEditFileContents()) { ?>
 				<th>&nbsp;</th>
-			<? } ?>
+			<?php } ?>
 		</tr>
-		<?
+		<?php
 		$versions = $f->getVersionList();
 		foreach($versions as $fvv) { ?>
-			<tr fID="<?=$f->getFileID()?>" fvID="<?=$fvv->getFileVersionID()?>" <? if ($fvv->getFileVersionID() == $fv->getFileVersionID()) { ?> class="ccm-file-versions-grid-active" <? } ?>>
+			<tr fID="<?=$f->getFileID()?>" fvID="<?=$fvv->getFileVersionID()?>" <?php if ($fvv->getFileVersionID() == $fv->getFileVersionID()) { ?> class="ccm-file-versions-grid-active" <?php } ?>>
 				<td style="text-align: center">
 					<?=$form->radio('vlfvID', $fvv->getFileVersionID(), $fvv->getFileVersionID() == $fv->getFileVersionID())?>
 				</td>
@@ -387,7 +387,7 @@ foreach($attribs as $at) {
 						<?=$fvv->getTitle()?>
 					</div>
 				</td>
-				<td><?
+				<td><?php
 					$comments = $fvv->getVersionLogComments();
 					if (count($comments) > 0) {
 						print t('Updated ');
@@ -405,26 +405,26 @@ foreach($attribs as $at) {
 					</td>
 				<td><?=$fvv->getAuthorName()?></td>
 				<td><?=$dateHelper->formatSpecial('FILE_VERSIONS', $fvv->getDateAdded())?></td>
-				<? if ($fp->canEditFileContents()) { ?>
-					<? if ($fvv->getFileVersionID() == $fv->getFileVersionID()) { ?>
+				<?php if ($fp->canEditFileContents()) { ?>
+					<?php if ($fvv->getFileVersionID() == $fv->getFileVersionID()) { ?>
 						<td>&nbsp;</td>
-					<? } else { ?>
+					<?php } else { ?>
 						<td><a class="ccm-file-versions-remove" href="javascript:void(0)"><?=t('Delete')?></a></td>
-					<? } ?>
-				<? } ?>
+					<?php } ?>
+				<?php } ?>
 			</tr>
 
-		<? } ?>
+		<?php } ?>
 
 		</table>
 
 	</div>
 
-<? } ?>
+<?php } ?>
 
 <div class="ccm-file-properties-details-tab" id="ccm-file-properties-statistics-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>-tab" style="display: none">
 
-	<?
+	<?php
 	$downloadStatistics = $f->getDownloadStatistics();
 	?>
 	<h4><?=t('Total Downloads: %s', $f->getTotalDownloads())?></h4>
@@ -435,7 +435,7 @@ foreach($attribs as $at) {
 			<th><?=t('Download Time')?></th>
 			<th><?=t('File Version ID')?></th>
 		</tr>
-		<?
+		<?php
 
 		$downloadStatsCounter=0;
 		foreach($downloadStatistics as $download){
@@ -444,7 +444,7 @@ foreach($attribs as $at) {
 			?>
 		<tr>
 			<td>
-				<?
+				<?php
 				$uID=intval($download['uID']);
 				if(!$uID){
 					echo t('Anonymous');
@@ -461,7 +461,7 @@ foreach($attribs as $at) {
 			<td><?=$dateHelper->formatSpecial('FILE_DOWNLOAD', $download['timestamp'])?></td>
 			<td><?=intval($download['fvID'])?></td>
 		</tr>
-		<? } ?>
+		<?php } ?>
 	</table>
 </div>
 
@@ -474,7 +474,7 @@ $(function() {
 });
 </script>
 
-<?
+<?php
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
-<? }
+<?php }

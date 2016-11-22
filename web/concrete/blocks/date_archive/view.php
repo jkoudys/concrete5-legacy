@@ -4,23 +4,23 @@ $dh = Loader::helper("date");
 <div class="grid_4 alpha omega" id="main-content-sidebar-archives">
 	<h3><?php echo $title ?></h3>
 	<?php
-	if ($firstPost) { 
+	if ($firstPost) {
 		$startDt = new DateTime();
 		$firstPost = new DateTime($firstPost->format('m/01/Y'));
 		$first = date_diff($startDt,$firstPost);
 		$first = $first->m + $first->y * 12;
-		
+
 		if($first > $numMonths) {
 			$first = $numMonths;
-		}	
-		
+		}
+
 		$startDt->modify('-'.$first.' months');
 		$workingDt = $startDt;
 		$year = $workingDt->format('Y');
 		?>
 		<h4><?php echo $year;?></h4>
 		<ul>
-			<?php 
+			<?php
 			$i=0;
 			while(true) {
 				if($workingDt->format('Y') > $year) {

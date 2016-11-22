@@ -19,9 +19,9 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Library_Content_Importer {
-	
+
 	protected static $mcBlockIDs = array();
-	
+
 	public function importContentFile($file) {
 		$sx = simplexml_load_file($file);
 		$this->importSinglePageStructure($sx);
@@ -51,13 +51,13 @@ class Concrete5_Library_Content_Importer {
 		$this->importConfigValues($sx);
 		$this->importSystemCaptchaLibraries($sx);
 	}
-	
+
 	protected static function getPackageObject($pkgHandle) {
 		$pkg = false;
 		if ($pkgHandle) {
 			$pkg = Package::getByHandle($pkgHandle);
 		}
-		return $pkg;		
+		return $pkg;
 	}
 
 	protected function importStacksStructure(SimpleXMLElement $sx) {
@@ -83,13 +83,13 @@ class Concrete5_Library_Content_Importer {
 			}
 		}
 	}
-	
+
 	protected function importSinglePageStructure(SimpleXMLElement $sx) {
 		if (isset($sx->singlepages)) {
 			foreach($sx->singlepages->page as $p) {
 				$pkg = ContentImporter::getPackageObject($p['package']);
 				$spl = SinglePage::add($p['path'], $pkg);
-				if (is_object($spl)) { 
+				if (is_object($spl)) {
 					if (isset($p['root']) && $p['root'] == true) {
 						$spl->moveToRoot();
 					}
@@ -111,7 +111,7 @@ class Concrete5_Library_Content_Importer {
 				if (isset($px->attributes)) {
 					foreach($px->attributes->children() as $attr) {
 						$ak = CollectionAttributeKey::getByHandle($attr['handle']);
-						if (is_object($ak)) { 
+						if (is_object($ak)) {
 							$page->setAttribute((string) $attr['handle'], $ak->getController()->importValue($attr));
 						}
 					}
@@ -143,7 +143,7 @@ class Concrete5_Library_Content_Importer {
 			}
 		}
 	}
-	
+
 	protected function importPageContent(SimpleXMLElement $sx) {
 		if (isset($sx->pages)) {
 			foreach($sx->pages->page as $px) {
@@ -158,7 +158,7 @@ class Concrete5_Library_Content_Importer {
 				if (isset($px->attributes)) {
 					foreach($px->attributes->children() as $attr) {
 						$ak = CollectionAttributeKey::getByHandle($attr['handle']);
-						if (is_object($ak)) { 
+						if (is_object($ak)) {
 							$page->setAttribute((string) $attr['handle'], $ak->getController()->importValue($attr));
 						}
 					}
@@ -167,7 +167,7 @@ class Concrete5_Library_Content_Importer {
 			}
 		}
 	}
-	
+
 	protected function importPageStructure(SimpleXMLElement $sx) {
 		if (isset($sx->pages)) {
 			$nodes = array();
@@ -229,7 +229,7 @@ class Concrete5_Library_Content_Importer {
 			}
 		}
 	}
-	
+
 	public function importPageAreas(Page $page, SimpleXMLElement $px) {
 		foreach($px->area as $ax) {
 			if (isset($ax->block)) {
@@ -243,7 +243,7 @@ class Concrete5_Library_Content_Importer {
 						$btc = $bt->getController();
 						$btc->import($page, (string) $ax['name'], $bx);
 					} else if ($bx['mc-block-id'] != '') {
-					
+
 						// we find that block in the master collection block pool and alias it out
 						$bID = array_search((string) $bx['mc-block-id'], self::$mcBlockIDs);
 						if ($bID) {
@@ -260,19 +260,19 @@ class Concrete5_Library_Content_Importer {
 	public static function addMasterCollectionBlockID($b, $id) {
 		self::$mcBlockIDs[$b->getBlockID()] = $id;
 	}
-	
+
 	public static function getMasterCollectionTemporaryBlockID($b) {
 		if (isset(self::$mcBlockIDs[$b->getBlockID()])) {
 			return self::$mcBlockIDs[$b->getBlockID()];
 		}
 	}
-	
+
 	protected function importPageTypesBase(SimpleXMLElement $sx) {
 		if (isset($sx->pagetypes)) {
 			foreach($sx->pagetypes->pagetype as $ct) {
 				$pkg = ContentImporter::getPackageObject($ct['package']);
 				$ctt = CollectionType::getByHandle($ct['handle']);
-				if (!is_object($ctt)) { 
+				if (!is_object($ctt)) {
 					$ctr = CollectionType::add(array(
 						'ctHandle' => $ct['handle'],
 						'ctName' => $ct['name'],
@@ -309,7 +309,7 @@ class Concrete5_Library_Content_Importer {
 					if (is_object($pkg)) {
 						BlockType::installBlockTypeFromPackage((string) $bt['handle'], $pkg);
 					} else {
-						BlockType::installBlockType((string) $bt['handle']);				
+						BlockType::installBlockType((string) $bt['handle']);
 					}
 				}
 			}
@@ -369,7 +369,7 @@ class Concrete5_Library_Content_Importer {
 			}
 		}
 	}
-	
+
 	protected function importPackages(SimpleXMLElement $sx) {
 		if (isset($sx->packages)) {
 			foreach($sx->packages->package as $p) {
@@ -378,7 +378,7 @@ class Concrete5_Library_Content_Importer {
 			}
 		}
 	}
-	
+
 	protected function importThemes(SimpleXMLElement $sx) {
 		if (isset($sx->themes)) {
 			foreach($sx->themes->theme as $th) {
@@ -418,7 +418,7 @@ class Concrete5_Library_Content_Importer {
                                     if (is_object($pkg)) {
                                             Job::installByPackage($jx['handle'], $pkg);
                                     } else {
-                                            Job::installByHandle($jx['handle']);				
+                                            Job::installByHandle($jx['handle']);
                                     }
                                 }
 			}
@@ -435,7 +435,7 @@ class Concrete5_Library_Content_Importer {
 				}
 				foreach($js->children() as $jsk) {
 					$j = Job::getByHandle((string) $jsk['handle']);
-					if (is_object($j)) { 	
+					if (is_object($j)) {
 						$jso->addJob($j);
 					}
 				}
@@ -505,7 +505,7 @@ class Concrete5_Library_Content_Importer {
 					$txt = Loader::helper('text');
 					$className = $txt->camelcase($pkc->getPermissionKeyCategoryHandle());
 					$c1 = $className . 'PermissionKey';
-					$pkx = call_user_func(array($c1, 'import'), $pk);	
+					$pkx = call_user_func(array($c1, 'import'), $pk);
 					if (isset($pk->access)) {
 						foreach($pk->access->children() as $ch) {
 							if ($ch->getName() == 'group') {
@@ -537,14 +537,14 @@ class Concrete5_Library_Content_Importer {
 			}
 		}
 	}
-	
+
 	protected function importAttributes(SimpleXMLElement $sx) {
 		if (isset($sx->attributekeys)) {
 			$db = Loader::db();
 			foreach($sx->attributekeys->attributekey as $ak) {
 				$akc = AttributeKeyCategory::getByHandle($ak['category']);
 				$akID = $db->GetOne('select akID from AttributeKeys where akHandle = ? and akCategoryID = ?', array($ak['handle'], $akc->getAttributeKeyCategoryID()));
-				
+
 				if (!$akID) {
 					$pkg = ContentImporter::getPackageObject($ak['package']);
 					$type = AttributeType::getByHandle($ak['type']);
@@ -565,7 +565,7 @@ class Concrete5_Library_Content_Importer {
 				$set = $akc->addSet((string) $as['handle'], (string) $as['name'], $pkg, $as['locked']);
 				foreach($as->children() as $ask) {
 					$ak = $akc->getAttributeKeyByHandle((string) $ask['handle']);
-					if (is_object($ak)) { 	
+					if (is_object($ak)) {
 						$set->addKey($ak);
 					}
 				}
@@ -596,6 +596,6 @@ class Concrete5_Library_Content_Importer {
 		} else {
 			return $value;
 		}
-	}	
+	}
 
 }

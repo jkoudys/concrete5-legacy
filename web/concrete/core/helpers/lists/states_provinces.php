@@ -509,7 +509,7 @@ class Concrete5_Helper_Lists_StatesProvinces {
 		'VI' => 'Vicenza',
 		'VT' => 'Viterbo'
 	),
-	
+
 	'JP' => array(
 		'01' => '北海道',
 		'02' => '青森県',

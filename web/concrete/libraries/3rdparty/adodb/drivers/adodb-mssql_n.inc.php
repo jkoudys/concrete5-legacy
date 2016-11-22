@@ -43,26 +43,31 @@
 */
 
 // security - hide paths
-if (!defined('ADODB_DIR')) die();
+if (!defined('ADODB_DIR')) {
+    die();
+}
 
 // one useful constant
-if (!defined('SINGLEQUOTE')) define('SINGLEQUOTE', "'");
+if (!defined('SINGLEQUOTE')) {
+    define('SINGLEQUOTE', "'");
+}
 
 include_once(ADODB_DIR.'/drivers/adodb-mssql.inc.php');
 
-class ADODB_mssql_n extends ADODB_mssql {
-	var $databaseType = "mssql_n";
-	
-	function ADODB_mssqlpo()
-	{
-		ADODB_mssql::ADODB_mssql();
-	}
+class ADODB_mssql_n extends ADODB_mssql
+{
+    var $databaseType = "mssql_n";
 
-	function _query($sql,$inputarr=false)
-	{
+    function ADODB_mssqlpo()
+    {
+        ADODB_mssql::ADODB_mssql();
+    }
+
+    function _query($sql, $inputarr = false)
+    {
         $sql = $this->_appendN($sql);
-		return ADODB_mssql::_query($sql,$inputarr);
-	}
+        return ADODB_mssql::_query($sql, $inputarr);
+    }
 
     /**
      * This function will intercept all the literals used in the SQL, prepending the "N" char to them
@@ -73,7 +78,8 @@ class ADODB_mssql_n extends ADODB_mssql {
      * Note that this hack only must be used if ALL the char-based columns in your DB are of type nchar,
      * nvarchar and ntext
      */
-    function _appendN($sql) {
+    function _appendN($sql)
+    {
 
         $result = $sql;
 
@@ -106,7 +112,7 @@ class ADODB_mssql_n extends ADODB_mssql {
         $regexp = '/(' . SINGLEQUOTE . SINGLEQUOTE . ')/';
         preg_match_all($regexp, $result, $list_of_pairs);
         if ($list_of_pairs) {
-            foreach (array_unique($list_of_pairs[0]) as $key=>$value) {
+            foreach (array_unique($list_of_pairs[0]) as $key => $value) {
                 $pairs['<@#@#@PAIR-'.$key.'@#@#@>'] = $value;
             }
             if (!empty($pairs)) {
@@ -119,7 +125,7 @@ class ADODB_mssql_n extends ADODB_mssql {
         $regexp = '/(N?' . SINGLEQUOTE . '.*?' . SINGLEQUOTE . ')/is';
         preg_match_all($regexp, $result, $list_of_literals);
         if ($list_of_literals) {
-            foreach (array_unique($list_of_literals[0]) as $key=>$value) {
+            foreach (array_unique($list_of_literals[0]) as $key => $value) {
                 $literals['<#@#@#LITERAL-'.$key.'#@#@#>'] = $value;
             }
             if (!empty($literals)) {
@@ -130,7 +136,7 @@ class ADODB_mssql_n extends ADODB_mssql {
 
     /// Analyse literals to prepend the N char to them if their contents aren't numeric
         if (!empty($literals)) {
-            foreach ($literals as $key=>$value) {
+            foreach ($literals as $key => $value) {
                 if (!is_numeric(trim($value, SINGLEQUOTE))) {
                 /// Non numeric string, prepend our dear N
                     $literals[$key] = 'N' . trim($value, 'N'); //Trimming potentially existing previous "N"
@@ -161,11 +167,11 @@ class ADODB_mssql_n extends ADODB_mssql {
     }
 }
 
-class ADORecordset_mssql_n extends ADORecordset_mssql {
-	var $databaseType = "mssql_n";
-	function ADORecordset_mssql_n($id,$mode=false)
-	{
-		$this->ADORecordset_mssql($id,$mode);
-	}
+class ADORecordset_mssql_n extends ADORecordset_mssql
+{
+    var $databaseType = "mssql_n";
+    function ADORecordset_mssql_n($id, $mode = false)
+    {
+        $this->ADORecordset_mssql($id, $mode);
+    }
 }
-?>

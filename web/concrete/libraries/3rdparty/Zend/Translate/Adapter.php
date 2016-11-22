@@ -39,7 +39,8 @@ require_once 'Zend/Translate/Plural.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Translate_Adapter {
+abstract class Zend_Translate_Adapter
+{
     /**
      * Shows if locale detection is in automatic level
      * @var boolean
@@ -127,7 +128,7 @@ abstract class Zend_Translate_Adapter {
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (func_num_args() > 1) {
+        } elseif (func_num_args() > 1) {
             $args               = func_get_args();
             $options            = array();
             $options['content'] = array_shift($args);
@@ -140,7 +141,7 @@ abstract class Zend_Translate_Adapter {
                 $opt     = array_shift($args);
                 $options = array_merge($opt, $options);
             }
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = array('content' => $options);
         }
 
@@ -196,7 +197,7 @@ abstract class Zend_Translate_Adapter {
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (func_num_args() > 1) {
+        } elseif (func_num_args() > 1) {
             $args = func_get_args();
             $options            = array();
             $options['content'] = array_shift($args);
@@ -209,7 +210,7 @@ abstract class Zend_Translate_Adapter {
                 $opt     = array_shift($args);
                 $options = array_merge($opt, $options);
             }
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = array('content' => $options);
         }
 
@@ -241,8 +242,9 @@ abstract class Zend_Translate_Adapter {
             $options['content'] = realpath($options['content']);
             $prev = '';
             foreach (new RecursiveIteratorIterator(
-                     new RecursiveDirectoryIterator($options['content'], RecursiveDirectoryIterator::KEY_AS_PATHNAME),
-                     RecursiveIteratorIterator::SELF_FIRST) as $directory => $info) {
+                new RecursiveDirectoryIterator($options['content'], RecursiveDirectoryIterator::KEY_AS_PATHNAME),
+                RecursiveIteratorIterator::SELF_FIRST
+            ) as $directory => $info) {
                 $file = $info->getFilename();
                 if (is_array($options['ignore'])) {
                     foreach ($options['ignore'] as $key => $ignore) {
@@ -251,7 +253,7 @@ abstract class Zend_Translate_Adapter {
                                 // ignore files matching the given regex from option 'ignore' and all files below
                                 continue 2;
                             }
-                        } else if (strpos($directory, DIRECTORY_SEPARATOR . $ignore) !== false) {
+                        } elseif (strpos($directory, DIRECTORY_SEPARATOR . $ignore) !== false) {
                             // ignore files matching first characters from option 'ignore' and all files below
                             continue 2;
                         }
@@ -269,7 +271,7 @@ abstract class Zend_Translate_Adapter {
                         $options['locale'] = $file;
                         $prev              = (string) $options['locale'];
                     }
-                } else if ($info->isFile()) {
+                } elseif ($info->isFile()) {
                     // filename as locale
                     if ($options['scan'] === self::LOCALE_FILENAME) {
                         $filename = explode('.', $file);
@@ -280,18 +282,18 @@ abstract class Zend_Translate_Adapter {
                         } else {
                             $parts  = explode('.', $file);
                             $parts2 = array();
-                            foreach($parts as $token) {
+                            foreach ($parts as $token) {
                                 $parts2 += explode('_', $token);
                             }
                             $parts  = array_merge($parts, $parts2);
                             $parts2 = array();
-                            foreach($parts as $token) {
+                            foreach ($parts as $token) {
                                 $parts2 += explode('-', $token);
                             }
                             $parts = array_merge($parts, $parts2);
                             $parts = array_unique($parts);
                             $prev  = '';
-                            foreach($parts as $token) {
+                            foreach ($parts as $token) {
                                 if (Zend_Locale::isLocale($token, true, false)) {
                                     if (strlen($prev) <= strlen($token)) {
                                         $options['locale'] = $token;
@@ -335,7 +337,7 @@ abstract class Zend_Translate_Adapter {
         foreach ($options as $key => $option) {
             if ($key == 'locale') {
                 $locale = $option;
-            } else if ((isset($this->_options[$key]) and ($this->_options[$key] != $option)) or
+            } elseif ((isset($this->_options[$key]) and ($this->_options[$key] != $option)) or
                     !isset($this->_options[$key])) {
                 if (($key == 'log') && !($option instanceof Zend_Log)) {
                     require_once 'Zend/Translate/Exception.php';
@@ -470,7 +472,7 @@ abstract class Zend_Translate_Adapter {
     {
         $list = array_keys($this->_translate);
         $result = null;
-        foreach($list as $value) {
+        foreach ($list as $value) {
             if (!empty($this->_translate[$value])) {
                 $result[$value] = $value;
             }
@@ -572,7 +574,7 @@ abstract class Zend_Translate_Adapter {
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (func_num_args() > 1) {
+        } elseif (func_num_args() > 1) {
             $args = func_get_args();
             $options['content'] = array_shift($args);
 
@@ -639,7 +641,7 @@ abstract class Zend_Translate_Adapter {
         }
 
         $keys = array_keys($temp);
-        foreach($keys as $key) {
+        foreach ($keys as $key) {
             if (!isset($this->_translate[$key])) {
                 $this->_translate[$key] = array();
             }
@@ -653,7 +655,7 @@ abstract class Zend_Translate_Adapter {
             $find = new Zend_Locale($options['locale']);
             $browser = $find->getEnvironment() + $find->getBrowser();
             arsort($browser);
-            foreach($browser as $language => $quality) {
+            foreach ($browser as $language => $quality) {
                 if (isset($this->_translate[$language])) {
                     $this->_options['locale'] = $language;
                     break;
@@ -749,7 +751,7 @@ abstract class Zend_Translate_Adapter {
                 $this->_routed = array();
                 return $this->_translate[$locale][$plural[0]][$rule];
             }
-        } else if (strlen($locale) != 2) {
+        } elseif (strlen($locale) != 2) {
             // faster than creating a new locale and separate the leading part
             $locale = substr($locale, 0, -strlen(strrchr($locale, '_')));
 
@@ -814,7 +816,8 @@ abstract class Zend_Translate_Adapter {
      * @param string $message Message to log
      * @param String $locale  Locale to log
      */
-    protected function _log($message, $locale) {
+    protected function _log($message, $locale)
+    {
         if ($this->_options['logUntranslated']) {
             $message = str_replace('%message%', $message, $this->_options['logMessage']);
             $message = str_replace('%locale%', $locale, $message);
@@ -876,7 +879,7 @@ abstract class Zend_Translate_Adapter {
         if ((is_string($messageId) || is_int($messageId)) && isset($this->_translate[$locale][$messageId])) {
             // return original translation
             return true;
-        } else if ((strlen($locale) != 2) and ($original === false)) {
+        } elseif ((strlen($locale) != 2) and ($original === false)) {
             // faster than creating a new locale and separate the leading part
             $locale = substr($locale, 0, -strlen(strrchr($locale, '_')));
 

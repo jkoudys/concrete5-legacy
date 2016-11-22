@@ -17,8 +17,8 @@
  */
 	defined('C5_EXECUTE') or die("Access Denied.");
 	class ConcreteValidationHelper {
-	
-		/** 
+
+		/**
 		 * Checks whether a passed username is unique or if a user of this name already exists
 		 * @param string $uName
 		 * @return bool
@@ -51,9 +51,9 @@
 			}
 		}
 
-	
+
 		/**
-		 * Returns true if this is a valid password. 
+		 * Returns true if this is a valid password.
 		 */
 		public function password($pass) {
 			if (strlen($pass) < USER_PASSWORD_MINIMUM) {
@@ -62,12 +62,12 @@
 			if (strlen($pass) > USER_PASSWORD_MAXIMUM) {
 				return false;
 			}
-			
+
 			return true;
 		}
-			
+
 		/**
-		 * Returns true if this is a valid username. 
+		 * Returns true if this is a valid username.
 		 * Valid usernames can only contain letters, numbers, dots (only in the middle), underscores (only in the middle) and optionally single spaces
 		 * @return bool
 		*/
@@ -98,5 +98,5 @@
 			}
 			return true;
 		}
-	
+
 	}

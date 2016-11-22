@@ -23,7 +23,8 @@ if (!defined('Auth_OpenID_RAND_SOURCE')) {
     define('Auth_OpenID_RAND_SOURCE', '/dev/urandom');
 }
 
-class Auth_OpenID_CryptUtil {
+class Auth_OpenID_CryptUtil
+{
     /**
      * Get the specified number of random bytes.
      *
@@ -119,4 +120,3 @@ class Auth_OpenID_CryptUtil {
         return $result;
     }
 }
-

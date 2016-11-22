@@ -27,7 +27,7 @@
 <script type="text/javascript">
 $(function() {
 	$("input[name=DASHBOARD_BACKGROUND_IMAGE]").change(function() {
-		if ($("input[name=DASHBOARD_BACKGROUND_IMAGE]:checked").val() == 'custom') { 
+		if ($("input[name=DASHBOARD_BACKGROUND_IMAGE]:checked").val() == 'custom') {
 			$("#custom-background-image").show();
 		} else {
 			$("#custom-background-image").hide();
@@ -42,7 +42,7 @@ $(function() {
 
 </div>
 <div class="ccm-pane-footer">
-	<?=Loader::helper('concrete/interface')->submit(t('Save'), 'submit', 'right', 'primary')?>
+    <?=Loader::helper('concrete/interface')->submit(t('Save'), 'submit', 'right', 'primary')?>
 </div>
 </form>
 

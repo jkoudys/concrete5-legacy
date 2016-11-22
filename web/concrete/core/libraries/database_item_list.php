@@ -12,33 +12,33 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 	protected $debug = false;
 	protected $filters = array();
 	protected $sortByString = '';
-	protected $groupByString = '';  
-	protected $havingString = '';  
+	protected $groupByString = '';
+	protected $havingString = '';
 	protected $autoSortColumns = array();
 	protected $userPostQuery = '';
-	
+
 	public function getTotal() {
 		if ($this->total == -1) {
 			$db = Loader::db();
-			$arr = $this->executeBase(); // returns an associated array of query/placeholder values				
+			$arr = $this->executeBase(); // returns an associated array of query/placeholder values
 			$r = $db->Execute($arr);
 			$this->total = $r->NumRows();
-		}		
+		}
 		return $this->total;
 	}
-	
+
 	public function debug($dbg = true) {
 		$this->debug = $dbg;
 	}
-	
+
 	protected function setQuery($query) {
 		$this->query = $query . ' ';
 	}
-	
+
 	protected function getQuery() {
 		return $this->query;
 	}
-	
+
 	public function addToQuery($query) {
 		$this->userQuery .= $query . ' ';
 	}
@@ -51,7 +51,7 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 			}
 		}
 	}
-	
+
 	protected function executeBase() {
 		$db = Loader::db();
 		$q = $this->query . $this->userQuery . ' where 1=1 ';
@@ -84,34 +84,34 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 					} else {
 						$q .= 'and 1 = 2 ';
 					}
-				} else { 
+				} else {
 					$comp = (is_null($value) && stripos($comp, 'is') === false) ? (($comp == '!=' || $comp == '<>') ? 'IS NOT' : 'IS') : $comp;
 					$q .= 'and ' . $column . ' ' . $comp . ' ' . $db->quote($value) . ' ';
 				}
 			}
 		}
-		
+
 		if ($this->userPostQuery != '') {
 			$q .= ' ' . $this->userPostQuery . ' ';
 		}
-		
+
 		if ($this->groupByString != '') {
 			$q .= 'group by ' . $this->groupByString . ' ';
-		}		
+		}
 
 		if ($this->havingString != '') {
 			$q .= 'having ' . $this->havingString . ' ';
-		}		
-		
+		}
+
 		return $q;
 	}
-	
+
 	protected function setupSortByString() {
 		if ($this->sortByString == '' && $this->sortBy != '') {
 			$this->sortByString = $this->sortBy . ' ' . $this->sortByDirection;
 		}
 	}
-	
+
 	protected function setupAttributeSort() {
 		if (is_callable(array($this->attributeClass, 'getList'))) {
 			$l = call_user_func(array($this->attributeClass, 'getList'));
@@ -123,8 +123,8 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 			}
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Returns an array of whatever objects extends this class (e.g. PageList returns a list of pages).
 	 */
 	public function get($itemsToGet = 0, $offset = 0) {
@@ -133,35 +133,35 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 		$this->setupAttributeSort();
 		$this->setupAutoSort();
 		$this->setupSortByString();
-		
+
 		if ($this->sortByString != '') {
 			$q .= 'order by ' . $this->sortByString . ' ';
-		}	
+		}
 		if ($this->itemsPerPage > 0 && (intval($itemsToGet) || intval($offset)) ) {
 			$q .= 'limit ' . $offset . ',' . $itemsToGet . ' ';
 		}
-		
+
 		$db = Loader::db();
-		if ($this->debug) { 
+		if ($this->debug) {
 			Database::setDebug(true);
 		}
-		//echo $q.'<br>'; 
+		//echo $q.'<br>';
 		$resp = $db->GetAll($q);
-		if ($this->debug) { 
+		if ($this->debug) {
 			Database::setDebug(false);
 		}
-		
+
 		$this->start = $offset;
 		return $resp;
 	}
-	
-	/** 
+
+	/**
 	 * Adds a filter to this item list
 	 */
 	public function filter($column, $value, $comparison = '=') {
 		$this->filters[] = array($column, $value, $comparison);
 	}
-	
+
 	public function getSearchResultsClass($field) {
 		if ($field instanceof AttributeKey) {
 			$field = 'ak_' . $field->getAttributeKeyHandle();
@@ -175,13 +175,13 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 		}
 		parent::sortBy($key, $dir);
 	}
-	
+
 	public function groupBy($key) {
 		if ($key instanceof AttributeKey) {
 			$key = 'ak_' . $key->getAttributeKeyHandle();
 		}
 		$this->groupByString = $key;
-	}	
+	}
 
 	public function having($column, $value, $comparison = '=') {
 		if ($column == false) {
@@ -190,15 +190,15 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 			$this->havingString = $column . ' ' . $comparison . ' ' . $value;
 		}
 	}
-	
+
 	public function getSortByURL($column, $dir = 'asc', $baseURL = false, $additionalVars = array()) {
 		if ($column instanceof AttributeKey) {
 			$column = 'ak_' . $column->getAttributeKeyHandle();
 		}
 		return parent::getSortByURL($column, $dir, $baseURL, $additionalVars);
 	}
-	
-	protected function setupAttributeFilters($join) {		
+
+	protected function setupAttributeFilters($join) {
 		$i = 1;
 		$this->addToQuery($join);
 		foreach($this->attributeFilters as $caf) {
@@ -212,7 +212,7 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 		}
 		$this->attributeFilters[] = array('ak_' . $column, $value, $comparison);
 	}
-	
+
 
 }
 
@@ -225,7 +225,7 @@ class Concrete5_Library_DatabaseItemListColumn {
 			return call_user_func(array($obj, $this->callback));
 		}
 	}
-	
+
 	public function getColumnKey() {return $this->columnKey;}
 	public function getColumnName() {return $this->columnName;}
 	public function getColumnDefaultSortDirection() {return $this->defaultSortDirection;}
@@ -244,7 +244,7 @@ class Concrete5_Library_DatabaseItemListColumn {
 class Concrete5_Library_DatabaseItemListAttributeKeyColumn extends Concrete5_Library_DatabaseItemListColumn {
 
 	protected $attributeKey = false;
-	
+
 	public function getAttributeKey() {
 		return $this->attributeKey;
 	}
@@ -253,7 +253,7 @@ class Concrete5_Library_DatabaseItemListAttributeKeyColumn extends Concrete5_Lib
 		$this->attributeKey = $attributeKey;
 		parent::__construct('ak_' . $attributeKey->getAttributeKeyHandle(), $attributeKey->getAttributeKeyDisplayName('text'), false, $isSortable, $defaultSort);
 	}
-	
+
 	public function getColumnValue($obj) {
 		if (is_object($this->attributeKey)) {
 			$vo = $obj->getAttributeValueObject($this->attributeKey);
@@ -265,14 +265,14 @@ class Concrete5_Library_DatabaseItemListAttributeKeyColumn extends Concrete5_Lib
 }
 
 class Concrete5_Library_DatabaseItemListColumnSet {
-	
+
 	protected $columns = array();
 	protected $defaultSortColumn;
-	
+
 	public function addColumn($col) {
 		$this->columns[] = $col;
 	}
-	
+
 	public function __wakeup() {
 		$i = 0;
 		foreach($this->columns as $col) {
@@ -283,9 +283,9 @@ class Concrete5_Library_DatabaseItemListColumnSet {
 				}
 			}
 			$i++;
-		}		
+		}
 	}
-	
+
 	public function getSortableColumns() {
 		$tmp = array();
 		$columns = $this->getColumns();
@@ -302,7 +302,7 @@ class Concrete5_Library_DatabaseItemListColumnSet {
 		}
 		$this->defaultSortColumn = $col;
 	}
-	
+
 	public function getDefaultSortColumn() {
 		return $this->defaultSortColumn;
 	}
@@ -314,7 +314,7 @@ class Concrete5_Library_DatabaseItemListColumnSet {
 		} else {
 			foreach($this->columns as $col) {
 				if ($col->getColumnKey() == $key) {
-					return $col;			
+					return $col;
 				}
 			}
 		}

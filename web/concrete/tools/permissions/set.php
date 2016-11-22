@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 if ($_REQUEST['task'] == 'copy_permission_set' && Loader::helper("validation/token")->validate('copy_permission_set')) {
@@ -7,7 +7,7 @@ if ($_REQUEST['task'] == 'copy_permission_set' && Loader::helper("validation/tok
 	foreach($_POST['pkID'] as $pkID => $paID) {
 		$ps->addPermissionAssignment($pkID, $paID);
 	}
-	$ps->saveToSession();	
+	$ps->saveToSession();
 	$r = new stdClass;
 	$r->success = 1;
 	print Loader::helper('json')->encode($r);

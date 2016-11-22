@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -9,7 +9,7 @@ if (!$fp->canAccessFileManager()) {
 
 if ($_POST['task'] == 'delete_files') {
 	$json['error'] = false;
-	
+
 	if (is_array($_POST['fID'])) {
 		foreach($_POST['fID'] as $fID) {
 			$f = File::getByID($fID);
@@ -39,7 +39,7 @@ if (is_array($_REQUEST['fID'])) {
 }
 
 $fcnt = 0;
-foreach($files as $f) { 
+foreach($files as $f) {
 	$fp = new Permissions($f);
 	if ($fp->canDeleteFile()) {
 		$fcnt++;
@@ -54,24 +54,24 @@ $dh = Loader::helper('date');
 
 <div class="ccm-ui">
 <br/>
-<? if ($fcnt == 0) { ?>
+<?php if ($fcnt == 0) { ?>
 	<p><?=t("You do not have permission to delete any of the selected files."); ?><p>
-<? } else { ?>
+<?php } else { ?>
 
 	<p><?=t('Are you sure you want to delete the following files?')?></p>
 
 	<form id="ccm-<?=$searchInstance?>-delete-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete">
 	<?=$form->hidden('task', 'delete_files')?>
 	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-bordered">
-	
-	<? foreach($files as $f) { 
+
+	<?php foreach($files as $f) {
 		$fp = new Permissions($f);
 		if ($fp->canDeleteFile()) {
 			$fv = $f->getApprovedVersion();
 			if (is_object($fv)) { ?>
-			
-			<?=$form->hidden('fID[]', $f->getFileID())?>		
-			
+
+			<?=$form->hidden('fID[]', $f->getFileID())?>
+
 			<tr>
 				<td><?=$fv->getType()?></td>
 				<td class="ccm-file-list-filename" width="100%"><div style="word-wrap: break-word; width: 150px"><?=$fv->getTitle()?></div></td>
@@ -79,25 +79,25 @@ $dh = Loader::helper('date');
 				<td><?=$fv->getSize()?></td>
 				<td><?=$fv->getAuthorName()?></td>
 			</tr>
-			
-			<? }
+
+			<?php }
 		}
-		
+
 	} ?>
 	</table>
 	</form>
 	<br/>
-	
-	<? $ih = Loader::helper('concrete/interface')?>
+
+	<?php $ih = Loader::helper('concrete/interface')?>
 	<div class="dialog-buttons">
 	<?=$ih->button_js(t('Delete'), 'ccm_alDeleteFiles(\'' . $searchInstance . '\')', 'right', 'error')?>
-	<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
+	<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>
 	</div>
-	
+
 </div>
-		
-	<?
-	
+
+	<?php
+
 }
-	
-	
+
+

@@ -1,21 +1,21 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_EditUserPropertiesUserPermissionAccess extends UserPermissionAccess {
-	
+
 	public function duplicate($newPA = false) {
 		$newPA = parent::duplicate($newPA);
 		$db = Loader::db();
 		$r = $db->Execute('select * from UserPermissionEditPropertyAccessList where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
-			$v = array($newPA->getPermissionAccessID(), 
-			$row['peID'], 
+			$v = array($newPA->getPermissionAccessID(),
+			$row['peID'],
 			$row['attributePermission'],
 			$row['uName'],
 			$row['uEmail'],
 			$row['uPassword'],
 			$row['uAvatar'],
 			$row['uTimezone'],
-			$row['uDefaultLanguage']			
+			$row['uDefaultLanguage']
 			);
 			$db->Execute('insert into UserPermissionEditPropertyAccessList (paID, peID, attributePermission, uName, uEmail, uPassword, uAvatar, uTimezone, uDefaultLanguage) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', $v);
 		}
@@ -26,13 +26,13 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccess extends UserPermiss
 		}
 		return $newPA;
 	}
-	
+
 	public function save($args) {
 		parent::save();
 		$db = Loader::db();
 		$db->Execute('delete from UserPermissionEditPropertyAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from UserPermissionEditPropertyAttributeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
-		if (is_array($args['propertiesIncluded'])) { 
+		if (is_array($args['propertiesIncluded'])) {
 			foreach($args['propertiesIncluded'] as $peID => $attributePermission) {
 				$allowEditUName = 0;
 				$allowEditUEmail = 0;
@@ -62,8 +62,8 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccess extends UserPermiss
 				$db->Execute('insert into UserPermissionEditPropertyAccessList (paID, peID, attributePermission, uName, uEmail, uPassword, uAvatar, uTimezone, uDefaultLanguage) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', $v);
 			}
 		}
-		
-		if (is_array($args['propertiesExcluded'])) { 
+
+		if (is_array($args['propertiesExcluded'])) {
 			foreach($args['propertiesExcluded'] as $peID => $attributePermission) {
 				$allowEditUNameExcluded = 0;
 				$allowEditUEmailExcluded = 0;
@@ -94,18 +94,18 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccess extends UserPermiss
 			}
 		}
 
-		if (is_array($args['akIDInclude'])) { 
+		if (is_array($args['akIDInclude'])) {
 			foreach($args['akIDInclude'] as $peID => $akIDs) {
-				foreach($akIDs as $akID) { 
+				foreach($akIDs as $akID) {
 					$v = array($this->getPermissionAccessID(), $peID, $akID);
 					$db->Execute('insert into UserPermissionEditPropertyAttributeAccessListCustom (paID, peID, akID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 
-		if (is_array($args['akIDExclude'])) { 
+		if (is_array($args['akIDExclude'])) {
 			foreach($args['akIDExclude'] as $peID => $akIDs) {
-				foreach($akIDs as $akID) { 
+				foreach($akIDs as $akID) {
 					$v = array($this->getPermissionAccessID(), $peID, $akID);
 					$db->Execute('insert into UserPermissionEditPropertyAttributeAccessListCustom (paID, peID, akID) values (?, ?, ?)', $v);
 				}
@@ -120,7 +120,7 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccess extends UserPermiss
 		foreach($list as $l) {
 			$pe = $l->getAccessEntityObject();
 			$prow = $db->GetRow('select attributePermission, uName, uPassword, uEmail, uAvatar, uTimezone, uDefaultLanguage from UserPermissionEditPropertyAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));
-			if (is_array($prow) && $prow['attributePermission']) { 
+			if (is_array($prow) && $prow['attributePermission']) {
 				$l->setAttributesAllowedPermission($prow['attributePermission']);
 				$l->setAllowEditUserName($prow['uName']);
 				$l->setAllowEditEmail($prow['uEmail']);
@@ -146,7 +146,7 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccess extends UserPermiss
 				$l->setAllowEditTimezone(0);
 				$l->setAllowEditDefaultLanguage(0);
 			}
-			if ($attributePermission == 'C') { 
+			if ($attributePermission == 'C') {
 				$akIDs = $db->GetCol('select akID from UserPermissionEditPropertyAttributeAccessListCustom where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));
 				$l->setAttributesAllowedArray($akIDs);
 			}

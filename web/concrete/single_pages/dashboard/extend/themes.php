@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $valt = Loader::helper('validation/token');
 $ci = Loader::helper('concrete/urls');
@@ -15,7 +15,7 @@ if ($tp->canInstallPackages()) {
 </div>
 <div class="ccm-pane-body">
 	<?=Loader::element('marketplace/results', array('type' => 'themes', 'items' => $items));?>
-</div>	
+</div>
 
 <div class="ccm-pane-footer" id="ccm-marketplace-browse-footer"><?=$list->displayPagingV2()?></div>
 
@@ -23,6 +23,6 @@ if ($tp->canInstallPackages()) {
 
 <script type="text/javascript">
 $(function() {
-	ccm_marketplaceBrowserInit(); 
+	ccm_marketplaceBrowserInit();
 });
 </script>

@@ -16,10 +16,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		protected $isActive = false;
 		protected $_c;
 		public $hasChildren = false;
-		
+
 		/**
-		 * Instantiates an Autonav Block Item. 
-		 * @param array $itemInfo 
+		 * Instantiates an Autonav Block Item.
+		 * @param array $itemInfo
 		 * @param int $level
 		 */
 		function __construct($itemInfo, $level = 1) {
@@ -34,7 +34,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 			return $this;
 		}
-		
+
 		/**
 		 * Returns the number of children below this current nav item
 		 * @return int
@@ -42,9 +42,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		function hasChildren() {
 			return $this->hasChildren;
 		}
-		
+
 		/**
-		 * Determines whether this nav item is the current page the user is on. 
+		 * Determines whether this nav item is the current page the user is on.
 		 * @param Page $page The page object for the current page
 		 * @return bool
 		 */
@@ -63,7 +63,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $this->cvDescription;
 		}
 
-		/** 
+		/**
 		 * Returns a target for the nav item
 		 */
 		public function getTarget() {
@@ -72,16 +72,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					return '_blank';
 				}
 			}
-			
+
 			$_c = $this->getCollectionObject();
 			if (is_object($_c)) {
 				return $_c->getAttribute('nav_target');
 			}
-			
+
 			return '';
 		}
-		
-		/** 
+
+		/**
 		 * Gets a URL that will take the user to this particular page. Checks against URL_REWRITING, the page's path, etc..
 		 * @return string $url
 		 */
@@ -101,7 +101,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			return $link;
 		}
-		
+
 		/**
 		 * Gets the name of the page or link.
 		 * @return string
@@ -109,7 +109,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		function getName() {
 			return $this->cvName;
 		}
-		
+
 		/**
 		 * Gets the pageID for the navigation item.
 		 * @return int
@@ -117,8 +117,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		function getCollectionID() {
 			return $this->cID;
 		}
-		
-		
+
+
 		/**
 		 * Gets the current level at the nav tree that we're at.
 		 * @return int
@@ -126,8 +126,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		function getLevel() {
 			return $this->level;
 		}
-		
-		/** 
+
+		/**
 		 * Sets the collection Object of the navigation item to the passed object
 		 * @param Page $obj
 		 * @return void
@@ -135,7 +135,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		function setCollectionObject(&$obj) {
 			$this->_c = $obj;
 		}
-		
+
 		/**
 		 * Gets the collection Object of the navigation item
 		 * @return Page

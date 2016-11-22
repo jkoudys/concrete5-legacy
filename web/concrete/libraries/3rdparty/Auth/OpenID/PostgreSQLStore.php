@@ -16,7 +16,8 @@ require_once "Auth/OpenID/SQLStore.php";
  *
  * @package OpenID
  */
-class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore {
+class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore
+{
     /**
      * @access private
      */
@@ -29,7 +30,7 @@ class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore {
                 "UNIQUE (server_url, timestamp, salt))";
 
         $this->sql['assoc_table'] =
-            "CREATE TABLE %s (server_url VARCHAR(2047) NOT NULL, ". 
+            "CREATE TABLE %s (server_url VARCHAR(2047) NOT NULL, ".
                              "handle VARCHAR(255) NOT NULL, ".
                              "secret BYTEA NOT NULL, ".
                              "issued INTEGER NOT NULL, ".
@@ -75,21 +76,35 @@ class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore {
     /**
      * @access private
      */
-    function _set_assoc($server_url, $handle, $secret, $issued, $lifetime,
-                        $assoc_type)
-    {
+    function _set_assoc(
+        $server_url,
+        $handle,
+        $secret,
+        $issued,
+        $lifetime,
+        $assoc_type
+    ) {
+
         $result = $this->_get_assoc($server_url, $handle);
         if ($result) {
             // Update the table since this associations already exists.
-            $this->connection->query($this->sql['set_assoc']['update_assoc'],
-                                     array($secret, $issued, $lifetime,
-                                           $assoc_type, $server_url, $handle));
+            $this->connection->query(
+                $this->sql['set_assoc']['update_assoc'],
+                array($secret, $issued, $lifetime,
+                $assoc_type,
+                $server_url,
+                $handle)
+            );
         } else {
             // Insert a new record because this association wasn't
             // found.
-            $this->connection->query($this->sql['set_assoc']['insert_assoc'],
-                                     array($server_url, $handle, $secret,
-                                           $issued, $lifetime, $assoc_type));
+            $this->connection->query(
+                $this->sql['set_assoc']['insert_assoc'],
+                array($server_url, $handle, $secret,
+                $issued,
+                $lifetime,
+                $assoc_type)
+            );
         }
     }
 
@@ -109,4 +124,3 @@ class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore {
         return $this->_unoctify($blob);
     }
 }
-

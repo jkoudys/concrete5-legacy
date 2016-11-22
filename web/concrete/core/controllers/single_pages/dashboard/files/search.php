@@ -10,25 +10,25 @@ class Concrete5_Controller_Dashboard_Files_Search extends Controller {
 		$this->addHeaderItem('<script type="text/javascript">$(function() { ccm_activateFileManager(\'DASHBOARD\', \'' . $searchInstance . '\'); });</script>');
 		$fileList = $this->getRequestedSearchResults();
 		$files = $fileList->getPage();
-				
-		$this->set('fileList', $fileList);		
-		$this->set('files', $files);		
-		$this->set('searchInstance', $searchInstance);		
+
+		$this->set('fileList', $fileList);
+		$this->set('files', $files);
+		$this->set('searchInstance', $searchInstance);
 		$this->set('pagination', $fileList->getPagination());
 	}
-	
+
 	public function getRequestedSearchResults() {
 		$fileList = new FileList();
 		$fileList->enableStickySearchRequest();
-				
+
 		Loader::model('file_set');
-		
+
 		if ($_REQUEST['submit_search']) {
 			$fileList->resetSearchRequest();
 		}
 
 		$req = $fileList->getSearchRequest();
-		
+
 		// first thing, we check to see if a saved search is being used
 		if (isset($_REQUEST['fssID'])) {
 			$fs = FileSet::getByID($_REQUEST['fssID']);
@@ -40,7 +40,7 @@ class Concrete5_Controller_Dashboard_Files_Search extends Controller {
 				$fileList->addToSearchRequest('ccm_order_by', $colsort->getColumnKey());
 			}
 		}
-		
+
 		if (!isset($columns)) {
 			$columns = FileManagerColumnSet::getCurrent();
 		}
@@ -48,11 +48,11 @@ class Concrete5_Controller_Dashboard_Files_Search extends Controller {
 		$this->set('searchRequest', $req);
 		$this->set('columns', $columns);
 
-		$col = $columns->getDefaultSortColumn();	
+		$col = $columns->getDefaultSortColumn();
 		$fileList->sortBy($col->getColumnKey(), $col->getColumnDefaultSortDirection());
-		
+
 		$keywords = htmlentities($req['fKeywords'], ENT_QUOTES, APP_CHARSET);
-		
+
 		if ($keywords != '') {
 			$fileList->filterByKeywords($keywords);
 		}
@@ -60,8 +60,8 @@ class Concrete5_Controller_Dashboard_Files_Search extends Controller {
 		if ($req['numResults']) {
 			$fileList->setItemsPerPage(intval($req['numResults']));
 		}
-		
-		if ((isset($req['fsIDNone']) && $req['fsIDNone'] == 1) || (is_array($req['fsID']) && in_array(-1, $req['fsID']))) { 
+
+		if ((isset($req['fsIDNone']) && $req['fsIDNone'] == 1) || (is_array($req['fsID']) && in_array(-1, $req['fsID']))) {
 			$fileList->filterBySet(false);
 		} else {
 			if (is_array($req['fsID'])) {
@@ -75,7 +75,7 @@ class Concrete5_Controller_Dashboard_Files_Search extends Controller {
 				$fileList->filterBySet($fs);
 			}
 		}
-		
+
 		if (isset($_GET['fType']) && $_GET['fType'] != '') {
 			$type = $_GET['fType'];
 			$fileList->filterByType($type);
@@ -85,7 +85,7 @@ class Concrete5_Controller_Dashboard_Files_Search extends Controller {
 			$ext = $_GET['fExtension'];
 			$fileList->filterByExtension($ext);
 		}
-		
+
 		$selectedSets = array();
 
 		if (is_array($req['selectedSearchField'])) {
@@ -112,14 +112,14 @@ class Concrete5_Controller_Dashboard_Files_Search extends Controller {
 							if ($dateTo != '') {
 								$dateTo = date('Y-m-d', strtotime($dateTo));
 								$dateTo .= ' 23:59:59';
-								
+
 								$fileList->filterByDateAdded($dateTo, '<=');
 							}
 							break;
 						case 'added_to':
 							$ocID = $req['ocIDSearchField'];
 							if ($ocID > 0) {
-								$fileList->filterByOriginalPageID($ocID);							
+								$fileList->filterByOriginalPageID($ocID);
 							}
 							break;
 						case "size":

@@ -3,8 +3,8 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard extends DashboardBaseController {
 
-	public $helpers = array('form'); 
-	
+	public $helpers = array('form');
+
 	public function view() {
 		$this->enableNativeMobile();
 		$categories = array();
@@ -14,7 +14,7 @@ class Concrete5_Controller_Dashboard extends DashboardBaseController {
 			$nc = Page::getByID($cID, 'ACTIVE');
 			$ncp = new Permissions($nc);
 			if ($ncp->canRead() && (!$nc->getAttribute('exclude_nav'))) {
-				$categories[] = $nc;	
+				$categories[] = $nc;
 			}
 		}
 		$this->set('categories', $categories);

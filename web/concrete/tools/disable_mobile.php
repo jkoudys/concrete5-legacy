@@ -1,9 +1,9 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
-/* if the cookie is already set, remove it 
+/* if the cookie is already set, remove it
  * really for testing since the cookie has a long lifetime
 */
-if(isset($_COOKIE['ccmDisableMobileView']) && $_COOKIE['ccmDisableMobileView'] == true) { 
+if(isset($_COOKIE['ccmDisableMobileView']) && $_COOKIE['ccmDisableMobileView'] == true) {
 	setcookie('ccmDisableMobileView', NULL, -1);
 	unset($_COOKIE['ccmDisableMobileView']);
 } else {

@@ -41,7 +41,8 @@ require_once 'Auth/OpenID/HMAC.php';
  *
  * @package OpenID
  */
-class Auth_OpenID_Association {
+class Auth_OpenID_Association
+{
 
     /**
      * This is a HMAC-SHA1 specific value.
@@ -98,8 +99,13 @@ class Auth_OpenID_Association {
     {
         $issued = time();
         $lifetime = $expires_in;
-        return new Auth_OpenID_Association($handle, $secret,
-                                           $issued, $lifetime, $assoc_type);
+        return new Auth_OpenID_Association(
+            $handle,
+            $secret,
+            $issued,
+            $lifetime,
+            $assoc_type
+        );
     }
 
     /**
@@ -129,10 +135,18 @@ class Auth_OpenID_Association {
      * be defined in the future.
      */
     function Auth_OpenID_Association(
-        $handle, $secret, $issued, $lifetime, $assoc_type)
-    {
-        if (!in_array($assoc_type,
-                      Auth_OpenID_getSupportedAssociationTypes(), true)) {
+        $handle,
+        $secret,
+        $issued,
+        $lifetime,
+        $assoc_type
+    ) {
+
+        if (!in_array(
+            $assoc_type,
+            Auth_OpenID_getSupportedAssociationTypes(),
+            true
+        )) {
             $fmt = 'Unsupported association type (%s)';
             trigger_error(sprintf($fmt, $assoc_type), E_USER_ERROR);
         }
@@ -226,8 +240,10 @@ class Auth_OpenID_Association {
         sort($class_assoc_keys);
 
         if ($keys != $class_assoc_keys) {
-            trigger_error('Unexpected key values: ' . var_export($keys, true),
-                          E_USER_WARNING);
+            trigger_error(
+                'Unexpected key values: ' . var_export($keys, true),
+                E_USER_WARNING
+            );
             return null;
         }
 
@@ -288,8 +304,10 @@ class Auth_OpenID_Association {
             return null;
         }
 
-        $extant_handle = $message->getArg(Auth_OpenID_OPENID_NS,
-                                          'assoc_handle');
+        $extant_handle = $message->getArg(
+            Auth_OpenID_OPENID_NS,
+            'assoc_handle'
+        );
 
         if ($extant_handle && ($extant_handle != $this->handle)) {
             // raise ValueError("Message has a different association handle")
@@ -297,8 +315,11 @@ class Auth_OpenID_Association {
         }
 
         $signed_message = $message;
-        $signed_message->setArg(Auth_OpenID_OPENID_NS, 'assoc_handle',
-                                $this->handle);
+        $signed_message->setArg(
+            Auth_OpenID_OPENID_NS,
+            'assoc_handle',
+            $this->handle
+        );
 
         $message_keys = array_keys($signed_message->toPostArgs());
         $signed_list = array();
@@ -313,8 +334,11 @@ class Auth_OpenID_Association {
         $signed_list[] = 'signed';
         sort($signed_list);
 
-        $signed_message->setArg(Auth_OpenID_OPENID_NS, 'signed',
-                                implode(',', $signed_list));
+        $signed_message->setArg(
+            Auth_OpenID_OPENID_NS,
+            'signed',
+            implode(',', $signed_list)
+        );
         $sig = $this->getMessageSignature($signed_message);
         $signed_message->setArg(Auth_OpenID_OPENID_NS, 'sig', $sig);
         return $signed_message;
@@ -339,9 +363,12 @@ class Auth_OpenID_Association {
         $pairs = array();
         $data = $message->toPostArgs();
         foreach ($signed_list as $field) {
-            $pairs[] = array($field, Auth_OpenID::arrayGet($data,
-                                                           'openid.' .
-                                                           $field, ''));
+            $pairs[] = array($field, Auth_OpenID::arrayGet(
+                $data,
+                'openid.' .
+                $field,
+                ''
+            ));
         }
         return $pairs;
     }
@@ -366,8 +393,10 @@ class Auth_OpenID_Association {
      */
     function checkMessageSignature($message)
     {
-        $sig = $message->getArg(Auth_OpenID_OPENID_NS,
-                                'sig');
+        $sig = $message->getArg(
+            Auth_OpenID_OPENID_NS,
+            'sig'
+        );
 
         if (!$sig || Auth_OpenID::isFailure($sig)) {
             return false;
@@ -382,7 +411,7 @@ function Auth_OpenID_getSecretSize($assoc_type)
 {
     if ($assoc_type == 'HMAC-SHA1') {
         return 20;
-    } else if ($assoc_type == 'HMAC-SHA256') {
+    } elseif ($assoc_type == 'HMAC-SHA256') {
         return 32;
     } else {
         return null;
@@ -420,8 +449,10 @@ function Auth_OpenID_getSessionTypes($assoc_type)
 
 function Auth_OpenID_checkSessionType($assoc_type, $session_type)
 {
-    if (!in_array($session_type,
-                  Auth_OpenID_getSessionTypes($assoc_type))) {
+    if (!in_array(
+        $session_type,
+        Auth_OpenID_getSessionTypes($assoc_type)
+    )) {
         return false;
     }
 
@@ -460,7 +491,7 @@ function Auth_OpenID_getOnlyEncryptedOrder()
             if (Auth_OpenID_HMACSHA256_SUPPORTED &&
                 ($assoc == 'HMAC-SHA256')) {
                 $result[] = $pair;
-            } else if ($assoc != 'HMAC-SHA256') {
+            } elseif ($assoc != 'HMAC-SHA256') {
                 $result[] = $pair;
             }
         }
@@ -472,13 +503,15 @@ function Auth_OpenID_getOnlyEncryptedOrder()
 function Auth_OpenID_getDefaultNegotiator()
 {
     return new Auth_OpenID_SessionNegotiator(
-                 Auth_OpenID_getDefaultAssociationOrder());
+        Auth_OpenID_getDefaultAssociationOrder()
+    );
 }
 
 function Auth_OpenID_getEncryptedNegotiator()
 {
     return new Auth_OpenID_SessionNegotiator(
-                 Auth_OpenID_getOnlyEncryptedOrder());
+        Auth_OpenID_getOnlyEncryptedOrder()
+    );
 }
 
 /**
@@ -522,7 +555,8 @@ function Auth_OpenID_getEncryptedNegotiator()
  *
  * @package OpenID
  */
-class Auth_OpenID_SessionNegotiator {
+class Auth_OpenID_SessionNegotiator
+{
     function Auth_OpenID_SessionNegotiator($allowed_types)
     {
         $this->allowed_types = array();
@@ -585,11 +619,15 @@ class Auth_OpenID_SessionNegotiator {
     // Is this combination of association type and session type allowed?
     function isAllowed($assoc_type, $session_type)
     {
-        $assoc_good = in_array(array($assoc_type, $session_type),
-                               $this->allowed_types);
+        $assoc_good = in_array(
+            array($assoc_type, $session_type),
+            $this->allowed_types
+        );
 
-        $matches = in_array($session_type,
-                            Auth_OpenID_getSessionTypes($assoc_type));
+        $matches = in_array(
+            $session_type,
+            Auth_OpenID_getSessionTypes($assoc_type)
+        );
 
         return ($assoc_good && $matches);
     }
@@ -607,4 +645,3 @@ class Auth_OpenID_SessionNegotiator {
         return $this->allowed_types[0];
     }
 }
-

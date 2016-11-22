@@ -43,7 +43,8 @@ require_once 'Auth/OpenID/Nonce.php';
  *
  * @package OpenID
  */
-class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
+class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore
+{
     /**
      * This creates a new MDB2Store instance.  It requires an
      * established database connection be given to it, and it allows
@@ -62,10 +63,12 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
      * the name of the table used for storing nonces.  The default
      * value is 'oid_nonces'.
      */
-    function Auth_OpenID_MDB2Store($connection,
-                                  $associations_table = null,
-                                  $nonces_table = null)
-    {
+    function Auth_OpenID_MDB2Store(
+        $connection,
+        $associations_table = null,
+        $nonces_table = null
+    ) {
+
         $this->associations_table_name = "oid_associations";
         $this->nonces_table_name = "oid_nonces";
 
@@ -73,9 +76,11 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
         // database connection.
         if (!is_object($connection) ||
             !is_subclass_of($connection, 'mdb2_driver_common')) {
-            trigger_error("Auth_OpenID_MDB2Store expected PEAR connection " .
+            trigger_error(
+                "Auth_OpenID_MDB2Store expected PEAR connection " .
                           "object (got ".get_class($connection).")",
-                          E_USER_ERROR);
+                E_USER_ERROR
+            );
             return;
         }
 
@@ -84,7 +89,7 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
         // Be sure to set the fetch mode so the results are keyed on
         // column name instead of column index.
         $this->connection->setFetchMode(MDB2_FETCHMODE_ASSOC);
-        
+
         if (@PEAR::isError($this->connection->loadModule('Extended'))) {
             trigger_error("Unable to load MDB2_Extended module", E_USER_ERROR);
             return;
@@ -104,8 +109,11 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
     function tableExists($table_name)
     {
         return !@PEAR::isError($this->connection->query(
-                                  sprintf("SELECT * FROM %s LIMIT 0",
-                                          $table_name)));
+            sprintf(
+                "SELECT * FROM %s LIMIT 0",
+                $table_name
+            )
+        ));
     }
 
     function createTables()
@@ -128,20 +136,24 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                     // Custom SQL for MySQL to use InnoDB and variable-
                     // length keys
                     $r = $this->connection->exec(
-                        sprintf("CREATE TABLE %s (\n".
+                        sprintf(
+                            "CREATE TABLE %s (\n".
                                 "  server_url VARCHAR(2047) NOT NULL DEFAULT '',\n".
                                 "  timestamp INTEGER NOT NULL,\n".
                                 "  salt CHAR(40) NOT NULL,\n".
                                 "  UNIQUE (server_url(255), timestamp, salt)\n".
                                 ") TYPE=InnoDB",
-                                $this->nonces_table_name));
+                            $this->nonces_table_name
+                        )
+                    );
                     if (@PEAR::isError($r)) {
                         return false;
                     }
                     break;
                 default:
                     if (@PEAR::isError(
-                        $this->connection->loadModule('Manager'))) {
+                        $this->connection->loadModule('Manager')
+                    )) {
                         return false;
                     }
                     $fields = array(
@@ -169,17 +181,20 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                             "salt" => true
                         )
                     );
-                    
-                    $r = $this->connection->createTable($this->nonces_table_name,
-                                                        $fields);
+
+                    $r = $this->connection->createTable(
+                        $this->nonces_table_name,
+                        $fields
+                    );
                     if (@PEAR::isError($r)) {
                         return false;
                     }
-                    
+
                     $r = $this->connection->createConstraint(
                         $this->nonces_table_name,
                         $this->nonces_table_name . "_constraint",
-                        $constraint);
+                        $constraint
+                    );
                     if (@PEAR::isError($r)) {
                         return false;
                     }
@@ -198,7 +213,8 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                     // Custom SQL for MySQL to use InnoDB and variable-
                     // length keys
                     $r = $this->connection->exec(
-                        sprintf("CREATE TABLE %s(\n".
+                        sprintf(
+                            "CREATE TABLE %s(\n".
                                 "  server_url VARCHAR(2047) NOT NULL DEFAULT '',\n".
                                 "  handle VARCHAR(255) NOT NULL,\n".
                                 "  secret BLOB NOT NULL,\n".
@@ -207,14 +223,17 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                                 "  assoc_type VARCHAR(64) NOT NULL,\n".
                                 "  PRIMARY KEY (server_url(255), handle)\n".
                                 ") TYPE=InnoDB",
-                            $this->associations_table_name));
+                            $this->associations_table_name
+                        )
+                    );
                     if (@PEAR::isError($r)) {
                         return false;
                     }
                     break;
                 default:
                     if (@PEAR::isError(
-                        $this->connection->loadModule('Manager'))) {
+                        $this->connection->loadModule('Manager')
+                    )) {
                         return false;
                     }
                     $fields = array(
@@ -253,11 +272,12 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                             "handle" => true
                         )
                     );
-                    
+
                     $r = $this->connection->createTable(
                         $this->associations_table_name,
                         $fields,
-                        $options);
+                        $options
+                    );
                     if (@PEAR::isError($r)) {
                         return false;
                     }
@@ -292,10 +312,11 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                 "value" => $association->assoc_type
             )
         );
-        
+
         return !@PEAR::isError($this->connection->replace(
-                                  $this->associations_table_name,
-                                  $fields));
+            $this->associations_table_name,
+            $fields
+        ));
     }
 
     function cleanupNonces()
@@ -304,15 +325,23 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
         $v = time() - $Auth_OpenID_SKEW;
 
         return $this->connection->exec(
-            sprintf("DELETE FROM %s WHERE timestamp < %d",
-                    $this->nonces_table_name, $v));
+            sprintf(
+                "DELETE FROM %s WHERE timestamp < %d",
+                $this->nonces_table_name,
+                $v
+            )
+        );
     }
 
     function cleanupAssociations()
     {
         return $this->connection->exec(
-            sprintf("DELETE FROM %s WHERE issued + lifetime < %d",
-                    $this->associations_table_name, time()));
+            sprintf(
+                "DELETE FROM %s WHERE issued + lifetime < %d",
+                $this->associations_table_name,
+                time()
+            )
+        );
     }
 
     function getAssociation($server_url, $handle = null)
@@ -327,28 +356,35 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                        "text"
                        );
         if ($handle !== null) {
-            $sql = sprintf("SELECT handle, secret, issued, lifetime, assoc_type " .
+            $sql = sprintf(
+                "SELECT handle, secret, issued, lifetime, assoc_type " .
                            "FROM %s WHERE server_url = ? AND handle = ?",
-                           $this->associations_table_name);
+                $this->associations_table_name
+            );
             $params = array($server_url, $handle);
         } else {
-            $sql = sprintf("SELECT handle, secret, issued, lifetime, assoc_type " .
+            $sql = sprintf(
+                "SELECT handle, secret, issued, lifetime, assoc_type " .
                            "FROM %s WHERE server_url = ? ORDER BY issued DESC",
-                           $this->associations_table_name);
+                $this->associations_table_name
+            );
             $params = array($server_url);
         }
-        
+
         $assoc = $this->connection->getRow($sql, $types, $params);
 
         if (!$assoc || @PEAR::isError($assoc)) {
             return null;
         } else {
-            $association = new Auth_OpenID_Association($assoc['handle'],
-                                                       stream_get_contents(
-                                                           $assoc['secret']),
-                                                       $assoc['issued'],
-                                                       $assoc['lifetime'],
-                                                       $assoc['assoc_type']);
+            $association = new Auth_OpenID_Association(
+                $assoc['handle'],
+                stream_get_contents(
+                    $assoc['secret']
+                ),
+                $assoc['issued'],
+                $assoc['lifetime'],
+                $assoc['assoc_type']
+            );
             fclose($assoc['secret']);
             return $association;
         }
@@ -357,10 +393,13 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
     function removeAssociation($server_url, $handle)
     {
         $r = $this->connection->execParam(
-            sprintf("DELETE FROM %s WHERE server_url = ? AND handle = ?",
-                    $this->associations_table_name),
-            array($server_url, $handle));
-        
+            sprintf(
+                "DELETE FROM %s WHERE server_url = ? AND handle = ?",
+                $this->associations_table_name
+            ),
+            array($server_url, $handle)
+        );
+
         if (@PEAR::isError($r) || $r == 0) {
             return false;
         }
@@ -371,24 +410,25 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
     {
         global $Auth_OpenID_SKEW;
 
-        if (abs($timestamp - time()) > $Auth_OpenID_SKEW ) {
+        if (abs($timestamp - time()) > $Auth_OpenID_SKEW) {
             return false;
         }
-        
+
         $fields = array(
                         "timestamp" => $timestamp,
                         "salt" => $salt
                         );
-        
+
         if (!empty($server_url)) {
             $fields["server_url"] = $server_url;
         }
-        
+
         $r = $this->connection->autoExecute(
             $this->nonces_table_name,
             $fields,
-            MDB2_AUTOQUERY_INSERT);
-        
+            MDB2_AUTOQUERY_INSERT
+        );
+
         if (@PEAR::isError($r)) {
             return false;
         }
@@ -401,13 +441,14 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
      */
     function reset()
     {
-        $this->connection->query(sprintf("DELETE FROM %s",
-                                         $this->associations_table_name));
+        $this->connection->query(sprintf(
+            "DELETE FROM %s",
+            $this->associations_table_name
+        ));
 
-        $this->connection->query(sprintf("DELETE FROM %s",
-                                         $this->nonces_table_name));
+        $this->connection->query(sprintf(
+            "DELETE FROM %s",
+            $this->nonces_table_name
+        ));
     }
-
 }
-
-?>

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if ($_REQUEST['fsID'] > 0) {
 	$fs = FileSet::getByID($_REQUEST['fsID']);
@@ -61,7 +61,7 @@ if ($fsp->canEditFileSetPermissions()) {
 				$pa = PermissionAccess::getByID($paID, $pk);
 				if (is_object($pa)) {
 					$pk->assignPermissionAccess($pa);
-				}			
+				}
 			}
 		}
 	}

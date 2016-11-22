@@ -19,22 +19,23 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Helper_Form_Rating {
+class Concrete5_Helper_Form_Rating
+{
 
-	
-	/** 
-	 * Creates form fields and JavaScript rating includes for a particular item
-	 * <code>
-	 *     $dh->datetime('yourStartDate', '2008-07-12 3:00:00');
-	 * </code>
-	 * @param string $prefix
-	 * @param string $value
-	 * @param bool $includeActivation
-	 * @param bool $calendarAutoStart
-	 */
-	 
-	// This is the combined view that shows an aggregate value, and lets you pick
-	/*
+
+    /**
+     * Creates form fields and JavaScript rating includes for a particular item
+     * <code>
+     *     $dh->datetime('yourStartDate', '2008-07-12 3:00:00');
+     * </code>
+     * @param string $prefix
+     * @param string $value
+     * @param bool $includeActivation
+     * @param bool $calendarAutoStart
+     */
+
+    // This is the combined view that shows an aggregate value, and lets you pick
+    /*
 	public function rating($prefix, $value = null) {
 		$field = $prefix;
 		$html = '';
@@ -67,21 +68,20 @@ class Concrete5_Helper_Form_Rating {
 				$('.ccm-rating-display').hide();
 				$('.ccm-rating-active').show();
 			}, function() {
-			
+
 			});
 		});
 		</script>
 EOS;
-			
+
 		return $html;
 	}
-	
+
 	*/
-	
-	public function rating($prefix, $value = null, $includeJS = true) {
-		$rt = Loader::helper('rating');
-		return $rt->output($prefix, $value, true, $includeJS);
-	}
-	
-	
+
+    public function rating($prefix, $value = null, $includeJS = true)
+    {
+        $rt = Loader::helper('rating');
+        return $rt->output($prefix, $value, true, $includeJS);
+    }
 }

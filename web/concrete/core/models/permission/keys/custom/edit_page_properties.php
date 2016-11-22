@@ -13,7 +13,7 @@ class Concrete5_Model_EditPagePropertiesPagePermissionKey extends PagePermission
 	public function getMyAssignment() {
 		$u = new User();
 		$asl = new EditPagePropertiesPagePermissionAccessListItem();
-		
+
 
 		if ($u->isSuperUser()) {
 			$asl->setAllowEditName(1);
@@ -25,7 +25,7 @@ class Concrete5_Model_EditPagePropertiesPagePermissionKey extends PagePermission
 			$asl->setAttributesAllowedPermission('A');
 			return $asl;
 		}
-		
+
 		$pae = $this->getPermissionAccessObject();
 		if (!is_object($pae)) {
 			return $asl;
@@ -36,7 +36,7 @@ class Concrete5_Model_EditPagePropertiesPagePermissionKey extends PagePermission
 		$list = $pae->getAccessListItems(PagePermissionKey::ACCESS_TYPE_ALL, $accessEntities);
 		$list = PermissionDuration::filterByActive($list);
 		$properties = array();
-		
+
 		$excluded = array();
 		$akIDs = array();
 		$u = new User();
@@ -59,8 +59,8 @@ class Concrete5_Model_EditPagePropertiesPagePermissionKey extends PagePermission
 			}
 			if ($l->allowEditPaths() && (!in_array('paths', $excluded))) {
 				$asl->setAllowEditPaths(1);
-			}		
-			
+			}
+
 			if ($l->getAccessType() == PagePermissionKey::ACCESS_TYPE_EXCLUDE && !$l->allowEditName()) {
 				$asl->setAllowEditName(0);
 				$excluded[] = 'name';
@@ -91,7 +91,7 @@ class Concrete5_Model_EditPagePropertiesPagePermissionKey extends PagePermission
 				$asl->setAttributesAllowedPermission('C');
 				if ($l->getAccessType() == PagePermissionKey::ACCESS_TYPE_EXCLUDE) {
 					$akIDs = array_values(array_diff($akIDs, $l->getAttributesAllowedArray()));
-				} else { 
+				} else {
 					$akIDs = array_unique(array_merge($akIDs, $l->getAttributesAllowedArray()));
 				}
 			}
@@ -100,8 +100,8 @@ class Concrete5_Model_EditPagePropertiesPagePermissionKey extends PagePermission
 				$akIDs = $allAKIDs;
 				$asl->setAttributesAllowedPermission('A');
 			}
-		}	
-		
+		}
+
 		$asl->setAttributesAllowedArray($akIDs);
 		return $asl;
 	}
@@ -122,22 +122,22 @@ class Concrete5_Model_EditPagePropertiesPagePermissionKey extends PagePermission
 					return true;
 				} else {
 					return false;
-				}				
+				}
 			}
 		}
 
 		if (
-			$asl->allowEditName() || 
-			$asl->allowEditDescription() || 
-			$asl->allowEditDateTime() || 
-			$asl->allowEditUserID() || 
-			$asl->allowEditPaths() || 
+			$asl->allowEditName() ||
+			$asl->allowEditDescription() ||
+			$asl->allowEditDateTime() ||
+			$asl->allowEditUserID() ||
+			$asl->allowEditPaths() ||
 			($asl->getAttributesAllowedPermission() == 'A' || ($asl->getAttributesAllowedPermission() == 'C' && count($asl->getAttributesAllowedArray() > 0)))) {
 				return true;
 		} else {
 			return false;
 		}
 	}
-	
-	
+
+
 }

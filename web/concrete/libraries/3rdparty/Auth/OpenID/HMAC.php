@@ -30,7 +30,7 @@ function Auth_OpenID_SHA1($text)
         // PHP 5 case (sometimes): 'hash' available and 'sha1' algo
         // supported.
         return hash('sha1', $text, true);
-    } else if (function_exists('sha1')) {
+    } elseif (function_exists('sha1')) {
         // PHP 4 case: 'sha1' available.
         $hex = sha1($text);
         $raw = '';
@@ -102,4 +102,3 @@ if (function_exists('hash_hmac') &&
 } else {
     define('Auth_OpenID_HMACSHA256_SUPPORTED', false);
 }
-

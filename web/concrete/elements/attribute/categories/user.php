@@ -1,4 +1,4 @@
-<?
+<?php
 if (is_object($key)) {
 	$uakProfileDisplay = $key->isAttributeKeyDisplayedOnProfile();
 	$uakProfileEdit = $key->isAttributeKeyEditableOnProfile();
@@ -9,7 +9,7 @@ if (is_object($key)) {
 	$uakIsActive = $key->isAttributeKeyActive();
 }
 ?>
-<? $form = Loader::helper('form'); ?>
+<?php $form = Loader::helper('form'); ?>
 <fieldset>
 <legend><?=t('User Attribute Options')?></legend>
 <div class="clearfix">
@@ -51,7 +51,7 @@ $(function() {
 			$('input[name=uakProfileEditRequired]').attr('disabled', false);
 		} else {
 			$('input[name=uakProfileEditRequired]').attr('checked', false);
-			$('input[name=uakProfileEditRequired]').attr('disabled', true);		
+			$('input[name=uakProfileEditRequired]').attr('disabled', true);
 		}
 	});
 
@@ -60,24 +60,24 @@ $(function() {
 			$('input[name=uakRegisterEditRequired]').attr('disabled', false);
 		} else {
 			$('input[name=uakRegisterEditRequired]').attr('checked', false);
-			$('input[name=uakRegisterEditRequired]').attr('disabled', true);		
+			$('input[name=uakRegisterEditRequired]').attr('disabled', true);
 		}
 	});
-	
+
 
 	if ($('input[name=uakProfileEdit]').prop('checked')) {
 		$('input[name=uakProfileEditRequired]').attr('disabled', false);
 	} else {
 		$('input[name=uakProfileEditRequired]').attr('checked', false);
-		$('input[name=uakProfileEditRequired]').attr('disabled', true);		
-	}	
+		$('input[name=uakProfileEditRequired]').attr('disabled', true);
+	}
 
 	if ($('input[name=uakRegisterEdit]').prop('checked')) {
 		$('input[name=uakRegisterEditRequired]').attr('disabled', false);
 	} else {
 		$('input[name=uakRegisterEditRequired]').attr('checked', false);
-		$('input[name=uakRegisterEditRequired]').attr('disabled', true);		
-	}	
+		$('input[name=uakRegisterEditRequired]').attr('disabled', true);
+	}
 
 });
 </script>

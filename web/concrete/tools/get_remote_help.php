@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 session_write_close();
 
@@ -9,6 +9,6 @@ if ($_REQUEST['q']) {
 		print $r;
 	} else {
 		print Loader::helper('json')->encode(array());
-	}	
+	}
 	exit;
 }

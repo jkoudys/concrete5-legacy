@@ -1,7 +1,7 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
-$c = Page::getByID($_REQUEST['cID']); 
+$c = Page::getByID($_REQUEST['cID']);
 $a = Area::get($c, $_REQUEST['arHandle']);
 if (!is_object($a)) {
 	die('Invalid Area.');

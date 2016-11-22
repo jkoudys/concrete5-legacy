@@ -253,7 +253,7 @@ class Zend_Mime_Message
                 /**
                  * @todo check for characterset and filename
                  */
-                switch(strtolower($key)) {
+                switch (strtolower($key)) {
                     case 'content-type':
                         $newPart->type = $value;
                         break;
@@ -261,7 +261,7 @@ class Zend_Mime_Message
                         $newPart->encoding = $value;
                         break;
                     case 'content-id':
-                        $newPart->id = trim($value,'<>');
+                        $newPart->id = trim($value, '<>');
                         break;
                     case 'content-disposition':
                         $newPart->disposition = $value;

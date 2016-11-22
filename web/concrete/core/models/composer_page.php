@@ -10,17 +10,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 */
 Loader::model('collection_types');
 class Concrete5_Model_ComposerPage extends Page {
-	
+
 	public static function createDraft($ct) {
 		$parent = Page::getByPath(COMPOSER_DRAFTS_PAGE_PATH);
 		$data['cvIsApproved'] = 0;
 		$p = $parent->add($ct, $data);
 		$p->deactivate();
-				
+
 		$db = Loader::db();
 		$targetPageID = 0;
 		if ($ct->getCollectionTypeComposerPublishMethod() == 'PARENT') {
-			$targetPageID = $ct->getCollectionTypeComposerPublishPageParentID();			
+			$targetPageID = $ct->getCollectionTypeComposerPublishPageParentID();
 		}
 		$db->Execute('insert into ComposerDrafts (cID, cpPublishParentID) values (?, ?)', array($p->getCollectionID(), $targetPageID));
 		$entry = ComposerPage::getByID($p->getCollectionID());
@@ -32,13 +32,13 @@ class Concrete5_Model_ComposerPage extends Page {
 				$nb = $b2->duplicate($p);
 				$b2->deleteBlock();
 				$b2 = $nb;
-			}					
-			
-			return $entry;		
+			}
+
+			return $entry;
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Checks to see if the page in question is a valid composer draft for the logged in user
 	 */
 	protected static function isValidComposerPage($entry) {
@@ -49,16 +49,16 @@ class Concrete5_Model_ComposerPage extends Page {
 		$cp = new Permissions($entry);
 		if (!$cp->canEditPageContents()) {
 			return false;
-		}			
+		}
 		return true;
 	}
-	
+
 	public function isComposerDraft() {
 		$db = Loader::db();
 		$cID = $db->GetOne('select cID from ComposerDrafts where cID = ?', array($this->getCollectionID()));
 		return $cID == $this->getCollectionID();
 	}
-	
+
 	public function getComposerDraftPublishParentID() {
 		if ($this->cpPublishParentID > 0) {
 			$pc = Page::getByID($this->cpPublishParentID);
@@ -73,7 +73,7 @@ class Concrete5_Model_ComposerPage extends Page {
 		$db = Loader::db();
 		$db->Execute('update ComposerDrafts set cpPublishParentID = ? where cID = ?', array($cParentID, $this->getCollectionID()));
 	}
-	
+
 	// old
 	/*
 	public function isValidComposerDraft() {
@@ -86,7 +86,7 @@ class Concrete5_Model_ComposerPage extends Page {
 		}
 		return self::isValidComposerPage($this);
 	}
-	
+
 	public function markComposerPageAsSaved() {
 		$db = Loader::db();
 		$db->Replace('ComposerDrafts', array('cID' => $this->getCollectionID(), 'cpStatus' => self::COMPOSER_PAGE_STATUS_SAVED), array('cID'), true);
@@ -112,11 +112,11 @@ class Concrete5_Model_ComposerPage extends Page {
 				$pages[] = $entry;
 			}
 		}
-		return $pages;		
+		return $pages;
 	}
-	
-	
-	
+
+
+
 	public function getComposerBlocks() {
 		$db = Loader::db();
 		$bIDs = $db->GetCol('select bID from ComposerContentLayout where bID > 0 and ctID = ? order by displayOrder', array($this->getCollectionTypeID()));
@@ -130,7 +130,7 @@ class Concrete5_Model_ComposerPage extends Page {
 		}
 		return $blocks;
 	}
-	
+
 	public static function getByID($cID, $cvID = 'RECENT') {
 		$db = Loader::db();
 		$c = parent::getByID($cID, $cvID, 'ComposerPage');
@@ -143,7 +143,7 @@ class Concrete5_Model_ComposerPage extends Page {
 		}
 		return false;
 	}
-	
+
 	public function getComposerBlockInstance($b) {
 		// this gets a master collection block and finds the current block in the current entry that matches it, complete with area name, etc...
 		$db = Loader::db();
@@ -159,13 +159,13 @@ class Concrete5_Model_ComposerPage extends Page {
 		} else {
 			$bID = $b->getBlockID();
 		}
-		
+
 		if ($arHandle) {
 			$c = Page::getByID($this->getCollectionID(), $this->getVersionID());
 			$b = Block::getByID($bID, $c, $arHandle);
 			return $b;
 		}
-		
+
 	}
 
 }

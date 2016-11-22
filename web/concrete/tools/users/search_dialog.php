@@ -1,8 +1,8 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $tp = new TaskPermission();
-if (!$tp->canAccessUserSearch()) { 
+if (!$tp->canAccessUserSearch()) {
 	die(t("You have no access to users."));
 }
 
@@ -32,7 +32,7 @@ $v->outputHeaderItems();
 	<?=$searchForm?>
 </div>
 
-<? Loader::element('users/search_results', array('columns' => $columns, 'mode' => $mode, 'users' => $users, 'userList' => $userList, 'pagination' => $pagination)); ?>
+<?php Loader::element('users/search_results', array('columns' => $columns, 'mode' => $mode, 'users' => $users, 'userList' => $userList, 'pagination' => $pagination)); ?>
 </div>
 </div>
 

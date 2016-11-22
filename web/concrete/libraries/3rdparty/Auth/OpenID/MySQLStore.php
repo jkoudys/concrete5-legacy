@@ -16,7 +16,8 @@ require_once "Auth/OpenID/SQLStore.php";
  *
  * @package OpenID
  */
-class Auth_OpenID_MySQLStore extends Auth_OpenID_SQLStore {
+class Auth_OpenID_MySQLStore extends Auth_OpenID_SQLStore
+{
     /**
      * @access private
      */
@@ -74,4 +75,3 @@ class Auth_OpenID_MySQLStore extends Auth_OpenID_SQLStore {
         return "0x" . bin2hex($blob);
     }
 }
-

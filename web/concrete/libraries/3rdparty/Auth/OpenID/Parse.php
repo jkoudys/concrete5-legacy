@@ -84,7 +84,8 @@
  */
 require_once "Auth/OpenID.php";
 
-class Auth_OpenID_Parse {
+class Auth_OpenID_Parse
+{
 
     /**
      * Specify some flags for use with regex matching.
@@ -110,8 +111,10 @@ class Auth_OpenID_Parse {
 
     function Auth_OpenID_Parse()
     {
-        $this->_link_find = sprintf("/<link\b(?!:)([^>]*)(?!<)>/%s",
-                                    $this->_re_flags);
+        $this->_link_find = sprintf(
+            "/<link\b(?!:)([^>]*)(?!<)>/%s",
+            $this->_re_flags
+        );
 
         $this->_entity_replacements = array(
                                             'amp' => '&',
@@ -120,17 +123,23 @@ class Auth_OpenID_Parse {
                                             'quot' => '"'
                                             );
 
-        $this->_attr_find = sprintf("/%s/%s",
-                                    $this->_attr_find,
-                                    $this->_re_flags);
+        $this->_attr_find = sprintf(
+            "/%s/%s",
+            $this->_attr_find,
+            $this->_re_flags
+        );
 
-        $this->_removed_re = sprintf("/%s/%s",
-                                     $this->_removed_re,
-                                     $this->_re_flags);
+        $this->_removed_re = sprintf(
+            "/%s/%s",
+            $this->_removed_re,
+            $this->_re_flags
+        );
 
         $this->_ent_replace =
-            sprintf("&(%s);", implode("|",
-                                      $this->_entity_replacements));
+            sprintf("&(%s);", implode(
+                "|",
+                $this->_entity_replacements
+            ));
     }
 
     /**
@@ -167,8 +176,12 @@ class Auth_OpenID_Parse {
     function htmlBegin($s)
     {
         $matches = array();
-        $result = preg_match($this->openTag('html'), $s,
-                             $matches, PREG_OFFSET_CAPTURE);
+        $result = preg_match(
+            $this->openTag('html'),
+            $s,
+            $matches,
+            PREG_OFFSET_CAPTURE
+        );
         if ($result === false || !$matches) {
             return false;
         }
@@ -179,8 +192,12 @@ class Auth_OpenID_Parse {
     function htmlEnd($s)
     {
         $matches = array();
-        $result = preg_match($this->closeTag('html'), $s,
-                             $matches, PREG_OFFSET_CAPTURE);
+        $result = preg_match(
+            $this->closeTag('html'),
+            $s,
+            $matches,
+            PREG_OFFSET_CAPTURE
+        );
         if ($result === false || !$matches) {
             return false;
         }
@@ -209,13 +226,13 @@ class Auth_OpenID_Parse {
 
         if (preg_match($double, $str, $matches)) {
             return $matches[1];
-        } else if (preg_match($single, $str, $matches)) {
+        } elseif (preg_match($single, $str, $matches)) {
             return $matches[1];
         } else {
             return $str;
         }
     }
-    
+
     function match($regexp, $text, &$match)
     {
         if (!is_callable('mb_ereg_search_init')) {
@@ -250,9 +267,11 @@ class Auth_OpenID_Parse {
      */
     function parseLinkAttrs($html)
     {
-        $stripped = preg_replace($this->_removed_re,
-                                 "",
-                                 $html);
+        $stripped = preg_replace(
+            $this->_removed_re,
+            "",
+            $html
+        );
 
         $html_begin = $this->htmlBegin($stripped);
         $html_end = $this->htmlEnd($stripped);
@@ -265,26 +284,32 @@ class Auth_OpenID_Parse {
             $html_end = strlen($stripped);
         }
 
-        $stripped = substr($stripped, $html_begin,
-                           $html_end - $html_begin);
+        $stripped = substr(
+            $stripped,
+            $html_begin,
+            $html_end - $html_begin
+        );
 
         // Workaround to prevent PREG_BACKTRACK_LIMIT_ERROR:
-        $old_btlimit = ini_set( 'pcre.backtrack_limit', -1 );
+        $old_btlimit = ini_set('pcre.backtrack_limit', -1);
 
         // Try to find the <HEAD> tag.
         $head_re = $this->headFind();
         $head_match = array();
         if (!$this->match($head_re, $stripped, $head_match)) {
-                     ini_set( 'pcre.backtrack_limit', $old_btlimit );
+                     ini_set('pcre.backtrack_limit', $old_btlimit);
                      return array();
         }
 
         $link_data = array();
         $link_matches = array();
 
-        if (!preg_match_all($this->_link_find, $head_match[0],
-                            $link_matches)) {
-            ini_set( 'pcre.backtrack_limit', $old_btlimit );
+        if (!preg_match_all(
+            $this->_link_find,
+            $head_match[0],
+            $link_matches
+        )) {
+            ini_set('pcre.backtrack_limit', $old_btlimit);
             return array();
         }
 
@@ -295,14 +320,15 @@ class Auth_OpenID_Parse {
             foreach ($attr_matches[0] as $index => $full_match) {
                 $name = $attr_matches[1][$index];
                 $value = $this->replaceEntities(
-                              $this->removeQuotes($attr_matches[2][$index]));
+                    $this->removeQuotes($attr_matches[2][$index])
+                );
 
                 $link_attrs[strtolower($name)] = $value;
             }
             $link_data[] = $link_attrs;
         }
 
-        ini_set( 'pcre.backtrack_limit', $old_btlimit );
+        ini_set('pcre.backtrack_limit', $old_btlimit);
         return $link_data;
     }
 
@@ -326,8 +352,10 @@ class Auth_OpenID_Parse {
         // Does this link have target_rel as a relationship?
         // XXX: TESTME
         $rel_attr = Auth_OpeniD::arrayGet($link_attrs, 'rel', null);
-        return ($rel_attr && $this->relMatches($rel_attr,
-                                               $target_rel));
+        return ($rel_attr && $this->relMatches(
+            $rel_attr,
+            $target_rel
+        ));
     }
 
     function findLinksRel($link_attrs_list, $target_rel)
@@ -350,8 +378,10 @@ class Auth_OpenID_Parse {
         // Return the value of the href attribute for the first link
         // tag in the list that has target_rel as a relationship.
         // XXX: TESTME
-        $matches = $this->findLinksRel($link_attrs_list,
-                                       $target_rel);
+        $matches = $this->findLinksRel(
+            $link_attrs_list,
+            $target_rel
+        );
         if (!$matches) {
             return null;
         }
@@ -360,22 +390,28 @@ class Auth_OpenID_Parse {
     }
 }
 
-function Auth_OpenID_legacy_discover($html_text, $server_rel,
-                                     $delegate_rel)
-{
+function Auth_OpenID_legacy_discover(
+    $html_text,
+    $server_rel,
+    $delegate_rel
+) {
+
     $p = new Auth_OpenID_Parse();
 
     $link_attrs = $p->parseLinkAttrs($html_text);
 
-    $server_url = $p->findFirstHref($link_attrs,
-                                    $server_rel);
+    $server_url = $p->findFirstHref(
+        $link_attrs,
+        $server_rel
+    );
 
     if ($server_url === null) {
         return false;
     } else {
-        $delegate_url = $p->findFirstHref($link_attrs,
-                                          $delegate_rel);
+        $delegate_url = $p->findFirstHref(
+            $link_attrs,
+            $delegate_rel
+        );
         return array($delegate_url, $server_url);
     }
 }
-

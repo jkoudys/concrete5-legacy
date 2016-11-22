@@ -19,13 +19,20 @@
 require_once "Auth/OpenID.php";
 
 define('Auth_OpenID_FETCHER_MAX_RESPONSE_KB', 1024);
-define('Auth_OpenID_USER_AGENT', 
-       'php-openid/'.Auth_OpenID_VERSION.' (php/'.phpversion().')');
+define(
+    'Auth_OpenID_USER_AGENT',
+    'php-openid/'.Auth_OpenID_VERSION.' (php/'.phpversion().')'
+);
 
-class Auth_Yadis_HTTPResponse {
-    function Auth_Yadis_HTTPResponse($final_url = null, $status = null,
-                                         $headers = null, $body = null)
-    {
+class Auth_Yadis_HTTPResponse
+{
+    function Auth_Yadis_HTTPResponse(
+        $final_url = null,
+        $status = null,
+        $headers = null,
+        $body = null
+    ) {
+
         $this->final_url = $final_url;
         $this->status = $status;
         $this->headers = $headers;
@@ -41,7 +48,8 @@ class Auth_Yadis_HTTPResponse {
  * @access private
  * @package OpenID
  */
-class Auth_Yadis_HTTPFetcher {
+class Auth_Yadis_HTTPFetcher
+{
 
     var $timeout = 20; // timeout in seconds.
 
@@ -55,14 +63,18 @@ class Auth_Yadis_HTTPFetcher {
     function canFetchURL($url)
     {
         if ($this->isHTTPS($url) && !$this->supportsSSL()) {
-            Auth_OpenID::log("HTTPS URL unsupported fetching %s",
-                             $url);
+            Auth_OpenID::log(
+                "HTTPS URL unsupported fetching %s",
+                $url
+            );
             return false;
         }
 
         if (!$this->allowedURL($url)) {
-            Auth_OpenID::log("URL fetching not allowed for '%s'",
-                             $url);
+            Auth_OpenID::log(
+                "URL fetching not allowed for '%s'",
+                $url
+            );
             return false;
         }
 
@@ -124,29 +136,38 @@ class Auth_Yadis_HTTPFetcher {
                 $ppos = strpos($loc, "://");
                 if ($ppos === false || $ppos > strpos($loc, "/")) {
                   /* no host; add it */
-                  $hpos = strpos($url, "://");
-                  $prt = substr($url, 0, $hpos+3);
-                  $url = substr($url, $hpos+3);
-                  if (substr($loc, 0, 1) == "/") {
-                    /* absolute path */
-                    $fspos = strpos($url, "/");
-                    if ($fspos) $loc = $prt.substr($url, 0, $fspos).$loc;
-                    else $loc = $prt.$url.$loc;
-                  } else {
-                    /* relative path */
-                    $pp = $prt;
-                    while (1) {
-                      $xpos = strpos($url, "/");
-                      if ($xpos === false) break;
-                      $apos = strpos($url, "?");
-                      if ($apos !== false && $apos < $xpos) break;
-                      $apos = strpos($url, "&");
-                      if ($apos !== false && $apos < $xpos) break;
-                      $pp .= substr($url, 0, $xpos+1);
-                      $url = substr($url, $xpos+1);
+                    $hpos = strpos($url, "://");
+                    $prt = substr($url, 0, $hpos+3);
+                    $url = substr($url, $hpos+3);
+                    if (substr($loc, 0, 1) == "/") {
+                        /* absolute path */
+                        $fspos = strpos($url, "/");
+                        if ($fspos) {
+                            $loc = $prt.substr($url, 0, $fspos).$loc;
+                        } else {
+                            $loc = $prt.$url.$loc;
+                        }
+                    } else {
+                        /* relative path */
+                        $pp = $prt;
+                        while (1) {
+                            $xpos = strpos($url, "/");
+                            if ($xpos === false) {
+                                break;
+                            }
+                            $apos = strpos($url, "?");
+                            if ($apos !== false && $apos < $xpos) {
+                                break;
+                            }
+                            $apos = strpos($url, "&");
+                            if ($apos !== false && $apos < $xpos) {
+                                break;
+                            }
+                            $pp .= substr($url, 0, $xpos+1);
+                            $url = substr($url, $xpos+1);
+                        }
+                        $loc = $pp.$loc;
                     }
-                    $loc = $pp.$loc;
-                  }
                 }
                 return $loc;
             }
@@ -171,4 +192,3 @@ class Auth_Yadis_HTTPFetcher {
         trigger_error("not implemented", E_USER_ERROR);
     }
 }
-

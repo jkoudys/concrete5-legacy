@@ -42,7 +42,7 @@ $img = new securimage();
 $img->image_width = 280;
 $img->image_height = 100;
 $img->perturbation = 0.9;
-$img->code_length = rand(5,6);
+$img->code_length = rand(5, 6);
 $img->image_bg_color = new Securimage_Color("#ffffff");
 $img->use_transparent_text = true;
 $img->text_transparency_percentage = 75; // 100 = completely transparent
@@ -52,4 +52,3 @@ $img->text_color = new Securimage_Color("#000000");
 $img->line_color = new Securimage_Color("#cccccc");
 
 $img->show(''); // alternate use:  $img->show('/path/to/background_image.jpg');
-

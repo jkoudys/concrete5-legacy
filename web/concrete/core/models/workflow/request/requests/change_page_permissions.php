@@ -7,16 +7,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 class Concrete5_Model_ChangePagePermissionsPageWorkflowRequest extends PageWorkflowRequest {
-	
+
 	protected $wrStatusNum = 30;
 
 	public function __construct() {
 		$pk = PermissionKey::getByHandle('edit_page_permissions');
 		parent::__construct($pk);
 	}
-	
+
 	public function setPagePermissionSet(PermissionSet $set) {
 		$this->permissionSet = $set;
 	}
@@ -35,23 +35,23 @@ class Concrete5_Model_ChangePagePermissionsPageWorkflowRequest extends PageWorkf
 		$d->setShortStatus(t("Permission Changes"));
 		return $d;
 	}
-	
+
 	public function getWorkflowRequestStyleClass() {
 		return 'info';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonClass() {
 		return 'success';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonInnerButtonRightHTML() {
 		return '<i class="icon-white icon-thumbs-up"></i>';
-	}		
-	
+	}
+
 	public function getWorkflowRequestApproveButtonText() {
 		return t('Change Permissions');
 	}
-	
+
 	public function getWorkflowRequestAdditionalActions(WorkflowProgress $wp) {
 		$buttons = array();
 		$w = $wp->getWorkflowObject();
@@ -73,7 +73,7 @@ class Concrete5_Model_ChangePagePermissionsPageWorkflowRequest extends PageWorkf
 	public function approve(WorkflowProgress $wp) {
 		$c = Page::getByID($this->getRequestedPageID());
 		$ps = $this->getPagePermissionSet();
-		$assignments = $ps->getPermissionAssignments();		
+		$assignments = $ps->getPermissionAssignments();
 		foreach($assignments as $pkID => $paID) {
 			$pk = PermissionKey::getByID($pkID);
 			$pk->setPermissionObject($c);
@@ -83,8 +83,8 @@ class Concrete5_Model_ChangePagePermissionsPageWorkflowRequest extends PageWorkf
 				$pa = PermissionAccess::getByID($paID, $pk);
 				if (is_object($pa)) {
 					$pt->assignPermissionAccess($pa);
-				}			
-			}			
+				}
+			}
 		}
 		$c->refreshCache();
 		$wpr = new WorkflowProgressResponse();
@@ -92,5 +92,5 @@ class Concrete5_Model_ChangePagePermissionsPageWorkflowRequest extends PageWorkf
 		return $wpr;
 	}
 
-	
+
 }

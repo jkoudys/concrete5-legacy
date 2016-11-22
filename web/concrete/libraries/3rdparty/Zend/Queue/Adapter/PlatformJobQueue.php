@@ -114,7 +114,7 @@ class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbst
      * @return void
      * @throws Zend_Queue_Exception
      */
-    public function create($name, $timeout=null)
+    public function create($name, $timeout = null)
     {
         require_once 'Zend/Queue/Exception.php';
         throw new Zend_Queue_Exception('create() is not supported in ' . get_class($this));

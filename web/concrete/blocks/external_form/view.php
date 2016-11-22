@@ -1,4 +1,3 @@
 <?php
-	defined('C5_EXECUTE') or die("Access Denied.");
-	include($controller->getExternalFormFilenamePath());
-?>
+    defined('C5_EXECUTE') or die('Access Denied.');
+    include $controller->getExternalFormFilenamePath();

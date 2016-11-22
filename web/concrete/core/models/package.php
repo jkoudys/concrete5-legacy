@@ -10,17 +10,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 class Concrete5_Model_PackageList extends Object {
-	
+
 	protected $packages = array();
-	
+
 	public function add($pkg) {
 		$this->packages[] = $pkg;
 	}
-	
+
 	public function getPackages() {
 		return $this->packages;
 	}
-	
+
 	public static function export($xml) {
 		$packages = PackageList::get()->getPackages();
 		$pkgs = $xml->addChild("packages");
@@ -29,7 +29,7 @@ class Concrete5_Model_PackageList extends Object {
 			$node->addAttribute('handle', $pkg->getPackageHandle());
 		}
 	}
-	
+
 	public static function getHandle($pkgID) {
 		if ($pkgID < 1) {
 			return false;
@@ -38,30 +38,30 @@ class Concrete5_Model_PackageList extends Object {
 		if (is_array($packageList)) {
 			return $packageList[$pkgID];
 		}
-		
+
 		$packageList = array();
 		$db = Loader::db();
 		$r = $db->Execute('select pkgID, pkgHandle from Packages where pkgIsInstalled = 1');
 		while ($row = $r->FetchRow()) {
 			$packageList[$row['pkgID']] = $row['pkgHandle'];
 		}
-		
+
 		CacheLocal::set('packageHandleList', false, $packageList);
 		return $packageList[$pkgID];
 	}
-	
+
 	public static function refreshCache() {
 		CacheLocal::delete('packageHandleList', false);
 		CacheLocal::delete('pkgList', 1);
 		CacheLocal::delete('pkgList', 0);
 	}
-	
+
 	public static function get($pkgIsInstalled = 1) {
 		$pkgList = CacheLocal::getEntry('pkgList', $pkgIsInstalled);
 		if ($pkgList != false) {
 			return $pkgList;
 		}
-		
+
 		$db = Loader::db();
 		$r = $db->query("select pkgID, pkgName, pkgIsInstalled, pkgDescription, pkgVersion, pkgHandle, pkgDateInstalled from Packages where pkgIsInstalled = ? order by pkgID asc", array($pkgIsInstalled));
 		$list = new PackageList();
@@ -70,12 +70,12 @@ class Concrete5_Model_PackageList extends Object {
 			$pkg->setPropertiesFromArray($row);
 			$list->add($pkg);
 		}
-		
+
 		CacheLocal::set('pkgList', $pkgIsInstalled, $list);
 
 		return $list;
 	}
-	
+
 }
 
 /**
@@ -95,22 +95,22 @@ class Concrete5_Model_Package extends Object {
 	protected $REL_DIR_PACKAGES_CORE = REL_DIR_PACKAGES_CORE;
 	protected $REL_DIR_PACKAGES = REL_DIR_PACKAGES;
 	protected $backedUpFname = '';
-	
+
 	public function getRelativePath() {
 		$dirp = (is_dir($this->DIR_PACKAGES . '/' . $this->getPackageHandle())) ? $this->REL_DIR_PACKAGES : $this->REL_DIR_PACKAGES_CORE;
 		return $dirp . '/' . $this->pkgHandle;
 	}
-	
+
 	public function getPackageID() {return $this->pkgID;}
 	public function getPackageName() {return t($this->pkgName);}
 	public function getPackageDescription() {return t($this->pkgDescription);}
 	public function getPackageHandle() {return $this->pkgHandle;}
-	
+
 	/**
-	 * Gets the date the package was added to the system, 
+	 * Gets the date the package was added to the system,
 	 * if user is specified, returns in the current user's timezone
 	 * @param string $type (system || user)
-	 * @return string date formated like: 2009-01-01 00:00:00 
+	 * @return string date formated like: 2009-01-01 00:00:00
 	*/
 	function getPackageDateInstalled($type = 'system') {
 		if(ENABLE_USER_TIMEZONES && $type == 'user') {
@@ -120,7 +120,7 @@ class Concrete5_Model_Package extends Object {
 			return $this->pkgDateInstalled;
 		}
 	}
-	
+
 	public function getPackageVersion() {return $this->pkgVersion;}
 	public function getPackageVersionUpdateAvailable() {return $this->pkgAvailableVersion;}
 	public function isPackageInstalled() { return $this->pkgIsInstalled;}
@@ -132,7 +132,7 @@ class Concrete5_Model_Package extends Object {
 		}
 		return '';
 	}
-	
+
 	/**
 	 * Returns the currently installed package version.
 	 * NOTE: This function only returns a value if getLocalUpgradeablePackages() has been called first!
@@ -140,10 +140,10 @@ class Concrete5_Model_Package extends Object {
 	public function getPackageCurrentlyInstalledVersion() {
 		return $this->pkgCurrentVersion;
 	}
-	
+
 	protected $appVersionRequired = '5.0.0';
 	protected $pkgAllowsFullContentSwap = false;
-	
+
 	const E_PACKAGE_NOT_FOUND = 1;
 	const E_PACKAGE_INSTALLED = 2;
 	const E_PACKAGE_VERSION = 3;
@@ -159,7 +159,7 @@ class Concrete5_Model_Package extends Object {
 	public function getApplicationVersionRequired() {
 		return $this->appVersionRequired;
 	}
-	
+
 	public function hasInstallNotes() {
 		return file_exists($this->getPackagePath() . '/' . DIRNAME_ELEMENTS . '/' . DIRNAME_DASHBOARD . '/install.php');
 	}
@@ -167,38 +167,38 @@ class Concrete5_Model_Package extends Object {
 	public function hasInstallPostScreen() {
 		return file_exists($this->getPackagePath() . '/' . DIRNAME_ELEMENTS . '/' . DIRNAME_DASHBOARD . '/install_post.php');
 	}
-	
+
 	public function allowsFullContentSwap() {
 		return $this->pkgAllowsFullContentSwap;
 	}
-	
+
 	public function showInstallOptionsScreen() {
 		return $this->hasInstallNotes() || $this->allowsFullContentSwap();
 	}
-	
+
 	public static function installDB($xmlFile) {
-		
+
 		if (!file_exists($xmlFile)) {
 			return false;
 		}
-		
+
 		// currently this is just done from xml
-		
+
 		$db = Loader::db();
 
 		// this sucks - but adodb generates errors at the beginning because it attempts
-		// to find a table that doesn't exist! 
-		
+		// to find a table that doesn't exist!
+
 		$handler = $db->IgnoreErrors();
 		if (Database::getDebug() == false) {
 			ob_start();
 		}
-		
-		$schema = Database::getADOSChema();		
+
+		$schema = Database::getADOSChema();
 		$sql = $schema->ParseSchema($xmlFile);
-		
+
 		$db->IgnoreErrors($handler);
-		
+
 		if (!$sql) {
 			$result->message = $db->ErrorMsg();
 			return $result;
@@ -211,10 +211,10 @@ class Concrete5_Model_Package extends Object {
 			$dbLayerErrorMessage = ob_get_contents();
 			ob_end_clean();
 		}
-		
+
 		$result = new stdClass;
 		$result->result = false;
-		
+
 		if ($dbLayerErrorMessage != '') {
 			$result->message = $dbLayerErrorMessage;
 			return $result;
@@ -222,14 +222,14 @@ class Concrete5_Model_Package extends Object {
 			$result->message = $db->ErrorMsg();
 			return $result;
 		}
-		
+
 		$result->result = true;
-		
+
 		$db->CacheFlush();
 		return $result;
-	
+
 	}
-	
+
 	/** Loads package translation files into zend translate
 	* @param string $folder = null The directory name containing the locale file to load (for example: 'en_US'). If empty we'll use the locale identifier of $translate
 	* @param string $locale = null The identifier of the locale to activate (for example: 'en_US'). If empty we'll use $folder
@@ -252,8 +252,8 @@ class Concrete5_Model_Package extends Object {
 			}
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Returns an array of package items (e.g. blocks, themes)
 	 */
 	public function getPackageItems() {
@@ -277,11 +277,11 @@ class Concrete5_Model_Package extends Object {
 		$items['page_themes'] = PageTheme::getListByPackage($this);
 		$items['permissions'] = PermissionKey::getListByPackage($this);
 		$items['single_pages'] = SinglePage::getListByPackage($this);
-		$items['attribute_types'] = AttributeType::getListByPackage($this);		
-		$items['captcha_libraries'] = SystemCaptchaLibrary::getListByPackage($this);		
-		$items['antispam_libraries'] = SystemAntispamLibrary::getListByPackage($this);		
-		$items['jobs'] = Job::getListByPackage($this);		
-		$items['workflow_types'] = WorkflowType::getListByPackage($this);		
+		$items['attribute_types'] = AttributeType::getListByPackage($this);
+		$items['captcha_libraries'] = SystemCaptchaLibrary::getListByPackage($this);
+		$items['antispam_libraries'] = SystemAntispamLibrary::getListByPackage($this);
+		$items['jobs'] = Job::getListByPackage($this);
+		$items['workflow_types'] = WorkflowType::getListByPackage($this);
 		ksort($items);
 		return $items;
 	}
@@ -370,7 +370,7 @@ class Concrete5_Model_Package extends Object {
 		} else if ($item instanceof CollectionType) {
 			return $item->getCollectionTypeName();
 		} else if ($item instanceof MailImporter) {
-			return $item->getMailImporterName();		
+			return $item->getMailImporterName();
 		} else if ($item instanceof SinglePage) {
 			return $item->getCollectionPath();
 		} else if ($item instanceof AttributeType) {
@@ -394,7 +394,7 @@ class Concrete5_Model_Package extends Object {
 		} else if ($item instanceof SystemAntispamLibrary) {
 			return $item->getSystemAntispamLibraryName();
 		} else if (is_a($item, 'PermissionKey')) {
-			return $item->getPermissionKeyDisplayName();			
+			return $item->getPermissionKeyDisplayName();
 		} else if (is_a($item, 'Job')) {
 			return $item->getJobName();
 		} else if (is_a($item, 'WorkflowType')) {
@@ -402,19 +402,19 @@ class Concrete5_Model_Package extends Object {
 		}
 	}
 
-	/** 
+	/**
 	 * Uninstalls the package. Removes any blocks, themes, or pages associated with the package.
 	 */
 	public function uninstall() {
-		$db = Loader::db();		
-		
+		$db = Loader::db();
+
 		$items = $this->getPackageItems();
 
 		foreach($items as $k => $array) {
 			if (!is_array($array)) {
 				continue;
 			}
-			
+
 			foreach($array as $item) {
 				if (is_a($item, 'Job')) {
 					$item->uninstall();
@@ -423,10 +423,10 @@ class Concrete5_Model_Package extends Object {
 				} else {
 					switch(get_class($item)) {
 						case 'BlockType':
-							$item->delete();	
+							$item->delete();
 							break;
 						case 'PageTheme':
-							$item->uninstall();	
+							$item->uninstall();
 							break;
 						case 'SinglePage':
 							@$item->delete(); // we suppress errors because sometimes the wrapper pages can delete first.
@@ -468,21 +468,21 @@ class Concrete5_Model_Package extends Object {
 		}
 		$db->Execute("delete from Packages where pkgID = ?", array($this->pkgID));
 	}
-	
+
 	protected function validateClearSiteContents($options) {
 		$u = new User();
-		if ($u->isSuperUser()) { 
+		if ($u->isSuperUser()) {
 			// this can ONLY be used through the post. We will use the token to ensure that
 			$valt = Loader::helper('validation/token');
 			if ($valt->validate('install_options_selected', $options['ccm_token'])) {
-				return true;	
+				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public function swapContent($options) {
-		if ($this->validateClearSiteContents($options)) { 
+		if ($this->validateClearSiteContents($options)) {
 			Loader::model("page_list");
 			Loader::model("file_list");
 			Loader::model("stack/list");
@@ -492,41 +492,41 @@ class Concrete5_Model_Package extends Object {
 			foreach($pages as $c) {
 				$c->delete();
 			}
-			
+
 			$fl = new FileList();
 			$files = $fl->get();
 			foreach($files as $f) {
 				$f->delete();
 			}
-			
+
 			// clear stacks
 			$sl = new StackList();
 			foreach($sl->get() as $c) {
 				$c->delete();
 			}
-			
+
 			$home = Page::getByID(HOME_CID);
 			$blocks = $home->getBlocks();
 			foreach($blocks as $b) {
 				$b->deleteBlock();
 			}
-			
+
 			$pageTypes = CollectionType::getList();
 			foreach($pageTypes as $ct) {
 				$ct->delete();
 			}
-			
+
 			// now we add in any files that this package has
 			if (is_dir($this->getPackagePath() . '/content_files')) {
 				Loader::library('file/importer');
 				$fh = new FileImporter();
 				$contents = Loader::helper('file')->getDirectoryContents($this->getPackagePath() . '/content_files');
-		
+
 				foreach($contents as $filename) {
 					$f = $fh->import($this->getPackagePath() . '/content_files/' . $filename, $filename);
 				}
-			}	
-			
+			}
+
 			// now we parse the content.xml if it exists.
 			Loader::library('content/importer');
 			$ci = new ContentImporter();
@@ -534,22 +534,22 @@ class Concrete5_Model_Package extends Object {
 
 		}
 	}
-	
+
 	public function testForInstall($package, $testForAlreadyInstalled = true) {
 		// this is the pre-test routine that packages run through before they are installed. Any errors that come here
 		// are to be returned in the form of an array so we can show the user. If it's all good we return true
 		$db = Loader::db();
 		$errors = array();
-		
+
 		$pkg = Loader::package($package);
-		
+
 		// Step 1 does that package exist ?
 		if ((!is_dir(DIR_PACKAGES . '/' . $package) && (!is_dir(DIR_PACKAGES_CORE . '/' . $package))) || $package == '') {
 			$errors[] = Package::E_PACKAGE_NOT_FOUND;
 		} else if (!is_object($pkg)) {
 			$errors[] = Package::E_PACKAGE_NOT_FOUND;
 		}
-		
+
 		// Step 2 - check to see if the user has already installed a package w/this handle
 		if ($testForAlreadyInstalled) {
 			$cnt = $db->getOne("select count(*) from Packages where pkgHandle = ?", array($package));
@@ -557,14 +557,14 @@ class Concrete5_Model_Package extends Object {
 				$errors[] = Package::E_PACKAGE_INSTALLED;
 			}
 		}
-		
+
 		if (count($errors) == 0) {
 			// test minimum application version requirement
 			if (version_compare(APP_VERSION, $pkg->getApplicationVersionRequired(), '<')) {
 				$errors[] = array(Package::E_PACKAGE_VERSION, $pkg->getApplicationVersionRequired());
 			}
 		}
-		
+
 		if (count($errors) > 0) {
 			return $errors;
 		} else {
@@ -582,7 +582,7 @@ class Concrete5_Model_Package extends Object {
 		$errorText[Package::E_PACKAGE_INSTALL] = t('An error occurred while trying to install the package.');
 		$errorText[Package::E_PACKAGE_MIGRATE_BACKUP] = t('Unable to backup old package directory to %s', DIR_FILES_TRASH);
 		$errorText[Package::E_PACKAGE_INVALID_APP_VERSION] = t('This package isn\'t currently available for this version of concrete5. Please contact the maintainer of this package for assistance.');
-		
+
 		$testResultsText = array();
 		foreach($testResults as $result) {
 			if (is_array($result)) {
@@ -603,14 +603,14 @@ class Concrete5_Model_Package extends Object {
 	 * @access public
 	 * @return string $path
 	 */
-	 
+
 	public function getPackagePath() {
 		$dirp = (is_dir($this->DIR_PACKAGES . '/' . $this->getPackageHandle())) ? $this->DIR_PACKAGES : $this->DIR_PACKAGES_CORE;
 		$path = $dirp . '/' . $this->getPackageHandle();
 		return $path;
 	}
-	
-	
+
+
 	/**
 	 * returns a Package object for the given package id, null if not found
 	 * @param int $pkgID
@@ -644,7 +644,7 @@ class Concrete5_Model_Package extends Object {
 			return $pkg;
 		}
 	}
-	
+
 	/**
 	 * @return Package
 	 */
@@ -654,29 +654,29 @@ class Concrete5_Model_Package extends Object {
 		$dh = Loader::helper('date');
 		$v = array($this->getPackageName(), $this->getPackageDescription(), $this->getPackageVersion(), $this->getPackageHandle(), 1, $dh->getSystemDateTime());
 		$db->query("insert into Packages (pkgName, pkgDescription, pkgVersion, pkgHandle, pkgIsInstalled, pkgDateInstalled) values (?, ?, ?, ?, ?, ?)", $v);
-		
+
 		$pkg = Package::getByID($db->Insert_ID());
 		Package::installDB($pkg->getPackagePath() . '/' . FILENAME_PACKAGE_DB);
 		$env = Environment::get();
 		$env->clearOverrideCache();
 		return $pkg;
 	}
-	
+
 	public function updateAvailableVersionNumber($vNum) {
 		$db = Loader::db();
 		$v = array($vNum, $this->getPackageID());
 		$db->query("update Packages set pkgAvailableVersion = ? where pkgID = ?", $v);
 	}
-	
+
 	public function upgradeCoreData() {
 		$db = Loader::db();
 		$p1 = Loader::package($this->getPackageHandle());
 		$v = array($p1->getPackageName(), $p1->getPackageDescription(), $p1->getPackageVersion(), $this->getPackageID());
 		$db->query("update Packages set pkgName = ?, pkgDescription = ?, pkgVersion = ? where pkgID = ?", $v);
 	}
-	
+
 	public function upgrade() {
-		Package::installDB($this->getPackagePath() . '/' . FILENAME_PACKAGE_DB);		
+		Package::installDB($this->getPackagePath() . '/' . FILENAME_PACKAGE_DB);
 		// now we refresh all blocks
 		$items = $this->getPackageItems();
 		if (is_array($items['block_types'])) {
@@ -685,7 +685,7 @@ class Concrete5_Model_Package extends Object {
 			}
 		}
 	}
-	
+
 	public static function getInstalledHandles() {
 		$db = Loader::db();
 		return $db->GetCol("select pkgHandle from Packages");
@@ -702,8 +702,8 @@ class Concrete5_Model_Package extends Object {
 		}
 		return $pkgArray;
 	}
-	
-	/** 
+
+	/**
 	 * Returns an array of packages that have newer versions in the local packages directory
 	 * than those which are in the Packages table. This means they're ready to be upgraded
 	 */
@@ -713,14 +713,14 @@ class Concrete5_Model_Package extends Object {
 		$db = Loader::db();
 		foreach($packages as $p) {
 			$row = $db->GetRow("select pkgID, pkgVersion from Packages where pkgHandle = ? and pkgIsInstalled = 1", array($p->getPackageHandle()));
-			if ($row['pkgID'] > 0) { 
+			if ($row['pkgID'] > 0) {
 				if (version_compare($p->getPackageVersion(), $row['pkgVersion'], '>')) {
 					$p->pkgCurrentVersion = $row['pkgVersion'];
 					$upgradeables[] = $p;
-				}		
+				}
 			}
 		}
-		return $upgradeables;		
+		return $upgradeables;
 	}
 
 	public static function getRemotelyUpgradeablePackages() {
@@ -732,9 +732,9 @@ class Concrete5_Model_Package extends Object {
 				$upgradeables[] = $p;
 			}
 		}
-		return $upgradeables;		
-	}	
-	
+		return $upgradeables;
+	}
+
 	/**
 	 * moves the current package's directory to the trash directory renamed with the package handle and a date code.
 	*/
@@ -747,13 +747,13 @@ class Concrete5_Model_Package extends Object {
 			if (!$ret) {
 				return array(Package::E_PACKAGE_MIGRATE_BACKUP);
 			} else {
-				$this->backedUpFname = $trashName; 
+				$this->backedUpFname = $trashName;
 			}
 		}
 	}
-	
+
 	/**
-	 * if a packate was just backed up by this instance of the package object and the packages/package handle directory doesn't exist, this will restore the 
+	 * if a packate was just backed up by this instance of the package object and the packages/package handle directory doesn't exist, this will restore the
 	 * package from the trash
 	*/
 	public function restore() {
@@ -769,7 +769,7 @@ class Concrete5_Model_Package extends Object {
 		$co->setPackageObject($this);
 		return $co->get($cfKey, $getFullObject);
 	}
-	
+
 	public function saveConfig($cfKey, $value) {
 		$co = new Config();
 		$co->setPackageObject($this);
@@ -781,10 +781,10 @@ class Concrete5_Model_Package extends Object {
 		$co->setPackageObject($this);
 		return $co->clear($cfKey);
 	}
-	
+
 	public static function getAvailablePackages($filterInstalled = true) {
 		$dh = Loader::helper('file');
-		
+
 		$packages = $dh->getDirectoryContents(DIR_PACKAGES);
 		if ($filterInstalled) {
 			$handles = self::getInstalledHandles();
@@ -798,7 +798,7 @@ class Concrete5_Model_Package extends Object {
 			}
 			$packages = $packagesTemp;
 		}
-		
+
 		if (count($packages) > 0) {
 			$packagesTemp = array();
 			// get package objects from the file system
@@ -812,6 +812,6 @@ class Concrete5_Model_Package extends Object {
 		}
 		return $packages;
 	}
-	
+
 
 }

@@ -16,6 +16,7 @@
  * @license    http://www.concrete5.org/license/     MIT License
  */
 defined('C5_EXECUTE') or die("Access Denied.");
-class JsonHelper extends Concrete5_Helper_Json {
+class JsonHelper extends Concrete5_Helper_Json
+{
 
 }

@@ -1,17 +1,17 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Form_Attribute {
-	
+
 	protected $obj;
-	
+
 	public function reset() {
 		unset($this->obj);
 	}
-	
+
 	public function setAttributeObject($obj) {
 		$this->obj = $obj;
 	}
-	
+
 	public function display($key, $required = false, $includeLabel = true, $template = 'composer') {
 		if (is_object($key)) {
 			$obj = $key;
@@ -27,17 +27,17 @@ class Concrete5_Helper_Form_Attribute {
 			}
 			$obj = call_user_func(array($class, 'getByHandle'), $key);
 		}
-		
+
 		if (!is_object($obj)) {
 			return false;
 		}
-		
+
 		if (is_object($this->obj)) {
 			$value = $this->obj->getAttributeValueObject($obj);
 		}
-		
+
 	        $controlGroupCssClass = preg_replace('/\W+/','',strtolower(strip_tags($obj->atHandle))) . ' '.$obj->akHandle;
-		
+
 		$html = '<div class="control-group '.$controlGroupCssClass.'">';
 		if ($includeLabel) {
 			$html .= $obj->render('label', false, true);
@@ -47,9 +47,9 @@ class Concrete5_Helper_Form_Attribute {
 		}
 		$html .= '<div class="controls">';
 		$html .= $obj->render($template, $value, true);
-			
+
 		$html .= '</div></div>';
-		
+
 		return $html;
 	}
 

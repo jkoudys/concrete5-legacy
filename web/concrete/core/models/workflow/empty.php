@@ -14,7 +14,7 @@ class Concrete5_Model_EmptyWorkflow extends Workflow {
 	}
 	public function updateDetails($vars) {}
 	public function loadDetails() {}
-	
+
 	public function canApproveWorkflowProgressObject(WorkflowProgress $wp) {
 		return false;
 	}

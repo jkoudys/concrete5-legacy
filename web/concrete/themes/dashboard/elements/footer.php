@@ -1,12 +1,12 @@
-<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die('Access Denied.'); ?>
 <?php
 if ($_GET['_ccm_dashboard_external']) {
-	return;
+    return;
 }
 ?>
-	
-	</div>
-	
+
+    </div>
+
 </div>
 </div>
 

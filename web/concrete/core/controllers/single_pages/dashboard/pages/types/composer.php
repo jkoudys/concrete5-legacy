@@ -3,14 +3,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_Pages_Types_Composer extends DashboardBaseController {
 
 	protected $ct = false;
-	
+
 	protected function verify($ctID = false) {
 		$cap = Loader::helper('concrete/dashboard');
 		$ct = false;
 		if ($ctID > 0) {
 			$ct = CollectionType::getByID($ctID);
 		}
-		
+
 		if ($cap->canAccessComposer() && is_object($ct)) {
 			$this->set('ct', $ct);
 			$this->ct = $ct;
@@ -18,7 +18,7 @@ class Concrete5_Controller_Dashboard_Pages_Types_Composer extends DashboardBaseC
 			$this->redirect("/dashboard/pages/types");
 		}
 	}
-	
+
 	public function save_content_items($ctID = false) {
 		$this->verify($ctID);
 		$items = array();
@@ -34,16 +34,16 @@ class Concrete5_Controller_Dashboard_Pages_Types_Composer extends DashboardBaseC
 		$this->ct->saveComposerContentItemOrder($items);
 		exit;
 	}
-	
-	public function view($ctID = false, $action = false) { 
+
+	public function view($ctID = false, $action = false) {
 		$this->verify($ctID);
 		$this->set('contentitems', $this->ct->getComposerContentItems());
 		$this->set('disableThirdLevelNav', true);
 		if ($action == 'updated') {
 			$this->set('message', t('Composer settings updated.'));
 		}
-	}	
-	
+	}
+
 	public function save() {
 		$this->verify($this->post('ctID'));
 		if ($this->post('ctIncludeInComposer')) {
@@ -61,7 +61,7 @@ class Concrete5_Controller_Dashboard_Pages_Types_Composer extends DashboardBaseC
 					$this->ct->saveComposerPublishTargetPageType($ct);
 					break;
 				default:
-					$this->ct->saveComposerPublishTargetAll();					
+					$this->ct->saveComposerPublishTargetAll();
 					break;
 			}
 			if(!$this->error->has()) {
@@ -75,5 +75,5 @@ class Concrete5_Controller_Dashboard_Pages_Types_Composer extends DashboardBaseC
 			$this->redirect("/dashboard/pages/types", "clear_composer");
 		}
 	}
-	
+
 }

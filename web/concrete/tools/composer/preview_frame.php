@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $previewCID = Loader::helper('security')->sanitizeInt($_REQUEST['previewCID']);

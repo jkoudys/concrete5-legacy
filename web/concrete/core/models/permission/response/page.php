@@ -1,7 +1,7 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
-	
+
 	// legacy support
 	public function canWrite() { return $this->validate('edit_page_contents'); }
 	public function canReadVersions() { return $this->validate('view_page_versions');}
@@ -31,7 +31,7 @@ class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 		}
 		return $this->canViewPage();
 	}
-	
+
 	public function canEditPageProperties($obj = false) {
 		if ($this->object->isExternalLink()) {
 			return $this->canDeletePage();
@@ -41,7 +41,7 @@ class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 		$pk->setPermissionObject($this->object);
 		return $pk->validate($obj);
 	}
-	
+
 	public function canDeletePage() {
 		if ($this->object->isExternalLink()) {
 			// then whether the person can delete/write to this page ACTUALLY dependent on whether the PARENT collection
@@ -52,9 +52,9 @@ class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 		}
 		return $this->validate('delete_page');
 	}
-	
+
 	// end legacy
-	
+
 	// convenience function
 	public function canViewToolbar() {
 		$u = new User();
@@ -71,19 +71,19 @@ class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 		$this->canPreviewPageAsUser() ||
 		$this->canEditPageSpeedSettings() ||
 		$this->canEditPageProperties() ||
-		$this->canEditPageContents() || 
+		$this->canEditPageContents() ||
 		$this->canAddSubpage() ||
 		$this->canDeletePage() ||
 		$this->canApprovePageVersions() ||
 		$this->canEditPagePermissions() ||
 		$this->canMoveOrCopyPage()) {
 			return true;
-		} else { 
+		} else {
 			return false;
 		}
 	}
-	
-	public function testForErrors() { 
+
+	public function testForErrors() {
 		if ($this->object->isMasterCollection()) {
 			$canEditMaster = TaskPermission::getByHandle('access_page_defaults')->can();
 			if (!($canEditMaster && $_SESSION['mcEditID'] == $this->object->getCollectionID())) {
@@ -101,7 +101,7 @@ class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 		$db = Loader::db();
 		$assignments = array();
 		$r = $db->Execute('select peID, pkID, pdID from PagePermissionAssignments ppa inner join PermissionAccessList pal on ppa.paID = pal.paID where pdID > 0 and cID = ?', array($this->object->getCollectionID()));
-		while ($row = $r->FetchRow()) { 
+		while ($row = $r->FetchRow()) {
 			$pk = PagePermissionKey::getByID($row['pkID']);
 			$pae = PermissionAccessEntity::getByID($row['peID']);
 			$pd = PermissionDuration::getByID($row['pdID']);
@@ -114,7 +114,7 @@ class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 		$r = $db->Execute('select arHandle from Areas where cID = ? and arOverrideCollectionPermissions = 1', array($this->object->getCollectionID()));
 		while ($row = $r->FetchRow()) {
 			$r2 = $db->Execute('select peID, pdID, pkID from AreaPermissionAssignments apa inner join PermissionAccessList pal on apa.paID = pal.paID where pdID > 0 and cID = ? and arHandle = ?', array($this->object->getCollectionID(), $row['arHandle']));
-			while ($row2 = $r2->FetchRow()) { 
+			while ($row2 = $r2->FetchRow()) {
 				$pk = AreaPermissionKey::getByID($row2['pkID']);
 				$pae = PermissionAccessEntity::getByID($row2['peID']);
 				$area = Area::get($this->getPermissionObject(), $row['arHandle']);
@@ -130,7 +130,7 @@ class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 		$r = $db->Execute('select peID, cvb.cvID, cvb.bID, pdID, pkID from BlockPermissionAssignments bpa
 		inner join PermissionAccessList pal on bpa.paID = pal.paID inner join CollectionVersionBlocks cvb on cvb.cID = bpa.cID and cvb.cvID = bpa.cvID and cvb.bID = bpa.bID
 		where pdID > 0 and cvb.cID = ? and cvb.cvID = ? and cvb.cbOverrideAreaPermissions = 1', array($this->object->getCollectionID(), $this->object->getVersionID()));
-		while ($row = $r->FetchRow()) { 
+		while ($row = $r->FetchRow()) {
 			$pk = BlockPermissionKey::getByID($row['pkID']);
 			$pae = PermissionAccessEntity::getByID($row['peID']);
 			$arHandle = $db->GetOne('select arHandle from CollectionVersionBlocks where bID = ? and cvID = ? and cID = ?', array(
@@ -147,5 +147,5 @@ class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 		}
 		return $assignments;
 	}
-	
+
 }

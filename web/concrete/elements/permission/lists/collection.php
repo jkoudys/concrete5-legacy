@@ -1,10 +1,10 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::model('collection_types');
 $dh = Loader::helper('date');
 $dt = Loader::helper('form/date_time');
 $editPermissions = false;
-if ($c->getCollectionInheritance() == 'OVERRIDE') { 
+if ($c->getCollectionInheritance() == 'OVERRIDE') {
 	$editPermissions = true;
 }
 ?>
@@ -15,56 +15,56 @@ if ($c->getCollectionInheritance() == 'OVERRIDE') {
 <label for="ccm-page-permissions-inherit"><?=t('Assign Permissions')?></label>
 <div class="input">
    <select id="ccm-page-permissions-inherit" style="width: 220px">
-	<? if ($c->getCollectionID() > 1) { ?><option value="PARENT" <? if ($c->getCollectionInheritance() == "PARENT") { ?> selected<? } ?>><?=t('By Area of Site (Hierarchy)')?></option><? } ?>
-	<? if ($c->getMasterCollectionID() > 1) { ?><option value="TEMPLATE"  <? if ($c->getCollectionInheritance() == "TEMPLATE") { ?> selected<? } ?>><?=t('From Page Type Defaults')?></option><? } ?>
-	<option value="OVERRIDE" <? if ($c->getCollectionInheritance() == "OVERRIDE") { ?> selected<? } ?>><?=t('Manually')?></option>
+	<?php if ($c->getCollectionID() > 1) { ?><option value="PARENT" <?php if ($c->getCollectionInheritance() == "PARENT") { ?> selected<?php } ?>><?=t('By Area of Site (Hierarchy)')?></option><?php } ?>
+	<?php if ($c->getMasterCollectionID() > 1) { ?><option value="TEMPLATE"  <?php if ($c->getCollectionInheritance() == "TEMPLATE") { ?> selected<?php } ?>><?=t('From Page Type Defaults')?></option><?php } ?>
+	<option value="OVERRIDE" <?php if ($c->getCollectionInheritance() == "OVERRIDE") { ?> selected<?php } ?>><?=t('Manually')?></option>
   </select>
 </div>
 </div>
-<? if (!$c->isMasterCollection()) { ?>
+<?php if (!$c->isMasterCollection()) { ?>
 <div class="clearfix">
 <label for="ccm-page-permissions-subpages-override-template-permissions"><?=t('Subpage Permissions')?></label>
 <div class="input">
 	<select id="ccm-page-permissions-subpages-override-template-permissions" style="width: 260px">
-		<option value="0"<? if (!$c->overrideTemplatePermissions()) { ?>selected<? } ?>><?=t('Inherit page type default permissions.')?></option>
-		<option value="1"<? if ($c->overrideTemplatePermissions()) { ?>selected<? } ?>><?=t('Inherit the permissions of this page.')?></option>
+		<option value="0"<?php if (!$c->overrideTemplatePermissions()) { ?>selected<?php } ?>><?=t('Inherit page type default permissions.')?></option>
+		<option value="1"<?php if ($c->overrideTemplatePermissions()) { ?>selected<?php } ?>><?=t('Inherit the permissions of this page.')?></option>
 	</select>
 </div>
 </div>
 
-<? } ?>
+<?php } ?>
 </div>
 </form>
 
-<?
+<?php
 	  $cpc = $c->getPermissionsCollectionObject();
 	if ($c->getCollectionInheritance() == "PARENT") { ?>
 	<div><strong><?=t('This page inherits its permissions from:');?> <a target="_blank" href="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$cpc->getCollectionID()?>"><?=$cpc->getCollectionName()?></a></strong></div><br/><br/>
-	<? } ?>		
+	<?php } ?>
 
 
-<? $cat = PermissionKeyCategory::getByHandle('page'); ?>
+<?php $cat = PermissionKeyCategory::getByHandle('page'); ?>
 <form method="post" id="ccm-permission-list-form" action="<?=$cat->getToolsURL("save_permission_assignments")?>&cID=<?=$c->getCollectionID()?>">
 
 <table class="ccm-permission-grid">
-<?
+<?php
 $permissions = PermissionKey::getList('page');
-foreach($permissions as $pk) { 
+foreach($permissions as $pk) {
 	$pk->setPermissionObject($c);
 	?>
 	<tr>
-	<td class="ccm-permission-grid-name" id="ccm-permission-grid-name-<?=$pk->getPermissionKeyID()?>"><strong><? if ($editPermissions) { ?><a dialog-title="<?=$pk->getPermissionKeyDisplayName()?>" data-pkID="<?=$pk->getPermissionKeyID()?>" data-paID="<?=$pk->getPermissionAccessID()?>" onclick="ccm_permissionLaunchDialog(this)" href="javascript:void(0)"><? } ?><?=$pk->getPermissionKeyDisplayName()?><? if ($editPermissions) { ?></a><? } ?></strong></td>
-	<td id="ccm-permission-grid-cell-<?=$pk->getPermissionKeyID()?>" <? if ($editPermissions) { ?>class="ccm-permission-grid-cell"<? } ?>><?=Loader::element('permission/labels', array('pk' => $pk))?></td>
+	<td class="ccm-permission-grid-name" id="ccm-permission-grid-name-<?=$pk->getPermissionKeyID()?>"><strong><?php if ($editPermissions) { ?><a dialog-title="<?=$pk->getPermissionKeyDisplayName()?>" data-pkID="<?=$pk->getPermissionKeyID()?>" data-paID="<?=$pk->getPermissionAccessID()?>" onclick="ccm_permissionLaunchDialog(this)" href="javascript:void(0)"><?php } ?><?=$pk->getPermissionKeyDisplayName()?><?php if ($editPermissions) { ?></a><?php } ?></strong></td>
+	<td id="ccm-permission-grid-cell-<?=$pk->getPermissionKeyID()?>" <?php if ($editPermissions) { ?>class="ccm-permission-grid-cell"<?php } ?>><?=Loader::element('permission/labels', array('pk' => $pk))?></td>
 	</tr>
-<? } ?>
-<? if ($editPermissions) { ?>
+<?php } ?>
+<?php if ($editPermissions) { ?>
 <tr>
 	<td class="ccm-permission-grid-name" ></td>
 	<td>
 	<?=Loader::element('permission/clipboard', array('pkCategory' => $cat))?>
 	</td>
 </tr>
-<? } ?>
+<?php } ?>
 </table>
 
 </form>
@@ -81,7 +81,7 @@ ccm_permissionLaunchDialog = function(link) {
 		modal: false,
 		width: 500,
 		height: 380
-	});		
+	});
 }
 </script>
 
@@ -96,12 +96,12 @@ ccm_permissionLaunchDialog = function(link) {
 </div>
 
 
- <? if ($editPermissions) { ?>
+ <?php if ($editPermissions) { ?>
 <div class="dialog-buttons">
 	<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop()" class="btn"><?=t('Cancel')?></a>
 	<button onclick="$('#ccm-permission-list-form').submit()" class="btn primary ccm-button-right"><?=t('Save')?> <i class="icon-ok-sign icon-white"></i></button>
 </div>
-<? } ?>
+<?php } ?>
 
 </div>
 
@@ -113,9 +113,9 @@ ccm_pagePermissionsCancelInheritance = function() {
 	$('#ccm-page-permissions-inherit').val(inheritanceVal);
 }
 
-ccm_pagePermissionsConfirmInheritanceChange = function() { 
+ccm_pagePermissionsConfirmInheritanceChange = function() {
 	jQuery.fn.dialog.showLoader();
-	$.getJSON('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("change_permission_inheritance")?>&cID=<?=$c->getCollectionID()?>&mode=' + $('#ccm-page-permissions-inherit').val(), function(r) { 
+	$.getJSON('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("change_permission_inheritance")?>&cID=<?=$c->getCollectionID()?>&mode=' + $('#ccm-page-permissions-inherit').val(), function(r) {
 		if (r.deferred) {
 			jQuery.fn.dialog.closeAll();
 			jQuery.fn.dialog.hideLoader();
@@ -131,11 +131,11 @@ ccm_pagePermissionsConfirmInheritanceChange = function() {
 $(function() {
 	$('#ccm-permission-list-form').ajaxForm({
 		dataType: 'json',
-		
+
 		beforeSubmit: function() {
 			jQuery.fn.dialog.showLoader();
 		},
-		
+
 		success: function(r) {
 			jQuery.fn.dialog.hideLoader();
 			jQuery.fn.dialog.closeTop();
@@ -146,9 +146,9 @@ $(function() {
 				ccmAlert.hud(ccmi18n.setPermissionsDeferredMsg, 2000, 'success', ccmi18n_sitemap.setPagePermissions);
 			}
 
-		}		
+		}
 	});
-	
+
 	inheritanceVal = $('#ccm-page-permissions-inherit').val();
 	$('#ccm-page-permissions-inherit').change(function() {
 		$('#dialog-buttons-start').addClass('dialog-buttons');
@@ -162,10 +162,10 @@ $(function() {
 			}
 		});
 	});
-	
+
 	$('#ccm-page-permissions-subpages-override-template-permissions').change(function() {
 		jQuery.fn.dialog.showLoader();
-		$.getJSON('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("change_subpage_defaults_inheritance")?>&cID=<?=$c->getCollectionID()?>&inherit=' + $(this).val(), function(r) { 
+		$.getJSON('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("change_subpage_defaults_inheritance")?>&cID=<?=$c->getCollectionID()?>&inherit=' + $(this).val(), function(r) {
 			if (r.deferred) {
 				jQuery.fn.dialog.closeTop();
 				jQuery.fn.dialog.hideLoader();
@@ -175,15 +175,15 @@ $(function() {
 			}
 		});
 	});
-	
+
 });
 
 ccm_refreshPagePermissions = function() {
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup?ctask=edit_permissions&cID=<?=$c->getCollectionID()?>', function(r) { 
+	$.get('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup?ctask=edit_permissions&cID=<?=$c->getCollectionID()?>', function(r) {
 		jQuery.fn.dialog.replaceTop(r);
 		jQuery.fn.dialog.hideLoader();
-	});	
+	});
 }
 
 </script>

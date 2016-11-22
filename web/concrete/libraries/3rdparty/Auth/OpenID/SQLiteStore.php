@@ -16,7 +16,8 @@ require_once "Auth/OpenID/SQLStore.php";
  *
  * @package OpenID
  */
-class Auth_OpenID_SQLiteStore extends Auth_OpenID_SQLStore {
+class Auth_OpenID_SQLiteStore extends Auth_OpenID_SQLStore
+{
     function setSQL()
     {
         $this->sql['nonce_table'] =
@@ -67,4 +68,3 @@ class Auth_OpenID_SQLiteStore extends Auth_OpenID_SQLStore {
         return parent::_add_nonce('x' . $server_url, $timestamp, $salt);
     }
 }
-

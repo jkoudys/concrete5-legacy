@@ -16,13 +16,14 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
-class Concrete5_Library_Environment_Record {
-	
-	public $override;
-	public $file;
-	public $url;
-	public function exists() {
-		return file_exists($this->file);
-	}
+class Concrete5_Library_Environment_Record
+{
 
+    public $override;
+    public $file;
+    public $url;
+    public function exists()
+    {
+        return file_exists($this->file);
+    }
 }

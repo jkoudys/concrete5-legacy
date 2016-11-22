@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $valt = Loader::helper('validation/token');
 $token = '&' . $valt->getParameter();
@@ -6,20 +6,20 @@ $html = Loader::helper('html');
 $dh = Loader::helper('concrete/dashboard');
 
 if (isset($cp)) {
-	if ($cp->canViewToolbar()) { 
+	if ($cp->canViewToolbar()) {
 
 ?>
 
 <style type="text/css">html {margin-top: 49px !important;} </style>
 
 <script type="text/javascript">
-<?
+<?php
 $valt = Loader::helper('validation/token');
 print "var CCM_SECURITY_TOKEN = '" . $valt->generate() . "';";
 ?>
 </script>
 
-<?
+<?php
 if (!$dh->inDashboard($c)) {
 	$this->addHeaderItem($html->css('ccm.app.css'));
 	if (MOBILE_THEME_IS_ACTIVE == true) {
@@ -27,8 +27,8 @@ if (!$dh->inDashboard($c)) {
 	}
 	$this->addHeaderItem($html->css('jquery.ui.css'));
 	$this->addFooterItem('<div id="ccm-page-controls-wrapper"><div id="ccm-toolbar"></div></div>');
-	
-	$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>'); 
+
+	$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>');
 	$this->addHeaderItem($html->javascript('jquery.js'));
 	$this->addFooterItem($html->javascript('jquery.ui.js'));
 	$this->addFooterItem($html->javascript('jquery.form.js'));
@@ -55,8 +55,8 @@ $btask = '';
 if (Loader::helper('validation/strings')->alphanum($_REQUEST['btask'])) {
 	$btask = $_REQUEST['btask'];
 }
-$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/page_controls_menu_js?cID=' . $cID . '&amp;cvID=' . $cvID . '&amp;btask=' . $btask . '&amp;ts=' . time() . '"></script>'); 
+$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/page_controls_menu_js?cID=' . $cID . '&amp;cvID=' . $cvID . '&amp;btask=' . $btask . '&amp;ts=' . time() . '"></script>');
 
 	}
-	
+
 }

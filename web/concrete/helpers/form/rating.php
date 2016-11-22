@@ -19,4 +19,7 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class FormRatingHelper extends Concrete5_Helper_Form_Rating {}
+class FormRatingHelper extends Concrete5_Helper_Form_Rating
+{
+
+}

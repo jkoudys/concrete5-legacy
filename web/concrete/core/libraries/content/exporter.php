@@ -18,195 +18,206 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Library_Content_Exporter {
-	
-	protected $x; // the xml object for export
-	protected static $mcBlockIDs = array();
+class Concrete5_Library_Content_Exporter
+{
 
-	/**
-	 * @deprecated
-	 */
-	public function run()
-	{
-		$this->exportAll();
-	}
+    protected $x; // the xml object for export
+    protected static $mcBlockIDs = array();
 
-	protected function getXMLRoot()
-	{
-		$root = new SimpleXMLElement("<concrete5-cif></concrete5-cif>");
-		$root->addAttribute('version', '1.0');
-		return $root;
-	}
+    /**
+     * @deprecated
+     */
+    public function run()
+    {
+        $this->exportAll();
+    }
 
-	public function getXMLNode()
-	{
-		return $this->x;
-	}
+    protected function getXMLRoot()
+    {
+        $root = new SimpleXMLElement("<concrete5-cif></concrete5-cif>");
+        $root->addAttribute('version', '1.0');
+        return $root;
+    }
 
-	public function exportAll() {
-		$this->x = $this->getXMLRoot();
+    public function getXMLNode()
+    {
+        return $this->x;
+    }
 
-		// First, attribute categories
-		AttributeKeyCategory::exportList($this->x);
+    public function exportAll()
+    {
+        $this->x = $this->getXMLRoot();
 
-		// attribute types
-		AttributeType::exportList($this->x);
+        // First, attribute categories
+        AttributeKeyCategory::exportList($this->x);
 
-		// then block types
-		BlockTypeList::exportList($this->x);
+        // attribute types
+        AttributeType::exportList($this->x);
 
-		// now attribute keys (including user)
-		AttributeKey::exportList($this->x);
+        // then block types
+        BlockTypeList::exportList($this->x);
 
-		// now attribute keys (including user)
-		AttributeSet::exportList($this->x);
+        // now attribute keys (including user)
+        AttributeKey::exportList($this->x);
 
-		// now theme
-		PageTheme::exportList($this->x);
-		
-		// now packages
-		PackageList::export($this->x);
+        // now attribute keys (including user)
+        AttributeSet::exportList($this->x);
 
-		// permission access entity types
-		PermissionAccessEntityType::exportList($this->x);
-		
-		// now task permissions
-		PermissionKey::exportList($this->x);
+        // now theme
+        PageTheme::exportList($this->x);
 
-		// workflow types
-		WorkflowType::exportList($this->x);
-		
-		// now jobs
-		Loader::model('job');
-		Job::exportList($this->x);
-		
-		// now single pages
-		$singlepages = $this->x->addChild("singlepages");
-		$db = Loader::db();
-		$r = $db->Execute('select cID from Pages where cFilename is not null and cFilename <> "" and cID not in (select cID from Stacks) order by cID asc');
-		while($row = $r->FetchRow()) {
-			$pc = Page::getByID($row['cID'], 'RECENT');
-			$pc->export($singlepages);
-		}		
-		
-		// now page types
-		CollectionType::exportList($this->x);
-		
-		// now stacks/global areas
-		Loader::model('stack/list');
-		StackList::export($this->x);
+        // now packages
+        PackageList::export($this->x);
 
-		$this->exportPages($this->x);
+        // permission access entity types
+        PermissionAccessEntityType::exportList($this->x);
 
-		Loader::model("system/captcha/library");
-		SystemCaptchaLibrary::exportList($this->x);
-		
-		Config::exportList($this->x);
-	}
+        // now task permissions
+        PermissionKey::exportList($this->x);
 
-	public function exportPages($xml = null, PageList $pl = null)
-	{
-		if (!$xml) {
-			$this->x = $this->getXMLRoot();
-		}
-		$node = $this->x->addChild("pages");
-		if (!$pl) {
-			$pl = new PageList();
-		}
-		$pl->ignorePermissions();
-		$pl->ignoreAliases();
-		$pl->filter(false, 'cFilename is null or cFilename = \'\'');
-		$pages = $pl->get();
-		foreach($pages as $pc) {
-			$pc->export($node);
-		}
-	}
+        // workflow types
+        WorkflowType::exportList($this->x);
 
-	public static function addMasterCollectionBlockID($b, $id) {
-		self::$mcBlockIDs[$b->getBlockID()] = $id;
-	}
-	
-	public static function getMasterCollectionTemporaryBlockID($b) {
-		if (isset(self::$mcBlockIDs[$b->getBlockID()])) {
-			return self::$mcBlockIDs[$b->getBlockID()];
-		}
-	}
-	
-	public function output() {
-		// return output stripped of control characters except newlines and character returns.
-		return preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $this->x->asXML());
-	}
-	
-	public function getFilesArchive() {
-		Loader::model('file_list');
-		$vh = Loader::helper("validation/identifier");
-		$archive = $vh->getString();
-		FileList::exportArchive($archive);
-		return $archive;
-	}
-	
-	public static function replacePageWithPlaceHolder($cID) {
-		if ($cID > 0) { 
-			$c = Page::getByID($cID);
-			return '{ccm:export:page:' . $c->getCollectionPath() . '}';
-		}
-	}
+        // now jobs
+        Loader::model('job');
+        Job::exportList($this->x);
 
-	public static function replaceFileWithPlaceHolder($fID) {
-		if ($fID > 0) { 
-			$f = File::getByID($fID);
-			return '{ccm:export:file:' . $f->getFileName() . '}';
-		}
-	}
+        // now single pages
+        $singlepages = $this->x->addChild("singlepages");
+        $db = Loader::db();
+        $r = $db->Execute('select cID from Pages where cFilename is not null and cFilename <> "" and cID not in (select cID from Stacks) order by cID asc');
+        while ($row = $r->FetchRow()) {
+            $pc = Page::getByID($row['cID'], 'RECENT');
+            $pc->export($singlepages);
+        }
 
-	public static function replacePageWithPlaceHolderInMatch($cID) {
-		if ($cID[1] > 0) { 
-			$cID = $cID[1];
-			return self::replacePageWithPlaceHolder($cID);
-		}
-	}
+        // now page types
+        CollectionType::exportList($this->x);
 
-	public static function replaceFileWithPlaceHolderInMatch($fID) {
-		if ($fID[1] > 0) { 
-			$fID = $fID[1];
-			return self::replaceFileWithPlaceHolder($fID);
-		}
-	}
-	
-	public static function replaceImageWithPlaceHolderInMatch($fID) {
-		if ($fID > 0) { 
-			$f = File::getByID($fID[1]);
-			return '{ccm:export:image:' . $f->getFileName() . '}';
-		}
-	}
+        // now stacks/global areas
+        Loader::model('stack/list');
+        StackList::export($this->x);
 
-	public static function replacePageTypeWithPlaceHolder($ctID) {
-		if ($ctID > 0) {
-			$ct = CollectionType::getByID($ctID);
-			return '{ccm:export:pagetype:' . $ct->getCollectionTypeHandle() . '}';
-		}
-	}
-	
-	/** 
-	 * Removes an item from the export xml registry
-	 */
-	public function removeItem($parent, $node, $handle) {
-		$query = '//'.$node.'[@handle=\''.$handle.'\' or @package=\''.$handle.'\']';
-		$r = $this->x->xpath($query);
-		if ($r && isset($r[0]) && $r[0] instanceof SimpleXMLElement) {		
-			$dom = dom_import_simplexml($r[0]);
-			$dom->parentNode->removeChild($dom);
-		}
+        $this->exportPages($this->x);
 
-		$query = '//'.$parent;
-		$r = $this->x->xpath($query);
-		if ($r && isset($r[0]) && $r[0] instanceof SimpleXMLElement) {		
-			$dom = dom_import_simplexml($r[0]);
-			if ($dom->childNodes->length < 1) {
-				$dom->parentNode->removeChild($dom);
-			}
-		}
-	}
+        Loader::model("system/captcha/library");
+        SystemCaptchaLibrary::exportList($this->x);
 
+        Config::exportList($this->x);
+    }
 
+    public function exportPages($xml = null, PageList $pl = null)
+    {
+        if (!$xml) {
+            $this->x = $this->getXMLRoot();
+        }
+        $node = $this->x->addChild("pages");
+        if (!$pl) {
+            $pl = new PageList();
+        }
+        $pl->ignorePermissions();
+        $pl->ignoreAliases();
+        $pl->filter(false, 'cFilename is null or cFilename = \'\'');
+        $pages = $pl->get();
+        foreach ($pages as $pc) {
+            $pc->export($node);
+        }
+    }
+
+    public static function addMasterCollectionBlockID($b, $id)
+    {
+        self::$mcBlockIDs[$b->getBlockID()] = $id;
+    }
+
+    public static function getMasterCollectionTemporaryBlockID($b)
+    {
+        if (isset(self::$mcBlockIDs[$b->getBlockID()])) {
+            return self::$mcBlockIDs[$b->getBlockID()];
+        }
+    }
+
+    public function output()
+    {
+        // return output stripped of control characters except newlines and character returns.
+        return preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $this->x->asXML());
+    }
+
+    public function getFilesArchive()
+    {
+        Loader::model('file_list');
+        $vh = Loader::helper("validation/identifier");
+        $archive = $vh->getString();
+        FileList::exportArchive($archive);
+        return $archive;
+    }
+
+    public static function replacePageWithPlaceHolder($cID)
+    {
+        if ($cID > 0) {
+            $c = Page::getByID($cID);
+            return '{ccm:export:page:' . $c->getCollectionPath() . '}';
+        }
+    }
+
+    public static function replaceFileWithPlaceHolder($fID)
+    {
+        if ($fID > 0) {
+            $f = File::getByID($fID);
+            return '{ccm:export:file:' . $f->getFileName() . '}';
+        }
+    }
+
+    public static function replacePageWithPlaceHolderInMatch($cID)
+    {
+        if ($cID[1] > 0) {
+            $cID = $cID[1];
+            return self::replacePageWithPlaceHolder($cID);
+        }
+    }
+
+    public static function replaceFileWithPlaceHolderInMatch($fID)
+    {
+        if ($fID[1] > 0) {
+            $fID = $fID[1];
+            return self::replaceFileWithPlaceHolder($fID);
+        }
+    }
+
+    public static function replaceImageWithPlaceHolderInMatch($fID)
+    {
+        if ($fID > 0) {
+            $f = File::getByID($fID[1]);
+            return '{ccm:export:image:' . $f->getFileName() . '}';
+        }
+    }
+
+    public static function replacePageTypeWithPlaceHolder($ctID)
+    {
+        if ($ctID > 0) {
+            $ct = CollectionType::getByID($ctID);
+            return '{ccm:export:pagetype:' . $ct->getCollectionTypeHandle() . '}';
+        }
+    }
+
+    /**
+     * Removes an item from the export xml registry
+     */
+    public function removeItem($parent, $node, $handle)
+    {
+        $query = '//'.$node.'[@handle=\''.$handle.'\' or @package=\''.$handle.'\']';
+        $r = $this->x->xpath($query);
+        if ($r && isset($r[0]) && $r[0] instanceof SimpleXMLElement) {
+            $dom = dom_import_simplexml($r[0]);
+            $dom->parentNode->removeChild($dom);
+        }
+
+        $query = '//'.$parent;
+        $r = $this->x->xpath($query);
+        if ($r && isset($r[0]) && $r[0] instanceof SimpleXMLElement) {
+            $dom = dom_import_simplexml($r[0]);
+            if ($dom->childNodes->length < 1) {
+                $dom->parentNode->removeChild($dom);
+            }
+        }
+    }
 }

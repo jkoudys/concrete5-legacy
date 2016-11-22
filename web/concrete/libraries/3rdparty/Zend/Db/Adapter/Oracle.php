@@ -149,7 +149,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
         return ((bool) (is_resource($this->_connection)
                     && (get_resource_type($this->_connection) == 'oci8 connection'
                      || get_resource_type($this->_connection) == 'oci8 persistent connection')));
-        }
+    }
 
     /**
      * Force the connection to close.
@@ -579,7 +579,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
      */
     private function _setExecuteMode($mode)
     {
-        switch($mode) {
+        switch ($mode) {
             case OCI_COMMIT_ON_SUCCESS:
             case OCI_DEFAULT:
             case OCI_DESCRIBE_ONLY:

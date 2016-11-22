@@ -2,7 +2,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_AddBlockToAreaAreaPermissionAccessListItem extends AreaPermissionAccessListItem {
-	
+
 	protected $customBlockTypeArray = array();
 	protected $blockTypesAllowedPermission = 'N';
 
@@ -18,6 +18,6 @@ class Concrete5_Model_AddBlockToAreaAreaPermissionAccessListItem extends AreaPer
 	public function getBlockTypesAllowedArray() {
 		return $this->customBlockTypeArray;
 	}
-	
-	
+
+
 }

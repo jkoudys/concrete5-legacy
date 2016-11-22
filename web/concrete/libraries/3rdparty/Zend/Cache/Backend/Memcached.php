@@ -156,14 +156,25 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
             }
             if ($this->_options['compatibility']) {
                 // No status for compatibility mode (#ZF-5887)
-                $this->_memcache->addServer($server['host'], $server['port'], $server['persistent'],
-                                        $server['weight'], $server['timeout'],
-                                        $server['retry_interval']);
+                $this->_memcache->addServer(
+                    $server['host'],
+                    $server['port'],
+                    $server['persistent'],
+                    $server['weight'],
+                    $server['timeout'],
+                    $server['retry_interval']
+                );
             } else {
-                $this->_memcache->addServer($server['host'], $server['port'], $server['persistent'],
-                                        $server['weight'], $server['timeout'],
-                                        $server['retry_interval'],
-                                        $server['status'], $server['failure_callback']);
+                $this->_memcache->addServer(
+                    $server['host'],
+                    $server['port'],
+                    $server['persistent'],
+                    $server['weight'],
+                    $server['timeout'],
+                    $server['retry_interval'],
+                    $server['status'],
+                    $server['failure_callback']
+                );
             }
         }
     }
@@ -270,9 +281,9 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
             case Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG:
                 $this->_log(self::TAGS_UNSUPPORTED_BY_CLEAN_OF_MEMCACHED_BACKEND);
                 break;
-               default:
+            default:
                 Zend_Cache::throwException('Invalid mode for clean() method');
-                   break;
+                break;
         }
     }
 
@@ -500,5 +511,4 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
             'get_list' => false
         );
     }
-
 }

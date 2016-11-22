@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $ih = Loader::helper('concrete/interface');
 
@@ -7,7 +7,7 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sing
 		<h3><?php echo t('Add Single Page')?></h3>
 		<?php if(URL_REWRITING == true || URL_REWRITING_ALL == true) {
 			$base = BASE_URL.DIR_REL;
-		} else { 
+		} else {
 			$base = BASE_URL.DIR_REL.'/'.DISPATCHER_FILENAME;
 		}?>
 		<form class="form-stacked" method="post" id="add_static_page_form" action="<?php echo $this->url('/dashboard/pages/single')?>">
@@ -40,8 +40,8 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sing
 					</td>
 				</tr>
 			<?php } else { ?>
-		
-				<?php foreach ($generated as $p) { 
+
+				<?php foreach ($generated as $p) {
 					$cp = new Permissions($p);
 					if ($p->getPackageID() > 0) {
 						$package = Package::getByID($p->getPackageID());
@@ -64,6 +64,6 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sing
 
 			} ?>
 		</table>
-		
+
 	</div>
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);

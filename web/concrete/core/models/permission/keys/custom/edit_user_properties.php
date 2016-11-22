@@ -6,7 +6,7 @@ class Concrete5_Model_EditUserPropertiesUserPermissionKey extends UserPermission
 	public function getMyAssignment() {
 		$u = new User();
 		$asl = new EditUserPropertiesUserPermissionAccessListItem();
-		
+
 		$db = Loader::db();
 		$allAKIDs = $db->GetCol('select akID from UserAttributeKeys order by akID asc');
 
@@ -26,13 +26,13 @@ class Concrete5_Model_EditUserPropertiesUserPermissionKey extends UserPermission
 		if (!is_object($pae)) {
 			return $asl;
 		}
-		
+
 		$accessEntities = $u->getUserAccessEntityObjects();
 		$accessEntities = $pae->validateAndFilterAccessEntities($accessEntities);
 		$list = $this->getAccessListItems(UserPermissionKey::ACCESS_TYPE_ALL, $accessEntities);
 		$list = PermissionDuration::filterByActive($list);
 		$properties = array();
-		
+
 		$excluded = array();
 		$akIDs = array();
 		$u = new User();
@@ -89,7 +89,7 @@ class Concrete5_Model_EditUserPropertiesUserPermissionKey extends UserPermission
 				$asl->setAttributesAllowedPermission('C');
 				if ($l->getAccessType() == UserPermissionKey::ACCESS_TYPE_EXCLUDE) {
 					$akIDs = array_values(array_diff($akIDs, $l->getAttributesAllowedArray()));
-				} else { 
+				} else {
 					$akIDs = array_unique(array_merge($akIDs, $l->getAttributesAllowedArray()));
 				}
 			}
@@ -98,8 +98,8 @@ class Concrete5_Model_EditUserPropertiesUserPermissionKey extends UserPermission
 				$akIDs = $allAKIDs;
 				$asl->setAttributesAllowedPermission('A');
 			}
-		}	
-		
+		}
+
 		$asl->setAttributesAllowedArray($akIDs);
 		return $asl;
 	}
@@ -110,7 +110,7 @@ class Concrete5_Model_EditUserPropertiesUserPermissionKey extends UserPermission
 		if ($u->isSuperUser()) {
 			return true;
 		}
-		
+
 		$asl = $this->getMyAssignment();
 
 		if (is_object($obj)) {
@@ -122,23 +122,23 @@ class Concrete5_Model_EditUserPropertiesUserPermissionKey extends UserPermission
 					return true;
 				} else {
 					return false;
-				}				
+				}
 			}
 		}
-		
+
 		if (
-			$asl->allowEditUserName() || 
-			$asl->allowEditAvatar() || 
-			$asl->allowEditEmail() || 
-			$asl->allowEditPassword() || 
-			$asl->allowEditTimezone() || 
-			$asl->allowEditDefaultLanguage() || 
+			$asl->allowEditUserName() ||
+			$asl->allowEditAvatar() ||
+			$asl->allowEditEmail() ||
+			$asl->allowEditPassword() ||
+			$asl->allowEditTimezone() ||
+			$asl->allowEditDefaultLanguage() ||
 			($asl->getAttributesAllowedPermission() == 'A' || ($asl->getAttributesAllowedPermission() == 'C' && count($asl->getAttributesAllowedArray() > 0)))) {
 				return true;
 		} else {
 			return false;
 		}
 	}
-	
-	
+
+
 }

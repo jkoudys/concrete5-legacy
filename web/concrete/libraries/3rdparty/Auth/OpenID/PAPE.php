@@ -10,18 +10,28 @@
 
 require_once "Auth/OpenID/Extension.php";
 
-define('Auth_OpenID_PAPE_NS_URI',
-       "http://specs.openid.net/extensions/pape/1.0");
+define(
+    'Auth_OpenID_PAPE_NS_URI',
+    "http://specs.openid.net/extensions/pape/1.0"
+);
 
-define('PAPE_AUTH_MULTI_FACTOR_PHYSICAL',
-       'http://schemas.openid.net/pape/policies/2007/06/multi-factor-physical');
-define('PAPE_AUTH_MULTI_FACTOR',
-       'http://schemas.openid.net/pape/policies/2007/06/multi-factor');
-define('PAPE_AUTH_PHISHING_RESISTANT',
-       'http://schemas.openid.net/pape/policies/2007/06/phishing-resistant');
+define(
+    'PAPE_AUTH_MULTI_FACTOR_PHYSICAL',
+    'http://schemas.openid.net/pape/policies/2007/06/multi-factor-physical'
+);
+define(
+    'PAPE_AUTH_MULTI_FACTOR',
+    'http://schemas.openid.net/pape/policies/2007/06/multi-factor'
+);
+define(
+    'PAPE_AUTH_PHISHING_RESISTANT',
+    'http://schemas.openid.net/pape/policies/2007/06/phishing-resistant'
+);
 
-define('PAPE_TIME_VALIDATOR',
-      '/^[0-9]{4,4}-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/');
+define(
+    'PAPE_TIME_VALIDATOR',
+    '/^[0-9]{4,4}-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/'
+);
 /**
  * A Provider Authentication Policy request, sent from a relying party
  * to a provider
@@ -32,14 +42,17 @@ define('PAPE_TIME_VALIDATOR',
  * max_auth_age: The maximum time, in seconds, that the relying party
  * wants to allow to have elapsed before the user must re-authenticate
  */
-class Auth_OpenID_PAPE_Request extends Auth_OpenID_Extension {
+class Auth_OpenID_PAPE_Request extends Auth_OpenID_Extension
+{
 
     var $ns_alias = 'pape';
     var $ns_uri = Auth_OpenID_PAPE_NS_URI;
 
-    function Auth_OpenID_PAPE_Request($preferred_auth_policies=null,
-                                      $max_auth_age=null)
-    {
+    function Auth_OpenID_PAPE_Request(
+        $preferred_auth_policies = null,
+        $max_auth_age = null
+    ) {
+
         if ($preferred_auth_policies === null) {
             $preferred_auth_policies = array();
         }
@@ -156,14 +169,18 @@ class Auth_OpenID_PAPE_Request extends Auth_OpenID_Extension {
  * A Provider Authentication Policy response, sent from a provider to
  * a relying party
  */
-class Auth_OpenID_PAPE_Response extends Auth_OpenID_Extension {
+class Auth_OpenID_PAPE_Response extends Auth_OpenID_Extension
+{
 
     var $ns_alias = 'pape';
     var $ns_uri = Auth_OpenID_PAPE_NS_URI;
 
-    function Auth_OpenID_PAPE_Response($auth_policies=null, $auth_time=null,
-                                       $nist_auth_level=null)
-    {
+    function Auth_OpenID_PAPE_Response(
+        $auth_policies = null,
+        $auth_time = null,
+        $nist_auth_level = null
+    ) {
+
         if ($auth_policies) {
             $this->auth_policies = $auth_policies;
         } else {
@@ -234,7 +251,7 @@ class Auth_OpenID_PAPE_Response extends Auth_OpenID_Extension {
      * @return null The data is parsed into the internal fields of
      * this object.
     */
-    function parseExtensionArgs($args, $strict=false)
+    function parseExtensionArgs($args, $strict = false)
     {
         $policies_str = Auth_OpenID::arrayGet($args, 'auth_policies');
         if ($policies_str && $policies_str != "none") {
@@ -255,7 +272,7 @@ class Auth_OpenID_PAPE_Response extends Auth_OpenID_Extension {
 
             if (0 <= $nist_level && $nist_level < 5) {
                 $this->nist_auth_level = $nist_level;
-            } else if ($strict) {
+            } elseif ($strict) {
                 return false;
             }
         }
@@ -264,7 +281,7 @@ class Auth_OpenID_PAPE_Response extends Auth_OpenID_Extension {
         if ($auth_time !== null) {
             if (preg_match(PAPE_TIME_VALIDATOR, $auth_time)) {
                 $this->auth_time = $auth_time;
-            } else if ($strict) {
+            } elseif ($strict) {
                 return false;
             }
         }
@@ -297,4 +314,3 @@ class Auth_OpenID_PAPE_Response extends Auth_OpenID_Extension {
         return $ns_args;
     }
 }
-

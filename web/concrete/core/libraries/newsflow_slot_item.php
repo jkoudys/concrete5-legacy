@@ -3,7 +3,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Library_NewsflowSlotItem {
-	
+
 	protected $content;
 	public function __construct($content) {
 		$this->content = $content;

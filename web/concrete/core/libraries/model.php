@@ -12,12 +12,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @license http://www.opensource.org/licenses/mit-license.php MIT
 *
 */
-class Concrete5_Library_Model extends ADOdb_Active_Record {
+class Concrete5_Library_Model extends ADOdb_Active_Record
+{
 
-	public function __construct() {
-		$db = Loader::db();
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        $db = Loader::db();
+        parent::__construct();
+    }
 
     /**
      * Override the default `doquote` method to better sanitize numeric values.
@@ -27,7 +29,8 @@ class Concrete5_Library_Model extends ADOdb_Active_Record {
      * @param string $type
      * @return mixed
      */
-    public function doquote(&$db, $value, $type) {
+    public function doquote(&$db, $value, $type)
+    {
         switch ($type) {
             case 'L':
             case 'I':
@@ -54,5 +57,4 @@ class Concrete5_Library_Model extends ADOdb_Active_Record {
                 return parent::doquote($db, $value, $type);
         }
     }
-
 }

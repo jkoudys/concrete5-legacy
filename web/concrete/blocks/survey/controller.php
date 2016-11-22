@@ -21,10 +21,12 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class SurveyBlockController extends Concrete5_Controller_Block_Survey {
-	 
+class SurveyBlockController extends Concrete5_Controller_Block_Survey
+{
+
 }
 
-class BlockPollOption extends Concrete5_Controller_Block_SurveyOption {
+class BlockPollOption extends Concrete5_Controller_Block_SurveyOption
+{
 
 }

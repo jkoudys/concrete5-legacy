@@ -1,14 +1,14 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_JobSet extends Object {
-	
+
 	const DEFAULT_JOB_SET_ID = 1;
-	
+
 	public $jDateLastRun;
 	public $isScheduled = 0;
 	public $scheduledInterval = 'days'; // hours|days|weeks|months
 	public $scheduledValue = 0;
-	
+
 	public static function getList() {
 		$db = Loader::db();
 		$r = $db->Execute('select jsID, pkgID, jsName, jDateLastRun, isScheduled, scheduledInterval, scheduledValue from JobSets order by jsName asc');
@@ -19,7 +19,7 @@ class Concrete5_Model_JobSet extends Object {
 			$list[] = $js;
 		}
 		return $list;
-	}	
+	}
 
 	public static function getByID($jsID) {
 		$db = Loader::db();
@@ -40,8 +40,8 @@ class Concrete5_Model_JobSet extends Object {
 			return $js;
 		}
 	}
-	
-	
+
+
 	public static function getListByPackage($pkg) {
 		$db = Loader::db();
 		$list = array();
@@ -52,7 +52,7 @@ class Concrete5_Model_JobSet extends Object {
 		$r->Close();
 		return $list;
 	}
-	
+
 	public static function getDefault() {
 		$js = JobSet::getByID(self::DEFAULT_JOB_SET_ID);
 		if (is_object($js)) {
@@ -123,23 +123,23 @@ class Concrete5_Model_JobSet extends Object {
 				$jobs[] = $j;
 			}
 		}
-		return $jobs;		
+		return $jobs;
 	}
-	
+
 	public function markStarted(){
 		$db = Loader::db();
 		$timestamp=date('Y-m-d H:i:s');
 		$this->jDateLastRun = $timestamp;
 		$rs = $db->query( "UPDATE JobSets SET jDateLastRun=? WHERE jsID=?", array( $timestamp, $this->getJobSetID() ) );
 	}
-	
-	
+
+
 	public function contains(Job $j) {
 		$db = Loader::db();
 		$r = $db->GetOne('select count(jID) from JobSetJobs where jsID = ? and jID = ?', array($this->getJobSetID(), $j->getJobID()));
 		return $r > 0;
-	}	
-	
+	}
+
 	public function delete() {
 		$db = Loader::db();
 		$db->Execute('delete from JobSets where jsID = ?', array($this->getJobSetID()));
@@ -149,21 +149,21 @@ class Concrete5_Model_JobSet extends Object {
 	public function canDelete() {
 		return $this->jsID != self::DEFAULT_JOB_SET_ID;
 	}
-	
+
 	public function removeJob(Job $j) {
 		$db = Loader::db();
 		$db->Execute('delete from JobSetJobs where jsID = ? and jID = ?', array($this->getJobSetID(), $j->getJobID()));
 	}
-	
+
 	public function isScheduledForNow() {
 		if(!$this->isScheduled) {
 			return false;
 		}
-		
+
 		if($this->scheduledValue <= 0) {
 			return false;
 		}
-		
+
 		$last_run = strtotime($this->jDateLastRun);
 		$seconds = 1;
 		switch($this->scheduledInterval) {
@@ -187,7 +187,7 @@ class Concrete5_Model_JobSet extends Object {
 			return false;
 		}
 	}
-	
+
 	public function setSchedule($scheduled, $interval, $value) {
 		$this->isScheduled = ($scheduled?true:false);
 		$this->scheduledInterval = $interval;

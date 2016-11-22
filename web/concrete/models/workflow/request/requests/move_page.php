@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * @package Workflow
@@ -7,5 +7,5 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 class MovePagePageWorkflowRequest extends Concrete5_Model_MovePagePageWorkflowRequest {}

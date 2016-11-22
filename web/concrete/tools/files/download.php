@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $u = new User();
@@ -18,7 +18,7 @@ $ci = Loader::helper('file');
 if (isset($_REQUEST['fID']) && is_array($_REQUEST['fID'])) {
 
 	// zipem up
-	
+
 	$filename = $fh->getTemporaryDirectory() . '/' . $vh->getString() . '.zip';
 	$files = array();
 	$filenames = array();
@@ -64,7 +64,7 @@ if (isset($_REQUEST['fID']) && is_array($_REQUEST['fID'])) {
 	$ci->forceDownload($filename);
 
 } else if($_REQUEST['fID']) {
-	
+
 	$f = File::getByID(intval($_REQUEST['fID']));
 	if($f->isError()) {
 		switch($f->getError()) {

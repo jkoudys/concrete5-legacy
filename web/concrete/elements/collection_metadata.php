@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 global $c;
 Loader::model('collection_types');
@@ -20,26 +20,26 @@ if ($_REQUEST['approveImmediately'] == 1) {
 }
 ?>
 <div class="ccm-pane-controls ccm-ui">
-<? if ($approveImmediately) { ?>
+<?php if ($approveImmediately) { ?>
 	<div class="alert-message block-message notice">
 		<?=t("Note: Since you haven't checked this page out for editing, these changes will immediately be approved.")?>
 	</div>
-<? } ?>
+<?php } ?>
 
 <form method="post" name="permissionForm" id="ccmMetadataForm" action="<?=$c->getCollectionAction()?>">
 <input type="hidden" name="approveImmediately" value="<?=$approveImmediately?>" />
 <input type="hidden" name="rel" value="<?=$_REQUEST['rel']?>" />
 
-	<script type="text/javascript"> 
-		
+	<script type="text/javascript">
+
 		function ccm_triggerSelectUser(uID, uName) {
 			$('#ccm-uID').val(uID);
 			$('#ccm-uName').html(uName);
 		}
-		
-		
+
+
 		var ccm_activePropertiesTab = "ccm-properties-standard";
-		
+
 		$("#ccm-properties-tabs a").click(function() {
 			$("li.active").removeClass('active');
 			$("#" + ccm_activePropertiesTab + "-tab").hide();
@@ -47,7 +47,7 @@ if ($_REQUEST['approveImmediately'] == 1) {
 			$(this).parent().addClass("active");
 			$("#" + ccm_activePropertiesTab + "-tab").show();
 		});
-		
+
 		$(function() {
 			$("#ccmMetadataForm").ajaxForm({
 				type: 'POST',
@@ -73,123 +73,123 @@ if ($_REQUEST['approveImmediately'] == 1) {
 			});
 		});
 	</script>
-	
+
 
 	<div id="ccm-required-meta"></div>
-	
-	
-	<? if (!$c->isMasterCollection()) { ?>
+
+
+	<?php if (!$c->isMasterCollection()) { ?>
 	<ul class="nav-tabs nav" id="ccm-properties-tabs">
 		<li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?=t('Standard Properties')?></a></li>
 		<li><a href="javascript:void(0)" id="ccm-properties-custom"><?=t('Custom Attributes')?></a></li>
-		<li <? if ($c->isMasterCollection() || !$asl->allowEditPaths()) { ?>style="display: none"<? } ?>><a href="javascript:void(0)" id="ccm-page-paths"><?=t('Page Paths and Location')?></a></li>
+		<li <?php if ($c->isMasterCollection() || !$asl->allowEditPaths()) { ?>style="display: none"<?php } ?>><a href="javascript:void(0)" id="ccm-page-paths"><?=t('Page Paths and Location')?></a></li>
 	</ul>
-	<? } ?>
+	<?php } ?>
 
-	<div id="ccm-properties-standard-tab" <? if ($c->isMasterCollection()) { ?>style="display: none" <? } ?>>
-	
-	<? if ($asl->allowEditName()) { ?>
+	<div id="ccm-properties-standard-tab" <?php if ($c->isMasterCollection()) { ?>style="display: none" <?php } ?>>
+
+	<?php if ($asl->allowEditName()) { ?>
 	<div class="clearfix">
 		<label for="cName"><?=t('Name')?></label>
-		<div class="input"><input type="text" id="cName" name="cName" value="<?=htmlentities( $c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" />
+		<div class="input"><input type="text" id="cName" name="cName" value="<?=htmlentities($c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" />
 			<span class="help-inline"><?=t("Page ID: %s", $c->getCollectionID())?></span>
 		</div>
 	</div>
-	<? } ?>
+	<?php } ?>
 
-	<? if ($asl->allowEditDateTime()) { ?>
+	<?php if ($asl->allowEditDateTime()) { ?>
 	<div class="clearfix">
 		<label for="cDatePublic"><?=t('Public Date/Time')?></label>
-		<div class="input"><? print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
+		<div class="input"><?php print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
 	</div>
-	<? } ?>
-	
-	<? if ($asl->allowEditUserID()) { ?>
+	<?php } ?>
+
+	<?php if ($asl->allowEditUserID()) { ?>
 	<div class="clearfix">
 	<label><?=t('Owner')?></label>
 	<div class="input">
-		<? 
+		<?php
 		print $uh->selectUser('uID', $c->getCollectionUserID());
 		?>
 	</div>
 	</div>
-	<? } ?>
-	
+	<?php } ?>
 
-	<? if ($asl->allowEditDescription()) { ?>
+
+	<?php if ($asl->allowEditDescription()) { ?>
 	<div class="clearfix">
 	<label for="cDescription"><?=t('Description')?></label>
 	<div class="input"><textarea id="cDescription" name="cDescription" class="ccm-input-text" style="width: 495px; height: 50px"><?=h($c->getCollectionDescription())?></textarea></div>
 	</div>
-	<? } ?>
-	
+	<?php } ?>
+
 	</div>
-	
-	<? if ($asl->allowEditPaths()) { ?>
+
+	<?php if ($asl->allowEditPaths()) { ?>
 	<div id="ccm-page-paths-tab" style="display: none">
 		<?php if ($c->getCollectionID() != 1) { ?>
-		<div class="clearfix">
-		<label for="cHandle"><?= t('Canonical URL')?></label>
-		<div class="input">
-		<?php if (!$c->isGeneratedCollection()) { ?>
-			<?=BASE_URL . DIR_REL;?><? if (URL_REWRITING == false) { ?>/<?=DISPATCHER_FILENAME?><? } ?><?
-			$cPath = substr($c->getCollectionPath(), strrpos($c->getCollectionPath(), '/') + 1);
-			print substr($c->getCollectionPath(), 0, strrpos($c->getCollectionPath(), '/'))?>/<input type="text" name="cHandle" value="<?php echo $cPath?>" id="cHandle" maxlength="128"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php echo $c->getCollectionHandle()?>"><br /><br />
-		<?php  } else { ?>
-			<?php echo $c->getCollectionHandle()?><br /><br />
-		<?php  } ?>
-			<span class="help-block"><?=t('This page must always be available from at least one URL. That URL is listed above.')?></span>
-		</div>
-		</div>
-		<?php } ?>
-		
-		<?php if (!$c->isGeneratedCollection()) { ?>
-		<div class="clearfix" id="ccm-more-page-paths">
-			<label><?= t('More URLs') ?></label>
+        <div class="clearfix">
+        <label for="cHandle"><?= t('Canonical URL')?></label>
+        <div class="input">
+        <?php if (!$c->isGeneratedCollection()) { ?>
+            <?=BASE_URL . DIR_REL;?><?php if (URL_REWRITING == false) { ?>/<?=DISPATCHER_FILENAME?><?php } ?><?php
+            $cPath = substr($c->getCollectionPath(), strrpos($c->getCollectionPath(), '/') + 1);
+            print substr($c->getCollectionPath(), 0, strrpos($c->getCollectionPath(), '/'))?>/<input type="text" name="cHandle" value="<?php echo $cPath?>" id="cHandle" maxlength="128"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php echo $c->getCollectionHandle()?>"><br /><br />
+        <?php  } else { ?>
+            <?php echo $c->getCollectionHandle()?><br /><br />
+        <?php  } ?>
+            <span class="help-block"><?=t('This page must always be available from at least one URL. That URL is listed above.')?></span>
+        </div>
+        </div>
+        <?php } ?>
 
-			<?php
-				$paths = $c->getPagePaths();
-				foreach ($paths as $path) {
-					if (!$path['ppIsCanonical']) {
-						$ppID = $path['ppID'];
-						$cPath = $path['cPath'];
-						echo '<div class="input ccm-meta-path">' .
-			     			'<input type="text" name="ppURL-' . $ppID . '" class="ccm-input-text" value="' . $cPath . '" id="ppID-'. $ppID . '"> ' .
-			     			'<a href="javascript:void(0)" class="ccm-meta-path-del">' . t('Remove Path') . '</a></div>'."\n";
-					}
-				}
-			?>
-		    <div class="input ccm-meta-path">
-	     		<input type="text" name="ppURL-add-0" class="ccm-input-text" value="" id="ppID-add-0">
-		 		<a href="javascript:void(0)" class="ccm-meta-path-add"><?=t('Add Path')?></a>
-			</div>
+        <?php if (!$c->isGeneratedCollection()) { ?>
+        <div class="clearfix" id="ccm-more-page-paths">
+            <label><?= t('More URLs') ?></label>
 
-		</div>
-			<div class="input">
-		 		<p><?=t('Note: Additional page paths are not versioned. They will be available immediately.')?></p>
-			</div>			
+            <?php
+                $paths = $c->getPagePaths();
+            foreach ($paths as $path) {
+                if (!$path['ppIsCanonical']) {
+                    $ppID = $path['ppID'];
+                    $cPath = $path['cPath'];
+                    echo '<div class="input ccm-meta-path">' .
+                        '<input type="text" name="ppURL-' . $ppID . '" class="ccm-input-text" value="' . $cPath . '" id="ppID-'. $ppID . '"> ' .
+                        '<a href="javascript:void(0)" class="ccm-meta-path-del">' . t('Remove Path') . '</a></div>'."\n";
+                }
+            }
+            ?>
+            <div class="input ccm-meta-path">
+                <input type="text" name="ppURL-add-0" class="ccm-input-text" value="" id="ppID-add-0">
+                <a href="javascript:void(0)" class="ccm-meta-path-add"><?=t('Add Path')?></a>
+            </div>
 
-		<?php } ?>
-	
-	</div>
-	
-	<style type="text/css">
-	#ccm-more-page-paths div.input {margin-bottom: 10px;}
-	</style>
-	<? } ?>
-	
-	
-	<div id="ccm-properties-custom-tab" <? if (!$c->isMasterCollection()) { ?>style="display: none" <? } ?>>
-		<? Loader::element('collection_metadata_fields', array('c'=>$c, 'assignment' => $asl) ); ?>
-	</div>
+        </div>
+            <div class="input">
+                <p><?=t('Note: Additional page paths are not versioned. They will be available immediately.')?></p>
+            </div>
 
-	
-	<input type="hidden" name="update_metadata" value="1" />
-	<input type="hidden" name="processCollection" value="1">
-	<div class="ccm-spacer">&nbsp;</div>
+        <?php } ?>
+
+    </div>
+
+    <style type="text/css">
+    #ccm-more-page-paths div.input {margin-bottom: 10px;}
+    </style>
+    <?php } ?>
+
+
+    <div id="ccm-properties-custom-tab" <?php if (!$c->isMasterCollection()) { ?>style="display: none" <?php } ?>>
+        <?php Loader::element('collection_metadata_fields', array('c'=>$c, 'assignment' => $asl) ); ?>
+    </div>
+
+
+    <input type="hidden" name="update_metadata" value="1" />
+    <input type="hidden" name="processCollection" value="1">
+    <div class="ccm-spacer">&nbsp;</div>
 </form>
 </div>
-	<div class="dialog-buttons">
-	<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?=t('Cancel')?></a>
-	<a href="javascript:void(0)" class="btn primary ccm-button-right" onclick="$('#ccmMetadataForm').submit()"><?=t('Save')?></a>
-	</div>
+    <div class="dialog-buttons">
+    <a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?=t('Cancel')?></a>
+    <a href="javascript:void(0)" class="btn primary ccm-button-right" onclick="$('#ccmMetadataForm').submit()"><?=t('Save')?></a>
+    </div>

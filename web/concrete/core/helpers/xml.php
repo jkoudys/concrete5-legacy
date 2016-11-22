@@ -1,6 +1,6 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Helper_Xml { 
+class Concrete5_Helper_Xml {
 
 	public function createCDataNode(SimpleXMLElement $x, $nodeName, $content) {
 		$node = $x->addChild($nodeName);
@@ -9,6 +9,6 @@ class Concrete5_Helper_Xml {
 		$node->appendChild($no->createCDataSection($content));
 		return $node;
 	}
-	
-	
+
+
 }

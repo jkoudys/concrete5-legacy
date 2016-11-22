@@ -84,7 +84,7 @@ class Zend_Queue_Adapter_Array extends Zend_Queue_Adapter_AdapterAbstract
      * @param  integer $timeout default visibility timeout
      * @return boolean
      */
-    public function create($name, $timeout=null)
+    public function create($name, $timeout = null)
     {
         if ($this->isExists($name)) {
             return false;
@@ -136,7 +136,7 @@ class Zend_Queue_Adapter_Array extends Zend_Queue_Adapter_AdapterAbstract
      * @return integer
      * @throws Zend_Queue_Exception
      */
-    public function count(Zend_Queue $queue=null)
+    public function count(Zend_Queue $queue = null)
     {
         if ($queue === null) {
             $queue = $this->_queue;
@@ -165,7 +165,7 @@ class Zend_Queue_Adapter_Array extends Zend_Queue_Adapter_AdapterAbstract
      * @return Zend_Queue_Message
      * @throws Zend_Queue_Exception
      */
-    public function send($message, Zend_Queue $queue=null)
+    public function send($message, Zend_Queue $queue = null)
     {
         if ($queue === null) {
             $queue = $this->_queue;
@@ -228,7 +228,7 @@ class Zend_Queue_Adapter_Array extends Zend_Queue_Adapter_AdapterAbstract
 
             $count = 0;
             $temp = &$this->_data[$queue->getName()];
-            foreach ($temp as $key=>&$msg) {
+            foreach ($temp as $key => &$msg) {
                 // count check has to be first, as someone can ask for 0 messages
                 // ZF-7650
                 if ($count >= $maxMessages) {
@@ -243,7 +243,6 @@ class Zend_Queue_Adapter_Array extends Zend_Queue_Adapter_AdapterAbstract
                     $data[] = $msg;
                     $count++;
                 }
-
             }
         }
 

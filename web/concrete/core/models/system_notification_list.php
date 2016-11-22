@@ -1,12 +1,12 @@
 <?php
 
 class Concrete5_Model_SystemNotificationList extends DatabaseItemList {
-	
+
 	public function filterByType($type) {
 		$db = Loader::db();
 		$this->filter('sn.snTypeID', $type);
 	}
-	
+
 	function __construct() {
 		$this->setQuery("select sn.snID from SystemNotifications sn");
 		$this->sortBy('snDateTime', 'desc');
@@ -23,5 +23,5 @@ class Concrete5_Model_SystemNotificationList extends DatabaseItemList {
 		}
 		return $posts;
 	}
-	
+
 }

@@ -23,32 +23,32 @@ class Concrete5_Model_EditPageThemePagePermissionAccess extends PagePermissionAc
 		$db = Loader::db();
 		$db->Execute('delete from PagePermissionThemeAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from PagePermissionThemeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
-		if (is_array($args['themesIncluded'])) { 
+		if (is_array($args['themesIncluded'])) {
 			foreach($args['themesIncluded'] as $peID => $permission) {
 				$v = array($this->getPermissionAccessID(), $peID, $permission);
 				$db->Execute('insert into PagePermissionThemeAccessList (paID, peID, permission) values (?, ?, ?)', $v);
 			}
 		}
-		
-		if (is_array($args['themesExcluded'])) { 
+
+		if (is_array($args['themesExcluded'])) {
 			foreach($args['themesExcluded'] as $peID => $permission) {
 				$v = array($this->getPermissionAccessID(), $peID, $permission);
 				$db->Execute('insert into PagePermissionThemeAccessList (paID, peID, permission) values (?, ?, ?)', $v);
 			}
 		}
 
-		if (is_array($args['ptIDInclude'])) { 
+		if (is_array($args['ptIDInclude'])) {
 			foreach($args['ptIDInclude'] as $peID => $ptIDs) {
-				foreach($ptIDs as $ptID) { 
+				foreach($ptIDs as $ptID) {
 					$v = array($this->getPermissionAccessID(), $peID, $ptID);
 					$db->Execute('insert into PagePermissionThemeAccessListCustom (paID, peID, ptID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 
-		if (is_array($args['ptIDExclude'])) { 
+		if (is_array($args['ptIDExclude'])) {
 			foreach($args['ptIDExclude'] as $peID => $ptIDs) {
-				foreach($ptIDs as $ptID) { 
+				foreach($ptIDs as $ptID) {
 					$v = array($this->getPermissionAccessID(), $peID, $ptID);
 					$db->Execute('insert into PagePermissionThemeAccessListCustom (paID, peID, ptID) values (?, ?, ?)', $v);
 				}
@@ -65,7 +65,7 @@ class Concrete5_Model_EditPageThemePagePermissionAccess extends PagePermissionAc
 		foreach($list as $l) {
 			$pe = $l->getAccessEntityObject();
 			$prow = $db->GetRow('select permission from PagePermissionThemeAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $l->getPermissionAccessID()));
-			if (is_array($prow) && $prow['permission']) { 
+			if (is_array($prow) && $prow['permission']) {
 				$l->setThemesAllowedPermission($prow['permission']);
 				$permission = $prow['permission'];
 			} else if ($l->getAccessType() == PagePermissionKey::ACCESS_TYPE_INCLUDE) {
@@ -73,7 +73,7 @@ class Concrete5_Model_EditPageThemePagePermissionAccess extends PagePermissionAc
 			} else {
 				$l->setThemesAllowedPermission('N');
 			}
-			if ($permission == 'C') { 
+			if ($permission == 'C') {
 				$ptIDs = $db->GetCol('select ptID from PagePermissionThemeAccessListCustom where peID = ? and paID = ?', array($pe->getAccessEntityID(), $l->getPermissionAccessID()));
 				$l->setThemesAllowedArray($ptIDs);
 			}

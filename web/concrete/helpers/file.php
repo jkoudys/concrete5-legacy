@@ -2,16 +2,16 @@
 
 /**
  * File helper
- * 
+ *
  * Functions useful for working with files and directories.
- * 
+ *
  * Used as follows:
  * <code>
  * $file = Loader::helper('file');
  * $path = 'http://www.concrete5.org/tools/get_latest_version_number';
  * $contents = $file->getContents($path);
  * echo $contents;
- * </code> 
+ * </code>
  *
  * @package Helpers
  * @category Concrete

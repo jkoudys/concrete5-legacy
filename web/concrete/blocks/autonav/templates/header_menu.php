@@ -5,7 +5,7 @@ $navItems = $controller->getNavItems();
 <ul class="nav-header">
 
 <?php foreach ($navItems as $ni) {
-	
+
 	$classes = array();
 	if ($ni->isCurrent) {
 		$classes[] = 'nav-selected';
@@ -18,7 +18,7 @@ $navItems = $controller->getNavItems();
 	}
 	$classes = implode(" ", $classes);
 	?>
-	
+
 	<li class="<?=$classes?>">
 		<a class="<?=$classes?>" href="<?=$ni->url?>" target="<?=$ni->target?>"><?=$ni->name?></a>
 	</li>

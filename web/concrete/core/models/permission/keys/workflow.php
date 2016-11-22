@@ -16,15 +16,15 @@ abstract class Concrete5_Model_WorkflowPermissionKey extends PermissionKey {
 		$usersExcluded = array();
 		foreach($included as $inc) {
 			$pae = $inc->getAccessEntityObject();
-			$users = array_merge($users, $pae->getAccessEntityUsers($paa));	
+			$users = array_merge($users, $pae->getAccessEntityUsers($paa));
 		}
 		$users = array_unique($users);
 
 		foreach($excluded as $inc) {
 			$pae = $inc->getAccessEntityObject();
-			$usersExcluded = array_merge($usersExcluded, $pae->getAccessEntityUsers($paa));	
+			$usersExcluded = array_merge($usersExcluded, $pae->getAccessEntityUsers($paa));
 		}
 		$users = array_diff($users, $usersExcluded);
-		return $users;	
+		return $users;
 	}
 }

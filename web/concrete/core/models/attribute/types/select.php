@@ -592,7 +592,7 @@ class Concrete5_Model_SelectAttributeTypeOption extends Object {
 
 		$v = array($ak->getAttributeKeyID(), $displayOrder, $th->sanitize($option), $isEndUserAdded);
 		$db->Execute('insert into atSelectOptions (akID, displayOrder, value, isEndUserAdded) values (?, ?, ?, ?)', $v);
-		
+
 		$id = $db->Insert_ID();
 
 		return SelectAttributeTypeOption::getByID($id);

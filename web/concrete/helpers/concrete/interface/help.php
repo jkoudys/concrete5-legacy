@@ -26,10 +26,10 @@ class ConcreteInterfaceHelpHelper {
 			'video' => array(t('Select a video file from the File Manager and specify a width and height at which to display it on your page. AVI, WMV, Quicktime/MPEG4 and FLV formats are supported.'), 'http://www.concrete5.org/documentation/using-concrete5/in-page-editing/block-areas/add-block/video-player/'),
 			'youtube' => array(t('Paste a short or long-form Youtube link into the YouTube URL field and concrete5 will embed the video on your page. The iFrame option is recommended for best results, especially when displaying pages on mobile devices.'), 'http://www.concrete5.org/documentation/using-concrete5/in-page-editing/block-areas/add-block/youtube-video/')
 	 	);
-		
+
 		return $blockTypes;
 	}
-	
+
 	public function getPages() {
 		$pages = array(
 			'/dashboard/composer/write' => t('Composer lets you create and publish pages (such as blog posts) directly from your Dashboard. At least one Page Type must be enabled for use Composer, and at least one block needs to be included in Composer via Page Type Defaults.'),

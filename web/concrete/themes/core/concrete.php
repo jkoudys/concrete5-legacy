@@ -1,15 +1,15 @@
-<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die('Access Denied.'); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html lang="<?=LANGUAGE?>" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<?php 
+<?php
 if (is_object($c)) {
-	$v = View::getInstance();
-	$v->disableEditing();
- 	Loader::element('header_required');
-} else { 
-	print Loader::helper('html')->javascript('jquery.js');
-	$this->outputHeaderItems();
+    $v = View::getInstance();
+    $v->disableEditing();
+    Loader::element('header_required');
+} else {
+    echo Loader::helper('html')->javascript('jquery.js');
+    $this->outputHeaderItems();
 }
 $this->addFooterItem(Loader::helper('html')->javascript('bootstrap.js'));
 
@@ -34,14 +34,14 @@ $this->addFooterItem(Loader::helper('html')->javascript('bootstrap.js'));
 <?php Loader::element('system_errors', array('format' => 'block', 'error' => $error)); ?>
 </div>
 </div>
-<?php print $innerContent ?>
+<?php echo $innerContent ?>
 
 </div>
 </div>
 
-<?php 
+<?php
 if (is_object($c)) {
-	Loader::element('footer_required');
+    Loader::element('footer_required');
 }
 ?>
 

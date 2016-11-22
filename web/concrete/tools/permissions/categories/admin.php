@@ -1,7 +1,7 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $p = new Permissions();
-if ($p->canAccessTaskPermissions()) { 
+if ($p->canAccessTaskPermissions()) {
 
 	if ($_REQUEST['task'] == 'add_access_entity' && Loader::helper("validation/token")->validate('add_access_entity')) {
 		$pk = PermissionKey::getByID($_REQUEST['pkID']);
@@ -23,7 +23,7 @@ if ($p->canAccessTaskPermissions()) {
 		$pa = PermissionAccess::getByID($_REQUEST['paID'], $pk);
 		$pa->save($_POST);
 		$pa->clearWorkflows();
-		if (is_array($_POST['wfID'])) { 
+		if (is_array($_POST['wfID'])) {
 			foreach($_POST['wfID'] as $wfID) {
 				$wf = Workflow::getByID($wfID);
 				if (is_object($wf)) {
@@ -38,6 +38,6 @@ if ($p->canAccessTaskPermissions()) {
 		$pa = PermissionAccess::getByID($_REQUEST['paID'], $pk);
 		Loader::element('permission/labels', array('pk' => $pk, 'pa' => $pa));
 	}
-	
+
 }
 

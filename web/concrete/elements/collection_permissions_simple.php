@@ -1,9 +1,9 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if ($cp->canEditPagePermissions()) {
 	$editAccess = array();
 	$viewAccess = array();
-		
+
 	$pk = PermissionKey::getByHandle('view_page');
 	$pk->setPermissionObject($c);
 	$assignments = $pk->getAccessListItems();
@@ -29,7 +29,7 @@ if ($cp->canEditPagePermissions()) {
 			}
 		}
 	}
-	
+
 	Loader::model('search/group');
 	$gl = new GroupSearch();
 	$gl->sortBy('gID', 'asc');
@@ -51,14 +51,14 @@ if ($cp->canEditPagePermissions()) {
 
 <ul class="inputs-list">
 
-<?
+<?php
 
 foreach ($gArray as $g) {
 ?>
 
-<li><label><input type="checkbox" name="readGID[]" value="<?=$g->getGroupID()?>" <? if (in_array($g->getGroupID(), $viewAccess)) { ?> checked <? } ?> /> <?=$g->getGroupDisplayName()?></label></li>
+<li><label><input type="checkbox" name="readGID[]" value="<?=$g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $viewAccess)) { ?> checked <?php } ?> /> <?=$g->getGroupDisplayName()?></label></li>
 
-<? } ?>
+<?php } ?>
 
 </ul>
 </div>
@@ -69,48 +69,48 @@ foreach ($gArray as $g) {
 
 <ul class="inputs-list">
 
-<?
+<?php
 
 foreach ($gArray as $g) {
 ?>
 
-<li><label><input type="checkbox" name="editGID[]" value="<?=$g->getGroupID()?>" <? if (in_array($g->getGroupID(), $editAccess)) { ?> checked <? } ?> /> <?=$g->getGroupDisplayName()?></label></li>
+<li><label><input type="checkbox" name="editGID[]" value="<?=$g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $editAccess)) { ?> checked <?php } ?> /> <?=$g->getGroupDisplayName()?></label></li>
 
-<? } ?>
+<?php } ?>
 
 </ul>
 </div>
 
 <div class="dialog-buttons">
-	<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?=t('Cancel')?></a>
-	<a href="javascript:void(0)" onclick="$('form[name=ccmPermissionsForm]').submit()" class="ccm-button-right btn primary"><?=t('Save')?></a>
-</div>	
+    <a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?=t('Cancel')?></a>
+    <a href="javascript:void(0)" onclick="$('form[name=ccmPermissionsForm]').submit()" class="ccm-button-right btn primary"><?=t('Save')?></a>
+</div>
 <input type="hidden" name="update_permissions" value="1" class="accept">
 <input type="hidden" name="processCollection" value="1">
 
 <script type="text/javascript">
 $(function() {
-	$("#ccmPermissionsForm").ajaxForm({
-		type: 'POST',
-		iframe: true,
-		beforeSubmit: function() {
-			jQuery.fn.dialog.showLoader();
-		},
-		success: function(r) {
-			var r = eval('(' + r + ')');
-			jQuery.fn.dialog.hideLoader();
-			jQuery.fn.dialog.closeTop();
+    $("#ccmPermissionsForm").ajaxForm({
+        type: 'POST',
+        iframe: true,
+        beforeSubmit: function() {
+            jQuery.fn.dialog.showLoader();
+        },
+        success: function(r) {
+            var r = eval('(' + r + ')');
+            jQuery.fn.dialog.hideLoader();
+            jQuery.fn.dialog.closeTop();
 
-			if (r != null && r.rel == 'SITEMAP') {
-				ccmSitemapHighlightPageLabel(r.cID);
-			}
-			ccmAlert.hud(ccmi18n_sitemap.setPagePermissionsMsg, 2000, 'success', ccmi18n_sitemap.setPagePermissions);
-		}
-	});
+            if (r != null && r.rel == 'SITEMAP') {
+                ccmSitemapHighlightPageLabel(r.cID);
+            }
+            ccmAlert.hud(ccmi18n_sitemap.setPagePermissionsMsg, 2000, 'success', ccmi18n_sitemap.setPagePermissions);
+        }
+    });
 });
 </script>
 
 <div class="ccm-spacer">&nbsp;</div>
 </form>
 </div>
-<? } ?>
+<?php } ?>

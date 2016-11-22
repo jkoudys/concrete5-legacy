@@ -6,5 +6,6 @@
 */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class ProcessEmail extends Concrete5_Job_ProcessEmail {
+class ProcessEmail extends Concrete5_Job_ProcessEmail
+{
 }

@@ -1,38 +1,38 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_Workflow_List extends DashboardBaseController {
-	
+
 	public $helpers = array('form');
-	
+
 
 	public function delete($wfID = null, $token = null){
 		try {
-			$wf = Workflow::getByID($wfID); 
-				
+			$wf = Workflow::getByID($wfID);
+
 			if(!($wf instanceof Workflow)) {
 				throw new Exception(t('Invalid workflow ID.'));
 			}
-	
+
 			$valt = Loader::helper('validation/token');
 			if (!$valt->validate('delete_workflow', $token)) {
 				throw new Exception($valt->getErrorMessage());
 			}
-			
+
 			$wf->delete();
-			
+
 			$this->redirect("/dashboard/workflow/list", 'workflow_deleted');
 		} catch (Exception $e) {
 			$this->error->add($e);
 		}
 		$this->view();
 	}
-	
+
 	public function save_workflow_details() {
 		if (!Loader::helper('validation/token')->validate('save_workflow_details')) {
 			$this->error->add(Loader::helper('validation/token')->getErrorMessage());
 		}
 		$wfName = trim($this->post('wfName'));
-		if (!$wfName) { 
+		if (!$wfName) {
 			$this->error->add(t('You must give the workflow a name.'));
 		}
 		if (!Loader::helper('validation/strings')->alphanum($wfName, true)) {
@@ -45,14 +45,14 @@ class Concrete5_Controller_Dashboard_Workflow_List extends DashboardBaseControll
 			$this->redirect('/dashboard/workflow/list', 'view_detail', $this->post('wfID'), 'workflow_updated');
 		} else {
 			$this->view_detail($this->post('wfID'));
-		}		
+		}
 	}
-	
+
 	public function view() {
 		$workflows = Workflow::getList();
 		$this->set('workflows', $workflows);
 	}
-	
+
 	public function add() {
 		$types = array();
 		$list = WorkflowType::getList();
@@ -62,18 +62,18 @@ class Concrete5_Controller_Dashboard_Workflow_List extends DashboardBaseControll
 		$this->set('types', $types);
 		$this->set('typeObjects', $list);
 	 }
-	
+
 	public function workflow_deleted() {
 		$this->set("message", t('Workflow deleted successfully.'));
 		$this->view();
 	}
-	
+
 	public function submit_add() {
 		if (!Loader::helper('validation/token')->validate('add_workflow')) {
 			$this->error->add(Loader::helper('validation/token')->getErrorMessage());
 		}
 		$wfName = trim($this->post('wfName'));
-		if (!$wfName) { 
+		if (!$wfName) {
 			$this->error->add(t('You must give the workflow a name.'));
 		}
 		if (!Loader::helper('validation/strings')->alphanum($wfName, true)) {
@@ -84,7 +84,7 @@ class Concrete5_Controller_Dashboard_Workflow_List extends DashboardBaseControll
 		if ($wfID) {
 			$this->error->add(t('Workflow with that name already exists.'));
 		}
-		if (!$this->error->has()) { 
+		if (!$this->error->has()) {
 			$type = WorkflowType::getByID($this->post('wftID'));
 			if (!is_object($type) || !($type instanceof WorkflowType)) {
 				$this->error->add(t('Invalid Workflow Type.'));
@@ -97,7 +97,7 @@ class Concrete5_Controller_Dashboard_Workflow_List extends DashboardBaseControll
 		}
 		$this->add();
 	}
-	
+
 	public function edit_details($wfID = false) {
 		$wf = Workflow::getByID($wfID);
 		if (!is_object($wf)) {
@@ -106,7 +106,7 @@ class Concrete5_Controller_Dashboard_Workflow_List extends DashboardBaseControll
 		$this->set('wf', $wf);
 	}
 
-	
+
 	public function view_detail($wfID = false, $message = false) {
 		$wf = Workflow::getByID($wfID);
 		if (!is_object($wf)) {
@@ -120,8 +120,8 @@ class Concrete5_Controller_Dashboard_Workflow_List extends DashboardBaseControll
 				$this->set('message', t('Workflow updated.'));
 				break;
 		}
-		
+
 		$this->set('wf', $wf);
 	}
-	
+
 }

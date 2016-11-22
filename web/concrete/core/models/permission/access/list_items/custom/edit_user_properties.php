@@ -1,7 +1,7 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_EditUserPropertiesUserPermissionAccessListItem extends PermissionAccessListItem {
-	
+
 	protected $customAttributeKeyArray = array();
 	protected $attributesAllowedPermission = 'N';
 	protected $allowEditUName = 0;
@@ -23,11 +23,11 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccessListItem extends Per
 	public function getAttributesAllowedArray() {
 		return $this->customAttributeKeyArray;
 	}
-	
+
 	public function setAllowEditUserName($allow) {
 		$this->allowEditUName = $allow;
 	}
-	
+
 	public function allowEditUserName() {
 		return $this->allowEditUName;
 	}
@@ -35,7 +35,7 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccessListItem extends Per
 	public function setAllowEditEmail($allow) {
 		$this->allowEditUEmail = $allow;
 	}
-	
+
 	public function allowEditEmail() {
 		return $this->allowEditUEmail;
 	}
@@ -43,7 +43,7 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccessListItem extends Per
 	public function setAllowEditPassword($allow) {
 		$this->allowEditUPassword = $allow;
 	}
-	
+
 	public function allowEditPassword() {
 		return $this->allowEditUPassword;
 	}
@@ -51,15 +51,15 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccessListItem extends Per
 	public function setAllowEditAvatar($allow) {
 		$this->allowEditUAvatar = $allow;
 	}
-	
+
 	public function allowEditAvatar() {
 		return $this->allowEditUAvatar;
 	}
-	
+
 	public function setAllowEditTimezone($allow) {
 		$this->allowEditUTimezone = $allow;
 	}
-	
+
 	public function allowEditTimezone() {
 		return $this->allowEditUTimezone;
 	}
@@ -67,10 +67,10 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccessListItem extends Per
 	public function setAllowEditDefaultLanguage($allow) {
 		$this->allowEditUDefaultLanguage = $allow;
 	}
-	
+
 	public function allowEditDefaultLanguage() {
 		return $this->allowEditUDefaultLanguage;
 	}
-	
-	
+
+
 }

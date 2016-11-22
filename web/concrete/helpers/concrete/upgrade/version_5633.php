@@ -13,9 +13,9 @@ class ConcreteUpgradeVersion5633Helper {
 				$membersPage->delete();
 			}
 		}
-		
+
 		// Update robots.txt
-		
+
 		$delete_rules = array(
 			'Disallow: /blocks',
 			'Disallow: /concrete',
@@ -25,7 +25,7 @@ class ConcreteUpgradeVersion5633Helper {
 			'Disallow: /packages',
 			'Disallow: /updates'
 		);
-		
+
 		$add_rules = array(
 			'Disallow: /blocks/*.php$',
 			'Disallow: /blocks/*.xml$',
@@ -36,13 +36,13 @@ class ConcreteUpgradeVersion5633Helper {
 			'Disallow: /updates/*.php$',
 			'Disallow: /updates/*.xml$'
 		);
-		
+
 		$robotspath = DIR_BASE . '/robots.txt';
 		$fh = Loader::helper('file');
-		
+
 		if (file_exists($robotspath) && is_writable($robotspath)) {
 			$rules = array();
-			
+
 			$robotstxt = @file($robotspath, FILE_IGNORE_NEW_LINES);
 			foreach ($robotstxt as $line) {
 				$line = trim($line);
@@ -50,10 +50,10 @@ class ConcreteUpgradeVersion5633Helper {
 					$rules[] = $line;
 				}
 			}
-			
+
 			$new_rules = array_merge($rules, $add_rules);
 			$new_robotstxt = implode("\n", $new_rules);
-			
+
 			$fh->clear($robotspath);
 			$fh->append($robotspath, $new_robotstxt);
 		}

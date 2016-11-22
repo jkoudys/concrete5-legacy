@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 if (!ini_get('safe_mode')) {
@@ -24,7 +24,7 @@ if (Job::authenticateRequest($_REQUEST['auth'])) {
 					$job->processQueueItem($p);
 					$q->deleteMessage($p);
 				}
-				$totalItems = $q->count();	
+				$totalItems = $q->count();
 				$obj->totalItems = $totalItems;
 				$obj->jHandle = $job->getJobHandle();
 				$obj->jID = $job->getJobID();

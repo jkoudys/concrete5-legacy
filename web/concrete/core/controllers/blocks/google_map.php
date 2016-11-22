@@ -12,7 +12,7 @@
  *
  */
 	class Concrete5_Controller_Block_GoogleMap extends BlockController {
-		
+
 		protected $btTable = 'btGoogleMap';
 		protected $btInterfaceWidth = 750;
 		protected $btInterfaceHeight = 460;
@@ -25,34 +25,34 @@
 		public $location = "";
 		public $latitude = "";
 		public $longitude = "";
-		public $zoom = 14;								
-		
-		/** 
+		public $zoom = 14;
+
+		/**
 		 * Used for localization. If we want to localize the name/description we have to include this
 		 */
 		public function getBlockTypeDescription() {
 			return t("Enter an address and a Google Map of that location will be placed in your page.");
 		}
-		
-		
+
+
 		public function getBlockTypeName() {
 			return t("Google Map");
-		}		
-		
-		
+		}
+
+
 		public function validate($args) {
 			$error = Loader::helper('validation/error');
-			
+
 			if(!is_numeric($args['zoom'])) {
 				$error->add(t('Please enter a zoom number from 0 to 21.'));
 			}
-			
+
 			if($error->has()) {
 				return $error;
 			}
 		}
-		
-		
+
+
 		public function on_page_view() {
 			$balloonHtml = '';
 			if($this->balloonShow) {
@@ -63,15 +63,15 @@
 				if($this->balloonWithLinkToMaps) {
 					$balloonHtml .= '<div style="font-size: smaller"><a href="//maps.google.com?' . h('ll=' . $this->latitude . ',' . $this->longitude . '&daddr=' . $this->latitude . ',' . $this->longitude . '&z=' . $this->zoom) . '" target="blank">' . h(t('Get Directions')) . '</a>&nbsp;&nbsp;</div>';
 				}
-				$balloonHtml .= '</div>'; 
+				$balloonHtml .= '</div>';
 				$this->set('balloonHtml', $balloonHtml);
 			}
 			$html = Loader::helper('html');
 			$c = Page::getCurrentPage();
 			if (!$c->isEditMode()) {
 				$this->addFooterItem('<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=true&language=' . rawurlencode(str_replace('_', '-', Localization::activeLocale())) . '"></script>');
-				$this->addFooterItem('<script type="text/javascript"> 
-				function googleMapInit' . $this->bID . '() { 
+				$this->addFooterItem('<script type="text/javascript">
+				function googleMapInit' . $this->bID . '() {
 				   try{
 					  var latlng = new google.maps.LatLng(' . $this->latitude . ', ' . $this->longitude . '), balloonHtml = ' . Loader::helper('json')->encode($balloonHtml) . ', balloon;
 					   var mapOptions = {
@@ -83,7 +83,7 @@
 					  };
 					   var map = new google.maps.Map(document.getElementById(\'googleMapCanvas' . $this->bID . '\'), mapOptions);
 					   var marker = new google.maps.Marker({
-						   position: latlng, 
+						   position: latlng,
 						   map: map
 					   });
 						if(balloonHtml) {
@@ -105,32 +105,32 @@
 							window.clearInterval(t);
 							googleMapInit' . $this->bID . '();
 							return true;
-						} 
+						}
 						return false;
 					};
 					if (!startWhenVisible()){
-						t = window.setInterval(function(){startWhenVisible();},100);      
+						t = window.setInterval(function(){startWhenVisible();},100);
 					}
-				});            
-				</script>');				
+				});
+				</script>');
 			}
 		}
-		
-		
-		public function view(){ 
-			$this->set('bID', $this->bID);	
+
+
+		public function view(){
+			$this->set('bID', $this->bID);
 			$this->set('title', $this->title);
 			$this->set('location', $this->location);
 			$this->set('latitude', $this->latitude);
 			$this->set('longitude', $this->longitude);
 			$this->set('zoom', $this->zoom);
 		}
-		
-		public function save($data) { 
+
+		public function save($data) {
 			$args['title'] = isset($data['title']) ? trim($data['title']) : '';
 			$args['location'] = isset($data['location']) ? trim($data['location']) : '';
 			$args['zoom'] = (intval($data['zoom'])>=0 && intval($data['zoom'])<=21) ? intval($data['zoom']) : 14;
-			
+
 			if( strlen($args['location'])>0 ){
 				$coords = $this->lookupLatLong($args['location']);
 				$args['latitude']=floatval($coords['lat']);
@@ -142,23 +142,23 @@
 			$args['balloonShow'] = empty($data['balloonShow']) ? 0 : 1;
 			$args['balloonContent'] = Loader::helper('content')->translateTo($data['balloonContent']);
 			$args['balloonWithLinkToMaps'] = empty($data['balloonWithLinkToMaps']) ? 0 : 1;
-			
+
 			parent::save($args);
 		}
-		
+
 		public function lookupLatLong($address) {
 			if(preg_match('/^\\s*([+\\-]?\\d+(\\.\\d*)?)[\\s,;]+([+\\-]?\\d+(\\.\\d*)?)\\s*$/', $address, $matches)) {
 				return array('lat' => floatval($matches[1]), 'lng' => floatval($matches[3]));
 			}
 			$json = Loader::helper('json');
 			$fh = Loader::helper('file');
-			
+
 			$base_url = "http://maps.google.com/maps/api/geocode/json?sensor=false";
 			$request_url = $base_url . "&address=".urlencode($address);
-			
+
 			$res = $fh->getContents($request_url);
 			$res = $json->decode($res);
-			if(!is_object($res)) { 
+			if(!is_object($res)) {
 				return false;
 			}
 			switch($res->status) {
@@ -175,5 +175,5 @@
 					break;
 			}
 		}
-		
+
 	}

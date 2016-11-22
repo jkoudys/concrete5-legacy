@@ -18,8 +18,9 @@ class Concrete5_Controller_Dashboard_Pages_Types extends DashboardBaseController
         } else {
             // check to make sure we
             $pageCount = $db->getOne(
-                            "SELECT COUNT(p.cID) from Pages p inner join CollectionVersions cv on p.cID = cv.cID WHERE cIsTemplate = 0 and cv.ctID = ?",
-                            array($ctID));
+                "SELECT COUNT(p.cID) from Pages p inner join CollectionVersions cv on p.cID = cv.cID WHERE cIsTemplate = 0 and cv.ctID = ?",
+                array($ctID)
+            );
 
             if ($pageCount == 0) {
                 $ct = CollectionType::getByID($ctID);
@@ -27,8 +28,10 @@ class Concrete5_Controller_Dashboard_Pages_Types extends DashboardBaseController
                 $this->redirect("/dashboard/pages/types");
             } else {
                 $this->error->add(
-                            t(
-                                "You must delete all pages of this type, and remove all page versions that contain this page type before deleting this page type."));
+                    t(
+                        "You must delete all pages of this type, and remove all page versions that contain this page type before deleting this page type."
+                    )
+                );
             }
         }
     }
@@ -91,7 +94,5 @@ class Concrete5_Controller_Dashboard_Pages_Types extends DashboardBaseController
         }
 
         $this->view();
-
     }
-
 }

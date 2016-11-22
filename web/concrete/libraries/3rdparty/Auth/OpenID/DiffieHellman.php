@@ -40,16 +40,21 @@ function Auth_OpenID_getDefaultGen()
  * @access private
  * @package OpenID
  */
-class Auth_OpenID_DiffieHellman {
+class Auth_OpenID_DiffieHellman
+{
 
     var $mod;
     var $gen;
     var $private;
     var $lib = null;
 
-    function Auth_OpenID_DiffieHellman($mod = null, $gen = null,
-                                       $private = null, $lib = null)
-    {
+    function Auth_OpenID_DiffieHellman(
+        $mod = null,
+        $gen = null,
+        $private = null,
+        $lib = null
+    ) {
+
         if ($lib === null) {
             $this->lib = Auth_OpenID_getMathLib();
         } else {
@@ -75,8 +80,11 @@ class Auth_OpenID_DiffieHellman {
             $this->private = $private;
         }
 
-        $this->public = $this->lib->powmod($this->gen, $this->private,
-                                           $this->mod);
+        $this->public = $this->lib->powmod(
+            $this->gen,
+            $this->private,
+            $this->mod
+        );
     }
 
     function getSharedSecret($composite)
@@ -109,5 +117,3 @@ class Auth_OpenID_DiffieHellman {
         return $xsecret;
     }
 }
-
-

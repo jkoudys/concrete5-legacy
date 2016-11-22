@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $sh = Loader::helper('concrete/dashboard/sitemap');
@@ -23,8 +23,8 @@ if (is_array($_REQUEST['cID'])) {
 
 if ($_POST['task'] == 'update_extended_attribute') {
 	$cakID = $_REQUEST['cakID'];
-	$value = ''; 
-	
+	$value = '';
+
 	$ak = CollectionAttributeKey::get($cakID);
 	foreach($pages as $c) {
 		$cp = new Permissions($c);
@@ -34,15 +34,15 @@ if ($_POST['task'] == 'update_extended_attribute') {
 		}
 	}
 	$val = $c->getAttributeValueObject($ak);
-	print $val->getValue('display');	
+	print $val->getValue('display');
 	exit;
-} 
+}
 
 if ($_POST['task'] == 'clear_extended_attribute') {
 
 	$cakID = $_REQUEST['cakID'];
-	$value = ''; 
-	
+	$value = '';
+
 	$ak = CollectionAttributeKey::get($cakID);
 	foreach($pages as $c) {
 		$cp = new Permissions($c);
@@ -51,7 +51,7 @@ if ($_POST['task'] == 'clear_extended_attribute') {
 			$c->reindex();
 		}
 	}
-	
+
 	print '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
 	exit;
 }
@@ -59,7 +59,7 @@ if ($_POST['task'] == 'clear_extended_attribute') {
 
 function printAttributeRow($ak) {
 	global $pages, $form;
-	
+
 	$value = '';
 	for ($i = 0; $i < count($pages); $i++) {
 		$lastValue = $value;
@@ -74,20 +74,20 @@ function printAttributeRow($ak) {
 				}
 			}
 		}
-	}	
-	
+	}
+
 	if ($value == '') {
 		$text = '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
 	} else {
 		$text = $value;
 	}
-	if ($ak->isAttributeKeyEditable()) { 
+	if ($ak->isAttributeKeyEditable()) {
 	$type = $ak->getAttributeType();
 	$hiddenFIDfields='';
 	foreach($pages as $c) {
 		$hiddenfields.=' '.$form->hidden('cID[]' , $c->getCollectionID()).' ';
-	}	
-	
+	}
+
 	$html = '
 	<tr class="ccm-attribute-editable-field">
 		<td><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyDisplayName() . '</a></strong></td>
@@ -106,26 +106,26 @@ function printAttributeRow($ak) {
 		<img src="' . ASSETS_URL_IMAGES . '/throbber_white_16.gif" width="16" height="16" class="ccm-attribute-editable-field-loading" />
 		</td>
 	</tr>';
-	
+
 	} else {
 
 	$html = '
 	<tr>
 		<td><strong>' . $ak->getAttributeKeyDisplayName() . '</strong></td>
 		<td width="100%" colspan="2">' . $text . '</td>
-	</tr>';	
+	</tr>';
 	}
 	print $html;
 }
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-page-properties-wrapper">
-<? } ?>
+<?php } ?>
 
 <div id="ccm-page-properties" class="ccm-ui">
 
 <table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
-<?
+<?php
 
 foreach($attribs as $at) {
 
@@ -136,17 +136,17 @@ foreach($attribs as $at) {
 ?>
 </table>
 
-<br/>  
+<br/>
 
 </div>
 
 <script type="text/javascript">
-$(function() { 
-	ccm_activateEditablePropertiesGrid();  
+$(function() {
+	ccm_activateEditablePropertiesGrid();
 });
 </script>
 
-<?
+<?php
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
-<? }
+<?php }

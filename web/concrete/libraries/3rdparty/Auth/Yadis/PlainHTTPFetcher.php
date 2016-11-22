@@ -25,7 +25,8 @@ require_once "Auth/Yadis/HTTPFetcher.php";
  *
  * @package OpenID
  */
-class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
+class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher
+{
     /**
      * Does this fetcher support SSL URLs?
      */
@@ -46,7 +47,6 @@ class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
         $off = $this->timeout;
 
         while ($redir && ($off > 0)) {
-
             $parts = parse_url($url);
 
             $specify_port = true;
@@ -94,8 +94,13 @@ class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
                 }
             }
 
-            @$sock = fsockopen($host, $parts['port'], $errno, $errstr,
-                               $this->timeout);
+            @$sock = fsockopen(
+                $host,
+                $parts['port'],
+                $errno,
+                $errstr,
+                $this->timeout
+            );
             if ($sock === false) {
                 return false;
             }
@@ -142,7 +147,6 @@ class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
                     $new_headers[$name] = $value;
                 }
             }
-
         }
 
         return new Auth_Yadis_HTTPResponse($url, $code, $new_headers, $body);
@@ -198,8 +202,13 @@ class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
         $errno = 0;
         $errstr = '';
 
-        $sock = fsockopen($parts['host'], $parts['port'], $errno, $errstr,
-                          $this->timeout);
+        $sock = fsockopen(
+            $parts['host'],
+            $parts['port'],
+            $errno,
+            $errstr,
+            $this->timeout
+        );
 
         if ($sock === false) {
             return null;
@@ -238,11 +247,13 @@ class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
                 list($name, $value) = explode(": ", $header, 2);
                 $new_headers[$name] = $value;
             }
-
         }
 
-        return new Auth_Yadis_HTTPResponse($url, $code,
-                                           $new_headers, $response_body);
+        return new Auth_Yadis_HTTPResponse(
+            $url,
+            $code,
+            $new_headers,
+            $response_body
+        );
     }
 }
-

@@ -1,11 +1,11 @@
 <?php
 
 class Concrete5_Library_Cache {
-	
+
 	public static function key($type, $id) {
 		return md5($type . $id);
 	}
-	
+
 	public function getLibrary() {
 		static $cache;
 		if (!isset($cache) && defined('DIR_FILES_CACHE')) {
@@ -15,7 +15,7 @@ class Concrete5_Library_Cache {
 				$frontendOptions = array(
 					'lifetime' => CACHE_LIFETIME,
 					'automatic_serialization' => true,
-					'cache_id_prefix' => CACHE_ID		
+					'cache_id_prefix' => CACHE_ID
 				);
 				$backendOptions = array(
 					'read_control' => false,
@@ -46,36 +46,36 @@ class Concrete5_Library_Cache {
 		}
 		return $cache;
 	}
-	
+
 	public function startup() {
 		$cache = Cache::getLibrary();
 	}
-	
+
 	public function disableCache() {
 		$ca = Cache::getLibrary();
 		if (is_object($ca)) {
 			$ca->setOption('caching', false);
 		}
 	}
-	
+
 	public function enableCache() {
 		$ca = Cache::getLibrary();
 		if (is_object($ca)) {
 			$ca->setOption('caching', true);
 		}
 	}
-	
+
 	public function disableLocalCache() {
 		CacheLocal::get()->enabled = false;
 	}
 	public function enableLocalCache() {
 		CacheLocal::get()->enabled = true;
 	}
-	
-	/** 
+
+	/**
 	 * Inserts or updates an item to the cache
 	 * the cache must always be enabled for (getting remote data, etc..)
-	 */	
+	 */
 	public function set($type, $id, $obj, $expire = false) {
 		$loc = CacheLocal::get();
 		if ($loc->enabled) {
@@ -92,17 +92,17 @@ class Concrete5_Library_Cache {
 		}
 		$cache->save($obj, Cache::key($type, $id), array($type), $expire);
 	}
-	
-	/** 
+
+	/**
 	 * Retrieves an item from the cache
-	 */	
+	 */
 	public function get($type, $id, $mustBeNewerThan = false) {
 		$loc = CacheLocal::get();
 		$key = Cache::key($type, $id);
 		if ($loc->enabled && array_key_exists($key, $loc->cache)) {
 			return $loc->cache[$key];
 		}
-			
+
 		$cache = Cache::getLibrary();
 		if (!$cache) {
 			if ($loc->enabled) {
@@ -110,7 +110,7 @@ class Concrete5_Library_Cache {
 			}
 			return false;
 		}
-		
+
 		// if mustBeNewerThan is set, we check the cache mtime
 		// if mustBeNewerThan is newer than that time, we relinquish
 		if ($mustBeNewerThan != false) {
@@ -124,7 +124,7 @@ class Concrete5_Library_Cache {
 				return false;
 			}
 		}
-		
+
 		$loaded = $cache->load($key);
 		if ($loc->enabled) {
 			$loc->cache[$key] = $loaded;
@@ -132,7 +132,7 @@ class Concrete5_Library_Cache {
 		return $loaded;
 	}
 
-	/** 
+	/**
 	 * not used. Good idea but doesn't work with all cache layers and on large caches is VERY slow.
 
 	public function deleteType($type) {
@@ -140,12 +140,12 @@ class Concrete5_Library_Cache {
 		$loc = CacheLocal::get();
 		$loc->enabled = false;
 	}
-	
+
 	*/
-	
-	/** 
+
+	/**
 	 * Removes an item from the cache
-	 */	
+	 */
 	public function delete($type, $id){
 		$cache = Cache::getLibrary();
 		if ($cache) {
@@ -157,10 +157,10 @@ class Concrete5_Library_Cache {
 			unset($loc->cache[Cache::key($type, $id)]);
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Completely flushes the cache
-	 */	
+	 */
 	public function flush() {
 		$db = Loader::db();
 		$r = $db->MetaTables();
@@ -170,12 +170,12 @@ class Concrete5_Library_Cache {
 			$fh = Loader::helper("file");
 			$fh->removeAll(DIR_FILES_CACHE . '/' . DIRNAME_CSS);
 		}
-		
+
 		$pageCache = PageCache::getLibrary();
 		if (is_object($pageCache)) {
 			$pageCache->flush();
 		}
-		
+
 		if (in_array('Config', $r)) {
 			// clear the environment overrides cache
 			$env = Environment::get();
@@ -188,7 +188,7 @@ class Concrete5_Library_Cache {
 				$db->Execute('truncate table CollectionVersionBlocksOutputCache');
 			}
 		}
-		
+
 		$loc = CacheLocal::get();
 		$loc->cache = array();
 
@@ -200,10 +200,10 @@ class Concrete5_Library_Cache {
 
 		if (function_exists('apc_clear_cache')) {
 			apc_clear_cache();
-		}        
+		}
 
 		Events::fire('on_cache_flush', $cache);
 		return true;
 	}
-		
+
 }

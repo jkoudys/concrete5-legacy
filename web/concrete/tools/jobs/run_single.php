@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 if (!ini_get('safe_mode')) {
@@ -30,7 +30,7 @@ if (is_object($job)) {
 					$job->processQueueItem($p);
 					$q->deleteMessage($p);
 				}
-				$totalItems = $q->count();	
+				$totalItems = $q->count();
 				$obj->totalItems = $totalItems;
 				if ($q->count() == 0) {
 					$result = $job->finish($q);
@@ -54,7 +54,7 @@ if (is_object($job)) {
 		exit;
 
 	} else {
-		$r = $job->executeJob(); 	
+		$r = $job->executeJob();
 		print $json->encode($r);
 	}
 } else {

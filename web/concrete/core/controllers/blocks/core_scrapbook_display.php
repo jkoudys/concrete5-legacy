@@ -14,23 +14,23 @@
 
 		protected $btCacheBlockRecord = true;
 		protected $btTable = 'btCoreScrapbookDisplay';
-		protected $btIsInternal = true;		
+		protected $btIsInternal = true;
 		public function getBlockTypeDescription() {
 			return t("Proxy block for blocks pasted through the scrapbook.");
 		}
-		
+
 		public function getBlockTypeName() {
 			return t("Scrapbook Display (Core)");
 		}
-		
+
 		public function getOriginalBlockID() {
 			return $this->bOriginalID;
 		}
-		
+
 		public function getSearchableContent() {
 			$b = Block::getByID($this->bOriginalID);
 			$bc = ($b) ? $b->getInstance() : false;
-			
+
 			if ($bc && method_exists($bc, 'getSearchableContent')) {
 				return $bc->getSearchableContent();
 			}
@@ -54,6 +54,6 @@
 				}
 			}
 		}
-		
-		
+
+
 	}
