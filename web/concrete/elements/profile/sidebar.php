@@ -12,32 +12,32 @@ $token = Loader::helper('validation/token');
 	<div style="margin-top:16px; padding-bottom:4px; margin-bottom:0px; font-weight:bold"><?=t('Member Since')?></div>
 	<?=Loader::helper('date')->formatDate($profile->getUserDateAdded(), true)?>
 
-	<?
+	<?php
 	$u = new User();
 	if ($u->isRegistered() && $u->getUserID() != $profile->getUserID()) { ?>
 	<div style="margin-top:16px;">
 		<div>
-		<? if( !UsersFriends::isFriend( $profile->getUserID(), $u->uID ) ){ ?>
+		<?php if( !UsersFriends::isFriend( $profile->getUserID(), $u->uID ) ){ ?>
 			<a href="<?=View::url('/profile/friends','add_friend', $profile->getUserID(), $token->generate('profile.add_friend.' . $profile->getUserID()))?>">
 				<?=t('Add to My Friends') ?>
 			</a>
-		<? }else{ ?>
+		<?php }else{ ?>
 			<a href="<?=View::url('/profile/friends','remove_friend', $profile->getUserID(), $token->generate('profile.remove_friend.' . $profile->getUserID()))?>">
 				<?=t('Remove from My Friends') ?>
 			</a>
-		<? } ?>
+		<?php } ?>
 
 		</div>
-		<? if ($profile->getUserProfilePrivateMessagesEnabled() == 1) { ?>
+		<?php if ($profile->getUserProfilePrivateMessagesEnabled() == 1) { ?>
 			<a href="<?=$this->url('/profile/messages', 'write', $profile->getUserID())?>"><?=t('Send Private Message')?></a>
-		<? } ?>
+		<?php } ?>
 
 	</div>
-	<? } ?>
+	<?php } ?>
 
 
 	<div>
-	<?
+	<?php
 	if($u->getUserID() == $profile->getUserID()) {
 		$nc = Page::getByPath('/profile');
 		$pl = new PageList();
@@ -59,7 +59,7 @@ $token = Loader::helper('validation/token');
 
 		<form method="get" action="<?=$this->url('/members')?>">
 		<h4><?=t('Search Members')?></h4>
-		<?
+		<?php
 		$form = Loader::helper('form');
 		print $form->text('keywords', array('style' => 'width: 80px'));
 		print '&nbsp;&nbsp;';
