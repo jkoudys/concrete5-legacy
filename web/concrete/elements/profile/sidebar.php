@@ -1,4 +1,5 @@
 <?php
+$v = View::getInstance();
 $av = Loader::helper('concrete/avatar');
 
 /** @type ValidationTokenHelper $token */
@@ -29,7 +30,7 @@ $token = Loader::helper('validation/token');
 
 		</div>
 		<?php if ($profile->getUserProfilePrivateMessagesEnabled() == 1) { ?>
-			<a href="<?=$this->url('/profile/messages', 'write', $profile->getUserID())?>"><?=t('Send Private Message')?></a>
+			<a href="<?=$v->url('/profile/messages', 'write', $profile->getUserID())?>"><?=t('Send Private Message')?></a>
 		<?php } ?>
 
 	</div>
@@ -57,7 +58,7 @@ $token = Loader::helper('validation/token');
 	?>
 	</div>
 
-		<form method="get" action="<?=$this->url('/members')?>">
+		<form method="get" action="<?=$v->url('/members')?>">
 		<h4><?=t('Search Members')?></h4>
 		<?php
 		$form = Loader::helper('form');
