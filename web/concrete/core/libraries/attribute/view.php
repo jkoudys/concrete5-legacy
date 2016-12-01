@@ -106,7 +106,7 @@ class Concrete5_Library_AttributeTypeView extends View
             ob_start();
         }
 
-        @Loader::element(DIRNAME_ATTRIBUTES . '/' . $view . '_header', array('type' => $this->attributeType));
+        Loader::element(DIRNAME_ATTRIBUTES . '/' . $view . '_header', ['type' => $this->attributeType, 'key' => $this->attributeKey]);
 
         $js = $this->attributeType->getAttributeTypeFileURL($view . '.js');
         $css = $this->attributeType->getAttributeTypeFileURL($view . '.css');
