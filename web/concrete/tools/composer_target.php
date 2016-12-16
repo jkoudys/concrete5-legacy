@@ -1,7 +1,8 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
+<?php
 $navigation = Loader::helper('navigation');
 $th = Loader::helper('text');
 $sh = Loader::helper('concrete/dashboard');
+
 if (!$sh->canAccessComposer()) {
     die(t('Access Denied'));
 }
@@ -18,37 +19,33 @@ if ($_REQUEST['submitOnChoose']) {
 }
 
 switch ($ct->getCollectionTypeComposerPublishMethod()) {
-    {
     case 'PAGE_TYPE':
         Loader::model('page_list');
-}
         $pages = array();
         $pl = new PageList();
         $pl->sortByName();
         $pl->filterByCollectionTypeID($ct->getCollectionTypeComposerPublishPageTypeID());
         $pages = $pl->get();
-
         ?>
 
-    <h1><?=t("Where do you want to publish this page?")?></h1>
+    <h1><?= t("Where do you want to publish this page?") ?></h1>
     <ul class="item-select-list">
-    <? foreach($pages as $p) {
+    <?php foreach ($pages as $p) {
         $trail = $navigation->getTrailToCollection($p);
         $crumbs = array();
-        if(is_array($trail) && count($trail)) {
-            $trail = array_reverse($trail,false);
-            foreach($trail as $t) {
-                $crumbs[] = $th->shortText($t->getCollectionName(),10);
+        if (is_array($trail) && count($trail)) {
+            $trail = array_reverse($trail, false);
+            foreach ($trail as $t) {
+                $crumbs[] = $th->shortText($t->getCollectionName(), 10);
             }
         }
         ?>
-        <li class="item-select-page"><a href="javascript:void(0)" onclick="<?=$function?>(<?=$p->getCollectionID()?>)"><?=$p->getCollectionName()?></a>
-            <div class="ccm-note" style="padding-left: 8px;"><?php echo implode(" &gt; ", $crumbs)?></div>
+        <li class="item-select-page"><a href="javascript:void(0)" onclick="<?= $function ?>(<?= $p->getCollectionID() ?>)"><?= $p->getCollectionName() ?></a>
+            <div class="ccm-note" style="padding-left: 8px;"><?= implode(" &gt; ", $crumbs) ?></div>
         </li>
-    <? } ?>
+    <?php } ?>
     </ul>
-
-    <?
+    <?php
         break;
     case 'CHOOSE':
         $args['sitemapCombinedMode'] = $sitemapCombinedMode;
