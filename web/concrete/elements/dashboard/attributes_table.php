@@ -1,6 +1,7 @@
 <?php
 // Used on both page and file attributes
 $c = Page::getCurrentPage();
+$v = View::getInstance();
 
 $sets = array();
 if (is_object($category) && $category->allowAttributeSets()) {
@@ -40,7 +41,7 @@ $form = Loader::helper('form');
 
             <?php } ?>
             <a
-                href="<?= $this->url(
+                href="<?= $v->url(
                     '/dashboard/system/attributes/sets',
                     'category',
                     $category->getAttributeKeyCategoryID()
@@ -88,7 +89,7 @@ if (count($attribs) > 0) {
                         width="16"
                         height="16"
                     />
-                    <a href="<?= $this->url($editURL, 'edit', $ak->getAttributeKeyID()) ?>">
+                    <a href="<?= $v->url($editURL, 'edit', $ak->getAttributeKeyID()) ?>">
                         <?= $ak->getAttributeKeyDisplayName() ?>
                     </a>
                 </div>
@@ -114,7 +115,7 @@ if (count($attribs) > 0) {
                     width="16"
                     height="16"
                 />
-                <a href="<?= $this->url($editURL, 'edit', $ak->getAttributeKeyID()) ?>">
+                <a href="<?= $v->url($editURL, 'edit', $ak->getAttributeKeyID()) ?>">
                     <?= $ak->getAttributeKeyDisplayName() ?>
                 </a>
             </div>
@@ -133,7 +134,7 @@ if (count($attribs) > 0) {
                 width="16"
                 height="16"
             />
-            <a href="<?= $this->url($editURL, 'edit', $ak->getAttributeKeyID()) ?>">
+            <a href="<?= $v->url($editURL, 'edit', $ak->getAttributeKeyID()) ?>">
                 <?= $ak->getAttributeKeyDisplayName() ?>
             </a>
         </div>
