@@ -68,25 +68,22 @@ if (defined('APP_VERSION_DISPLAY_IN_HEADER') && APP_VERSION_DISPLAY_IN_HEADER) {
 } else {
     echo '<meta name="generator" content="concrete5" />';
 }
-?>
 
-<?php $u = new User(); ?>
+$u = new User();
+?>
 <script type="text/javascript">
 <?php
-    echo("var CCM_DISPATCHER_FILENAME = '" . DIR_REL . '/' . DISPATCHER_FILENAME . "';\r");
-    echo("var CCM_CID = ".($cID?$cID:0).";\r");
 if (isset($isEditMode)) {
-    echo("var CCM_EDIT_MODE = {$isEditMode};\r");
-}
-if (isset($isEditMode)) {
-    echo("var CCM_ARRANGE_MODE = {$isArrangeMode};\r");
+    echo("const CCM_EDIT_MODE = {$isEditMode};\r");
+    echo("const CCM_ARRANGE_MODE = {$isArrangeMode};\r");
 }
 ?>
-var CCM_IMAGE_PATH = "<?php echo ASSETS_URL_IMAGES?>";
-var CCM_TOOLS_PATH = "<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>";
-var CCM_BASE_URL = "<?php echo BASE_URL?>";
-var CCM_REL = "<?php echo DIR_REL?>";
-
+const CCM_DISPATCHER_FILENAME = '<?= DIR_REL . '/' . DISPATCHER_FILENAME ?>';
+const CCM_CID = <?= $cID ? $cID : 0 ?>;
+const CCM_IMAGE_PATH = '<?= ASSETS_URL_IMAGES ?>';
+const CCM_TOOLS_PATH = '<?= REL_DIR_FILES_TOOLS_REQUIRED ?>';
+const CCM_BASE_URL = '<?= BASE_URL ?>';
+const CCM_REL = '<?= DIR_REL ?>';
 </script>
 
 <?php
