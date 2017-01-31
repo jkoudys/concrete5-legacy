@@ -134,7 +134,7 @@ define("LANGUAGE_DOMAIN_CORE", "messages");
 
 # Path to the core files shared between all concrete 5 installations
 if (!defined('DIR_BASE_CORE')) {
-	define('DIR_BASE_CORE', realpath(dirname(__FILE__) . '/..'));
+	define('DIR_BASE_CORE', realpath(__DIR__ . '/..'));
 }
 
 define('DIRNAME_CORE_CLASSES', 'core');

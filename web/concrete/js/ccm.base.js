@@ -15,7 +15,7 @@ function ccm_parseJSON(resp, onNoError) {
 function ccm_deactivateSite(onDone) {
   if (!ccm_siteActivated) return false;
 
-  if ($('#ccm-overlay').length < 1) {
+  if ($('#ccm-overlay').length === 0) {
     $(document.body).append('<div id="ccm-overlay"></div>');
   }
 
@@ -74,12 +74,14 @@ function ccm_addHeaderItem(item, type) {
 
 // called in versions popup
 function ccm_disableLinks() {
-  const td = document.createElement('DIV');
-  td.style.position = 'absolute';
-  td.style.top = '0px';
-  td.style.left = '0px';
-  td.style.width = '100%';
-  td.style.height = '100%';
-  td.style.zIndex = '1000';
+  const td = document.createElement('div');
+  Object.assign(td.style, {
+    position: 'absolute',
+    top: '0px',
+    left: '0px',
+    width: '100%',
+    height: '100%',
+    zIndex: '1000',
+  });
   document.body.appendChild(td);
 }

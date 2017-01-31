@@ -77,7 +77,7 @@ class Concrete5_Library_View extends Object
      * getInstance() grabs one instance of the view w/the singleton pattern
      * @return View
      */
-    public function getInstance()
+    public function getInstance(): View
     {
         static $instance;
         if (!isset($instance)) {
@@ -93,7 +93,7 @@ class Concrete5_Library_View extends Object
      * @param string $path
      * @return string $theme
      */
-    private function getThemeFromPath($path)
+    private function getThemeFromPath(string $path): string
     {
         // there's probably a more efficient way to do this
         $theme = false;
@@ -104,7 +104,7 @@ class Concrete5_Library_View extends Object
                 break;
             }
         }
-        return $theme;
+        return (string) $theme;
     }
 
     /**
@@ -112,10 +112,13 @@ class Concrete5_Library_View extends Object
      * in order to make certain style attributes found inside editable
      * @param string $stylesheet
      */
-    public function getStyleSheet($stylesheet)
+    public function getStyleSheet(string $stylesheet): string
     {
         if ($this->isPreview()) {
-            return REL_DIR_FILES_TOOLS . '/css/' . DIRNAME_THEMES . '/' . $this->getThemeHandle() . '/' . $stylesheet . '?mode=preview&time=' . time();
+            return REL_DIR_FILES_TOOLS . '/css/' .
+                DIRNAME_THEMES . '/' .
+                $this->getThemeHandle() . '/' .
+                $stylesheet . '?mode=preview&time=' . time();
         }
         $pt = PageTheme::getByHandle($this->getThemeHandle());
         $file = $this->getThemePath() . '/' . $stylesheet;
@@ -168,7 +171,7 @@ class Concrete5_Library_View extends Object
      * @access private
      */
 
-    public function addHeaderItem($item, $namespace = 'VIEW')
+    public function addHeaderItem($item, string $namespace = 'VIEW')
     {
         if ($this->resolveItemConflicts($item)) {
             $this->headerItems[$namespace][] = $item;
@@ -179,7 +182,7 @@ class Concrete5_Library_View extends Object
      * Function responsible for adding footer items within the context of a view.
      * @access private
      */
-    public function addFooterItem($item, $namespace = 'VIEW')
+    public function addFooterItem($item, string $namespace = 'VIEW')
     {
         if ($this->resolveItemConflicts($item)) {
             $this->footerItems[$namespace][] = $item;
@@ -204,7 +207,7 @@ class Concrete5_Library_View extends Object
      * ~If a duplicate is found and the given item does NOT have a higher version than
      *  the found item, we return FALSE (with no side-effects).
      */
-    private function resolveItemConflicts($checkItem, &$againstItems = null)
+    private function resolveItemConflicts($checkItem, &$againstItems = null): bool
     {
 
         //Only check items that have "unique handles"
@@ -251,48 +254,31 @@ class Concrete5_Library_View extends Object
      * returns an array of string header items, typically inserted into the html <head> of a page through the header_required element
      * @return array
      */
-    public function getHeaderItems()
+    public function getHeaderItems(): array
     {
-        //Combine items from all namespaces into one list
-        $a1 = (is_array($this->headerItems['CORE'])) ? $this->headerItems['CORE'] : array();
-        $a2 = (is_array($this->headerItems['VIEW'])) ? $this->headerItems['VIEW'] : array();
-        $a3 = (is_array($this->headerItems['CONTROLLER'])) ? $this->headerItems['CONTROLLER'] : array();
-
-        $items = array_merge($a1, $a2, $a3);
-
-        //Remove exact string duplicates (items whose string representations are equal)
-        if (version_compare(PHP_VERSION, '5.2.9', '<')) {
-            $items = array_unique($items);
-        } else {
-            // stupid PHP (see http://php.net/array_unique#refsect1-function.array-unique-changelog )
-            $items = array_unique($items, SORT_STRING);
-        }
-        return $items;
+        // Combine items from all namespaces into one list
+        return array_unique(array_merge(
+            $this->headerItems['CORE'] ?? [],
+            $this->headerItems['VIEW'] ?? [],
+            $this->headerItems['CONTROLLER'] ?? []
+        ), SORT_STRING);
     }
 
     /**
      * returns an array of string footer items, typically inserted into the html before the close of the </body> tag of a page through the footer_required element
      * @return array
      */
-    public function getFooterItems()
+    public function getFooterItems(): array
     {
-        //Combine items from all namespaces into one list
-        $a1 = (is_array($this->footerItems['CORE'])) ? $this->footerItems['CORE'] : array();
-        $a2 = (is_array($this->footerItems['VIEW'])) ? $this->footerItems['VIEW'] : array();
-        $a3 = (is_array($this->footerItems['CONTROLLER'])) ? $this->footerItems['CONTROLLER'] : array();
-        $a4 = (is_array($this->footerItems['SCRIPT'])) ? $this->footerItems['SCRIPT'] : array();
+        // Combine items from all namespaces into one list
+        $items = array_unique(array_merge(
+            $this->footerItems['CORE'] ?? [],
+            $this->footerItems['VIEW'] ?? [],
+            $this->footerItems['CONTROLLER'] ?? [],
+            $this->footerItems['SCRIPT'] ?? []
+        ), SORT_STRING);
 
-        $items = array_merge($a1, $a2, $a3, $a4);
-
-        //Remove exact string duplicates (items whose string representations are equal)
-        if (version_compare(PHP_VERSION, '5.2.9', '<')) {
-            $items = array_unique($items);
-        } else {
-            // stupid PHP (see http://php.net/array_unique#refsect1-function.array-unique-changelog )
-            $items = array_unique($items, SORT_STRING);
-        }
-
-        //Also remove items having exact string duplicates in the header
+        // Also remove items having exact string duplicates in the header
         $headerItems = $this->getHeaderItems();
         $retItems = array();
         foreach ($items as $it) {
@@ -310,11 +296,8 @@ class Concrete5_Library_View extends Object
      */
     public function outputHeaderItems()
     {
-        $items = $this->getHeaderItems();
-
-        foreach ($items as $hi) {
-            print $hi; // caled on two seperate lines because of pre php 5.2 __toString issues
-            print "\n";
+        foreach ($this->getHeaderItems() as $hi) {
+            echo $hi;
         }
     }
 
@@ -324,11 +307,8 @@ class Concrete5_Library_View extends Object
      */
     public function outputFooterItems()
     {
-        $items = $this->getFooterItems();
-
-        foreach ($items as $hi) {
-            print $hi; // caled on two seperate lines because of pre php 5.2 __toString issues
-            print "\n";
+        foreach ($this->getFooterItems() as $fi) {
+            echo $fi;
         }
     }
 
@@ -336,7 +316,7 @@ class Concrete5_Library_View extends Object
      * @param string
      * @return mixed
      */
-    public function field($fieldName)
+    public function field(string $fieldName)
     {
         return $this->controller->field($fieldName);
     }
@@ -970,7 +950,7 @@ class Concrete5_Library_View extends Object
             $theme = $this->themeOverride;
         } elseif ($this->controller->theme != false) {
             $theme = $this->controller->theme;
-        } elseif (($tmpTheme = $this->getThemeFromPath($viewPath)) != false) {
+        } elseif ($viewPath && ($tmpTheme = $this->getThemeFromPath($viewPath))) {
             $theme = $tmpTheme;
         } elseif (is_object($this->c) && ($tmpTheme = $this->c->getCollectionThemeObject()) != false) {
             $theme = $tmpTheme;

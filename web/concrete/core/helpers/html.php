@@ -16,22 +16,20 @@
  * @license    http://www.concrete5.org/license/     MIT License
  */
 
-defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Html
 {
-
-    protected $legacyJavascript = array(
+    protected $legacyJavascript = [
         'ccm.dialog.js' => 'ccm.app.js',
         'jquery.metadata.js' => 'ccm.app.js',
         'ccm.themes.js' => 'ccm.app.js',
         'ccm.filemanager.js' => 'ccm.app.js',
-        /*'jquery.rating.js' => 'ccm.app.js',*/
         'jquery.colorpicker.js' => 'ccm.app.js',
         'jquery.liveupdate.js' => 'ccm.app.js',
         'ccm.ui.js' => 'ccm.app.js',
         'ccm.search.js' => 'ccm.app.js'
-    );
-    protected $legacyCSS = array(
+    ];
+
+    protected $legacyCSS = [
         'ccm.dialog.css' => 'ccm.app.css',
         'ccm.ui.css' => 'ccm.app.css',
         'ccm.forms.css' => 'ccm.app.css',
@@ -39,7 +37,7 @@ class Concrete5_Helper_Html
         'ccm.search.css' => 'ccm.app.css',
         'ccm.filemanager.css' => 'ccm.app.css',
         'ccm.calendar.css' => 'ccm.app.css'
-    );
+    ];
 
     /**
      * Includes a CSS file. This function looks in several places.
@@ -52,13 +50,16 @@ class Concrete5_Helper_Html
      * @param array $uniqueItemHandle contains two elements: 'handle' and 'version' (both strings) -- helps prevent duplicate output of the same css file (in View::addHeaderItem() and View::addFooterItem()).
      * @return CSSOutputObject
      */
-    public function css($file, $pkgHandle = null, $uniqueItemHandle = array())
+    public function css(string $file, string $pkgHandle = null, array $uniqueItemHandle = []): CSSOutputObject
     {
 
         $css = new CSSOutputObject($uniqueItemHandle);
 
         // if the first character is a / then that means we just go right through, it's a direct path
-        if (substr($file, 0, 1) == '/' || substr($file, 0, 4) == 'http' || strpos($file, DISPATCHER_FILENAME) > -1) {
+        if (substr($file, 0, 1) === '/' ||
+            substr($file, 0, 4) === 'http' ||
+            strpos($file, DISPATCHER_FILENAME) > -1
+        ) {
             $css->compress = false;
             $css->file = $file;
         }
@@ -72,7 +73,13 @@ class Concrete5_Helper_Html
         } elseif ($pkgHandle != null) {
             if (file_exists(DIR_BASE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file)) {
                 $css->file = DIR_REL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file;
-            } elseif (file_exists(DIR_BASE_CORE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file)) {
+            } elseif (file_exists(
+                DIR_BASE_CORE . '/' .
+                DIRNAME_PACKAGES . '/' .
+                $pkgHandle . '/' .
+                DIRNAME_CSS . '/' .
+                $file
+            )) {
                 $css->file = ASSETS_URL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file;
             }
         }
@@ -103,7 +110,7 @@ class Concrete5_Helper_Html
      * @param array $uniqueItemHandle contains two elements: 'handle' and 'version' (both strings) -- helps prevent duplicate output of the same javascript file (in View::addHeaderItem() and View::addFooterItem()).
      * @return JavaScriptOutputObject
      */
-    public function javascript($file, $pkgHandle = null, $uniqueItemHandle = array())
+    public function javascript(string $file, string $pkgHandle = null, array $uniqueItemHandle = []): JavaScriptOutputObject
     {
 
         $js = new JavaScriptOutputObject($uniqueItemHandle);
@@ -115,7 +122,7 @@ class Concrete5_Helper_Html
 
         if (file_exists(DIR_BASE . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
             $js->file = DIR_REL . '/' . DIRNAME_JAVASCRIPT . '/' . $file;
-        } elseif ($pkgHandle != null) {
+        } elseif ($pkgHandle) {
             if (file_exists(DIR_BASE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
                 $js->file = DIR_REL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file;
             } elseif (file_exists(DIR_BASE_CORE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
@@ -123,7 +130,7 @@ class Concrete5_Helper_Html
             }
         }
 
-        if ($js->file == '') {
+        if ($js->file === '') {
             if (isset($this->legacyJavascript[$file])) {
                 $file = $this->legacyJavascript[$file];
             }
@@ -143,7 +150,7 @@ class Concrete5_Helper_Html
      * @param array $uniqueItemHandle contains two elements: 'handle' and 'version' (both strings) -- helps prevent duplicate output of the same script (in View::addHeaderItem() and View::addFooterItem()).
      * @return InlineScriptOutputObject
      */
-    public function script($script, $uniqueItemHandle = array())
+    public function script(string $script, array $uniqueItemHandle = []): InlineScriptOutputObject
     {
         $js = new InlineScriptOutputObject($uniqueItemHandle);
         $js->script = $script;
@@ -161,14 +168,14 @@ class Concrete5_Helper_Html
      * @param array $attribs
      * @return string $html
      */
-    public function image($src, $width = false, $height = false, $attribs = null)
+    public function image(string $src, int $width = null, int $height = null, array $attribs = null): string
     {
         $image = parse_url($src);
         $attribsStr = '';
 
-        if (is_array($width) && $height == false) {
+        if (is_array($width) && $height === null) {
             $attribs = $width;
-            $width = false;
+            $width = null;
         }
 
         if (is_array($attribs)) {
@@ -177,7 +184,7 @@ class Concrete5_Helper_Html
             }
         }
 
-        if ($width == false && $height == false && (!isset($image['scheme']))) {
+        if ($width === null && $height === null && (!isset($image['scheme']))) {
             // if our file is not local we DON'T do getimagesize() on it. too slow
             $v = View::getInstance();
             if ($v->getThemeDirectory() != '' && file_exists($v->getThemeDirectory() . '/' . DIRNAME_IMAGES . '/' . $src)) {
@@ -218,31 +225,32 @@ class Concrete5_Helper_Html_HeaderOutputObject
     public $href = '';
     public $script = '';
     public $compress = true;
-    public $handle = array(); //optional 'handle' and 'version' that the View class can use to avoid duplicate output of conflicting js/css files
+    // optional 'handle' and 'version' that the View class can use to avoid duplicate output of conflicting js/css files
+    public $handle = [];
 
     /**
      * @param optional: pass in handle and version (as array) or just handle (as string; version will be '0')
      *                  to avoid duplicate output of the same js/css items from other blocks/theme code.
      */
-    public function __construct($uniqueItemHandle = array())
+    public function __construct(array $uniqueItemHandle = [])
     {
         if (is_array($uniqueItemHandle) && array_key_exists('handle', $uniqueItemHandle) && !empty($uniqueItemHandle['handle'])) {
-            $this->handle = array(
+            $this->handle = [
                 'handle' => $uniqueItemHandle['handle'],
                 'version' => array_key_exists('version', $uniqueItemHandle) ? $uniqueItemHandle['version'] : '0',
-            );
+            ];
         } elseif (is_string($uniqueItemHandle) && !empty($uniqueItemHandle)) {
-            $this->handle = array(
+            $this->handle = [
                 'handle' => $uniqueItemHandle,
                 'version' => '0',
-            );
+            ];
         }
     }
 }
 
 class Concrete5_Helper_Html_JavascriptOutputObject extends Concrete5_Helper_Html_HeaderOutputObject
 {
-    public function __toString()
+    public function __toString(): string
     {
         return '<script type="text/javascript" src="' . $this->file . '"></script>';
     }
@@ -250,8 +258,7 @@ class Concrete5_Helper_Html_JavascriptOutputObject extends Concrete5_Helper_Html
 
 class Concrete5_Helper_Html_InlinescriptOutputObject extends Concrete5_Helper_Html_HeaderOutputObject
 {
-
-    public function __toString()
+    public function __toString(): string
     {
         return '<script type="text/javascript">/*<![CDATA[*/'. $this->script .'/*]]>*/</script>';
     }
@@ -259,8 +266,7 @@ class Concrete5_Helper_Html_InlinescriptOutputObject extends Concrete5_Helper_Ht
 
 class Concrete5_Helper_Html_CSSOutputObject extends Concrete5_Helper_Html_HeaderOutputObject
 {
-
-    public function __toString()
+    public function __toString(): string
     {
         return '<link rel="stylesheet" type="text/css" href="' . $this->file . '" />';
     }
