@@ -1,7 +1,4 @@
 <?php
-
-defined('C5_EXECUTE') or die("Access Denied.");
-
 /**
  * @package Core
  * @category Concrete
@@ -22,65 +19,64 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 class Concrete5_Library_View extends Object
 {
-
     /**
-         * @var string
-         */
+     * @var string
+     */
     private $viewPath;
 
     /**
-         * @var string
-         */
+     * @var string
+     */
     protected $pkgHandle;
 
     /**
-         * @var bool
-         */
+     * @var bool
+     */
     protected $disableContentInclude = false;
 
     /**
-         * controller used by this particular view
-         * @access public
-         * @var object
-        */
+     * controller used by this particular view
+     * @access public
+     * @var object
+     */
     public $controller;
 
 
     /**
-         * An array of items that get loaded into a page's header
-         * @var array
-         */
+     * An array of items that get loaded into a page's header
+     * @var array
+     */
     private $headerItems = array();
 
     /**
-         * An array of items that get loaded into just before body close
-         * @var array
-         */
+     * An array of items that get loaded into just before body close
+     * @var array
+     */
     private $footerItems = array();
 
     /**
-         * themePaths holds the various hard coded paths to themes
-         * @access private
-         * @var array
-        */
+     * themePaths holds the various hard coded paths to themes
+     * @access private
+     * @var array
+     */
     private $themePaths = array();
 
     /**
-         * @var bool
-         */
+     * @var bool
+     */
     private $areLinksDisabled = false;
 
     /**
-         * editing mode is enabled or not
-         * @access private
-         * @var boolean
-        */
+     * editing mode is enabled or not
+     * @access private
+     * @var boolean
+     */
     private $isEditingEnabled = true;
 
     /**
-         * getInstance() grabs one instance of the view w/the singleton pattern
-         * @return View
-        */
+     * getInstance() grabs one instance of the view w/the singleton pattern
+     * @return View
+     */
     public function getInstance()
     {
         static $instance;
@@ -92,11 +88,11 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * This grabs the theme for a particular path, if one exists in the themePaths array
-         * @access private
-         * @param string $path
-         * @return string $theme
-        */
+     * This grabs the theme for a particular path, if one exists in the themePaths array
+     * @access private
+     * @param string $path
+     * @return string $theme
+     */
     private function getThemeFromPath($path)
     {
         // there's probably a more efficient way to do this
@@ -112,10 +108,10 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * Returns a stylesheet found in a themes directory - but FIRST passes it through the tools CSS handler
-         * in order to make certain style attributes found inside editable
-         * @param string $stylesheet
-         */
+     * Returns a stylesheet found in a themes directory - but FIRST passes it through the tools CSS handler
+     * in order to make certain style attributes found inside editable
+     * @param string $stylesheet
+     */
     public function getStyleSheet($stylesheet)
     {
         if ($this->isPreview()) {
@@ -168,9 +164,9 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * Function responsible for adding header items within the context of a view.
-         * @access private
-         */
+     * Function responsible for adding header items within the context of a view.
+     * @access private
+     */
 
     public function addHeaderItem($item, $namespace = 'VIEW')
     {
@@ -180,9 +176,9 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * Function responsible for adding footer items within the context of a view.
-         * @access private
-         */
+     * Function responsible for adding footer items within the context of a view.
+     * @access private
+     */
     public function addFooterItem($item, $namespace = 'VIEW')
     {
         if ($this->resolveItemConflicts($item)) {
@@ -191,23 +187,23 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * Internal helper function for addHeaderItem() and addFooterItem().
-         * Looks through header and footer items for anything of the same type
-         * and having the same "unique handle" as the given item.
-         *
-         * HOW TO USE THIS FUNCTION:
-         * When calling this function, just pass the first $item argument
-         *  (the second optional argument is only for our own recursive use).
-         * If we return FALSE, that means the given item should NOT be added to headerItems/footerItems.
-         * If we return TRUE, then go ahead and add the item to headerItems/footerItems.
-         *
-         * NOTE: THIS FUNCTION HAS POTENTIAL SIDE-EFFECTS (IN ADDITION TO RETURN VALUE)...
-         * ~If no duplicate is found, we return TRUE (with no side-effects).
-         * ~If a duplicate is found and the given item has a HIGHER version than the found item,
-         *  we return TRUE **AND** we remove the found duplicate from headerItems or footerItems!!
-         * ~If a duplicate is found and the given item does NOT have a higher version than
-         *  the found item, we return FALSE (with no side-effects).
-         */
+     * Internal helper function for addHeaderItem() and addFooterItem().
+     * Looks through header and footer items for anything of the same type
+     * and having the same "unique handle" as the given item.
+     *
+     * HOW TO USE THIS FUNCTION:
+     * When calling this function, just pass the first $item argument
+     *  (the second optional argument is only for our own recursive use).
+     * If we return FALSE, that means the given item should NOT be added to headerItems/footerItems.
+     * If we return TRUE, then go ahead and add the item to headerItems/footerItems.
+     *
+     * NOTE: THIS FUNCTION HAS POTENTIAL SIDE-EFFECTS (IN ADDITION TO RETURN VALUE)...
+     * ~If no duplicate is found, we return TRUE (with no side-effects).
+     * ~If a duplicate is found and the given item has a HIGHER version than the found item,
+     *  we return TRUE **AND** we remove the found duplicate from headerItems or footerItems!!
+     * ~If a duplicate is found and the given item does NOT have a higher version than
+     *  the found item, we return FALSE (with no side-effects).
+     */
     private function resolveItemConflicts($checkItem, &$againstItems = null)
     {
 
@@ -252,9 +248,9 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * returns an array of string header items, typically inserted into the html <head> of a page through the header_required element
-         * @return array
-         */
+     * returns an array of string header items, typically inserted into the html <head> of a page through the header_required element
+     * @return array
+     */
     public function getHeaderItems()
     {
         //Combine items from all namespaces into one list
@@ -275,9 +271,9 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * returns an array of string footer items, typically inserted into the html before the close of the </body> tag of a page through the footer_required element
-         * @return array
-         */
+     * returns an array of string footer items, typically inserted into the html before the close of the </body> tag of a page through the footer_required element
+     * @return array
+     */
     public function getFooterItems()
     {
         //Combine items from all namespaces into one list
@@ -309,9 +305,9 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * Function responsible for outputting header items
-         * @access private
-         */
+     * Function responsible for outputting header items
+     * @access private
+     */
     public function outputHeaderItems()
     {
         $items = $this->getHeaderItems();
@@ -323,9 +319,9 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * Function responsible for outputting footer items
-         * @access private
-         */
+     * Function responsible for outputting footer items
+     * @access private
+     */
     public function outputFooterItems()
     {
         $items = $this->getFooterItems();
@@ -337,9 +333,9 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * @param string
-         * @return mixed
-         */
+     * @param string
+     * @return mixed
+     */
     public function field($fieldName)
     {
         return $this->controller->field($fieldName);
@@ -347,73 +343,73 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * @access private
-         * @return void
-         */
+     * @access private
+     * @return void
+     */
     public function enablePreview()
     {
         $this->isPreview = true;
     }
 
     /**
-         * @access private
-         * @return bool
-         */
+     * @access private
+     * @return bool
+     */
     public function isPreview()
     {
         return $this->isPreview;
     }
 
     /**
-         * @access private
-         * @return void
-         */
+     * @access private
+     * @return void
+     */
     public function disableLinks()
     {
         $this->areLinksDisabled = true;
     }
 
     /**
-         * @access private
-         * @return void
-         */
+     * @access private
+     * @return void
+     */
     public function enableLinks()
     {
         $this->areLinksDisabled = false;
     }
 
     /**
-         * @access private
-         * @return bool
-         */
+     * @access private
+     * @return bool
+     */
     public function areLinksDisabled()
     {
         return $this->areLinksDisabled;
     }
 
     /**
-         * Returns the path used to access this view
-         * @return string
-         */
+     * Returns the path used to access this view
+     * @return string
+     */
     private function getViewPath()
     {
         return $this->viewPath;
     }
 
     /**
-         * Returns the handle of the currently active theme
-         * @return string
-         */
+     * Returns the handle of the currently active theme
+     * @return string
+     */
     public function getThemeHandle()
     {
         return $this->ptHandle;
     }
 
     /**
-         * gets the theme include file for this particular view
-         * @access public
-         * @return string $theme
-        */
+     * gets the theme include file for this particular view
+     * @access public
+     * @return string $theme
+     */
     public function getTheme()
     {
         return $this->theme;
@@ -421,10 +417,10 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * gets the relative theme path for use in templates
-         * @access public
-         * @return string $themePath
-        */
+     * gets the relative theme path for use in templates
+     * @access public
+     * @return string $themePath
+     */
     public function getThemePath()
     {
         return $this->themePath;
@@ -432,20 +428,20 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * set directory of current theme for use when loading an element
-         * @access public
-         * @param string $path
-        */
+     * set directory of current theme for use when loading an element
+     * @access public
+     * @param string $path
+     */
     public function setThemeDirectory($path)
     {
         $this->themeDir=$path;
     }
 
     /**
-         * get directory of current theme for use when loading an element
-         * @access public
-         * @return string $themeDir
-        */
+     * get directory of current theme for use when loading an element
+     * @access public
+     * @return string $themeDir
+     */
     public function getThemeDirectory()
     {
         return $this->themeDir;
@@ -453,12 +449,12 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * used by the theme_paths and site_theme_paths files in config/ to hard coded certain paths to various themes
-         * @access public
-         * @param $path string
-         * @param $theme object, if null site theme is default
-         * @return void
-        */
+     * used by the theme_paths and site_theme_paths files in config/ to hard coded certain paths to various themes
+     * @access public
+     * @param $path string
+     * @param $theme object, if null site theme is default
+     * @return void
+     */
     public function setThemeByPath($path, $theme = null)
     {
         if ($theme != VIEW_CORE_THEME && $theme != 'dashboard') { // this is a hack until we figure this code out.
@@ -473,11 +469,11 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * Returns the value of the item in the POST array.
-         * @access public
-         * @param $key
-         * @return void
-        */
+     * Returns the value of the item in the POST array.
+     * @access public
+     * @param $key
+     * @return void
+     */
     public function post($key)
     {
         return $this->controller->post($key);
@@ -485,20 +481,20 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * gets the collection object for the current view
-         * @access public
-         * @return Collection Object $c
-        */
+     * gets the collection object for the current view
+     * @access public
+     * @return Collection Object $c
+     */
     public function getCollectionObject()
     {
         return $this->c;
     }
 
     /**
-         * sets the collection object for the current view
-         * @access public
-         * @return void
-        */
+     * sets the collection object for the current view
+     * @access public
+     * @return void
+     */
     public function setCollectionObject($c)
     {
         $this->c = $c;
@@ -506,14 +502,14 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * Includes file from the current theme path. Similar to php's include().
-         * Files included with this function will have all variables set using $this->controller->set() in their local scope,
-         * As well as access to all that controller's helper objects.
-         * @access public
-         * @param string $file
-         * @param array $args
-         * @return void
-        */
+     * Includes file from the current theme path. Similar to php's include().
+     * Files included with this function will have all variables set using $this->controller->set() in their local scope,
+     * As well as access to all that controller's helper objects.
+     * @access public
+     * @param string $file
+     * @param array $args
+     * @return void
+     */
     public function inc($file, $args = array())
     {
         extract($args);
@@ -528,10 +524,10 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * editing is enabled true | false
-         * @access private
-         * @return boolean
-        */
+     * editing is enabled true | false
+     * @access private
+     * @return boolean
+     */
     public function editingEnabled()
     {
         return $this->isEditingEnabled;
@@ -539,10 +535,10 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * set's editing to disabled
-         * @access private
-         * @return void
-        */
+     * set's editing to disabled
+     * @access private
+     * @return void
+     */
     public function disableEditing()
     {
         $this->isEditingEnabled = false;
@@ -550,10 +546,10 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * sets editing to enabled
-         * @access private
-         * @return void
-        */
+     * sets editing to enabled
+     * @access private
+     * @return void
+     */
     public function enableEditing()
     {
         $this->isEditingEnabled = true;
@@ -563,13 +559,13 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * This is rarely used. We want to render another view
-         * but keep the current controller. Views should probably not
-         * auto-grab the controller anyway but whatever
-         * @access private
-         * @param object $cnt
-         * @return void
-        */
+     * This is rarely used. We want to render another view
+     * but keep the current controller. Views should probably not
+     * auto-grab the controller anyway but whatever
+     * @access private
+     * @param object $cnt
+     * @return void
+     */
     public function setController($cnt)
     {
         $this->controller = $cnt;
@@ -577,12 +573,12 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * checks the current view to see if you're in that page's "section" (top level)
-         * (with one exception: passing in the home page url ('' or '/') will always return false)
-         * @access public
-         * @param string $url
-         * @return boolean | void
-        */
+     * checks the current view to see if you're in that page's "section" (top level)
+     * (with one exception: passing in the home page url ('' or '/') will always return false)
+     * @access public
+     * @param string $url
+     * @return boolean | void
+     */
     public function section($url)
     {
         $cPath = Page::getCurrentPage()->getCollectionPath();
@@ -596,12 +592,12 @@ class Concrete5_Library_View extends Object
 
 
     /**
-         * url is a utility function that is used inside a view to setup urls w/tasks and parameters
-         * @access public
-         * @param string $action
-         * @param string $task
-         * @return string $url
-        */
+     * url is a utility function that is used inside a view to setup urls w/tasks and parameters
+     * @access public
+     * @param string $action
+     * @param string $task
+     * @return string $url
+     */
     public static function url($action, $task = null)
     {
         $dispatcher = '';
@@ -676,11 +672,11 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * A shortcut to posting back to the current page with a task and optional parameters. Only works in the context of
-         * @param string $action
-         * @param string $task
-         * @return string $url
-         */
+     * A shortcut to posting back to the current page with a task and optional parameters. Only works in the context of
+     * @param string $action
+     * @param string $task
+     * @return string $url
+     */
     public function action($action, $task = null)
     {
         $a = func_get_args();
@@ -690,13 +686,13 @@ class Concrete5_Library_View extends Object
     }
 
     /**
-         * render's a fata error using the built-in view. This is currently only
-         * used when the database connection fails
-         * @access public
-         * @param string $title
-         * @param string $error
-         * @return void
-        */
+     * render's a fata error using the built-in view. This is currently only
+     * used when the database connection fails
+     * @access public
+     * @param string $title
+     * @param string $error
+     * @return void
+     */
     public function renderError($title, $error, $errorObj = null)
     {
         $innerContent = $error;
@@ -714,32 +710,32 @@ class Concrete5_Library_View extends Object
             exit;
         } else {
             Loader::element('error_fatal', array('innerContent' => $innerContent,
-            'titleContent' => $titleContent));
+                'titleContent' => $titleContent));
         }
     }
 
     /**
-         * sets the current theme
-         * @access public
-         * @param string $theme
-         * @return void
-        */
+     * sets the current theme
+     * @access public
+     * @param string $theme
+     * @return void
+     */
     public function setTheme($theme)
     {
         $this->themeOverride = $theme;
     }
 
     /**
-         * set theme takes either a text-based theme ("concrete" or "dashboard" or something)
-         * or a PageTheme object and sets information in the view about that theme. This is called internally
-         * and is always passed the correct item based on context
-         *
-         * @access protected
-         * @param PageTheme object $pl
-         * @param string $filename
-         * @param boolean $wrapTemplateInTheme
-         * @return void
-        */
+     * set theme takes either a text-based theme ("concrete" or "dashboard" or something)
+     * or a PageTheme object and sets information in the view about that theme. This is called internally
+     * and is always passed the correct item based on context
+     *
+     * @access protected
+     * @param PageTheme object $pl
+     * @param string $filename
+     * @param boolean $wrapTemplateInTheme
+     * @return void
+     */
     protected function setThemeForView($pl, $filename, $wrapTemplateInTheme = false)
     {
         // wrapTemplateInTheme gets set to true if we're passing the filename of a single page or page type file through
@@ -804,12 +800,12 @@ class Concrete5_Library_View extends Object
         return TextHelper::sanitize($text);
     }
     /**
-         * render takes one argument - the item being rendered - and it can either be a path or a page object
-         * @access public
-         * @param string $view
-         * @param array $args
-         * @return void
-        */
+     * render takes one argument - the item being rendered - and it can either be a path or a page object
+     * @access public
+     * @param string $view
+     * @param array $args
+     * @return void
+     */
     public function render($view, $args = null)
     {
 
