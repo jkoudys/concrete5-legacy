@@ -1,15 +1,12 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
-
 /**
- *
- * A page theme editable style object corresponds to a style in a stylesheet that is able to be manipulated through the dashboard.
+ * A page theme editable style object corresponds to a style in a stylesheet that is able
+ * to be manipulated through the dashboard.
  * @package Pages
  * @subpackage Themes
  */
 class Concrete5_Model_PageThemeEditableStyle extends Object
 {
-
     const TSTYPE_COLOR = 1;
     const TSTYPE_FONT = 10;
     const TSTYPE_CUSTOM = 20;
@@ -18,14 +15,17 @@ class Concrete5_Model_PageThemeEditableStyle extends Object
     {
         return $this->ptsHandle;
     }
+
     public function getOriginalValue()
     {
         return $this->ptsOriginalValue;
     }
+
     public function getValue()
     {
         return $this->ptsValue;
     }
+
     public function getProperty()
     {
         // the original property that the stylesheet defines, like background-color, etc...
@@ -36,6 +36,7 @@ class Concrete5_Model_PageThemeEditableStyle extends Object
     {
         return $this->ptsType;
     }
+
     public function getName()
     {
         $h = Loader::helper('text');
@@ -59,11 +60,11 @@ class Concrete5_Model_PageThemeEditableStyle extends Object
  */
 class Concrete5_Model_PageThemeEditableStyleFont extends Concrete5_Model_PageThemeEditableStyle
 {
-
     public function getFamily()
     {
         return $this->family;
     }
+
     public function getSize()
     {
         return $this->size;
