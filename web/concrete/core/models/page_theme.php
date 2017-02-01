@@ -815,4 +815,8 @@ class Concrete5_Model_PageTheme extends Object
         $env = Environment::get();
         $env->clearOverrideCache();
     }
+
+    public function __toString(): string {
+        return $ptName;
+    }
 }

@@ -91,12 +91,12 @@ class Concrete5_Library_View extends Object
      * This grabs the theme for a particular path, if one exists in the themePaths array
      * @access private
      * @param string $path
-     * @return string $theme
+     * @return PageTheme $theme
      */
-    private function getThemeFromPath(string $path): string
+    private function getThemeFromPath(string $path)
     {
         // there's probably a more efficient way to do this
-        $theme = false;
+        $theme = null;
         $txt = Loader::helper('text');
         foreach ($this->themePaths as $lp => $layout) {
             if ($txt->fnmatch($lp, $path)) {
@@ -104,7 +104,7 @@ class Concrete5_Library_View extends Object
                 break;
             }
         }
-        return (string) $theme;
+        return $theme;
     }
 
     /**
