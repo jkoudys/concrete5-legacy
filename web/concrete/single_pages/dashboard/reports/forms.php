@@ -1,4 +1,4 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
+<?php
 /* @var $h ConcreteDashboardHelper */
 $h = Loader::helper('concrete/dashboard');
 /* @var $ih ConcreteInterfaceHelper */
@@ -11,8 +11,6 @@ $text = Loader::helper('text');
 $dh = Loader::helper('date');
 /* @var $urlhelper UrlHelper */
 $urlhelper = Loader::helper('url');
-/* @var $json JsonHelper */
-$json = Loader::helper('json');
 /* @var $valt ValidationTokenHelper */
 $valt = Loader::helper('validation/token');
 /* @var $db DataBase */
@@ -20,9 +18,9 @@ $db = Loader::db();
 ?>
 <script>
 jQuery(function($) {
-	var deleteResponse = (<?=$json->encode(t('Are you sure you want to delete this form submission?'))?>),
-		deleteForm = (<?=$json->encode(t('Are you sure you want to delete this form and its form submissions?'))?>),
-		deleteFormAnswers = (<?=$json->encode(t('Are you sure you want to delete this form submissions?'))?>);
+	var deleteResponse = <?= json_encode(t('Are you sure you want to delete this form submission?')) ?>,
+		deleteForm = <?= json_encode(t('Are you sure you want to delete this form and its form submissions?')) ?>,
+		deleteFormAnswers = <?= json_encode(t('Are you sure you want to delete this form submissions?')) ?>;
 	$('.delete-response').live('click', function(e) {
 		if (!confirm(deleteResponse)) {
 			e.preventDefault();
@@ -64,7 +62,7 @@ jQuery(function($) {
 }
 
 </style>
-<?
+<?php
 if (!isset($questionSet)) {
 	echo $h->getDashboardPaneHeaderWrapper(t('Form Results'));
 	$showTable = false;
@@ -79,12 +77,12 @@ if (!isset($questionSet)) {
 		?><table class="table table-striped">
 			<thead>
 				<tr>
-					<th><?php echo t('Form')?></th>
-					<th><?php echo t('Submissions')?></th>
-					<th><?php echo t('Options')?></th>
+					<th><?= t('Form')?></th>
+					<th><?= t('Submissions')?></th>
+					<th><?= t('Options')?></th>
 				</tr>
 			</thead>
-			<tbody><?
+			<tbody><?php
 				foreach ($surveys as $qsid => $survey) {
 					$block = Block::getByID((int) $survey['bID']);
 					if (!is_object($block)) {
@@ -118,7 +116,7 @@ if (!isset($questionSet)) {
 								<?php $valt->output('deleteFormAnswers') ?>
 								<?= $ih->submit(t('Delete Submissions'), false, 'left', 'small error delete-form-answers') ?>
 							</form>
-							<?
+							<?php
 							if (!$in_use) {
 								?><form method="post" action="" style="display: inline">
 									<input type="hidden" name="bID" value="<?= intval($survey['bID']) ?>" />
@@ -126,21 +124,20 @@ if (!isset($questionSet)) {
 									<input type="hidden" name="action" value="deleteForm" />
 									<?php $valt->output('deleteForm') ?>
 									<?= $ih->submit(t('Delete'), false, 'left', 'small error delete-form') ?>
-								</form><?
+								</form><?php
 							}
 							?>
 						</td>
 					</tr><?php
 				}
 			?></tbody>
-		</table><?
+		</table><?php
 	}
 	else {
-		?><p><?=t('There are no available forms in your site.')?></p><?
+		?><p><?=t('There are no available forms in your site.')?></p><?php
 	}
 	echo $h->getDashboardPaneFooterWrapper();
-}
-else {
+} else {
 	echo $h->getDashboardPaneHeaderWrapper(t('Responses to %s', $surveys[$questionSet]['surveyName']), false, false, false);
 	if (count($answerSets) == 0) {
 		?>
@@ -152,7 +149,7 @@ else {
 	else {
 		$showPaginator = $paginator && (strlen($paginator->getPages()) > 0);
 		?>
-		<div class="ccm-pane-body <? if (!$showPaginator) { ?> ccm-pane-body-footer <? } ?>">
+		<div class="ccm-pane-body <?php if (!$showPaginator) { ?> ccm-pane-body-footer <?php } ?>">
 			<div class="ccm-list-action-row">
 				<a id="ccm-export-results" href="<?=$this->action('excel', '?qsid=' . $questionSet)?>"><span></span><?=t('Export to Excel')?></a>
 			</div>
@@ -164,32 +161,32 @@ else {
 					}
 				});
 				</script>
-				<p id="wide-content-notification"><?php echo t('* Scroll right to view full results'); ?></p>
+				<p id="wide-content-notification"><?= t('* Scroll right to view full results') ?></p>
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<?
+							<?php
 							if ($_REQUEST['sortBy'] == 'chrono') {
-								?><th class="header headerSortDown"><a href="<?=h($urlhelper->unsetVariable('sortBy'))?>"><?
+								?><th class="header headerSortDown"><a href="<?=h($urlhelper->unsetVariable('sortBy'))?>"><?php
 							}
 							else {
-								?><th class="header headerSortUp"><a href="<?=h($urlhelper->setVariable('sortBy', 'chrono'))?>"><?
+								?><th class="header headerSortUp"><a href="<?=h($urlhelper->setVariable('sortBy', 'chrono'))?>"><?php
 							}
-							?><?=t('Date')?></a></th>
-							<th><?=t('User')?></th>
-							<?
+							?><?= t('Date') ?></a></th>
+							<th><?= t('User') ?></th>
+							<?php
 							foreach ($questions as $question) {
-								?><th><?=$question['question']?></th><?
+								?><th><?=$question['question']?></th><?php
 							}
 							?>
-							<th><?=t('Actions')?></th>
+							<th><?= t('Actions') ?></th>
 						</tr>
 					</thead>
-					<tbody><?
+					<tbody><?php
 						foreach ($answerSets as $answerSetId => $answerSet) {
 							?><tr>
 								<td><?=$dh->getSystemDateTime($answerSet['created'])?></td>
-								<td><?
+								<td><?php
 									if ($answerSet['uID'] > 0) {
 										$ui = UserInfo::getByID($answerSet['uID']);
 										if (is_object($ui)) {
@@ -198,7 +195,7 @@ else {
 										print t('(User ID: %s)', $answerSet['uID']);
 									}
 								?></td>
-								<?
+								<?php
 								foreach($questions as $questionId => $question) {
 									switch($question['inputType']) {
 										case 'fileupload':
@@ -228,7 +225,7 @@ else {
 										<?php $valt->output('deleteResponse') ?>
 										<?= $ih->submit(t('Delete'), false, 'left', 'danger delete-response small') ?>
 								</form></td>
-							</tr><?
+							</tr><?php
 						}
 					?></tbody>
 				</table>
@@ -240,14 +237,14 @@ else {
 				<div class="pagination">
 					<ul>
 						<li class="prev"><?=$paginator->getPrevious()?></li>
-						<?
+						<?php
 						// Call to pagination helper's 'getPages' method with new $wrapper var
 						echo $paginator->getPages('li');
 						?>
 						<li class="next"><?=$paginator->getNext()?></li>
 					</ul>
 				</div>
-			</div><?
+			</div><?php
 		}
 	}
 	echo $h->getDashboardPaneFooterWrapper(false);

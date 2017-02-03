@@ -5,8 +5,6 @@ $h = Loader::helper('concrete/dashboard');
 $ih = Loader::helper('concrete/interface');
 /* @var $form FormHelper */
 $form = Loader::helper('form');
-/* @var $jh JsonHelper */
-$jh = Loader::helper('json');
 /* @var $dh DateHelper */
 $dh = Loader::helper('date');
 
@@ -448,7 +446,7 @@ $(function() {
 			height: 550,
 			width: 650,
 			modal: true,
-			title: <?=$jh->encode(t('Automation Instructions'))?>
+			title: <?= json_encode(t('Automation Instructions')) ?>
 		});
 	});
 	$('.icon-question-sign').tooltip();

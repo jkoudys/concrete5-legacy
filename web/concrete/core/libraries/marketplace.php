@@ -1,7 +1,4 @@
 <?php
-
-defined('C5_EXECUTE') or die("Access Denied.");
-
 class Concrete5_Library_Marketplace
 {
 
@@ -243,9 +240,9 @@ class Concrete5_Library_Marketplace
         $url = MARKETPLACE_PURCHASES_LIST_WS."?csToken={$csToken}&csiURL=" . $csiURL . "&csiVersion=" . APP_VERSION;
         $json = $fh->getContents($url);
 
-        $addons=array();
+        $addons = [];
 
-        $objects = @Loader::helper('json')->decode($json);
+        $objects = json_decode($json);
         if (is_array($objects)) {
             try {
                 foreach ($objects as $addon) {

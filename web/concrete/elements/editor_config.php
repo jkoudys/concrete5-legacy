@@ -26,8 +26,6 @@ $editor_selector = $textEditorOptions['editor_selector'];
 
 ?><script language="javascript" type="text/javascript">
 $(function() {
-	tinyMCE.init(<?php echo Loader::helper('json')->encode($textEditorOptions); ?>);
+	tinyMCE.init(<?= json_encode($textEditorOptions) ?>);
 });
 </script><?php
-
-

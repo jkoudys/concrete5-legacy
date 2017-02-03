@@ -15,7 +15,6 @@
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
  * @license    http://www.concrete5.org/license/     MIT License
  */
-    defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Validation_Error
 {
 
@@ -78,14 +77,13 @@ class Concrete5_Helper_Validation_Error
     public function outputJSON()
     {
         if ($this->has()) {
-            $js = Loader::helper('json');
             $obj = new stdClass;
             $obj->error = true;
             $obj->messages = array();
             foreach ($this->getList() as $error) {
                 $obj->messages[] = $error;
             }
-            print $js->encode($obj);
+            echo json_encode($obj);
         }
     }
 }

@@ -1,30 +1,35 @@
 <?php
+class Concrete5_Library_NewsflowSlotItem
+{
 
-defined('C5_EXECUTE') or die("Access Denied.");
+    protected $content;
 
-class Concrete5_Library_NewsflowSlotItem {
+    public function __construct($content)
+    {
+        $this->content = $content;
+    }
 
-	protected $content;
-	public function __construct($content) {
-		$this->content = $content;
-	}
-	public function getContent() {return $this->content;}
+    public function getContent()
+    {
+        return $this->content;
+    }
 
-	public static function parseResponse($r) {
-		$slots = array();
-		try {
-			// Parse the returned XML file
-			$obj = @Loader::helper('json')->decode($r);
-			if (is_object($obj)) {
-				if (is_object($obj->slots)) {
-					foreach($obj->slots as $key => $content) {
-						$cn = new NewsflowSlotItem($content);
-						$slots[$key] = $cn;
-					}
-				}
-			}
-		} catch (Exception $e) {}
-		return $slots;
+    public static function parseResponse($r)
+    {
+        $slots = [];
+        try {
+            // Parse the returned XML file
+            $obj = json_decode($r);
+            if (is_object($obj)) {
+                if (is_object($obj->slots)) {
+                    foreach ($obj->slots as $key => $content) {
+                        $cn = new NewsflowSlotItem($content);
+                        $slots[$key] = $cn;
+                    }
+                }
+            }
+        } catch (Exception $e) {}
 
-	}
+        return $slots;
+    }
 }

@@ -1,26 +1,26 @@
 <?php
-    defined('C5_EXECUTE') or die('Access Denied.');
-    # Filename: _process.php
-    # Author: Andrew Embler (andrew@concrete5.org)
-    # -------------------
-    # _process.php is included at the top of the dispatcher and basically
-    # checks to see if a any submits are taking place. If they are, then
-    # _process makes sure that they're handled correctly
+defined('C5_EXECUTE') or die('Access Denied.');
+# Filename: _process.php
+# Author: Andrew Embler (andrew@concrete5.org)
+# -------------------
+# _process.php is included at the top of the dispatcher and basically
+# checks to see if a any submits are taking place. If they are, then
+# _process makes sure that they're handled correctly
 
-    // Modification for step editing
-    $step = (isset($_REQUEST['step']) && $_REQUEST['step']) ? '&step='.urlencode($_REQUEST['step']) : '';
+// Modification for step editing
+$step = (isset($_REQUEST['step']) && $_REQUEST['step']) ? '&step='.urlencode($_REQUEST['step']) : '';
 
-    // if we don't have a valid token we die
-    $valt = Loader::helper('validation/token');
-    $token = '&'.$valt->getParameter();
+// if we don't have a valid token we die
+$valt = Loader::helper('validation/token');
+$token = '&'.$valt->getParameter();
 
-    // If the user has checked out something for editing, we'll increment the lastedit variable within the database
+// If the user has checked out something for editing, we'll increment the lastedit variable within the database
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $u = new User();
     $u->refreshCollectionEdit($c);
 }
 
-    $securityHelper = Loader::helper('security');
+$securityHelper = Loader::helper('security');
 
 if (isset($_REQUEST['btask']) && $_REQUEST['btask'] && $valt->validate()) {
     // these are tasks dealing with blocks (moving up, down, removing)
@@ -92,7 +92,7 @@ if (isset($_REQUEST['btask']) && $_REQUEST['btask'] && $valt->validate()) {
                 $r->message = t('Access Denied');
             }
 
-            echo Loader::helper('json')->encode($r);
+            echo json_encode($r);
             exit;
             break;
         case 'remove':
@@ -228,7 +228,7 @@ if (isset($_REQUEST['btask']) && $_REQUEST['btask'] && $valt->validate()) {
                     $obj->arHandle = $a->getAreaHandle();
                     $obj->error = false;
 
-                    echo Loader::helper('json')->encode($obj);
+                    echo json_encode($obj);
                     exit;
                 }
             }
@@ -284,7 +284,7 @@ if (isset($_REQUEST['btask']) && $_REQUEST['btask'] && $valt->validate()) {
                 $obj->error = false;
                 $obj->cID = $c->getCollectionID();
 
-                echo Loader::helper('json')->encode($obj);
+                echo json_encode($obj);
                 exit;
 
                 //header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $redirectCID . '&mode=edit' . $step);
@@ -310,7 +310,7 @@ if (isset($_REQUEST['btask']) && $_REQUEST['btask'] && $valt->validate()) {
                 $obj->arHandle = $a->getAreaHandle();
                 $obj->error = false;
 
-                echo Loader::helper('json')->encode($obj);
+                echo json_encode($obj);
                 exit;
 
                 //header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $redirectCID . '&mode=edit' . $step);
@@ -396,7 +396,7 @@ if (isset($_GET['atask']) && $_GET['atask'] && $valt->validate()) {
                 $obj->response = array(t('Invalid stack.'));
             }
 
-            echo Loader::helper('json')->encode($obj);
+            echo json_encode($obj);
             exit;
 
             break;
@@ -571,7 +571,7 @@ if (isset($_REQUEST['ctask']) && $_REQUEST['ctask'] && $valt->validate()) {
                 $obj->display_mode = $_REQUEST['display_mode'];
                 $obj->select_mode = $_REQUEST['select_mode'];
                 $obj->instance_id = $_REQUEST['instance_id'];
-                echo Loader::helper('json')->encode($obj);
+                echo json_encode($obj);
                 exit;
             }
         case 'remove-alias':
@@ -589,7 +589,7 @@ if (isset($_REQUEST['ctask']) && $_REQUEST['ctask'] && $valt->validate()) {
                     $obj->display_mode = $_REQUEST['display_mode'];
                     $obj->select_mode = $_REQUEST['select_mode'];
                     $obj->instance_id = $_REQUEST['instance_id'];
-                    echo Loader::helper('json')->encode($obj);
+                    echo json_encode($obj);
                     exit;
                 } else {
                     header('Location: '.BASE_URL.DIR_REL.'/'.DISPATCHER_FILENAME.'?cID='.$redir.$step);
@@ -790,7 +790,7 @@ if (isset($_REQUEST['processBlock']) && $_REQUEST['processBlock'] && $valt->vali
                 $obj->response = $e->getList();
             }
 
-            echo Loader::helper('json')->encode($obj);
+            echo json_encode($obj);
             exit;
         }
     } elseif ($_REQUEST['add'] || $_REQUEST['_add']) {
@@ -865,7 +865,7 @@ if (isset($_REQUEST['processBlock']) && $_REQUEST['processBlock'] && $valt->vali
                     $obj->error = true;
                     $obj->response = $e->getList();
                 }
-                echo Loader::helper('json')->encode($obj);
+                echo json_encode($obj);
                 exit;
             } else {
                 $bt = BlockType::getByID($_REQUEST['btID']);
@@ -902,7 +902,7 @@ if (isset($_REQUEST['processBlock']) && $_REQUEST['processBlock'] && $valt->vali
                         $obj->response = $e->getList();
                     }
 
-                    echo Loader::helper('json')->encode($obj);
+                    echo json_encode($obj);
                     exit;
                 }
             }
@@ -957,7 +957,7 @@ if (isset($_POST['processCollection']) && $_POST['processCollection'] && $valt->
                 $obj->rel = $_POST['rel'];
                 $obj->name = $v->getVersionName();
                 $obj->cID = $c->getCollectionID();
-                echo Loader::helper('json')->encode($obj);
+                echo json_encode($obj);
                 exit;
             } else {
                 $cID = $securityHelper->sanitizeInt($_GET['cID']);
@@ -978,7 +978,7 @@ if (isset($_POST['processCollection']) && $_POST['processCollection'] && $valt->
             $obj = new stdClass();
             $obj->name = $c->getCollectionName();
             $obj->cID = $c->getCollectionID();
-            echo Loader::helper('json')->encode($obj);
+            echo json_encode($obj);
             exit;
         }
     } elseif ($_POST['update_metadata']) {
@@ -1061,7 +1061,7 @@ if (isset($_POST['processCollection']) && $_POST['processCollection'] && $valt->
             }
             $nvc->reindex(false, true);
             $obj->cID = $c->getCollectionID();
-            echo Loader::helper('json')->encode($obj);
+            echo json_encode($obj);
             exit;
         }
     } elseif ($_POST['update_external']) {
@@ -1136,7 +1136,7 @@ if (isset($_POST['processCollection']) && $_POST['processCollection'] && $valt->
             }
 
             $obj->cID = $c->getCollectionID();
-            echo Loader::helper('json')->encode($obj);
+            echo json_encode($obj);
             exit;
         }
     } elseif ($_POST['add']) {

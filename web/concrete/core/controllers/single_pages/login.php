@@ -1,6 +1,6 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
-
+<?php
 Loader::library('authentication/open_id');
+
 class Concrete5_Controller_Login extends Controller
 {
 
@@ -206,10 +206,9 @@ class Concrete5_Controller_Login extends Controller
             $loginData['error']=$e->getMessage();
         }
 
-        if ($_REQUEST['format']=='JSON') {
-            $jsonHelper=Loader::helper('json');
-            echo $jsonHelper->encode($loginData);
-            die;
+        if ($_REQUEST['format'] === 'JSON') {
+            echo json_encode($loginData);
+            exit;
         }
     }
 
@@ -487,10 +486,9 @@ class Concrete5_Controller_Login extends Controller
             $loginData['error']=$e->getMessage();
         }
 
-        if ($_REQUEST['format']=='JSON') {
-            $jsonHelper=Loader::helper('json');
-            echo $jsonHelper->encode($loginData);
-            die;
+        if ($_REQUEST['format'] === 'JSON') {
+            echo json_encode($loginData);
+            exit;
         }
 
         if ($loginData['success']==1) {

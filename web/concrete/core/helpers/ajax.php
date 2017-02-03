@@ -1,5 +1,4 @@
-<?php defined('C5_EXECUTE') or die('Access Denied.');
-
+<?php
 class Concrete5_Helper_Ajax
 {
 
@@ -12,8 +11,8 @@ class Concrete5_Helper_Ajax
             @ob_end_clean();
         }
         header('Content-Type: application/json; charset=' . APP_CHARSET, true);
-        echo Loader::helper('json')->encode($result);
-        die();
+        echo json_encode($result);
+        exit;
     }
 
     /** Sends an error to the client and ends the execution.
