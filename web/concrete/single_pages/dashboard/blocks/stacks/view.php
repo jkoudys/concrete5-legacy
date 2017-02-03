@@ -17,7 +17,8 @@
 	}
 
 	$(function() {
-		CCM_EDIT_MODE = true; // override header_required
+		// override header_required
+		window.CCM_EDIT_MODE = true;
 		ccm_editInit();
 		$("#stackPermissions").dialog();
 		$("#stackVersions").dialog();
