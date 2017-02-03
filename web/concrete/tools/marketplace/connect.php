@@ -1,6 +1,5 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php
 $tp = new TaskPermission();
-$js = Loader::helper('json');
 $obj = new stdClass;
 if (!$tp->canInstallPackages()) {
 	$obj->isConnected = false; //keep this here just incase
@@ -31,5 +30,5 @@ if (!$tp->canInstallPackages()) {
 		}
 	}
 }
-print $js->encode($obj);
+echo json_encode($obj);
 exit;

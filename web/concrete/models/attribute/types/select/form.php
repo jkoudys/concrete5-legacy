@@ -1,7 +1,7 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
+<?php
+defined('C5_EXECUTE') or die('Access Denied.');
 
 $form = Loader::helper('form');
-$json = Loader::helper('json');
 
 // Set's helpful, accessible instruction title attribute text on our UI buttons.
 // Saves us battling with some of the convoluted JS string concatenation below
@@ -9,9 +9,13 @@ $json = Loader::helper('json');
 // @var String
 $removeOptionText = t('Remove Option');
 
-if (isset($akSelectAllowMultipleValues) && $akSelectAllowMultipleValues &&
-    isset($akSelectAllowOtherValues) && $akSelectAllowOtherValues
-) { // display autocomplete form
+if (
+    isset($akSelectAllowMultipleValues) &&
+    $akSelectAllowMultipleValues &&
+    isset($akSelectAllowOtherValues) &&
+    $akSelectAllowOtherValues
+) {
+    // display autocomplete form
     $attrKeyID = $this->attributeKey->getAttributeKeyID();
     ?>
 
@@ -98,7 +102,7 @@ if (isset($akSelectAllowMultipleValues) && $akSelectAllowMultipleValues &&
     <script type="text/javascript">
         //<![CDATA[
         $(function () {
-            var availableTags = <?= $json->encode($opt_values) ?>;
+            var availableTags = <?= json_encode($opt_values) ?>;
             $("#newAttrValueRows<?= $attrKeyID ?>").autocomplete({
                 source: "<?= $this->action('load_autocomplete_values') ?>",
                 select: function (event, ui) {

@@ -1,12 +1,8 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
 if (Loader::helper('validation/token')->validate('process')) {
-
-	$js = Loader::helper('json');
-	$obj = new stdClass;
-	$pae = FileUploaderPermissionAccessEntity::getOrCreate();
-	$obj->peID = $pae->getAccessEntityID();
-	$obj->label = $pae->getAccessEntityLabel();
-	print $js->encode($obj);
-
+    $obj = new stdClass;
+    $pae = FileUploaderPermissionAccessEntity::getOrCreate();
+    $obj->peID = $pae->getAccessEntityID();
+    $obj->label = $pae->getAccessEntityLabel();
+    echo json_encode($obj);
 }

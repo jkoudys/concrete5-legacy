@@ -1,8 +1,4 @@
 <?php
-
-defined('C5_EXECUTE') or die("Access Denied.");
-
-
 class Concrete5_Library_NewsflowItem
 {
 
@@ -31,7 +27,7 @@ class Concrete5_Library_NewsflowItem
     {
         try {
             // Parse the returned XML file
-            $obj = @Loader::helper('json')->decode($r);
+            $obj = json_decode($r);
             if (is_object($obj)) {
                 $mi = new NewsflowItem();
                 $mi->title = $obj->title;

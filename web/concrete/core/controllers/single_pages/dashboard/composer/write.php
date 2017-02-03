@@ -1,5 +1,4 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_Composer_Write extends Controller
 {
 
@@ -117,13 +116,12 @@ class Concrete5_Controller_Dashboard_Composer_Write extends Controller
                 } elseif ($this->post('autosave')) {
                     // this is done by javascript. we refresh silently and send a json success back
                     Events::fire('on_composer_save_draft', $entry);
-                    $json = Loader::helper('json');
-                    $obj = new stdClass;
+                    $obj = new stdClass();
                     $dh = Loader::helper('date');
                     $obj->error = false;
                     $obj->time = $dh->formatTime('now', false);
                     $obj->timestamp =date('m/d/Y g:i a');
-                    print $json->encode($obj);
+                    echo json_encode($obj);
                     exit;
                 } else {
                     $this->redirect('/dashboard/composer/write', 'edit', $entry->getCollectionID(), 'saved');

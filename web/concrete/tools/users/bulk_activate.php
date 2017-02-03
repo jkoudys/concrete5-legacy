@@ -1,4 +1,4 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
+<?php
 $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 if (!strlen($searchInstance)) {
     $searchInstance = 'user';
@@ -32,7 +32,7 @@ foreach ($users as $ui) {
 
 if ($_POST['task'] == 'activate') {
     if (!$token->validate('bulk_user_activate')) {
-        echo Loader::helper('json')->encode(array('error' => t('Invalid Token.')));
+        echo json_encode(['error' => t('Invalid Token.')]);
         exit;
     }
 
@@ -41,7 +41,7 @@ if ($_POST['task'] == 'activate') {
             $ui->activate();
         }
     }
-    echo Loader::helper('json')->encode(array('error'=>false));
+    echo json_encode(['error' => false]);
     exit;
 }
 
