@@ -59,7 +59,7 @@ if (defined('APP_VERSION_DISPLAY_IN_HEADER') && APP_VERSION_DISPLAY_IN_HEADER) {
 $u = new User();
 ?>
 <script type="text/javascript">
-const CCM_EDIT_MODE = <?= json_encode($c->isEditMode()) ?>;
+let CCM_EDIT_MODE = <?= json_encode($c->isEditMode()) ?>;
 const CCM_ARRANGE_MODE = <?= json_encode($c->isArrangeMode()) ?>;
 const CCM_DISPATCHER_FILENAME = '<?= DIR_REL . '/' . DISPATCHER_FILENAME ?>';
 const CCM_CID = <?= $cID ?? 0 ?>;
