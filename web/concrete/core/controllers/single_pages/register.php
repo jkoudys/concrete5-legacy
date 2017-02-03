@@ -1,9 +1,7 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Register extends Controller
 {
-
-    public $helpers = array('form', 'html');
+    public $helpers = ['form', 'html'];
 
     public function __construct()
     {
@@ -18,25 +16,17 @@ class Concrete5_Controller_Register extends Controller
         $u = new User();
         $this->set('u', $u);
 
-        /*
-		if (USER_REGISTRATION_WITH_EMAIL_ADDRESS) {
-			$this->set('displayUserName', false);
-		} else {
-			$this->set('displayUserName', true);
-		}*/
-
         $this->set('displayUserName', true);
     }
 
-    public function forward($cID = 0)
+    public function forward(int $cID = 0)
     {
         $this->set('rcID', Loader::helper('security')->sanitizeInt($cID));
     }
 
     public function do_register()
     {
-
-        $registerData['success']=0;
+        $registerData['success'] = 0;
 
         $userHelper = Loader::helper('concrete/user');
         $e = Loader::helper('validation/error');
@@ -45,14 +35,10 @@ class Concrete5_Controller_Register extends Controller
         $vals = Loader::helper('validation/strings');
         $valc = Loader::helper('concrete/validation');
 
-        $username = $_POST['uName'];
+        // clean the username
+        $username = preg_replace("/ +/", " ", trim($_POST['uName']));
         $password = $_POST['uPassword'];
         $passwordConfirm = $_POST['uPasswordConfirm'];
-
-        // clean the username
-        $username = trim($username);
-        $username = preg_replace("/ +/", " ", $username);
-
 
         if (!$ip->check()) {
             $e->add($ip->getErrorMessage());
@@ -71,8 +57,6 @@ class Concrete5_Controller_Register extends Controller
             $e->add(t("The email address %s is already in use. Please choose another.", $_POST['uEmail']));
         }
 
-        //if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == false) {
-
         if (strlen($username) < USER_USERNAME_MINIMUM) {
             $e->add(t('A username must be at least %s characters long.', USER_USERNAME_MINIMUM));
         }
@@ -80,7 +64,6 @@ class Concrete5_Controller_Register extends Controller
         if (strlen($username) > USER_USERNAME_MAXIMUM) {
             $e->add(t('A username cannot be more than %s characters long.', USER_USERNAME_MAXIMUM));
         }
-
 
         if (strlen($username) >= USER_USERNAME_MINIMUM && !$valc->username($username)) {
             if (USER_USERNAME_ALLOW_SPACES) {
@@ -92,21 +75,10 @@ class Concrete5_Controller_Register extends Controller
         if (!$valc->isUniqueUsername($username)) {
             $e->add(t("The username %s already exists. Please choose another", $username));
         }
-        //}
 
         if ($username == USER_SUPER) {
             $e->add(t('Invalid Username'));
         }
-
-        /*
-		if ((strlen($password) < USER_PASSWORD_MINIMUM) || (strlen($password) > USER_PASSWORD_MAXIMUM)) {
-			$e->add(t('A password must be between %s and %s characters', USER_PASSWORD_MINIMUM, USER_PASSWORD_MAXIMUM));
-		}
-
-		if (strlen($password) >= USER_PASSWORD_MINIMUM && !$valc->password($password)) {
-			$e->add(t('A password may not contain ", \', >, <, or any spaces.'));
-		}
-		*/
 
         $userHelper->validNewPassword($password, $e);
 
@@ -158,7 +130,7 @@ class Concrete5_Controller_Register extends Controller
                     $mh->addParameter('uName', $process->getUserName());
                     $mh->addParameter('uEmail', $process->getUserEmail());
                     $attribs = UserAttributeKey::getRegistrationList();
-                    $attribValues = array();
+                    $attribValues = [];
                     foreach ($attribs as $ak) {
                         $attribValues[] = $ak->getAttributeKeyDisplayName('text') . ': ' . $process->getAttribute($ak->getAttributeKeyHandle(), 'display');
                     }
@@ -219,8 +191,8 @@ class Concrete5_Controller_Register extends Controller
                     $ui = UserInfo::getByID($u->getUserID());
                     $ui->deactivate();
                     //$this->redirect('/register', 'register_pending', $rcID);
-                    $redirectMethod='register_pending';
-                    $registerData['msg']=$this->getRegisterPendingMsg();
+                    $redirectMethod = 'register_pending';
+                    $registerData['msg'] = $this->getRegisterPendingMsg();
                     $u->logout();
                 }
 
@@ -228,14 +200,14 @@ class Concrete5_Controller_Register extends Controller
                     //$this->redirect('/register', 'register_success', $rcID);
                     if (!$redirectMethod) {
                         $redirectMethod='register_success';
-                        $registerData['msg']=$this->getRegisterSuccessMsg();
+                        $registerData['msg'] = $this->getRegisterSuccessMsg();
                     }
-                    $registerData['uID']=intval($u->uID);
+                    $registerData['uID'] = intval($u->uID);
                 }
 
-                $registerData['success']=1;
+                $registerData['success'] = true;
 
-                if ($_REQUEST['format']!='JSON') {
+                if ($_REQUEST['format'] !== 'JSON') {
                     $this->redirect('/register', $redirectMethod, $rcID);
                 }
             }
@@ -248,21 +220,20 @@ class Concrete5_Controller_Register extends Controller
             $registerData['errors'] = $e->getList();
         }
 
-        if ($_REQUEST['format']=='JSON') {
-            $jsonHelper=Loader::helper('json');
-            echo $jsonHelper->encode($registerData);
-            die;
+        if ($_REQUEST['format'] === 'JSON') {
+            echo json_encode($registerData);
+            exit;
         }
     }
 
-    public function register_success_validate($rcID = 0)
+    public function register_success_validate(int $rcID = 0)
     {
         $this->set('rcID', $rcID);
         $this->set('success', 'validate');
         $this->set('successMsg', $this->getRegisterSuccessValidateMsgs());
     }
 
-    public function register_success($rcID = 0)
+    public function register_success(int $rcID = 0)
     {
         $this->set('rcID', $rcID);
         $this->set('success', 'registered');
@@ -283,9 +254,9 @@ class Concrete5_Controller_Register extends Controller
 
     public function getRegisterSuccessValidateMsgs()
     {
-        $msgs=array();
-        $msgs[]= t('You are registered but you need to validate your email address. Some or all functionality on this site will be limited until you do so.');
-        $msgs[]= t('An email has been sent to your email address. Click on the URL contained in the email to validate your email address.');
+        $msgs = [];
+        $msgs[] = t('You are registered but you need to validate your email address. Some or all functionality on this site will be limited until you do so.');
+        $msgs[] = t('An email has been sent to your email address. Click on the URL contained in the email to validate your email address.');
         return $msgs;
     }
 

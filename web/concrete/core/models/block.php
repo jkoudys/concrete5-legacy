@@ -1,7 +1,4 @@
 <?php
-
-defined('C5_EXECUTE') or die("Access Denied.");
-
 /**
  * Contains the block object, which is an atomic unit of content on a Concrete page.
  * @package Blocks
@@ -24,7 +21,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 */
 class Concrete5_Model_Block extends Object
 {
-
     public $cID;
     public $arHandle;
     public $c;
@@ -32,9 +28,9 @@ class Concrete5_Model_Block extends Object
     protected $proxyBlock = false;
     protected $bIncludeInComposerIsSet = false;
 
-    public static function populateManually($blockInfo, $c, $a)
+    public static function populateManually(array $blockInfo = [], Page $c = null, $a): Block
     {
-        $b = new Block;
+        $b = new Block();
         $b->setPropertiesFromArray($blockInfo);
 
         if (is_object($a)) {
@@ -59,7 +55,7 @@ class Concrete5_Model_Block extends Object
     {
         if ($c == null && $a == null) {
             $cID = 0;
-            $arHandle = "";
+            $arHandle = '';
             $cvID = 0;
             $b = CacheLocal::getEntry('block', $bID);
         } else {
@@ -85,7 +81,7 @@ class Concrete5_Model_Block extends Object
             // just grab really specific block stuff
             $q = "select bID, bIsActive, BlockTypes.btID, Blocks.btCachedBlockRecord, BlockTypes.btHandle, BlockTypes.pkgID, BlockTypes.btName, bName, bDateAdded, bDateModified, bFilename, Blocks.uID from Blocks inner join BlockTypes on (Blocks.btID = BlockTypes.btID) where bID = ?";
             $b->isOriginal = 1;
-            $v = array($bID);
+            $v = [$bID];
         } else {
             $b->arHandle = $arHandle;
             $b->a = $a;
@@ -95,7 +91,7 @@ class Concrete5_Model_Block extends Object
             $vo = $c->getVersionObject();
             $cvID = $vo->getVersionID();
 
-            $v = array($b->arHandle, $cID, $cvID, $bID);
+            $v = [$b->arHandle, $cID, $cvID, $bID];
             $q = "select CollectionVersionBlocks.isOriginal, Blocks.btCachedBlockRecord, BlockTypes.pkgID, CollectionVersionBlocks.cbOverrideAreaPermissions, CollectionVersionBlocks.cbDisplayOrder, Blocks.bIsActive, Blocks.bID, Blocks.btID, bName, bDateAdded, bDateModified, bFilename, btHandle, Blocks.uID from CollectionVersionBlocks inner join Blocks on (CollectionVersionBlocks.bID = Blocks.bID) inner join BlockTypes on (Blocks.btID = BlockTypes.btID) where CollectionVersionBlocks.arHandle = ? and CollectionVersionBlocks.cID = ? and (CollectionVersionBlocks.cvID = ? or CollectionVersionBlocks.cbIncludeAll=1) and CollectionVersionBlocks.bID = ?";
         }
 
@@ -129,7 +125,7 @@ class Concrete5_Model_Block extends Object
     /**
      * Returns a global block
      */
-    public static function getByName($globalBlockName)
+    public static function getByName(string $globalBlockName)
     {
         if (!$globalBlockName) {
             return;
@@ -139,16 +135,16 @@ class Concrete5_Model_Block extends Object
         $globalScrapbookPage=$scrapbookHelper->getGlobalScrapbookPage();
         if ($globalScrapbookPage->getCollectionID()) {
             $row = $db->getRow(
-                'SELECT b.bID, cvb.arHandle FROM Blocks AS b, CollectionVersionBlocks AS cvb '.
-                              'WHERE b.bName=? AND b.bID=cvb.bID AND cvb.cID=? ORDER BY cvb.cvID DESC',
-                array($globalBlockName, intval($globalScrapbookPage->getCollectionId()) )
+                'SELECT b.bID, cvb.arHandle FROM Blocks AS b, CollectionVersionBlocks AS cvb ' .
+                'WHERE b.bName=? AND b.bID=cvb.bID AND cvb.cID=? ORDER BY cvb.cvID DESC',
+                [$globalBlockName, intval($globalScrapbookPage->getCollectionId())]
             );
-            if ($row != false && isset($row['bID']) && $row['bID'] > 0) {
+            if ($row && isset($row['bID']) && $row['bID'] > 0) {
                 return Block::getByID($row['bID'], $globalScrapbookPage, $row['arHandle']);
             }
         }
 
-        //If we made it this far, either there's no scrapbook (clean installation of Concrete5.5+),
+        // If we made it this far, either there's no scrapbook (clean installation of Concrete5.5+),
         // or the block wasn't in the legacy scrapbook -- so look in stacks...
         $sql = 'SELECT b.bID, cvb.arHandle, cvb.cID'
              . ' FROM Blocks AS b'
@@ -158,13 +154,14 @@ class Concrete5_Model_Block extends Object
              . ' AND cvb.cID IN (SELECT cID FROM Stacks)'
              . ' ORDER BY cvb.cvID DESC'
              . ' LIMIT 1';
-        $vals = array($globalBlockName);
+        $vals = [$globalBlockName];
         $row = $db->getRow($sql, $vals);
-        if ($row != false && isset($row['bID']) && $row['bID'] > 0) {
+
+        if ($row && isset($row['bID']) && $row['bID'] > 0) {
             return Block::getByID($row['bID'], Page::getByID($row['cID']), $row['arHandle']);
-        } else {
-            return new Block();
         }
+
+        return new Block();
     }
 
     public function setProxyBlock($block)
@@ -178,10 +175,10 @@ class Concrete5_Model_Block extends Object
     }
 
 
-    public function display($view = 'view', $args = array())
+    public function display(string $view = 'view', array $args = [])
     {
         if ($this->getBlockTypeID() < 1) {
-            return ;
+            return;
         }
 
         $bv = new BlockView();
@@ -191,34 +188,38 @@ class Concrete5_Model_Block extends Object
 
     // if $c is provided, then we check to see if this particular block is aliased
     // to this particular collection
-    public function isAlias($c = null)
+    public function isAlias(Page $c = null): bool
     {
         if ($c) {
             $db = Loader::db();
             $cID = $c->getCollectionID();
             $vo = $c->getVersionObject();
             $cvID = $vo->getVersionID();
-            $q = "select bID from CollectionVersionBlocks where bID = ? and cID=? and isOriginal = 0 and cvID = ?";
-            $r = $db->query($q, array($this->bID, $cID, $cvID));
+            $r = $db->query(
+                'select bID from CollectionVersionBlocks where bID = ? and cID=? and isOriginal = 0 and cvID = ?',
+                [$this->bID, $cID, $cvID]
+            );
             if ($r) {
                 return ($r->numRows() > 0);
             }
-        } else {
-            return (!$this->isOriginal);
+
+            return false;
         }
+
+        return (!$this->isOriginal);
     }
 
-    public function isAliasOfMasterCollection()
+    public function isAliasOfMasterCollection(): bool
     {
         return $this->getBlockCollectionObject()->isBlockAliasedFromMasterCollection($this);
     }
 
-    public function isGlobal()
+    public function isGlobal(): bool
     {
         return false; // legacy. no more scrapbooks in the dashboard.
     }
 
-    public function isBlockInStack()
+    public function isBlockInStack(): bool
     {
         $co = $this->getBlockCollectionObject();
         if (is_object($co)) {
@@ -235,7 +236,7 @@ class Concrete5_Model_Block extends Object
     }
 
 
-    public function getBlockCachedOutput($area)
+    public function getBlockCachedOutput($area): string
     {
         $db = Loader::db();
 
@@ -251,16 +252,19 @@ class Concrete5_Model_Block extends Object
             $cvID = $c->getVersionID();
         }
 
-        $r = $db->GetRow('select btCachedBlockOutput, btCachedBlockOutputExpires from CollectionVersionBlocksOutputCache where cID = ? and cvID = ? and bID = ? and arHandle = ? ', array(
-            $cID, $cvID, $this->getBlockID(), $arHandle));
+        $r = $db->GetRow(
+            'select btCachedBlockOutput, btCachedBlockOutputExpires from CollectionVersionBlocksOutputCache where cID = ? and cvID = ? and bID = ? and arHandle = ? ',
+            [$cID, $cvID, $this->getBlockID(), $arHandle]
+        );
+
         if ($r['btCachedBlockOutputExpires'] < time()) {
             return false;
         }
 
-        return $r['btCachedBlockOutput'];
+        return $r['btCachedBlockOutput'] ?: '';
     }
 
-    public function setBlockCachedOutput($content, $lifetime, $area)
+    public function setBlockCachedOutput(string $content, int $lifetime, $area)
     {
         $db = Loader::db();
         $c = $this->getBlockCollectionObject();
@@ -283,8 +287,15 @@ class Concrete5_Model_Block extends Object
         if ($arHandle && $cID && $cvID) {
             $db->Replace(
                 'CollectionVersionBlocksOutputCache',
-                array('cID' => $cID, 'cvID' => $cvID, 'bID' => $this->getBlockID(), 'arHandle' => $arHandle, 'btCachedBlockOutput' => $content, 'btCachedBlockOutputExpires' => $btCachedBlockOutputExpires),
-                array('cID', 'cvID', 'arHandle', 'bID'),
+                [
+                    'cID' => $cID,
+                    'cvID' => $cvID,
+                    'bID' => $this->getBlockID(),
+                    'arHandle' => $arHandle,
+                    'btCachedBlockOutput' => $content,
+                    'btCachedBlockOutputExpires' => $btCachedBlockOutputExpires,
+                ],
+                ['cID', 'cvID', 'arHandle', 'bID'],
                 true
             );
         }
@@ -609,14 +620,23 @@ class Concrete5_Model_Block extends Object
     public function move($nc, $area)
     {
         $db = Loader::db();
-          $bID = $this->getBlockID();
+        $bID = $this->getBlockID();
         $cID = $this->getBlockCollectionID();
 
         $newBlockDisplayOrder = $nc->getCollectionAreaDisplayOrder($area->getAreaHandle());
 
-
-        $v = array($nc->getCollectionID(), $nc->getVersionID(), $area->getAreaHandle(), $newBlockDisplayOrder, $cID, $bID, $this->arHandle);
-        $db->Execute('update CollectionVersionBlocks set cID = ?, cvID = ?, arHandle = ?, cbDisplayOrder = ? where cID = ? and bID = ? and arHandle = ? and isOriginal = 1', $v);
+        $db->Execute(
+            'update CollectionVersionBlocks set cID = ?, cvID = ?, arHandle = ?, cbDisplayOrder = ? where cID = ? and bID = ? and arHandle = ? and isOriginal = 1',
+            [
+                $nc->getCollectionID(),
+                $nc->getVersionID(),
+                $area->getAreaHandle(),
+                $newBlockDisplayOrder,
+                $cID,
+                $bID,
+                $this->arHandle,
+            ]
+        );
     }
 
     public function duplicate($nc)
@@ -635,7 +655,7 @@ class Concrete5_Model_Block extends Object
         }
 
         $bDate = $dh->getSystemDateTime();
-        $v = array($this->bName, $bDate, $bDate, $this->bFilename, $this->btID, $this->uID);
+        $v = [$this->bName, $bDate, $bDate, $this->bFilename, $this->btID, $this->uID];
         $q = "insert into Blocks (bName, bDateAdded, bDateModified, bFilename, btID, uID) values (?, ?, ?, ?, ?, ?)";
         $r = $db->prepare($q);
         $res = $db->execute($r, $v);
@@ -650,13 +670,13 @@ class Concrete5_Model_Block extends Object
         $nvID = $nc->getVersionID();
 
         $q = "select paID, pkID from BlockPermissionAssignments where cID = '$ocID' and bID = ? and cvID = ?";
-        $r = $db->query($q, array($this->bID, $ovID));
+        $r = $db->query($q, [$this->bID, $ovID]);
         if ($r) {
             while ($row = $r->fetchRow()) {
                 $db->Replace(
                     'BlockPermissionAssignments',
-                    array('cID' => $ncID, 'cvID' => $nvID, 'bID' => $newBID, 'paID' => $row['paID'], 'pkID' => $row['pkID']),
-                    array('cID', 'cvID', 'bID', 'paID', 'pkID'),
+                    ['cID' => $ncID, 'cvID' => $nvID, 'bID' => $newBID, 'paID' => $row['paID'], 'pkID' => $row['pkID']],
+                    ['cID', 'cvID', 'bID', 'paID', 'pkID'],
                     true
                 );
             }
@@ -672,23 +692,24 @@ class Concrete5_Model_Block extends Object
         } else {
             $newBlockDisplayOrder = $this->cbDisplayOrder;
         }
-        //$v = array($ncID, $nvID, $newBID, $this->areaName, $newBlockDisplayOrder, 1);
-        $v = array($ncID, $nvID, $newBID, $this->arHandle, $newBlockDisplayOrder, 1, $this->overrideAreaPermissions());
+        $v = [$ncID, $nvID, $newBID, $this->arHandle, $newBlockDisplayOrder, 1, $this->overrideAreaPermissions()];
         $q = "insert into CollectionVersionBlocks (cID, cvID, bID, arHandle, cbDisplayOrder, isOriginal, cbOverrideAreaPermissions) values (?, ?, ?, ?, ?, ?, ?)";
         $r = $db->prepare($q);
         $res = $db->execute($r, $v);
 
         // now we make a DUPLICATE entry in the BlockRelations table, so that we know that the blocks are chained together
-        $v2 = array($this->bID, $newBID, "DUPLICATE");
-        $q2 = "insert into BlockRelations (originalBID, bID, relationType) values (?, ?, ?)";
+        $v2 = [$this->bID, $newBID, 'DUPLICATE'];
+        $q2 = 'insert into BlockRelations (originalBID, bID, relationType) values (?, ?, ?)';
         $r2 = $db->prepare($q2);
         $res2 = $db->execute($r2, $v2);
         $nb = Block::getByID($newBID, $nc, $this->arHandle);
 
         $csrID = $this->getBlockCustomStyleRuleID();
         if ($csrID > 0) {
-            $v = array($ncID, $nvID, $newBID, $this->arHandle, $csrID);
-            $db->Execute('insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)', $v);
+            $db->Execute(
+                'insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)',
+                [$ncID, $nvID, $newBID, $this->arHandle, $csrID]
+            );
         }
         return $nb;
     }
@@ -1162,24 +1183,31 @@ class Concrete5_Model_Block extends Object
                 break;
             case '-1':
                 // we're moving the block down
-                $q = "select cbDisplayOrder from CollectionVersionBlocks where cID = ? and (cvID = ? or cbIncludeAll=1) and bID = ? and arHandle = ?";
-                $origDisplayOrder = $db->getOne($q, array($cID, $cvID, $bID, $arHandle));
+                $origDisplayOrder = $db->getOne(
+                    'SELECT cbDisplayOrder FROM CollectionVersionBlocks WHERE cID = ? AND (cvID = ? OR cbIncludeAll = 1) AND bID = ? AND arHandle = ?',
+                    [$cID, $cvID, $bID, $arHandle]
+                );
 
                 // Now, to ensure that we don't screw up the display order stuff in the database, we can't set a display order greater than
                 // n - 1 blocks (meaning if there are 5 blocks in this particular area+collection, we can't have a display order greater than 4
 
-                $q = "select count(*) as total from CollectionVersionBlocks where cID = ? and (cvID = ? or cbIncludeAll=1) and arHandle = ?";
-                $maxDisplayOrder = ($db->getOne($q, array($cID, $cvID, $arHandle)) - 1);
+                $maxDisplayOrder = $db->getOne(
+                    'SELECT COUNT(*) AS total FROM CollectionVersionBlocks WHERE cID = ? AND (cvID = ? OR cbIncludeAll=1) AND arHandle = ?',
+                    [$cID, $cvID, $arHandle]
+                ) - 1;
 
                 if ($origDisplayOrder <= $maxDisplayOrder) {
                     $newDisplayOrder = $origDisplayOrder + 1;
-                    $q = "update CollectionVersionBlocks set cbDisplayOrder = ? where cbDisplayOrder = ? and cID = ? and (cvID = ? or cbIncludeAll=1) and arHandle = ?";
-                    $r = $db->query($q, array($origDisplayOrder, $newDisplayOrder, $cID, $cvID, $arHandle));
+                    $r = $db->query(
+                        'UPDATE CollectionVersionBlocks SET cbDisplayOrder = ? WHERE cbDisplayOrder = ? AND cID = ? AND (cvID = ? OR cbIncludeAll=1) AND arHandle = ?',
+                        [$origDisplayOrder, $newDisplayOrder, $cID, $cvID, $arHandle]
+                    );
 
                     // now that we've set the other block to our original display order, we set our block to the new display order
-
-                    $q = "update CollectionVersionBlocks set cbDisplayOrder = ? where bID = ? and cID = ? and arHandle = ?";
-                    $r = $db->query($q, array($newDisplayOrder, $bID, $cID, $arHandle));
+                    $r = $db->query(
+                        'UPDATE CollectionVersionBlocks SET cbDisplayOrder = ? WHERE bID = ? AND cID = ? AND arHandle = ?',
+                        [$newDisplayOrder, $bID, $cID, $arHandle]
+                    );
                 }
                 break;
         }
@@ -1189,10 +1217,15 @@ class Concrete5_Model_Block extends Object
     {
         $db = Loader::db();
         $c = $this->getBlockCollectionObject();
-        $v = array($c->getCollectionID(), $c->getVersionID(), $this->bID, $this->arHandle);
-        $db->query("update CollectionVersionBlocks set cbOverrideAreaPermissions = 1 where cID = ? and (cvID = ? or cbIncludeAll = 1) and bID = ? and arHandle = ?", $v);
-        $v = array($c->getCollectionID(), $c->getVersionID(), $this->bID);
-        $db->query("delete from BlockPermissionAssignments where cID = ? and cvID = ? and bID = ?", $v);
+
+        $db->query(
+            'UPDATE CollectionVersionBlocks SET cbOverrideAreaPermissions = 1 WHERE cID = ? AND (cvID = ? OR cbIncludeAll = 1) AND bID = ? AND arHandle = ?',
+            [$c->getCollectionID(), $c->getVersionID(), $this->bID, $this->arHandle]
+        );
+        $db->query(
+            'DELETE FROM BlockPermissionAssignments WHERE cID = ? AND cvID = ? AND bID = ?',
+            [$c->getCollectionID(), $c->getVersionID(), $this->bID]
+        );
 
         // copy permissions from the page to the area
         $permissions = PermissionKey::getList('block');
@@ -1221,8 +1254,11 @@ class Concrete5_Model_Block extends Object
         $cID = $this->getBlockCollectionID();
         $bID = $this->getBlockID();
         $c = $this->getBlockCollectionObject();
-        $v = array($c->getCollectionID(), $c->getVersionID(), $this->getAreaHandle(), $bID);
-        $db->Execute('update CollectionVersionBlocksOutputCache set btCachedBlockOutputExpires = 0 where cID = ? and cvID = ? and arHandle = ? and bID = ?', $v);
+
+        $db->Execute(
+            'UPDATE CollectionVersionBlocksOutputCache SET btCachedBlockOutputExpires = 0 WHERE cID = ? AND cvID = ? AND arHandle = ? AND bID = ?',
+            [$c->getCollectionID(), $c->getVersionID(), $this->getAreaHandle(), $bID]
+        );
     }
 
     /**
@@ -1236,7 +1272,7 @@ class Concrete5_Model_Block extends Object
     {
     }
 
-    public function export($node, $exportType = 'full')
+    public function export($node, string $exportType = 'full')
     {
         if (!$this->isAliasOfMasterCollection()) {
             $blockNode = $node->addChild('block');
@@ -1251,7 +1287,7 @@ class Concrete5_Model_Block extends Object
                 $blockNode->addAttribute('mc-block-id', $mcBlockID);
             }
 
-            if ($exportType == 'composer') {
+            if ($exportType === 'composer') {
                 $db = Loader::db();
                 $cbFilename = $db->GetOne('select ccFilename from ComposerContentLayout where bID = ?', array($this->getBlockID()));
                 if ($cbFilename) {
@@ -1259,7 +1295,7 @@ class Concrete5_Model_Block extends Object
                 }
             }
 
-            if ($exportType == 'full') {
+            if ($exportType === 'full') {
                 $bc = $this->getInstance();
                 $bc->export($blockNode);
             }

@@ -1,4 +1,5 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
+<?php
+defined('C5_EXECUTE') or die('Access Denied.');
 $u = new User();
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAddFiles()) {
@@ -7,13 +8,12 @@ if (!$fp->canAddFiles()) {
 $cf = Loader::helper("file");
 $valt = Loader::helper('validation/token');
 Loader::library("file/importer");
-$json = Loader::helper('json');
 $id = Loader::helper('validation/identifier');
 
 if ($_SERVER['REQUEST_METHOD'] == "GET" && $_GET['mode'] == "get_path") {
     if (is_numeric($_REQUEST['fID'])) {
         $path = File::getRelativePathFromID($_REQUEST['fID']);
-        echo $json->encode($path);
+        echo json_encode($path);
         exit;
     }
 } elseif (isset($_POST['thumbnail']) && strlen($_POST['thumbnail'])) {
@@ -40,10 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] == "GET" && $_GET['mode'] == "get_path") {
         $resp = $fi->import($file_path, $fileName);
         unlink($file_path);
 
-        $obj = new stdClass;
-        $obj->fID = $resp->getFileID();
-        $obj->bID = $_REQUEST['bID'];
-        print Loader::helper('json')->encode($obj);
+        echo json_encode([
+            'fID' => $resp->getFileID(),
+            'bID' => $_REQUEST['bID'],
+        ]);
         exit;
     }
 }

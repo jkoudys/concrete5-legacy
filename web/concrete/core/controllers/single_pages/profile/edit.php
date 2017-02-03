@@ -1,10 +1,7 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
-
 class Concrete5_Controller_Profile_Edit extends Controller
 {
-
-    public $helpers = array('html', 'form', 'date');
+    public $helpers = ['html', 'form', 'date'];
 
     public function __construct()
     {
@@ -44,10 +41,6 @@ class Concrete5_Controller_Profile_Edit extends Controller
 
         $data = $this->post();
 
-        /*
-		 * Validation
-		*/
-        //token
         if (!$valt->validate('profile_edit')) {
             $e->add($valt->getErrorMessage());
         }
@@ -59,7 +52,6 @@ class Concrete5_Controller_Profile_Edit extends Controller
         } elseif (!$cvh->isUniqueEmail($email) && $ui->getUserEmail() != $email) {
             $e->add(t("The email address '%s' is already in use. Please choose another.", $email));
         }
-
 
         // password
         if (strlen($data['uPasswordNew'])) {
@@ -88,7 +80,7 @@ class Concrete5_Controller_Profile_Edit extends Controller
         foreach ($aks as $uak) {
             if ($uak->isAttributeKeyRequiredOnProfile()) {
                 $e1 = $uak->validateAttributeForm();
-                if ($e1 == false) {
+                if (!$e1) {
                     $e->add(t('The field "%s" is required', $uak->getAttributeKeyDisplayName()));
                 } elseif ($e1 instanceof ValidationErrorHelper) {
                     $e->add($e1);
@@ -107,7 +99,7 @@ class Concrete5_Controller_Profile_Edit extends Controller
             foreach ($aks as $uak) {
                 $uak->saveAttributeForm($ui);
             }
-            $this->redirect("/profile/edit", "save_complete");
+            $this->redirect('/profile/edit', 'save_complete');
         } else {
             $this->set('error', $e);
         }

@@ -1,9 +1,7 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_Page extends Controller
 {
-
-    public $helpers = array('html', 'form', 'validation/token');
+    public $helpers = ['html', 'form', 'validation/token'];
 
     public function on_start()
     {
