@@ -11,30 +11,35 @@
 
 <h3><?=t('Who can add what?')?></h3>
 
-<?php foreach($included as $assignment) {
-	$entity = $assignment->getAccessEntityObject();
+<?php foreach ($included as $assignment) {
+    $entity = $assignment->getAccessEntityObject();
 ?>
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
-	<div class="input">
-	<?=$form->select('pageTypesIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Page Types'), 'C' => t('Custom')), $assignment->getPageTypesAllowedPermission())?><br/><br/>
-	<ul class="page-type-list inputs-list" <?php if ($assignment->getPageTypesAllowedPermission() != 'C') { ?>style="display: none"<?php } ?>>
-		<?php foreach($pageTypes as $ct) { ?>
-			<li><label><input type="checkbox" name="ctIDInclude[<?=$entity->getAccessEntityID()?>][]" value="<?=$ct->getCollectionTypeID()?>" <?php if (in_array($ct->getCollectionTypeID(), $assignment->getPageTypesAllowedArray())) { ?> checked="checked" <?php } ?> /> <span><?=$ct->getCollectionTypeName()?></span></label></li>
-		<?php } ?>
-	</ul>
-	<ul class="inputs-list">
-		<li><label><input type="checkbox" name="allowExternalLinksIncluded[<?=$entity->getAccessEntityID()?>]" value="1" <?php if ($assignment->allowExternalLinks()) { ?>checked="checked" <?php } ?> /> <span><?=t('Allow External Links')?></span></label></li>
-	</ul>
+    <label><?=$entity->getAccessEntityLabel()?></label>
+    <div class="input">
+    <?=$form->select('pageTypesIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Page Types'), 'C' => t('Custom')), $assignment->getPageTypesAllowedPermission())?><br/><br/>
+    <ul class="page-type-list inputs-list" <?php if ($assignment->getPageTypesAllowedPermission() != 'C') {
+?>style="display: none"<?php
+} ?>>
+        <?php foreach ($pageTypes as $ct) { ?>
+            <li><label><input type="checkbox" name="ctIDInclude[<?=$entity->getAccessEntityID()?>][]" value="<?=$ct->getCollectionTypeID()?>" <?php if (in_array($ct->getCollectionTypeID(), $assignment->getPageTypesAllowedArray())) {
+?> checked="checked" <?php
+} ?> /> <span><?=$ct->getCollectionTypeName()?></span></label></li>
+        <?php } ?>
+    </ul>
+    <ul class="inputs-list">
+        <li><label><input type="checkbox" name="allowExternalLinksIncluded[<?=$entity->getAccessEntityID()?>]" value="1" <?php if ($assignment->allowExternalLinks()) {
+?>checked="checked" <?php
+} ?> /> <span><?=t('Allow External Links')?></span></label></li>
+    </ul>
 
-	</div>
+    </div>
 </div>
 
 
 <?php }
-
 } ?>
 
 
@@ -42,44 +47,49 @@
 
 <h3><?=t('Who can\'t add what?')?></h3>
 
-<?php foreach($excluded as $assignment) {
-	$entity = $assignment->getAccessEntityObject();
+<?php foreach ($excluded as $assignment) {
+    $entity = $assignment->getAccessEntityObject();
 ?>
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
-	<div class="input">
-	<?=$form->select('pageTypesExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Page Types'), 'C' => t('Custom')), $assignment->getPageTypesAllowedPermission())?><br/><br/>
-	<ul class="page-type-list inputs-list" <?php if ($assignment->getPageTypesAllowedPermission() != 'C') { ?>style="display: none"<?php } ?>>
-		<?php foreach($pageTypes as $ct) { ?>
-			<li><label><input type="checkbox" name="ctIDExclude[<?=$entity->getAccessEntityID()?>][]" value="<?=$ct->getCollectionTypeID()?>" <?php if (in_array($ct->getCollectionTypeID(), $assignment->getPageTypesAllowedArray())) { ?> checked="checked" <?php } ?> /> <span><?=$ct->getCollectionTypeName()?></span></label></li>
-		<?php } ?>
-	</ul>
-	<ul class="inputs-list">
-		<li><label><input type="checkbox" name="allowExternalLinksExcluded[<?=$entity->getAccessEntityID()?>]" value="1" <?php if ($assignment->allowExternalLinks()) { ?>checked="checked" <?php } ?> /> <span><?=t('Allow External Links')?></span></label></li>
-	</ul>
-	</div>
+    <label><?=$entity->getAccessEntityLabel()?></label>
+    <div class="input">
+    <?=$form->select('pageTypesExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Page Types'), 'C' => t('Custom')), $assignment->getPageTypesAllowedPermission())?><br/><br/>
+    <ul class="page-type-list inputs-list" <?php if ($assignment->getPageTypesAllowedPermission() != 'C') {
+?>style="display: none"<?php
+} ?>>
+        <?php foreach ($pageTypes as $ct) { ?>
+            <li><label><input type="checkbox" name="ctIDExclude[<?=$entity->getAccessEntityID()?>][]" value="<?=$ct->getCollectionTypeID()?>" <?php if (in_array($ct->getCollectionTypeID(), $assignment->getPageTypesAllowedArray())) {
+?> checked="checked" <?php
+} ?> /> <span><?=$ct->getCollectionTypeName()?></span></label></li>
+        <?php } ?>
+    </ul>
+    <ul class="inputs-list">
+        <li><label><input type="checkbox" name="allowExternalLinksExcluded[<?=$entity->getAccessEntityID()?>]" value="1" <?php if ($assignment->allowExternalLinks()) {
+?>checked="checked" <?php
+} ?> /> <span><?=t('Allow External Links')?></span></label></li>
+    </ul>
+    </div>
 </div>
 
 
 
 <?php }
-
 } ?>
 
 <?php } else {  ?>
-	<p><?=t('No users or groups selected.')?></p>
+    <p><?=t('No users or groups selected.')?></p>
 <?php } ?>
 
 <script type="text/javascript">
 $(function() {
-	$("#ccm-tab-content-custom-options select").change(function() {
-		if ($(this).val() == 'C') {
-			$(this).parent().find('ul.page-type-list').show();
-		} else {
-			$(this).parent().find('ul.page-type-list').hide();
-		}
-	});
+    $("#ccm-tab-content-custom-options select").change(function() {
+        if ($(this).val() == 'C') {
+            $(this).parent().find('ul.page-type-list').show();
+        } else {
+            $(this).parent().find('ul.page-type-list').hide();
+        }
+    });
 });
 </script>

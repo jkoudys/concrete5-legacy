@@ -23,6 +23,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-class ConfigValue extends Concrete5_Model_ConfigValue {}
-class Config extends Concrete5_Model_Config {}
-class ConfigStore extends Concrete5_Model_ConfigStore {}
+class ConfigValue extends Concrete5_Model_ConfigValue
+{
+}
+class Config extends Concrete5_Model_Config
+{
+}
+class ConfigStore extends Concrete5_Model_ConfigStore
+{
+}

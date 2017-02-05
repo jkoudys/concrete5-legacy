@@ -11,26 +11,29 @@
 
 <h3><?=t('Who can set what?')?></h3>
 
-<?php foreach($included as $assignment) {
-	$entity = $assignment->getAccessEntityObject();
+<?php foreach ($included as $assignment) {
+    $entity = $assignment->getAccessEntityObject();
 ?>
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
-	<div class="input">
-	<?=$form->select('themesIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Themes'), 'C' => t('Custom')), $assignment->getThemesAllowedPermission())?><br/><br/>
-	<ul class="theme-list inputs-list" <?php if ($assignment->getThemesAllowedPermission() != 'C') { ?>style="display: none"<?php } ?>>
-		<?php foreach($themes as $ct) { ?>
-			<li><label><input type="checkbox" name="ptIDInclude[<?=$entity->getAccessEntityID()?>][]" value="<?=$ct->getThemeID()?>" <?php if (in_array($ct->getThemeID(), $assignment->getThemesAllowedArray()) || $assignment->getThemesAllowedPermission() == 'A') { ?> checked="checked" <?php } ?> /> <span><?=$ct->getThemeDisplayName()?></span></label></li>
-		<?php } ?>
-	</ul>
-	</div>
+    <label><?=$entity->getAccessEntityLabel()?></label>
+    <div class="input">
+    <?=$form->select('themesIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Themes'), 'C' => t('Custom')), $assignment->getThemesAllowedPermission())?><br/><br/>
+    <ul class="theme-list inputs-list" <?php if ($assignment->getThemesAllowedPermission() != 'C') {
+?>style="display: none"<?php
+} ?>>
+        <?php foreach ($themes as $ct) { ?>
+            <li><label><input type="checkbox" name="ptIDInclude[<?=$entity->getAccessEntityID()?>][]" value="<?=$ct->getThemeID()?>" <?php if (in_array($ct->getThemeID(), $assignment->getThemesAllowedArray()) || $assignment->getThemesAllowedPermission() == 'A') {
+?> checked="checked" <?php
+} ?> /> <span><?=$ct->getThemeDisplayName()?></span></label></li>
+        <?php } ?>
+    </ul>
+    </div>
 </div>
 
 
 <?php }
-
 } ?>
 
 
@@ -38,41 +41,44 @@
 
 <h3><?=t('Who can\'t set what?')?></h3>
 
-<?php foreach($excluded as $assignment) {
-	$entity = $assignment->getAccessEntityObject();
+<?php foreach ($excluded as $assignment) {
+    $entity = $assignment->getAccessEntityObject();
 ?>
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
-	<div class="input">
-	<?=$form->select('themesExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Themes'), 'C' => t('Custom')), $assignment->getThemesAllowedPermission())?><br/><br/>
-	<ul class="theme-list inputs-list" <?php if ($assignment->getThemesAllowedPermission() != 'C') { ?>style="display: none"<?php } ?>>
-		<?php foreach($themes as $ct) { ?>
-			<li><label><input type="checkbox" name="ptIDExclude[<?=$entity->getAccessEntityID()?>][]" value="<?=$ct->getThemeID()?>" <?php if (in_array($ct->getThemeID(), $assignment->getThemesAllowedArray()) || $assignment->getThemesAllowedPermission() == 'N') { ?> checked="checked" <?php } ?> /> <span><?=$ct->getThemeDisplayName()?></span></label></li>
-		<?php } ?>
-	</ul>
-	</div>
+    <label><?=$entity->getAccessEntityLabel()?></label>
+    <div class="input">
+    <?=$form->select('themesExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Themes'), 'C' => t('Custom')), $assignment->getThemesAllowedPermission())?><br/><br/>
+    <ul class="theme-list inputs-list" <?php if ($assignment->getThemesAllowedPermission() != 'C') {
+?>style="display: none"<?php
+} ?>>
+        <?php foreach ($themes as $ct) { ?>
+            <li><label><input type="checkbox" name="ptIDExclude[<?=$entity->getAccessEntityID()?>][]" value="<?=$ct->getThemeID()?>" <?php if (in_array($ct->getThemeID(), $assignment->getThemesAllowedArray()) || $assignment->getThemesAllowedPermission() == 'N') {
+?> checked="checked" <?php
+} ?> /> <span><?=$ct->getThemeDisplayName()?></span></label></li>
+        <?php } ?>
+    </ul>
+    </div>
 </div>
 
 
 
 <?php }
-
 } ?>
 
 <?php } else {  ?>
-	<p><?=t('No users or groups selected.')?></p>
+    <p><?=t('No users or groups selected.')?></p>
 <?php } ?>
 
 <script type="text/javascript">
 $(function() {
-	$("#ccm-tab-content-custom-options select").change(function() {
-		if ($(this).val() == 'C') {
-			$(this).parent().find('ul.theme-list').show();
-		} else {
-			$(this).parent().find('ul.theme-list').hide();
-		}
-	});
+    $("#ccm-tab-content-custom-options select").change(function() {
+        if ($(this).val() == 'C') {
+            $(this).parent().find('ul.theme-list').show();
+        } else {
+            $(this).parent().find('ul.theme-list').hide();
+        }
+    });
 });
 </script>

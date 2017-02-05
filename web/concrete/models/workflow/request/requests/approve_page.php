@@ -8,4 +8,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-class ApprovePagePageWorkflowRequest extends Concrete5_Model_ApprovePagePageWorkflowRequest {}
+class ApprovePagePageWorkflowRequest extends Concrete5_Model_ApprovePagePageWorkflowRequest
+{
+}

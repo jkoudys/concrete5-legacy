@@ -1,3 +1,4 @@
 <?php
-class RegisterController extends Concrete5_Controller_Register {
+class RegisterController extends Concrete5_Controller_Register
+{
 }

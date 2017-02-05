@@ -16,32 +16,41 @@ $vHeight = ($vHeight) ? $vHeight : 344;
 if (Page::getCurrentPage()->isEditMode()) {
     ?>
 
-	<div class="ccm-edit-mode-disabled-item" style="width: <?= $vWidth; ?>px; height: <?= $vHeight; ?>px;">
-		<div style="padding:8px 0px; padding-top: <?= round($vHeight / 2) - 10; ?>px;"><?= t('YouTube Video disabled in edit mode.'); ?></div>
-	</div>
+    <div class="ccm-edit-mode-disabled-item" style="width: <?= $vWidth;
+?>px; height: <?= $vHeight; ?>px;">
+        <div style="padding:8px 0px; padding-top: <?= round($vHeight / 2) - 10;
+?>px;"><?= t('YouTube Video disabled in edit mode.'); ?></div>
+    </div>
 
 <?php
 } elseif ($vPlayer == 1) {
     ?>
 
-	<div id="youtube<?= $bID; ?>" class="youtubeBlock">
-		<iframe class="youtube-player" width="<?= $vWidth; ?>" height="<?= $vHeight; ?>" src="//www.youtube.com/embed/<?= $videoID; ?>?wmode=transparent" frameborder="0" allowfullscreen></iframe>
-	</div>
+    <div id="youtube<?= $bID; ?>" class="youtubeBlock">
+        <iframe class="youtube-player" width="<?= $vWidth;
+?>" height="<?= $vHeight;
+?>" src="//www.youtube.com/embed/<?= $videoID; ?>?wmode=transparent" frameborder="0" allowfullscreen></iframe>
+    </div>
 
 <?php
 } else {
     ?>
 
-	<div id="youtube<?= $bID; ?>" class="youtubeBlock"><div id="youtube<?= $bID; ?>_video"><?= t('You must install Adobe Flash to view this content.'); ?></div></div>
-	<script type="text/javascript">
-	//<![CDATA[
-	params = {
-		wmode: "transparent"
-	};
-	flashvars = {};
-	swfobject.embedSWF('//www.youtube.com/v/<?= $videoID; ?>', 'youtube<?= $bID; ?>_video', '<?= $vWidth; ?>', '<?= $vHeight; ?>', '8.0.0', false, flashvars, params);
-	//]]>
-	</script>
+    <div id="youtube<?= $bID;
+?>" class="youtubeBlock"><div id="youtube<?= $bID;
+?>_video"><?= t('You must install Adobe Flash to view this content.'); ?></div></div>
+    <script type="text/javascript">
+    //<![CDATA[
+    params = {
+        wmode: "transparent"
+    };
+    flashvars = {};
+    swfobject.embedSWF('//www.youtube.com/v/<?= $videoID;
+?>', 'youtube<?= $bID;
+?>_video', '<?= $vWidth;
+?>', '<?= $vHeight; ?>', '8.0.0', false, flashvars, params);
+    //]]>
+    </script>
 
 <?php
 } ?>

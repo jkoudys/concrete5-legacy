@@ -1,42 +1,42 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if (!defined('DISPATCHER_FILENAME')) {
-	define('DISPATCHER_FILENAME', 'index.php');
+    define('DISPATCHER_FILENAME', 'index.php');
 }
 if (!defined('C5_ENVIRONMENT_ONLY')) {
-	define('C5_ENVIRONMENT_ONLY', false);
+    define('C5_ENVIRONMENT_ONLY', false);
 }
 
 if (!defined('ENABLE_CMS_FOR_DIRECTORY')) {
-	define('ENABLE_CMS_FOR_DIRECTORY', true);
+    define('ENABLE_CMS_FOR_DIRECTORY', true);
 }
 
 if (!defined('ENABLE_APPLICATION_EVENTS')) {
-	define('ENABLE_APPLICATION_EVENTS', true);
+    define('ENABLE_APPLICATION_EVENTS', true);
 }
 
 # These items should be set by site.php in config/ but if they're not that means we're installing and we need something there
 /* https patch applied here */
 if (!defined('BASE_URL')) {
-	if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) {
-		define('BASE_URL', 'https://' . $_SERVER['HTTP_HOST']);
-	} else {
-		define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST']);
-	}
+    if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) {
+        define('BASE_URL', 'https://' . $_SERVER['HTTP_HOST']);
+    } else {
+        define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST']);
+    }
 }
 
 if (!defined('DIR_REL')) {
-	$pos = stripos($_SERVER['SCRIPT_NAME'], DISPATCHER_FILENAME);
-	if($pos > 0) { //we do this because in CLI circumstances (and some random ones) we would end up with index.ph instead of index.php
-		$pos = $pos - 1;
-	}
-	$uri = substr($_SERVER['SCRIPT_NAME'], 0, $pos);
-	define('DIR_REL', $uri);
+    $pos = stripos($_SERVER['SCRIPT_NAME'], DISPATCHER_FILENAME);
+    if ($pos > 0) { //we do this because in CLI circumstances (and some random ones) we would end up with index.ph instead of index.php
+        $pos = $pos - 1;
+    }
+    $uri = substr($_SERVER['SCRIPT_NAME'], 0, $pos);
+    define('DIR_REL', $uri);
 }
 
 if ($config_check_failed) {
-	// we define URL_REWRITING to be false
-	define('URL_REWRITING', false);
+    // we define URL_REWRITING to be false
+    define('URL_REWRITING', false);
 }
 
 // AS: moved to concrete/config/app.php Wednesday; February 4, 2009
@@ -45,11 +45,11 @@ if ($config_check_failed) {
 // }
 
 if (!defined('REDIRECT_TO_BASE_URL')) {
-	define('REDIRECT_TO_BASE_URL', true);
+    define('REDIRECT_TO_BASE_URL', true);
 }
 
 if (!defined('ENABLE_DEVELOPER_OPTIONS')) {
-	define("ENABLE_DEVELOPER_OPTIONS", true);
+    define("ENABLE_DEVELOPER_OPTIONS", true);
 }
 
 /*
@@ -58,60 +58,60 @@ if (!defined('ENABLE_OPENID_AUTHENTICATION')) {
 }
 */
 if (!defined('ENABLE_EMAILS')) {
-	define('ENABLE_EMAILS', true);
+    define('ENABLE_EMAILS', true);
 }
 
 if (!defined('EMAIL_DEFAULT_FROM_ADDRESS')) {
-	define('EMAIL_DEFAULT_FROM_ADDRESS', 'concrete5-noreply@' . str_replace(array('http://www.', 'https://www.', 'http://', 'https://'), '', BASE_URL));
+    define('EMAIL_DEFAULT_FROM_ADDRESS', 'concrete5-noreply@' . str_replace(array('http://www.', 'https://www.', 'http://', 'https://'), '', BASE_URL));
 }
 
 if (!defined('EMAIL_DEFAULT_FROM_NAME')) {
-	define('EMAIL_DEFAULT_FROM_NAME', '');
+    define('EMAIL_DEFAULT_FROM_NAME', '');
 }
 
 if (!defined('SITEMAP_PAGES_LIMIT')) {
-	define('SITEMAP_PAGES_LIMIT', 100);
+    define('SITEMAP_PAGES_LIMIT', 100);
 }
 
 if (!defined('SITEMAP_APPROVE_IMMEDIATELY')) {
-	define('SITEMAP_APPROVE_IMMEDIATELY', true);
+    define('SITEMAP_APPROVE_IMMEDIATELY', true);
 }
 
 if (!defined('DELETE_PAGES_LIMIT')) {
-	define('DELETE_PAGES_LIMIT', 10); // number of pages to delete during one ajax request.
+    define('DELETE_PAGES_LIMIT', 10); // number of pages to delete during one ajax request.
 }
 
 if (!defined('COPY_PAGES_LIMIT')) {
-	define('COPY_PAGES_LIMIT', 10); // number of pages to delete during one ajax request.
+    define('COPY_PAGES_LIMIT', 10); // number of pages to delete during one ajax request.
 }
 
 if (!defined('ENABLE_DEFINABLE_USER_ATTRIBUTES')) {
-	define('ENABLE_DEFINABLE_USER_ATTRIBUTES', true);
+    define('ENABLE_DEFINABLE_USER_ATTRIBUTES', true);
 }
 
 if (!defined('ENABLE_CUSTOM_USER_ATTRIBUTES_MODEL')) {
-	define('ENABLE_CUSTOM_USER_ATTRIBUTES_MODEL', false);
+    define('ENABLE_CUSTOM_USER_ATTRIBUTES_MODEL', false);
 }
 
 if (!defined("PAGE_TITLE_FORMAT")) {
-	define('PAGE_TITLE_FORMAT', '%1$s :: %2$s');
+    define('PAGE_TITLE_FORMAT', '%1$s :: %2$s');
 }
 
 if (!defined("PAGE_PATH_SEPARATOR")) {
-	define('PAGE_PATH_SEPARATOR', '-');
+    define('PAGE_PATH_SEPARATOR', '-');
 }
 
 if (!defined('PAGE_PATH_SEGMENT_MAX_LENGTH')) {
-	define('PAGE_PATH_SEGMENT_MAX_LENGTH', '128');
+    define('PAGE_PATH_SEGMENT_MAX_LENGTH', '128');
 }
 
 
 if (!defined('ENABLE_ASSET_COMPRESSION')) {
-	define('ENABLE_ASSET_COMPRESSION', false);
+    define('ENABLE_ASSET_COMPRESSION', false);
 }
 
 if (!defined('PAGING_STRING')) {
-	define('PAGING_STRING', 'ccm_paging_p');
+    define('PAGING_STRING', 'ccm_paging_p');
 }
 
 /**
@@ -119,28 +119,28 @@ if (!defined('PAGING_STRING')) {
  */
 
 if (!defined('APP_CHARSET')) {
-	define('APP_CHARSET', 'UTF-8'); // pages, etc...
+    define('APP_CHARSET', 'UTF-8'); // pages, etc...
 }
 
 if (!defined('DB_CHARSET')) {
-	define('DB_CHARSET', 'utf8'); // pages, etc...
+    define('DB_CHARSET', 'utf8'); // pages, etc...
 }
 
 if (!defined("DB_COLLATE")) {
-	define('DB_COLLATE', '');
+    define('DB_COLLATE', '');
 }
 
 define("LANGUAGE_DOMAIN_CORE", "messages");
 
 # Path to the core files shared between all concrete 5 installations
 if (!defined('DIR_BASE_CORE')) {
-	define('DIR_BASE_CORE', realpath(__DIR__ . '/..'));
+    define('DIR_BASE_CORE', realpath(__DIR__ . '/..'));
 }
 
 define('DIRNAME_CORE_CLASSES', 'core');
 # if "concrete/" does NOT exist in DIR_BASE then we set multi_site to on
 if (!is_dir(DIR_BASE . '/' . DIRNAME_APP)) {
-	define("MULTI_SITE", 1);
+    define("MULTI_SITE", 1);
 }
 
 # The core output buffering level. In the view class we need to know what the
@@ -171,7 +171,7 @@ define('DIR_FILES_TOOLS_REQUIRED', DIR_BASE_CORE . '/tools'); // global
 
 # Packages
 if (!defined('DIR_PACKAGES')) {
-	define('DIR_PACKAGES', DIR_BASE . '/packages');
+    define('DIR_PACKAGES', DIR_BASE . '/packages');
 }
 define('DIR_PACKAGES_CORE', DIR_BASE_CORE . '/packages');
 define('DIR_STARTING_POINT_PACKAGES', DIR_BASE . '/config/install/packages');
@@ -201,7 +201,7 @@ define('DIRNAME_DASHBOARD_MODULES', 'modules');
 define('DIRNAME_MAIL_TEMPLATES', 'mail');
 define('DIRNAME_THEMES', 'themes');
 if (!defined('DIRNAME_THEMES_CORE')) {
-	define('DIRNAME_THEMES_CORE', 'core');
+    define('DIRNAME_THEMES_CORE', 'core');
 }
 define('DIRNAME_TOOLS', 'tools');
 define('DIRNAME_BLOCK_TOOLS', 'tools');
@@ -242,20 +242,20 @@ define('TRASH_PAGE_PATH', '/!trash');
 
 # Hosted assets are assets shared amongst all Concrete5 installations on a single machine.
 if (defined('MULTI_SITE') && MULTI_SITE == 1) {
-	define('ASSETS_URL_WEB', BASE_URL);
-	@include(DIRNAME_UPDATES . '/index.php');
-	if (isset($DIR_APP_UPDATES)) {
-		define('DIR_APP_UPDATES', $DIR_APP_UPDATES);
-	}
+    define('ASSETS_URL_WEB', BASE_URL);
+    @include(DIRNAME_UPDATES . '/index.php');
+    if (isset($DIR_APP_UPDATES)) {
+        define('DIR_APP_UPDATES', $DIR_APP_UPDATES);
+    }
 } else {
-	define('DIR_APP_UPDATES', DIR_BASE . '/' . DIRNAME_UPDATES);
-	define('ASSETS_URL_WEB', DIR_REL);
-	define('MULTI_SITE', 0);
+    define('DIR_APP_UPDATES', DIR_BASE . '/' . DIRNAME_UPDATES);
+    define('ASSETS_URL_WEB', DIR_REL);
+    define('MULTI_SITE', 0);
 }
 if (defined('DIRNAME_APP_UPDATED')) {
- 	$ap = ASSETS_URL_WEB . '/' . DIRNAME_UPDATES . '/' . DIRNAME_APP_UPDATED . '/' . DIRNAME_APP;
+    $ap = ASSETS_URL_WEB . '/' . DIRNAME_UPDATES . '/' . DIRNAME_APP_UPDATED . '/' . DIRNAME_APP;
 } else {
-	$ap = ASSETS_URL_WEB . '/' . DIRNAME_APP;
+    $ap = ASSETS_URL_WEB . '/' . DIRNAME_APP;
 }
 
 define('ASSETS_URL', $ap);
@@ -309,7 +309,7 @@ define('FILENAME_CONTROLLER', 'controller.php');
 
 # Jobs
 if (!defined('DIR_FILES_JOBS')) {
-	define('DIR_FILES_JOBS', DIR_BASE . '/jobs');
+    define('DIR_FILES_JOBS', DIR_BASE . '/jobs');
 }
 define('DIR_FILES_JOBS_CORE', DIR_BASE_CORE . '/jobs');
 
@@ -346,7 +346,7 @@ define('DIR_FILES_TRASH_STANDARD', DIR_BASE . '/files/trash');
 define('REL_DIR_FILES_UPLOADED', DIR_REL . '/files');
 
 if (!defined('DIR_FILES_BACKUPS')) {
-	define('DIR_FILES_BACKUPS', DIR_BASE . '/files/backups');
+    define('DIR_FILES_BACKUPS', DIR_BASE . '/files/backups');
 }
 define('REL_DIR_FILES_UPLOADED_THUMBNAILS', DIR_REL . '/files/thumbnails');
 define('REL_DIR_FILES_UPLOADED_THUMBNAILS_LEVEL2', DIR_REL . '/files/thumbnails/level2');
@@ -355,49 +355,51 @@ define('REL_DIR_FILES_CACHE', REL_DIR_FILES_UPLOADED . '/cache');
 
 #Cache
 if (!defined('DIR_FILES_CACHE')) {
-	define('DIR_FILES_CACHE', DIR_BASE . '/files/cache');
+    define('DIR_FILES_CACHE', DIR_BASE . '/files/cache');
 }
 
 if (!defined('FILENAME_ENVIRONMENT_CACHE')) {
-	define('FILENAME_ENVIRONMENT_CACHE', 'environment.cache');
+    define('FILENAME_ENVIRONMENT_CACHE', 'environment.cache');
 }
 
 if (!defined('DIR_FILES_PAGE_CACHE')) {
-	define('DIR_FILES_PAGE_CACHE', DIR_BASE . '/files/cache/pages');
+    define('DIR_FILES_PAGE_CACHE', DIR_BASE . '/files/cache/pages');
 }
 
 if (!defined('PAGE_CACHE_LIBRARY')) {
-	define('PAGE_CACHE_LIBRARY', 'file');
+    define('PAGE_CACHE_LIBRARY', 'file');
 }
 
 if (!defined('CACHE_ID')) {
-	define('CACHE_ID', md5(str_replace(array('https://', 'http://'), '', BASE_URL) . DIR_REL));
+    define('CACHE_ID', md5(str_replace(array('https://', 'http://'), '', BASE_URL) . DIR_REL));
 }
 
 define('DISPATCHER_FILENAME_CORE', 'dispatcher.php');
 
 
 if (defined('DIR_FILES_CACHE')) {
-	define('DIR_FILES_CACHE_DB', DIR_FILES_CACHE);
-	$ADODB_ACTIVE_CACHESECS = 300;
-	$ADODB_CACHE_DIR = DIR_FILES_CACHE_DB;
+    define('DIR_FILES_CACHE_DB', DIR_FILES_CACHE);
+    $ADODB_ACTIVE_CACHESECS = 300;
+    $ADODB_CACHE_DIR = DIR_FILES_CACHE_DB;
 }
 
 if (!defined('CACHE_LIFETIME')) {
-	define('CACHE_LIFETIME', 21600); // 6 hours
+    define('CACHE_LIFETIME', 21600); // 6 hours
 }
 
-define('ON_WINDOWS', intval(substr(PHP_OS,0,3)=='WIN') );
+define('ON_WINDOWS', intval(substr(PHP_OS, 0, 3)=='WIN'));
 
 if (!defined('DIR_FILES_BIN_UNZIP')) {
-	 define('DIR_FILES_BIN_UNZIP', '/usr/bin/unzip');
+     define('DIR_FILES_BIN_UNZIP', '/usr/bin/unzip');
 }
 define('DIR_FILES_BIN_COMPRESS_ASSETS', DIR_LIBRARIES_3RDPARTY_CORE . '/minify_2.1.2/index.php');
 
 if (!defined('DIR_FILES_BIN_ZIP')) {
-	 define('DIR_FILES_BIN_ZIP', '/usr/bin/zip');
+     define('DIR_FILES_BIN_ZIP', '/usr/bin/zip');
 }
-if(!defined('DIR_FILES_BIN_ASPELL')) define('DIR_FILES_BIN_ASPELL', '/usr/bin/aspell'); // spellchecker
+if (!defined('DIR_FILES_BIN_ASPELL')) {
+    define('DIR_FILES_BIN_ASPELL', '/usr/bin/aspell'); // spellchecker
+}
 
 # Asset library constants
 define('AL_THUMBNAIL_WIDTH', '60');
@@ -413,13 +415,13 @@ define('DIR_AL_ICONS', DIR_BASE_CORE . '/images/icons/filetypes');
 define('REL_DIR_AL_ICONS', ASSETS_URL_IMAGES . '/icons/filetypes');
 define('AL_ICON_DEFAULT', ASSETS_URL_IMAGES . '/icons/filetypes/default.png');
 
-if (!defined('AL_THUMBNAIL_JPEG_COMPRESSION')){
-	define('AL_THUMBNAIL_JPEG_COMPRESSION', 80);
+if (!defined('AL_THUMBNAIL_JPEG_COMPRESSION')) {
+    define('AL_THUMBNAIL_JPEG_COMPRESSION', 80);
 }
 
 # This is the max size of any image in the system
-define('IMAGE_MAX_WIDTH','1200'); // this is the max - can't be any higher, this overrides area settings
-define('IMAGE_MAX_HEIGHT','1200');
+define('IMAGE_MAX_WIDTH', '1200'); // this is the max - can't be any higher, this overrides area settings
+define('IMAGE_MAX_HEIGHT', '1200');
 
 # User constants
 define('USER_USERNAME_MINIMUM', 3);
@@ -433,16 +435,16 @@ define('REGISTERED_GROUP_ID', '2');
 define('ADMIN_GROUP_ID', '3');
 define('SESSION_MAX_LIFETIME', 7200); // 2 hours
 define('USER_FOREVER_COOKIE_LIFETIME', 1209600); // 14 days
-define('USER_CHANGE_PASSWORD_URL_LIFETIME',  7200);
+define('USER_CHANGE_PASSWORD_URL_LIFETIME', 7200);
 define('NEWSFLOW_VIEWED_THRESHOLD', 86400); // once a day
 
 # Default search size
-define('SEARCH_CHUNK_SIZE','20'); /* number of entries retrieved per page */
+define('SEARCH_CHUNK_SIZE', '20'); /* number of entries retrieved per page */
 if (!defined('PAGE_SEARCH_INDEX_LIFETIME')) {
-	define('PAGE_SEARCH_INDEX_LIFETIME', 259200);
+    define('PAGE_SEARCH_INDEX_LIFETIME', 259200);
 }
 if (!defined('PAGE_SEARCH_INDEX_BATCH_SIZE')) {
-	define('PAGE_SEARCH_INDEX_BATCH_SIZE', 200);
+    define('PAGE_SEARCH_INDEX_BATCH_SIZE', 200);
 }
 
 # Versioning/Editing defaults
@@ -462,13 +464,13 @@ define('COMPOSER_DRAFTS_PAGE_PATH', '/!drafts');
 
 # User avatar constants - should probably be moved into the avatar helper class as avatar constants
 if (!defined('AVATAR_WIDTH') && !defined('AVATAR_HEIGHT')) {
-	define('AVATAR_WIDTH', 80);
-	define('AVATAR_HEIGHT', 80);
+    define('AVATAR_WIDTH', 80);
+    define('AVATAR_HEIGHT', 80);
 }
 
 define('REL_DIR_FILES_AVATARS', REL_DIR_FILES_UPLOADED . '/avatars');
 if (!defined('AVATAR_NONE')) {
-	define('AVATAR_NONE', ASSETS_URL_IMAGES . '/spacer.gif');
+    define('AVATAR_NONE', ASSETS_URL_IMAGES . '/spacer.gif');
 }
 define('REL_DIR_FILES_AVATARS_STOCK', REL_DIR_FILES_UPLOADED . '/stock_avatars');
 
@@ -494,24 +496,24 @@ define('LOG_TYPE_EXCEPTIONS', 'exceptions');
 
 # The name of the session cookie used.
 if (!defined('SESSION')) {
-	define('SESSION', 'CONCRETE5');
+    define('SESSION', 'CONCRETE5');
 }
 
 # Variables/constants necessary for ADODB
 if (!defined('DB_TYPE')) {
-	if (function_exists('mysqli_connect')) {
-		define('DB_TYPE', 'mysqli');
-	} else {
-		define('DB_TYPE', 'mysqlt');
-	}
+    if (function_exists('mysqli_connect')) {
+        define('DB_TYPE', 'mysqli');
+    } else {
+        define('DB_TYPE', 'mysqlt');
+    }
 }
 if (!defined('DB_USE_CACHE')) {
-	// caching now handled by our app, no longer by adodb
-	define('DB_USE_CACHE', false);
+    // caching now handled by our app, no longer by adodb
+    define('DB_USE_CACHE', false);
 }
 
 if (!defined("API_KEY_PICNIK")) {
-	define('API_KEY_PICNIK', '184f46c36757c7f060ed319eaf7337ac-' . urlencode(BASE_URL . DIR_REL . '/'));
+    define('API_KEY_PICNIK', '184f46c36757c7f060ed319eaf7337ac-' . urlencode(BASE_URL . DIR_REL . '/'));
 }
 
 $ADODB_ASSOC_CASE =  2;
@@ -524,18 +526,18 @@ define('APP_VERSION_LATEST_DOWNLOAD', 'http://www.concrete5.org/download/');
 
 //Main Concrete Site - For Marketplace, Knowledge Base, etc.
 if (!defined('CONCRETE5_ORG_URL')) {
-	define('CONCRETE5_ORG_URL', 'http://www.concrete5.org');
+    define('CONCRETE5_ORG_URL', 'http://www.concrete5.org');
 }
 if (!defined('CONCRETE5_ORG_URL_SECURE')) {
-	define('CONCRETE5_ORG_URL_SECURE', 'https://www.concrete5.org');
+    define('CONCRETE5_ORG_URL_SECURE', 'https://www.concrete5.org');
 }
 
 if (!defined('NEWSFLOW_URL')) {
-	define('NEWSFLOW_URL', 'http://newsflow.concrete5.org');
+    define('NEWSFLOW_URL', 'http://newsflow.concrete5.org');
 }
 
 if (!defined('ENABLE_TRASH_CAN')) {
-	define('ENABLE_TRASH_CAN', true);
+    define('ENABLE_TRASH_CAN', true);
 }
 
 define('MARKETPLACE_BASE_URL_SITE_PAGE', CONCRETE5_ORG_URL.'/private/sites');
@@ -554,63 +556,63 @@ define('MARKETPLACE_REMOTE_ITEM_LIST_WS', CONCRETE5_ORG_URL.'/marketplace/');
 define('DASHBOARD_BACKGROUND_FEED', 'http://backgroundimages.concrete5.org/wallpaper');
 define('DASHBOARD_BACKGROUND_FEED_SECURE', 'https://backgroundimages.concrete5.org/wallpaper');
 if (!defined('DASHBOARD_BACKGROUND_INFO')) {
-	define('DASHBOARD_BACKGROUND_INFO', 'http://backgroundimages.concrete5.org/get_image_data.php');
+    define('DASHBOARD_BACKGROUND_INFO', 'http://backgroundimages.concrete5.org/get_image_data.php');
 }
 
 if (!defined("MENU_HELP_URL")) {
-	define('MENU_HELP_URL', CONCRETE5_ORG_URL . '/tools/help_overlay/');
+    define('MENU_HELP_URL', CONCRETE5_ORG_URL . '/tools/help_overlay/');
 }
 
 if (!defined('MENU_HELP_SERVICE_URL')) {
-	define('MENU_HELP_SERVICE_URL', CONCRETE5_ORG_URL . '/tools/get_remote_help_list/');
+    define('MENU_HELP_SERVICE_URL', CONCRETE5_ORG_URL . '/tools/get_remote_help_list/');
 }
 
 if (!defined('MARKETPLACE_THEME_PREVIEW_URL')) {
-	define('MARKETPLACE_THEME_PREVIEW_URL', CONCRETE5_ORG_URL.'/tools/preview_theme/');
+    define('MARKETPLACE_THEME_PREVIEW_URL', CONCRETE5_ORG_URL.'/tools/preview_theme/');
 }
 
 define('MARKETPLACE_CONTENT_LATEST_THRESHOLD', 10800); // every three hours
 define('MARKETPLACE_DIRNAME_THEME_PREVIEW', 'previewable_themes');
 define('MARKETPLACE_THEME_PREVIEW_ASSETS_URL', CONCRETE5_ORG_URL ."/". MARKETPLACE_DIRNAME_THEME_PREVIEW);
 
-if(!defined('SITEMAPXML_FILE')) {
-	/** The path (relative to the web root) of the sitemap.xml file to save [default value: 'sitemap.xml'].
-	* @var string
-	*/
-	define('SITEMAPXML_FILE', 'sitemap.xml');
+if (!defined('SITEMAPXML_FILE')) {
+    /** The path (relative to the web root) of the sitemap.xml file to save [default value: 'sitemap.xml'].
+    * @var string
+    */
+    define('SITEMAPXML_FILE', 'sitemap.xml');
 }
-if(!defined('SITEMAPXML_DEFAULT_CHANGEFREQ')) {
-	/** The default page change frequency [default value: 'weekly'; valid values: 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'].
-	* @var string
-	*/
-	define('SITEMAPXML_DEFAULT_CHANGEFREQ', 'weekly');
+if (!defined('SITEMAPXML_DEFAULT_CHANGEFREQ')) {
+    /** The default page change frequency [default value: 'weekly'; valid values: 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'].
+    * @var string
+    */
+    define('SITEMAPXML_DEFAULT_CHANGEFREQ', 'weekly');
 }
-if(!defined('SITEMAPXML_DEFAULT_PRIORITY')) {
-	/** The default page priority [default value: 0.5; valid values from 0.0 to 1.0].
-	* @var float
-	*/
-	define('SITEMAPXML_DEFAULT_PRIORITY', 0.5);
-}
-
-if(!defined('SITEMAPXML_BASE_URL')) {
-	/** The base url for building the page urls, will use the BASE_URL constant if not defined
-	* @var string
-	*/
-	define('SITEMAPXML_BASE_URL', BASE_URL);
+if (!defined('SITEMAPXML_DEFAULT_PRIORITY')) {
+    /** The default page priority [default value: 0.5; valid values from 0.0 to 1.0].
+    * @var float
+    */
+    define('SITEMAPXML_DEFAULT_PRIORITY', 0.5);
 }
 
-if(!defined('APP_VERSION_DISPLAY_IN_HEADER')) {
-	define('APP_VERSION_DISPLAY_IN_HEADER', true);
+if (!defined('SITEMAPXML_BASE_URL')) {
+    /** The base url for building the page urls, will use the BASE_URL constant if not defined
+    * @var string
+    */
+    define('SITEMAPXML_BASE_URL', BASE_URL);
+}
+
+if (!defined('APP_VERSION_DISPLAY_IN_HEADER')) {
+    define('APP_VERSION_DISPLAY_IN_HEADER', true);
 }
 
 // If set to false, passwords may become invalid when downgrading the server to PHP older than 5.3
 // If set to true then a less secure password hashing algorithm based on MD5 will be used instead
 // of bcrypt or DES.
-if(!defined('PASSWORD_HASH_PORTABLE')) {
-	define('PASSWORD_HASH_PORTABLE', false);
+if (!defined('PASSWORD_HASH_PORTABLE')) {
+    define('PASSWORD_HASH_PORTABLE', false);
 }
 
 // The higher this is the longer it will take to create password hashes, to check them, and to crack them.
-if(!defined('PASSWORD_HASH_COST_LOG2')) {
-	define('PASSWORD_HASH_COST_LOG2', 12);
+if (!defined('PASSWORD_HASH_COST_LOG2')) {
+    define('PASSWORD_HASH_COST_LOG2', 12);
 }

@@ -19,4 +19,6 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class FormDateTimeHelper extends Concrete5_Helper_Form_DateTime {}
+class FormDateTimeHelper extends Concrete5_Helper_Form_DateTime
+{
+}

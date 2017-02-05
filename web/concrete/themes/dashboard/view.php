@@ -4,4 +4,4 @@ $this->inc('elements/header.php'); ?>
 
 <?php echo $innerContent; ?>
 
-<?php $this->inc('elements/footer.php'); ?>
+<?php $this->inc('elements/footer.php');

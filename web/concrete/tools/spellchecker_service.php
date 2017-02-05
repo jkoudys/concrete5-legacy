@@ -8,7 +8,7 @@ $suggestionPairs = $spellChecker->wordSuggestions;
 
 header('content-type: application/json');
 echo json_encode([
-    'html' => '<div class="correctedHTML">' . 
+    'html' => '<div class="correctedHTML">' .
         $correctedHTML .
         '</div><div id="suggestPopup">' .
         t('SuggestPopup') .

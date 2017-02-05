@@ -9,8 +9,7 @@ $form = Loader::helper('form');
 // @var String
 $removeOptionText = t('Remove Option');
 
-if (
-    isset($akSelectAllowMultipleValues) &&
+if (isset($akSelectAllowMultipleValues) &&
     $akSelectAllowMultipleValues &&
     isset($akSelectAllowOtherValues) &&
     $akSelectAllowOtherValues
@@ -56,9 +55,10 @@ if (
                 <div class="existingAttrValue">
                     <?=
                     $form->hidden(
-                         $this->field('atSelectOptionID') . '[]',
-                         $opt->getSelectAttributeOptionID(),
-                         array('style' => 'position:relative;')); ?>
+                        $this->field('atSelectOptionID') . '[]',
+                        $opt->getSelectAttributeOptionID(),
+                        array('style' => 'position:relative;')
+                    ); ?>
                     <span class="badge"><?= $opt->getSelectAttributeOptionValue() ?></span>
                     <a class="text-error" title="<?= $removeOptionText ?>" href="javascript:void(0);"
                        onclick="$(this).parent().remove()">x</a>
@@ -181,9 +181,10 @@ if (
             <label class="checkbox">
                 <?=
                 $form->checkbox(
-                     $this->field('atSelectOptionID') . '[]',
-                     $opt->getSelectAttributeOptionID(),
-                     in_array($opt->getSelectAttributeOptionID(), $selectedOptions)); ?>
+                    $this->field('atSelectOptionID') . '[]',
+                    $opt->getSelectAttributeOptionID(),
+                    in_array($opt->getSelectAttributeOptionID(), $selectedOptions)
+                ); ?>
                 <?= $opt->getSelectAttributeOptionDisplayValue() ?></label>
         <?php } ?>
     <?php
@@ -204,12 +205,13 @@ if (
         <div style="padding-top: 5px;">
             <a title="<?= t('Add Another Option') ?>" class="btn btn-small" href="javascript:void(0)"
                onclick="ccmAttributeTypeSelectHelper.add(<?= $this->attributeKey->getAttributeKeyID() ?>, '<?=
-               $this->field(
-                    'atSelectNewOption') ?>[]')">
+                $this->field(
+                    'atSelectNewOption'
+                ) ?>[]')">
                 <?= t('Add Another Option') ?>
             </a>
         </div>
-    <?php } ?>
+    <?php                                                                                                             } ?>
 
     <script type="text/javascript">
         //<![CDATA[

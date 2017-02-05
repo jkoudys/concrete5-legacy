@@ -27,7 +27,7 @@ if (strlen($errorMsg) > 0) {
         <div class="rssItem">
             <div class="rssItemTitle">
                 <a href="<?= $item->get_permalink(); ?>" <?php if ($rssObj->launchInNewWindow) {
-    echo 'target="_blank"';
+                    echo 'target="_blank"';
 } ?> >
                     <?= $item->get_title(); ?>
                 </a>

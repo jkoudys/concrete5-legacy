@@ -17,10 +17,10 @@ $ctArray = CollectionType::getList();
 <?php
 if ($cap->canAccessComposer()) { ?>
 
-	<form class="form-vertical" method="post" action="<?=$this->action('save')?>">
+    <form class="form-vertical" method="post" action="<?=$this->action('save')?>">
 
-	<div class="ccm-pane-body">
-	<?=$form->hidden('ctID', $ct->getCollectionTypeID()); ?>
+    <div class="ccm-pane-body">
+    <?=$form->hidden('ctID', $ct->getCollectionTypeID()); ?>
 
         <h3><?=t("Page type").': '.$ct->getCollectionTypeName()?></h3>
         <table class="table" cellspacing="0" cellpadding="0" border="0">
@@ -32,39 +32,39 @@ if ($cap->canAccessComposer()) { ?>
             <tbody>
                 <tr>
                     <td>
-                    	<label class="checkbox inline">
-                        	<?=$form->checkbox('ctIncludeInComposer', 1, $ct->isCollectionTypeIncludedInComposer() == 1)?>
+                        <label class="checkbox inline">
+                            <?=$form->checkbox('ctIncludeInComposer', 1, $ct->isCollectionTypeIncludedInComposer() == 1)?>
                             <span><?=t('Yes, include this page type in Composer.')?></span>
                         </label>
                     </td>
                 </tr>
-			</tbody>
-		</table>
+            </tbody>
+        </table>
 
         <table cellspacing="0" cellpadding="0" border="0" class="table">
             <thead>
                 <tr>
                     <th class="header"><?=t('Composer Publishing Settings')?></th>
                 </tr>
-			</thead>
-			<tbody>
+            </thead>
+            <tbody>
                 <tr class="row-composer inputs-list">
                     <td>
 
                         <label>
-                        	<?=$form->radio('ctComposerPublishPageMethod', 'CHOOSE', $ct->getCollectionTypeComposerPublishMethod() == 'CHOOSE' || $ct->getCollectionTypeComposerPublishMethod == null)?>
+                            <?=$form->radio('ctComposerPublishPageMethod', 'CHOOSE', $ct->getCollectionTypeComposerPublishMethod() == 'CHOOSE' || $ct->getCollectionTypeComposerPublishMethod == null)?>
                             <span><?=t('Choose from all pages when publishing.')?></span>
                         </label>
 
                         <label>
-                        	<?=$form->radio('ctComposerPublishPageMethod', 'PAGE_TYPE', $ct->getCollectionTypeComposerPublishMethod() == 'PAGE_TYPE')?>
+                            <?=$form->radio('ctComposerPublishPageMethod', 'PAGE_TYPE', $ct->getCollectionTypeComposerPublishMethod() == 'PAGE_TYPE')?>
                             <span><?=t('Choose from pages of a certain type when publishing.')?></span>
                         </label>
 
                         <div style="display: none; padding: 10px" id="ccm-composer-choose-parent-page-type">
                             <?php
                             $types = array();
-                            foreach($ctArray as $cta) {
+                            foreach ($ctArray as $cta) {
                                 $types[$cta->getCollectionTypeID()] = $cta->getCollectionTypeName();
                             }
                             ?>
@@ -72,12 +72,12 @@ if ($cap->canAccessComposer()) { ?>
                         </div>
 
                         <label>
-                        	<?=$form->radio('ctComposerPublishPageMethod', 'PARENT', $ct->getCollectionTypeComposerPublishMethod() == 'PARENT')?>
+                            <?=$form->radio('ctComposerPublishPageMethod', 'PARENT', $ct->getCollectionTypeComposerPublishMethod() == 'PARENT')?>
                             <span><?=t('Always publish below a certain page.')?></span>
                         </label>
 
                         <div style="display: none; padding: 10px" id="ccm-composer-choose-parent">
-							<?php
+                            <?php
                             $pf = Loader::helper('form/page_selector');
                             print $pf->selectPage('ctComposerPublishPageParentID', $ct->getCollectionTypeComposerPublishPageParentID());
                             ?>
@@ -85,31 +85,31 @@ if ($cap->canAccessComposer()) { ?>
 
                     </td>
                 </tr>
-			</tbody>
-		</table>
+            </tbody>
+        </table>
 
-		<table class="table" cellspacing="0" cellpadding="0" border="0">
+        <table class="table" cellspacing="0" cellpadding="0" border="0">
             <thead>
                 <tr class="row-composer">
                     <th colspan="3" class="subheader"><?=t('Attributes to Display in Composer')?></th>
                 </tr>
-			</thead>
-			<tbody>
+            </thead>
+            <tbody>
                 <?php
                     $selectedAttributes = array();
                     $cpattribs = $ct->getComposerAttributeKeys();
-                    foreach($cpattribs as $cpa) {
-                        $selectedAttributes[] = $cpa->getAttributeKeyID();
-                    }
+                foreach ($cpattribs as $cpa) {
+                    $selectedAttributes[] = $cpa->getAttributeKeyID();
+                }
 
                     $attribs = CollectionAttributeKey::getList();
                     $i = 0;
-                    foreach($attribs as $ak) {
+                foreach ($attribs as $ak) {
                     if ($i == 0) { ?>
                         <tr class="row-composer inputs-list">
-                    <?php } ?>
+                    <?php                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         } ?>
 
-                    	<td width="33%">
+                        <td width="33%">
                             <label>
                                 <?=$form->checkbox('composerAKID[]', $ak->getAttributeKeyID(), in_array($ak->getAttributeKeyID(), $selectedAttributes))?>
                                 <span><?=$ak->getAttributeKeyDisplayName()?></span>
@@ -123,24 +123,23 @@ if ($cap->canAccessComposer()) { ?>
                     <?php
                     $i = 0;
                     }
-
                 }
 
                 if ($i < 3 && $i > 0) {
                     for ($j = $i; $j < 3; $j++) { ?>
                         <td>&nbsp;</td>
-                    <?php }
+                    <?php                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         }
                 ?></tr>
-                <?php } ?>
-			</tbody>
-		</table>
+                <?php                                                                                                                                                                                                                                                                                                                                                                                                                                 } ?>
+            </tbody>
+        </table>
 
-		<table class="table" cellspacing="0" cellpadding="0" border="0">
+        <table class="table" cellspacing="0" cellpadding="0" border="0">
             <thead>
-				<tr>
+                <tr>
                     <th class="header"><?=t('Composer Content Order')?></th>
                 </tr>
-			</thead>
+            </thead>
             <tbody>
                 <tr>
                     <td>
@@ -149,7 +148,7 @@ if ($cap->canAccessComposer()) { ?>
                         <?php
                         $cur = Loader::helper('concrete/urls');
 
-                        foreach($contentitems as $ci) {
+                        foreach ($contentitems as $ci) {
                             if ($ci instanceof AttributeKey) {
                                 $ak = $ci;
                             ?>
@@ -158,22 +157,22 @@ if ($cap->canAccessComposer()) { ?>
                             <img class="ccm-composer-content-item-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><?=$ak->getAttributeKeyDisplayName()?>
                         </div>
 
-                            <?php } else if ($ci instanceof Block) {
+                            <?php                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         } elseif ($ci instanceof Block) {
                                 $b = $ci; ?>
 
 
                         <div class="ccm-composer-content-item" id="item_bID<?=$b->getBlockID()?>">
                             <img class="ccm-composer-content-item-icon" src="<?=$cur->getBlockTypeIconURL($b)?>" width="16" height="16" /><?php
-                                if ($b->getBlockName()) {
-                                    print $b->getBlockName();
-                                } else {
-                                    print t($b->getBlockTypeName());
-                                }
+                            if ($b->getBlockName()) {
+                                print $b->getBlockName();
+                            } else {
+                                print t($b->getBlockTypeName());
+                            }
                             ?>
                         </div>
                             <?php } ?>
 
-                        <?php } ?>
+                        <?php                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 } ?>
 
                         </div>
                     </td>
@@ -181,67 +180,67 @@ if ($cap->canAccessComposer()) { ?>
             </tbody>
         </table>
 
-	</div>
+    </div>
 
     <div class="ccm-pane-footer">
         <?php print $ih->submit(t('Save'), 'update', 'right', 'primary'); ?>
         <?php print $ih->button(t('Back to Page Types'), $this->url('/dashboard/pages/types'), 'left'); ?>
     </div>
 
-	</form>
+    </form>
 
     <script type="text/javascript">
-	ccm_setupComposerFields = function() {
+    ccm_setupComposerFields = function() {
 
-		if ($("input[name=ctIncludeInComposer]").prop('checked')) {
-			$(".row-composer input, .row-composer select").attr('disabled', false);
-		} else {
-			$(".row-composer input, .row-composer select").attr('disabled', 'true');
-		}
-		var val = $('input[name=ctComposerPublishPageMethod]:checked').val();
-		switch(val) {
-			case 'PAGE_TYPE':
-				$("#ccm-composer-choose-parent-page-type").show();
-				$("#ccm-composer-choose-parent").hide();
-				break;
-			case 'PARENT':
-				$("#ccm-composer-choose-parent-page-type").hide();
-				$("#ccm-composer-choose-parent").show();
-				break;
-			default:
-				$("#ccm-composer-choose-parent-page-type").hide();
-				$("#ccm-composer-choose-parent").hide();
-			break;
-		}
+        if ($("input[name=ctIncludeInComposer]").prop('checked')) {
+            $(".row-composer input, .row-composer select").attr('disabled', false);
+        } else {
+            $(".row-composer input, .row-composer select").attr('disabled', 'true');
+        }
+        var val = $('input[name=ctComposerPublishPageMethod]:checked').val();
+        switch(val) {
+            case 'PAGE_TYPE':
+                $("#ccm-composer-choose-parent-page-type").show();
+                $("#ccm-composer-choose-parent").hide();
+                break;
+            case 'PARENT':
+                $("#ccm-composer-choose-parent-page-type").hide();
+                $("#ccm-composer-choose-parent").show();
+                break;
+            default:
+                $("#ccm-composer-choose-parent-page-type").hide();
+                $("#ccm-composer-choose-parent").hide();
+            break;
+        }
 
-		$("div.ccm-composer-content-item-list").sortable({
-			handle: 'img.ccm-composer-content-item-icon',
-			cursor: 'move',
-			opacity: 0.5,
-			stop: function() {
-				var ualist = $(this).sortable('serialize');
-				$.post('<?=$this->action("save_content_items", $ct->getCollectionTypeID())?>', ualist, function(r) {
+        $("div.ccm-composer-content-item-list").sortable({
+            handle: 'img.ccm-composer-content-item-icon',
+            cursor: 'move',
+            opacity: 0.5,
+            stop: function() {
+                var ualist = $(this).sortable('serialize');
+                $.post('<?=$this->action("save_content_items", $ct->getCollectionTypeID())?>', ualist, function(r) {
 
-				});
-			}
+                });
+            }
 
-		});
-	}
+        });
+    }
 
-	$(function() {
-		$("input[name=ctIncludeInComposer], input[name=ctComposerPublishPageMethod]").click(function() {
-			ccm_setupComposerFields();
-		});
-		ccm_setupComposerFields();
-	});
+    $(function() {
+        $("input[name=ctIncludeInComposer], input[name=ctComposerPublishPageMethod]").click(function() {
+            ccm_setupComposerFields();
+        });
+        ccm_setupComposerFields();
+    });
 
-	</script>
+    </script>
 
 <?php } else { ?>
 
-	<div class="ccm-pane-body">
-    	<p><?=t('Unable to access composer settings.'); ?></p>
-	</div>
+    <div class="ccm-pane-body">
+        <p><?=t('Unable to access composer settings.'); ?></p>
+    </div>
 
     <div class="ccm-pane-footer">
         <?php print $ih->button(t('Back to Page Types'), $this->url('/dashboard/pages/types'), 'left'); ?>
@@ -249,6 +248,6 @@ if ($cap->canAccessComposer()) { ?>
 
 <?php } ?>
 
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
+    <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
 
-	<!-- END Composer Settings pane -->
+    <!-- END Composer Settings pane -->

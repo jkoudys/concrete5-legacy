@@ -21,4 +21,6 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class FileHelper extends Concrete5_Helper_File {}
+class FileHelper extends Concrete5_Helper_File
+{
+}

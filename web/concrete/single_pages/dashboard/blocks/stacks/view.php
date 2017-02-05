@@ -70,54 +70,56 @@ if ($this->controller->getTask() === 'view_details') {
 <?php
     $hasPendingPageApproval = false;
     $workflowList = PageWorkflowProgress::getList($stack);
-    foreach($workflowList as $wl) {
-        $wr = $wl->getWorkflowRequestObject();
-        $wrk = $wr->getWorkflowRequestPermissionKeyObject();
-        if ($wrk->getPermissionKeyHandle() == 'approve_page_versions') {
-            $hasPendingPageApproval = true;
-            break;
-        }
+foreach ($workflowList as $wl) {
+    $wr = $wl->getWorkflowRequestObject();
+    $wrk = $wr->getWorkflowRequestPermissionKeyObject();
+    if ($wrk->getPermissionKeyHandle() == 'approve_page_versions') {
+        $hasPendingPageApproval = true;
+        break;
     }
+}
 
-    if (!$hasPendingPageApproval) {
-        $vo = $stack->getVersionObject();
-        if ($cpc->canApprovePageVersions()) {
-            $publishTitle = t('Approve Changes');
-            $pk = PermissionKey::getByHandle('approve_page_versions');
-            $pk->setPermissionObject($stack);
-            $pa = $pk->getPermissionAccessObject();
+if (!$hasPendingPageApproval) {
+    $vo = $stack->getVersionObject();
+    if ($cpc->canApprovePageVersions()) {
+        $publishTitle = t('Approve Changes');
+        $pk = PermissionKey::getByHandle('approve_page_versions');
+        $pk->setPermissionObject($stack);
+        $pa = $pk->getPermissionAccessObject();
 
-            $workflows = array();
-            $canApproveWorkflow = true;
-            if (is_object($pa)) {
-                $workflows = $pa->getWorkflows();
+        $workflows = array();
+        $canApproveWorkflow = true;
+        if (is_object($pa)) {
+            $workflows = $pa->getWorkflows();
+        }
+        foreach ($workflows as $wf) {
+            if (!$wf->canApproveWorkflow()) {
+                $canApproveWorkflow = false;
             }
-            foreach($workflows as $wf) {
-                if (!$wf->canApproveWorkflow()) {
-                    $canApproveWorkflow = false;
-                }
-            }
+        }
 
-            if (count($workflows > 0) && !$canApproveWorkflow) {
-                $publishTitle = t('Submit to Workflow');
-            }
+        if (count($workflows > 0) && !$canApproveWorkflow) {
+            $publishTitle = t('Submit to Workflow');
+        }
 
-            $token = '&' . Loader::helper('validation/token')->getParameter(); ?>
-                <a style="margin-right: 8px; <?php if ($vo->isApproved()) { ?> display: none; <?php } ?>" href="javascript:void(0)" onclick="window.location.href='<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $stack->getCollectionID() . "&ctask=approve-recent" . $token?>'" class="btn btn-success small ccm-main-nav-edit-option ccm-button-v2-right"><?=$publishTitle?></a>
+        $token = '&' . Loader::helper('validation/token')->getParameter(); ?>
+                <a style="margin-right: 8px; <?php if ($vo->isApproved()) {
+?> display: none; <?php
+} ?>" href="javascript:void(0)" onclick="window.location.href='<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $stack->getCollectionID() . "&ctask=approve-recent" . $token?>'" class="btn btn-success small ccm-main-nav-edit-option ccm-button-v2-right"><?=$publishTitle?></a>
 <?php
-        }
     }
+}
 ?>
     </div>
     <div class="ccm-pane-body ccm-pane-body-footer clearfix" id="ccm-stack-container">
 <?php
-    if (count($workflowList) > 0) { ?>
+if (count($workflowList) > 0) { ?>
             <div id="ccm-stack-status-bar"></div>
 
         <script type="text/javascript">
         $(function() {
 
-            <?php foreach($workflowList as $wl) { ?>
+            <?php foreach ($workflowList as $wl) { ?>
 <?php $wr = $wl->getWorkflowRequestObject();
 $wrk = $wr->getWorkflowRequestPermissionKeyObject();
 if ($wrk->getPermissionKeyHandle() == 'approve_page_versions') {
@@ -131,7 +133,7 @@ sbitem.setDescription('<?=$wf->getWorkflowProgressCurrentDescription($wl)?>');
 sbitem.setAction('<?=$wl->getWorkflowProgressFormAction()?>');
 sbitem.enableAjaxForm();
 <?php $actions = $wl->getWorkflowProgressActions(); ?>
-<?php foreach($actions as $act) { ?>
+<?php foreach ($actions as $act) { ?>
 btn = new ccm_statusBarItemButton();
 btn.setLabel('<?=$act->getWorkflowProgressActionLabel()?>');
 btn.setCSSClass('<?=$act->getWorkflowProgressActionStyleClass()?>');
@@ -143,7 +145,7 @@ btn.setURL('<?=$act->getWorkflowProgressActionURL()?>');
 btn.setAction('<?=$act->getWorkflowProgressActionTask()?>');
 <?php } ?>
 <?php if (count($act->getWorkflowProgressActionExtraButtonParameters()) > 0) { ?>
-<?php foreach($act->getWorkflowProgressActionExtraButtonParameters() as $key => $value) { ?>
+<?php foreach ($act->getWorkflowProgressActionExtraButtonParameters() as $key => $value) { ?>
 btn.addAttribute('<?=$key?>', '<?=$value?>');
 <?php } ?>
 <?php } ?>
@@ -152,10 +154,10 @@ sbitem.addButton(btn);
 ccm_statusBar.addItem(sbitem);
 <?php } ?>
 ccm_statusBar.activate('ccm-stack-status-bar');
-    });
-    </script>
+});
+</script>
 
-<?php }
+<?php     }
 
 
 $a = Area::get($stack, STACKS_AREA_NAME);
@@ -163,7 +165,7 @@ $bv = new BlockView();
 $bv->renderElement('block_area_header', array('a' => $a));
 $bv->renderElement('block_area_header_view', array('a' => $a));
 
-foreach($blocks as $b) {
+foreach ($blocks as $b) {
     $bv = new BlockView();
     $bv->setAreaObject($a);
     $p = new Permissions($b);
@@ -180,7 +182,7 @@ print '</div>'; // instead  of loading block area footer view
     </div>
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false); ?>
 
-<?php } else if ($this->controller->getTask() == 'duplicate') {
+<?php } elseif ($this->controller->getTask() == 'duplicate') {
     $sv = CollectionVersion::get($stack, 'ACTIVE');
 ?>
 
@@ -202,7 +204,7 @@ print '</div>'; // instead  of loading block area footer view
     </form>
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
-<?php } else if ($this->controller->getTask() == 'rename') {
+<?php } elseif ($this->controller->getTask() == 'rename') {
     $sv = CollectionVersion::get($stack, 'ACTIVE');
 ?>
 
@@ -232,43 +234,45 @@ print '</div>'; // instead  of loading block area footer view
     <div class="ccm-stack-content-wrapper">
 
 <?php
-    if (count($globalareas) > 0) {
-        foreach($globalareas as $st) {
-            $sv = CollectionVersion::get($st, 'ACTIVE');
+if (count($globalareas) > 0) {
+    foreach ($globalareas as $st) {
+        $sv = CollectionVersion::get($st, 'ACTIVE');
 ?>
-            <div class="ccm-stack ccm-group" id="stID_<?=$st->getCollectionID()?>">
-                <?php if ($canMoveStacks) { ?><img class="ccm-group-sort" src="<?=ASSETS_URL_IMAGES?>/icons/up_down.png" width="14" height="14" /><?php } ?>
-                <a href="<?=$this->url('/dashboard/blocks/stacks', 'view_details', $st->getCollectionID())?>"><?=$sv->getVersionName()?></a>
-            </div>
+        <div class="ccm-stack ccm-group" id="stID_<?=$st->getCollectionID()?>">
+            <?php if ($canMoveStacks) {
+?><img class="ccm-group-sort" src="<?=ASSETS_URL_IMAGES?>/icons/up_down.png" width="14" height="14" /><?php
+} ?>
+            <a href="<?=$this->url('/dashboard/blocks/stacks', 'view_details', $st->getCollectionID())?>"><?=$sv->getVersionName()?></a>
+        </div>
 
 <?php
-        }
-    } else {
-        echo '<p>' . t('No global areas created yet.') . '</p>';
     }
+} else {
+    echo '<p>' . t('No global areas created yet.') . '</p>';
+}
 ?>
     </div>
     <h4><?= t('Other Stacks') ?></h4>
     <div class="ccm-stack-content-wrapper">
 <?php
-    if (count($useradded) > 0) {
-        foreach($useradded as $st) {
-            $sv = CollectionVersion::get($st, 'ACTIVE');
+if (count($useradded) > 0) {
+    foreach ($useradded as $st) {
+        $sv = CollectionVersion::get($st, 'ACTIVE');
 ?>
-            <div class="ccm-stack ccm-group" id="stID_<?= $st->getCollectionID() ?>">
-                <?php if ($canMoveStacks) { ?>
+        <div class="ccm-stack ccm-group" id="stID_<?= $st->getCollectionID() ?>">
+            <?php if ($canMoveStacks) { ?>
                     <img class="ccm-group-sort" src="<?=ASSETS_URL_IMAGES?>/icons/up_down.png" width="14" height="14" />
                 <?php } ?>
-                <a href="<?= $this->url('/dashboard/blocks/stacks', 'view_details', $st->getCollectionID()) ?>">
-                    <?= $sv->getVersionName() ?>
-                </a>
-            </div>
+            <a href="<?= $this->url('/dashboard/blocks/stacks', 'view_details', $st->getCollectionID()) ?>">
+                <?= $sv->getVersionName() ?>
+            </a>
+        </div>
 
 <?php
-        }
-    } else {
-        echo '<p>' . t('No stacks have been added.') . '</p>';
     }
+} else {
+    echo '<p>' . t('No stacks have been added.') . '</p>';
+}
 ?>
     </div>
         <h3><?= t('Add Stack') ?></h3>

@@ -7,7 +7,7 @@ $dt = Loader::helper('form/date_time');
 $uh = Loader::helper('form/user_selector');
 
 if ($cp->canEditPageType()) {
-	$ctArray = CollectionType::getList();
+    $ctArray = CollectionType::getList();
 }
 
 $pk = PermissionKey::getByHandle('edit_page_properties');
@@ -16,123 +16,129 @@ $asl = $pk->getMyAssignment();
 
 $approveImmediately = false;
 if ($_REQUEST['approveImmediately'] == 1) {
-	$approveImmediately = 1;
+    $approveImmediately = 1;
 }
 ?>
 <div class="ccm-pane-controls ccm-ui">
 <?php if ($approveImmediately) { ?>
-	<div class="alert-message block-message notice">
-		<?=t("Note: Since you haven't checked this page out for editing, these changes will immediately be approved.")?>
-	</div>
+    <div class="alert-message block-message notice">
+        <?=t("Note: Since you haven't checked this page out for editing, these changes will immediately be approved.")?>
+    </div>
 <?php } ?>
 
 <form method="post" name="permissionForm" id="ccmMetadataForm" action="<?=$c->getCollectionAction()?>">
 <input type="hidden" name="approveImmediately" value="<?=$approveImmediately?>" />
 <input type="hidden" name="rel" value="<?=$_REQUEST['rel']?>" />
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-		function ccm_triggerSelectUser(uID, uName) {
-			$('#ccm-uID').val(uID);
-			$('#ccm-uName').html(uName);
-		}
-
-
-		var ccm_activePropertiesTab = "ccm-properties-standard";
-
-		$("#ccm-properties-tabs a").click(function() {
-			$("li.active").removeClass('active');
-			$("#" + ccm_activePropertiesTab + "-tab").hide();
-			ccm_activePropertiesTab = $(this).attr('id');
-			$(this).parent().addClass("active");
-			$("#" + ccm_activePropertiesTab + "-tab").show();
-		});
-
-		$(function() {
-			$("#ccmMetadataForm").ajaxForm({
-				type: 'POST',
-				iframe: true,
-				beforeSubmit: function() {
-					jQuery.fn.dialog.showLoader();
-				},
-				success: function(r) {
-					try {
-						var r = eval('(' + r + ')');
-						jQuery.fn.dialog.hideLoader();
-						jQuery.fn.dialog.closeTop();
-						if (r != null && r.rel == 'SITEMAP') {
-							ccmSitemapHighlightPageLabel(r.cID, r.name);
-						} else {
-							ccm_mainNavDisableDirectExit();
-						}
-						ccmAlert.hud(ccmi18n.savePropertiesMsg, 2000, 'success', ccmi18n.properties);
-					} catch(e) {
-						alert(r);
-					}
-				}
-			});
-		});
-	</script>
+        function ccm_triggerSelectUser(uID, uName) {
+            $('#ccm-uID').val(uID);
+            $('#ccm-uName').html(uName);
+        }
 
 
-	<div id="ccm-required-meta"></div>
+        var ccm_activePropertiesTab = "ccm-properties-standard";
+
+        $("#ccm-properties-tabs a").click(function() {
+            $("li.active").removeClass('active');
+            $("#" + ccm_activePropertiesTab + "-tab").hide();
+            ccm_activePropertiesTab = $(this).attr('id');
+            $(this).parent().addClass("active");
+            $("#" + ccm_activePropertiesTab + "-tab").show();
+        });
+
+        $(function() {
+            $("#ccmMetadataForm").ajaxForm({
+                type: 'POST',
+                iframe: true,
+                beforeSubmit: function() {
+                    jQuery.fn.dialog.showLoader();
+                },
+                success: function(r) {
+                    try {
+                        var r = eval('(' + r + ')');
+                        jQuery.fn.dialog.hideLoader();
+                        jQuery.fn.dialog.closeTop();
+                        if (r != null && r.rel == 'SITEMAP') {
+                            ccmSitemapHighlightPageLabel(r.cID, r.name);
+                        } else {
+                            ccm_mainNavDisableDirectExit();
+                        }
+                        ccmAlert.hud(ccmi18n.savePropertiesMsg, 2000, 'success', ccmi18n.properties);
+                    } catch(e) {
+                        alert(r);
+                    }
+                }
+            });
+        });
+    </script>
 
 
-	<?php if (!$c->isMasterCollection()) { ?>
-	<ul class="nav-tabs nav" id="ccm-properties-tabs">
-		<li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?=t('Standard Properties')?></a></li>
-		<li><a href="javascript:void(0)" id="ccm-properties-custom"><?=t('Custom Attributes')?></a></li>
-		<li <?php if ($c->isMasterCollection() || !$asl->allowEditPaths()) { ?>style="display: none"<?php } ?>><a href="javascript:void(0)" id="ccm-page-paths"><?=t('Page Paths and Location')?></a></li>
-	</ul>
-	<?php } ?>
-
-	<div id="ccm-properties-standard-tab" <?php if ($c->isMasterCollection()) { ?>style="display: none" <?php } ?>>
-
-	<?php if ($asl->allowEditName()) { ?>
-	<div class="clearfix">
-		<label for="cName"><?=t('Name')?></label>
-		<div class="input"><input type="text" id="cName" name="cName" value="<?=htmlentities($c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" />
-			<span class="help-inline"><?=t("Page ID: %s", $c->getCollectionID())?></span>
-		</div>
-	</div>
-	<?php } ?>
-
-	<?php if ($asl->allowEditDateTime()) { ?>
-	<div class="clearfix">
-		<label for="cDatePublic"><?=t('Public Date/Time')?></label>
-		<div class="input"><?php print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
-	</div>
-	<?php } ?>
-
-	<?php if ($asl->allowEditUserID()) { ?>
-	<div class="clearfix">
-	<label><?=t('Owner')?></label>
-	<div class="input">
-		<?php
-		print $uh->selectUser('uID', $c->getCollectionUserID());
-		?>
-	</div>
-	</div>
-	<?php } ?>
+    <div id="ccm-required-meta"></div>
 
 
-	<?php if ($asl->allowEditDescription()) { ?>
-	<div class="clearfix">
-	<label for="cDescription"><?=t('Description')?></label>
-	<div class="input"><textarea id="cDescription" name="cDescription" class="ccm-input-text" style="width: 495px; height: 50px"><?=h($c->getCollectionDescription())?></textarea></div>
-	</div>
-	<?php } ?>
+    <?php if (!$c->isMasterCollection()) { ?>
+    <ul class="nav-tabs nav" id="ccm-properties-tabs">
+        <li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?=t('Standard Properties')?></a></li>
+        <li><a href="javascript:void(0)" id="ccm-properties-custom"><?=t('Custom Attributes')?></a></li>
+        <li <?php if ($c->isMasterCollection() || !$asl->allowEditPaths()) {
+?>style="display: none"<?php
+} ?>><a href="javascript:void(0)" id="ccm-page-paths"><?=t('Page Paths and Location')?></a></li>
+    </ul>
+    <?php } ?>
 
-	</div>
+    <div id="ccm-properties-standard-tab" <?php if ($c->isMasterCollection()) {
+?>style="display: none" <?php
+} ?>>
 
-	<?php if ($asl->allowEditPaths()) { ?>
-	<div id="ccm-page-paths-tab" style="display: none">
-		<?php if ($c->getCollectionID() != 1) { ?>
+    <?php if ($asl->allowEditName()) { ?>
+    <div class="clearfix">
+        <label for="cName"><?=t('Name')?></label>
+        <div class="input"><input type="text" id="cName" name="cName" value="<?=htmlentities($c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" />
+            <span class="help-inline"><?=t("Page ID: %s", $c->getCollectionID())?></span>
+        </div>
+    </div>
+    <?php } ?>
+
+    <?php if ($asl->allowEditDateTime()) { ?>
+    <div class="clearfix">
+        <label for="cDatePublic"><?=t('Public Date/Time')?></label>
+        <div class="input"><?php print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
+    </div>
+    <?php } ?>
+
+    <?php if ($asl->allowEditUserID()) { ?>
+    <div class="clearfix">
+    <label><?=t('Owner')?></label>
+    <div class="input">
+        <?php
+        print $uh->selectUser('uID', $c->getCollectionUserID());
+        ?>
+    </div>
+    </div>
+    <?php } ?>
+
+
+    <?php if ($asl->allowEditDescription()) { ?>
+    <div class="clearfix">
+    <label for="cDescription"><?=t('Description')?></label>
+    <div class="input"><textarea id="cDescription" name="cDescription" class="ccm-input-text" style="width: 495px; height: 50px"><?=h($c->getCollectionDescription())?></textarea></div>
+    </div>
+    <?php } ?>
+
+    </div>
+
+    <?php if ($asl->allowEditPaths()) { ?>
+    <div id="ccm-page-paths-tab" style="display: none">
+        <?php if ($c->getCollectionID() != 1) { ?>
         <div class="clearfix">
         <label for="cHandle"><?= t('Canonical URL')?></label>
         <div class="input">
         <?php if (!$c->isGeneratedCollection()) { ?>
-            <?=BASE_URL . DIR_REL;?><?php if (URL_REWRITING == false) { ?>/<?=DISPATCHER_FILENAME?><?php } ?><?php
+            <?=BASE_URL . DIR_REL;?><?php if (URL_REWRITING == false) {
+?>/<?=DISPATCHER_FILENAME?><?php
+} ?><?php
             $cPath = substr($c->getCollectionPath(), strrpos($c->getCollectionPath(), '/') + 1);
             print substr($c->getCollectionPath(), 0, strrpos($c->getCollectionPath(), '/'))?>/<input type="text" name="cHandle" value="<?php echo $cPath?>" id="cHandle" maxlength="128"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php echo $c->getCollectionHandle()?>"><br /><br />
         <?php  } else { ?>
@@ -179,8 +185,10 @@ if ($_REQUEST['approveImmediately'] == 1) {
     <?php } ?>
 
 
-    <div id="ccm-properties-custom-tab" <?php if (!$c->isMasterCollection()) { ?>style="display: none" <?php } ?>>
-        <?php Loader::element('collection_metadata_fields', array('c'=>$c, 'assignment' => $asl) ); ?>
+    <div id="ccm-properties-custom-tab" <?php if (!$c->isMasterCollection()) {
+?>style="display: none" <?php
+} ?>>
+        <?php Loader::element('collection_metadata_fields', array('c'=>$c, 'assignment' => $asl)); ?>
     </div>
 
 

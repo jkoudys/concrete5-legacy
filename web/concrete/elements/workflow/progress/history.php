@@ -4,7 +4,7 @@
 $records = WorkflowProgressHistory::getList($wp);
 $dh = Loader::helper('date');
 /* @var $dh DateHelper */
-foreach($records as $r) { ?>
+foreach ($records as $r) { ?>
 
     <div>
         <strong><?=$dh->formatDateTime($r->getWorkflowProgressHistoryTimestamp(), true, false)?></strong>.

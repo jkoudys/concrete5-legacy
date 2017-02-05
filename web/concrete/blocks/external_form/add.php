@@ -4,7 +4,7 @@
 <?=$form->label('cstFilename', t('File to include'))?>
 <div class="input">
 <select name="filename" id="cstFilename">
-	<option value="">** <?=t('Select a form')?></option>
+    <option value="">** <?=t('Select a form')?></option>
 <?php foreach ($filenames as $filename) {
     echo '<option value="'.$filename.'">'.$file->unfilename($filename).'</option>';
 } ?>
@@ -14,7 +14,7 @@
 <br/>
 
 <div class="help-block">
-	<p><?=t('This is a list of all files found in your external forms directory: %s', DIR_FILES_BLOCK_TYPES_FORMS_EXTERNAL);?></p>
+    <p><?=t('This is a list of all files found in your external forms directory: %s', DIR_FILES_BLOCK_TYPES_FORMS_EXTERNAL);?></p>
 </div>
 
 </div>

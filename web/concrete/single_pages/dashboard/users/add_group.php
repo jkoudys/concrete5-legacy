@@ -19,14 +19,14 @@ $form = Loader::helper('form');
 <div class="control-group">
 <?=$form->label('gName', t('Name'))?>
 <div class="controls">
-	<input type="text" name="gName" class="span6" value="<?=Loader::helper('text')->entities($_POST['gName'])?>" />
+    <input type="text" name="gName" class="span6" value="<?=Loader::helper('text')->entities($_POST['gName'])?>" />
 </div>
 </div>
 
 <div class="control-group">
 <?=$form->label('gDescription', t('Description'))?>
 <div class="controls">
-	<?=$form->textarea('gDescription', array('rows' => 6, 'class' =>'span6'))?>
+    <?=$form->textarea('gDescription', array('rows' => 6, 'class' =>'span6'))?>
 </div>
 </div>
 </fieldset>
@@ -34,19 +34,19 @@ $form = Loader::helper('form');
 <legend><?=t("Group Expiration Options")?></legend>
 
 <div class="control-group">
-	<div class="controls">
-	<label class="checkbox">
-	<?=$form->checkbox('gUserExpirationIsEnabled', 1, false)?>
-	<span><?=t('Automatically remove users from this group')?></span></label>
-	</div>
+    <div class="controls">
+    <label class="checkbox">
+    <?=$form->checkbox('gUserExpirationIsEnabled', 1, false)?>
+    <span><?=t('Automatically remove users from this group')?></span></label>
+    </div>
 
-	<div class="controls" style="padding-left:18px">
-	<?=$form->select("gUserExpirationMethod", array(
-		'SET_TIME' => t('at a specific date and time'),
-			'INTERVAL' => t('once a certain amount of time has passed')
+    <div class="controls" style="padding-left:18px">
+    <?=$form->select("gUserExpirationMethod", array(
+        'SET_TIME' => t('at a specific date and time'),
+            'INTERVAL' => t('once a certain amount of time has passed')
 
-	), array('disabled' => true));?>
-	</div>
+    ), array('disabled' => true));?>
+    </div>
 </div>
 
 <div id="gUserExpirationSetTimeOptions" style="display: none">
@@ -84,8 +84,8 @@ $form = Loader::helper('form');
 <div class="input">
 <?=$form->select("gUserExpirationAction", array(
 'REMOVE' => t('Remove the user from this group'),
-	'DEACTIVATE' => t('Deactivate the user account'),
-	'REMOVE_DEACTIVATE' => t('Remove the user from the group and deactivate the account')
+    'DEACTIVATE' => t('Deactivate the user account'),
+    'REMOVE_DEACTIVATE' => t('Remove the user from the group and deactivate the account')
 
 ));?>
 </div>
@@ -103,32 +103,32 @@ $form = Loader::helper('form');
 
 <script type="text/javascript">
 ccm_checkGroupExpirationOptions = function() {
-	var sel = $("select[name=gUserExpirationMethod]");
-	var cb = $("input[name=gUserExpirationIsEnabled]");
-	if (cb.prop('checked')) {
-		sel.attr('disabled', false);
-		switch(sel.val()) {
-			case 'SET_TIME':
-				$("#gUserExpirationSetTimeOptions").show();
-				$("#gUserExpirationIntervalOptions").hide();
-				break;
-			case 'INTERVAL':
-				$("#gUserExpirationSetTimeOptions").hide();
-				$("#gUserExpirationIntervalOptions").show();
-				break;
-		}
-		$("#gUserExpirationAction").show();
-	} else {
-		sel.attr('disabled', true);
-		$("#gUserExpirationSetTimeOptions").hide();
-		$("#gUserExpirationIntervalOptions").hide();
-		$("#gUserExpirationAction").hide();
-	}
+    var sel = $("select[name=gUserExpirationMethod]");
+    var cb = $("input[name=gUserExpirationIsEnabled]");
+    if (cb.prop('checked')) {
+        sel.attr('disabled', false);
+        switch(sel.val()) {
+            case 'SET_TIME':
+                $("#gUserExpirationSetTimeOptions").show();
+                $("#gUserExpirationIntervalOptions").hide();
+                break;
+            case 'INTERVAL':
+                $("#gUserExpirationSetTimeOptions").hide();
+                $("#gUserExpirationIntervalOptions").show();
+                break;
+        }
+        $("#gUserExpirationAction").show();
+    } else {
+        sel.attr('disabled', true);
+        $("#gUserExpirationSetTimeOptions").hide();
+        $("#gUserExpirationIntervalOptions").hide();
+        $("#gUserExpirationAction").hide();
+    }
 }
 
 $(function() {
-	$("input[name=gUserExpirationIsEnabled]").click(ccm_checkGroupExpirationOptions);
-	$("select[name=gUserExpirationMethod]").change(ccm_checkGroupExpirationOptions);
-	ccm_checkGroupExpirationOptions();
+    $("input[name=gUserExpirationIsEnabled]").click(ccm_checkGroupExpirationOptions);
+    $("select[name=gUserExpirationMethod]").change(ccm_checkGroupExpirationOptions);
+    ccm_checkGroupExpirationOptions();
 });
 </script>

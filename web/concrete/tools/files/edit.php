@@ -9,12 +9,12 @@ $fv = $f->getApprovedVersion();
 
 $fp = new Permissions($f);
 if (!$fp->canEditFileContents()) {
-	die(t("Access Denied."));
+    die(t("Access Denied."));
 }
 
 $to = $fv->getTypeObject();
 if ($to->getPackageHandle() != '') {
-	Loader::packageElement('files/edit/' . $to->getEditor(), $to->getPackageHandle(), array('fv' => $fv));
+    Loader::packageElement('files/edit/' . $to->getEditor(), $to->getPackageHandle(), array('fv' => $fv));
 } else {
-	Loader::element('files/edit/' . $to->getEditor(), array('fv' => $fv));
+    Loader::element('files/edit/' . $to->getEditor(), array('fv' => $fv));
 }

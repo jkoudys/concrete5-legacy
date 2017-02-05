@@ -2,4 +2,7 @@
 Loader::model('attribute/types/default/controller');
 Loader::library('3rdparty/htmLawed');
 
-class TextareaAttributeTypeController extends Concrete5_Controller_AttributeType_Textarea  {}
+class TextareaAttributeTypeController extends Concrete5_Controller_AttributeType_Textarea
+{
+
+}

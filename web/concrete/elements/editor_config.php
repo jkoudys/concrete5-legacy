@@ -2,17 +2,17 @@
 $textEditorOptions = array();
 $textEditorOptions['width'] = '100%';
 
-if(isset($editor_selector)) {
-	$textEditorOptions['editor_selector'] = $editor_selector;
+if (isset($editor_selector)) {
+    $textEditorOptions['editor_selector'] = $editor_selector;
 }
-if(isset($editor_width)) {
-	$textEditorOptions['width'] = $editor_width;
+if (isset($editor_width)) {
+    $textEditorOptions['width'] = $editor_width;
 }
-if(isset($editor_height)) {
-	$textEditorOptions['height'] = $editor_height;
+if (isset($editor_height)) {
+    $textEditorOptions['height'] = $editor_height;
 }
-if(isset($editor_mode)) {
-	$textEditorOptions['textEditorMode'] = $editor_mode;
+if (isset($editor_mode)) {
+    $textEditorOptions['textEditorMode'] = $editor_mode;
 }
 $theme = PageTheme::getSiteTheme();
 $textEditorOptions['content_css'] = $theme->getThemeEditorCSS();
@@ -26,6 +26,6 @@ $editor_selector = $textEditorOptions['editor_selector'];
 
 ?><script language="javascript" type="text/javascript">
 $(function() {
-	tinyMCE.init(<?= json_encode($textEditorOptions) ?>);
+    tinyMCE.init(<?= json_encode($textEditorOptions) ?>);
 });
 </script><?php

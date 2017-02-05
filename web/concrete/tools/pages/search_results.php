@@ -4,7 +4,7 @@ $u = new User();
 
 $sh = Loader::helper('concrete/dashboard/sitemap');
 if (!$sh->canRead()) {
-	die(t('Access Denied'));
+    die(t('Access Denied'));
 }
 
 Loader::model('attribute/categories/collection');

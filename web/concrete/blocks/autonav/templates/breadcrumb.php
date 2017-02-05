@@ -2,14 +2,14 @@
 $navItems = $controller->getNavItems(true);
 
 for ($i = 0; $i < count($navItems); $i++) {
-	$ni = $navItems[$i];
-	if ($i > 0) {
-		echo ' <span class="ccm-autonav-breadcrumb-sep">&gt;</span> ';
-	}
+    $ni = $navItems[$i];
+    if ($i > 0) {
+        echo ' <span class="ccm-autonav-breadcrumb-sep">&gt;</span> ';
+    }
 
-	if ($ni->isCurrent) {
-		echo $ni->name;
-	} else {
-		echo '<a href="' . $ni->url . '" target="' . $ni->target . '">' . $ni->name . '</a>';
-	}
+    if ($ni->isCurrent) {
+        echo $ni->name;
+    } else {
+        echo '<a href="' . $ni->url . '" target="' . $ni->target . '">' . $ni->name . '</a>';
+    }
 }

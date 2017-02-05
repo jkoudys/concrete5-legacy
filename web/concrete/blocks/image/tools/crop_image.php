@@ -2,12 +2,12 @@
 $u = new User();
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAddFiles()) {
-	die(t("Unable to add files."));
+    die(t("Unable to add files."));
 }
 
 $f = File::getByID($_REQUEST['fID']);
 if (is_object($f) && (!$f->isError())) {
-	$fID = $f->getFileID();
+    $fID = $f->getFileID();
 }
 
 $bt = BlockType::getByHandle('image');

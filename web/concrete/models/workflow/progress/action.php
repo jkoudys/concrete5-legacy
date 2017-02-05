@@ -7,6 +7,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-class WorkflowProgressAction extends Concrete5_Model_WorkflowProgressAction {}
-class WorkflowProgressCancelAction extends Concrete5_Model_WorkflowProgressCancelAction {}
-class WorkflowProgressApprovalAction extends Concrete5_Model_WorkflowProgressApprovalAction {}
+class WorkflowProgressAction extends Concrete5_Model_WorkflowProgressAction
+{
+}
+class WorkflowProgressCancelAction extends Concrete5_Model_WorkflowProgressCancelAction
+{
+}
+class WorkflowProgressApprovalAction extends Concrete5_Model_WorkflowProgressApprovalAction
+{
+}

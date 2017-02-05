@@ -6,67 +6,67 @@ $av = Loader::helper('concrete/avatar');
 $token = Loader::helper('validation/token');
 ?>
 <div id="ccm-profile-sidebar">
-	<div class="ccm-profile-header">
-		<a href="<?=View::url('/profile',$profile->getUserID())?>"><?= $av->outputUserAvatar($profile)?></a><br />
-		<a href="<?=View::url('/profile',$profile->getUserID())?>"><?= $profile->getUsername()?></a>
-	</div>
-	<div style="margin-top:16px; padding-bottom:4px; margin-bottom:0px; font-weight:bold"><?=t('Member Since')?></div>
-	<?=Loader::helper('date')->formatDate($profile->getUserDateAdded(), true)?>
+    <div class="ccm-profile-header">
+        <a href="<?=View::url('/profile', $profile->getUserID())?>"><?= $av->outputUserAvatar($profile)?></a><br />
+        <a href="<?=View::url('/profile', $profile->getUserID())?>"><?= $profile->getUsername()?></a>
+    </div>
+    <div style="margin-top:16px; padding-bottom:4px; margin-bottom:0px; font-weight:bold"><?=t('Member Since')?></div>
+    <?=Loader::helper('date')->formatDate($profile->getUserDateAdded(), true)?>
 
-	<?php
-	$u = new User();
-	if ($u->isRegistered() && $u->getUserID() != $profile->getUserID()) { ?>
-	<div style="margin-top:16px;">
-		<div>
-		<?php if( !UsersFriends::isFriend( $profile->getUserID(), $u->uID ) ){ ?>
-			<a href="<?=View::url('/profile/friends','add_friend', $profile->getUserID(), $token->generate('profile.add_friend.' . $profile->getUserID()))?>">
-				<?=t('Add to My Friends') ?>
-			</a>
-		<?php }else{ ?>
-			<a href="<?=View::url('/profile/friends','remove_friend', $profile->getUserID(), $token->generate('profile.remove_friend.' . $profile->getUserID()))?>">
-				<?=t('Remove from My Friends') ?>
-			</a>
-		<?php } ?>
+    <?php
+    $u = new User();
+    if ($u->isRegistered() && $u->getUserID() != $profile->getUserID()) { ?>
+    <div style="margin-top:16px;">
+        <div>
+        <?php if (!UsersFriends::isFriend($profile->getUserID(), $u->uID)) { ?>
+            <a href="<?=View::url('/profile/friends', 'add_friend', $profile->getUserID(), $token->generate('profile.add_friend.' . $profile->getUserID()))?>">
+                <?=t('Add to My Friends') ?>
+            </a>
+        <?php } else { ?>
+            <a href="<?=View::url('/profile/friends', 'remove_friend', $profile->getUserID(), $token->generate('profile.remove_friend.' . $profile->getUserID()))?>">
+                <?=t('Remove from My Friends') ?>
+            </a>
+        <?php } ?>
 
-		</div>
-		<?php if ($profile->getUserProfilePrivateMessagesEnabled() == 1) { ?>
-			<a href="<?=$v->url('/profile/messages', 'write', $profile->getUserID())?>"><?=t('Send Private Message')?></a>
-		<?php } ?>
+        </div>
+        <?php if ($profile->getUserProfilePrivateMessagesEnabled() == 1) { ?>
+            <a href="<?=$v->url('/profile/messages', 'write', $profile->getUserID())?>"><?=t('Send Private Message')?></a>
+        <?php } ?>
 
-	</div>
-	<?php } ?>
+    </div>
+    <?php                                                                                                         } ?>
 
 
-	<div>
-	<?php
-	if($u->getUserID() == $profile->getUserID()) {
-		$nc = Page::getByPath('/profile');
-		$pl = new PageList();
-		$pl->filterByParentID($nc->getCollectionID());
-		$pages = $pl->get(0);
-		if (is_array($pages) && !empty($pages)) {
-			$nh = Loader::helper('navigation');
-			?>
-			<ul class="nav">
-			<?php foreach ($pages as $page) { ?>
-				<li><a href="<?php echo $nh->getLinkToCollection($page) ?>"><?php echo t($page->getCollectionName())?></a></li>
-			<?php } ?>
-			</ul>
-		<?php
-		}
-	}
-	?>
-	</div>
+    <div>
+    <?php
+    if ($u->getUserID() == $profile->getUserID()) {
+        $nc = Page::getByPath('/profile');
+        $pl = new PageList();
+        $pl->filterByParentID($nc->getCollectionID());
+        $pages = $pl->get(0);
+        if (is_array($pages) && !empty($pages)) {
+            $nh = Loader::helper('navigation');
+            ?>
+            <ul class="nav">
+            <?php foreach ($pages as $page) { ?>
+                <li><a href="<?php echo $nh->getLinkToCollection($page) ?>"><?php echo t($page->getCollectionName())?></a></li>
+            <?php } ?>
+            </ul>
+        <?php
+        }
+    }
+    ?>
+    </div>
 
-		<form method="get" action="<?=$v->url('/members')?>">
-		<h4><?=t('Search Members')?></h4>
-		<?php
-		$form = Loader::helper('form');
-		print $form->text('keywords', array('style' => 'width: 80px'));
-		print '&nbsp;&nbsp;';
-		print $form->submit('submit', t('Search'));
-		?>
+        <form method="get" action="<?=$v->url('/members')?>">
+        <h4><?=t('Search Members')?></h4>
+        <?php
+        $form = Loader::helper('form');
+        print $form->text('keywords', array('style' => 'width: 80px'));
+        print '&nbsp;&nbsp;';
+        print $form->submit('submit', t('Search'));
+        ?>
 
-		</form>
+        </form>
 
 </div>

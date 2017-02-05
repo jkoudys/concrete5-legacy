@@ -12,7 +12,7 @@ if (isset($error) && $error != '') {
         $_error[] = $error;
     }
     ?>
-    <?php if($_error) { ?>
+    <?php if ($_error) { ?>
         <?php if ($format == 'block') { ?>
 
         <div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button>

@@ -16,7 +16,7 @@ if ($fp->canAddFile() || $fp->canSearchFiles()) { ?>
 
 <?php } else { ?>
 <div class="ccm-pane-body">
-	<p><?=t("You do not have access to the file manager.");?></p>
+    <p><?=t("You do not have access to the file manager.");?></p>
 </div>
 <div class="ccm-pane-footer"></div>
 

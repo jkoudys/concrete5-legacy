@@ -60,7 +60,6 @@ if ($md->isMobile() == true) {
     $v->addHeaderItem('<meta name="viewport" content="width=device-width,initial-scale=1"/>');
     $v->addHeaderItem($html->css('ccm.app.mobile.css')); ?>
     <?php
-
 }
 $v->addHeaderItem($html->css('ccm.dashboard.css'));
 $v->addHeaderItem($html->css('jquery.ui.css'));
@@ -81,20 +80,17 @@ $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundI
     ?>
             $.backstretch("<?=$backgroundImage->image?>" <?php if (!$_SESSION['dashboardHasSeenImage']) {
     ?>,  {speed: 750}<?php
-
 } ?>);
-        <?php 
+        <?php
 } ?>
         <?php if ($backgroundImage->checkData) {
     ?>
             ccm_getDashboardBackgroundImageData('<?=$backgroundImage->filename?>', <?php if ($backgroundImage->displayCaption) {
     ?> true <?php
-
 } else {
     ?> false <?php
-
 } ?>);
-        <?php 
+        <?php
 } ?>
 
         $(window).on('resize', function() {
@@ -118,12 +114,10 @@ $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundI
     ?>
     <div id="ccm-dashboard-background-caption" class="ccm-ui"><div id="ccm-dashboard-background-caption-inner"><?php if ($backgroundImage->url) {
     ?><a target="_blank" href="<?=$backgroundImage->url?>"><?php
-
 } ?><?=$backgroundImage->caption?><?php if ($backgroundImage->url) {
     ?></a><?php
-
 } ?></div></div>
-<?php 
+<?php
 } ?>
 
 <div class="ccm-ui">
@@ -133,28 +127,25 @@ $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundI
 <li id="ccm-logo-wrapper"><?=Loader::helper('concrete/interface')->getToolbarLogoSRC()?></li>
 <li><a class="ccm-icon-back ccm-menu-icon" href="<?=$this->url('/')?>"><?php if ($md->isMobile()) {
     ?><?=t('Back')?><?php
-
 } else {
     ?><?=t('Return to Website')?><?php
-
 } ?></a></li>
 <?php if (Loader::helper('concrete/interface')->showWhiteLabelMessage()) {
     ?>
     <li id="ccm-white-label-message"><?=t('Powered by <a href="%s">concrete5</a>.', CONCRETE5_ORG_URL)?></li>
-<?php 
+<?php
 } ?>
 </ul>
 
 <ul id="ccm-system-nav">
 <li><a class="ccm-icon-dashboard ccm-menu-icon" id="ccm-nav-dashboard<?php if ($md->isMobile()) {
     ?>-mobile<?php
-
 } ?>" href="<?=$this->url('/dashboard')?>"><?=t('Dashboard')?></a></li>
 <li id="ccm-nav-intelligent-search-wrapper"><input type="search" placeholder="<?=t('Intelligent Search')?>" id="ccm-nav-intelligent-search" tabindex="1" /></li>
 <?php if ($md->isMobile() == false) {
     ?>
     <li><a id="ccm-nav-sign-out" class="ccm-icon-sign-out ccm-menu-icon" href="<?=$this->url('/login', 'logout')?>"><?=t('Sign Out')?></a></li>
-<?php 
+<?php
 } ?>
 </ul>
 
@@ -187,14 +178,13 @@ echo $dh->addQuickNavToMenus($html);
             $_error = $error;
         }
 
-    if (count($_error) > 0) {
-        ?>
+        if (count($_error) > 0) {
+            ?>
             <div class="ccm-ui"  id="ccm-dashboard-result-message">
                 <?php Loader::element('system_errors', array('format' => 'block', 'error' => $_error)); ?>
             </div>
-        <?php
-
-    }
+            <?php
+        }
 }
 
 if (isset($message)) {
@@ -203,11 +193,10 @@ if (isset($message)) {
             <div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">×</button><?=nl2br(Loader::helper('text')->entities($message))?></div>
         </div>
     <?php
-
 } elseif (isset($success)) {
     ?>
         <div class="ccm-ui" id="ccm-dashboard-result-message">
             <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button><?=nl2br(Loader::helper('text')->entities($success))?></div>
         </div>
-    <?php 
+    <?php
 } ?>

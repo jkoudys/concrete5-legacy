@@ -10,4 +10,3 @@ To view this guestbook, visit:
 %s
 
 ", $comment, $guestbookURL);
-?>

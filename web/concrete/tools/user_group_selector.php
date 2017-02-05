@@ -4,14 +4,14 @@ $displayGroups = true;
 $displayUsers = true;
 
 if ($_REQUEST['mode'] == 'users') {
-	$displayGroups = false;
-} else if ($_REQUEST['mode'] == 'groups') {
-	$displayUsers = false;
+    $displayGroups = false;
+} elseif ($_REQUEST['mode'] == 'groups') {
+    $displayUsers = false;
 }
 
 $tp = new TaskPermission();
 if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) {
-	die(t("Access Denied."));
+    die(t("Access Denied."));
 }
 
 ?>
@@ -20,11 +20,11 @@ if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) {
 var ccm_ugActiveTab = "ccm-select-group";
 
 $("#ccm-ug-tabs a").click(function() {
-	$("li.ccm-nav-active").removeClass('ccm-nav-active');
-	$("#" + ccm_ugActiveTab + "-tab").hide();
-	ccm_ugActiveTab = $(this).attr('id');
-	$(this).parent().addClass("ccm-nav-active");
-	$("#" + ccm_ugActiveTab + "-tab").show();
+    $("li.ccm-nav-active").removeClass('ccm-nav-active');
+    $("#" + ccm_ugActiveTab + "-tab").hide();
+    ccm_ugActiveTab = $(this).attr('id');
+    $(this).parent().addClass("ccm-nav-active");
+    $("#" + ccm_ugActiveTab + "-tab").show();
 });
 
 </script>

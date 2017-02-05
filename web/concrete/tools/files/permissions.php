@@ -7,27 +7,27 @@ $ih = Loader::helper('concrete/interface');
 $f = File::getByID($_REQUEST['fID']);
 $cp = new Permissions($f);
 if (!$cp->canAdmin()) {
-	die(t("Access Denied."));
+    die(t("Access Denied."));
 }
 $form = Loader::helper('form');
 
 if ($_POST['task'] == 'set_password') {
-	$f->setPassword($_POST['fPassword']);
-	exit;
+    $f->setPassword($_POST['fPassword']);
+    exit;
 }
 
 
 Loader::model('file_storage_location');
 if ($_POST['task'] == 'set_location') {
-	if ($_POST['fslID'] == 0) {
-		$f->setStorageLocation(0);
-	} else {
-		$fsl = FileStorageLocation::getByID($_POST['fslID']);
-		if (is_object($fsl)) {
-			$f->setStorageLocation($fsl);
-		}
-	}
-	exit;
+    if ($_POST['fslID'] == 0) {
+        $f->setStorageLocation(0);
+    } else {
+        $fsl = FileStorageLocation::getByID($_POST['fslID']);
+        if (is_object($fsl)) {
+            $f->setStorageLocation($fsl);
+        }
+    }
+    exit;
 }
 
 ?>
@@ -35,11 +35,13 @@ if ($_POST['task'] == 'set_location') {
 <div class="ccm-ui" id="ccm-file-permissions-dialog-wrapper">
 
 <ul class="tabs" id="ccm-file-permissions-tabs">
-	<?php if (PERMISSIONS_MODEL != 'simple') { ?>
-		<li class="active"><a href="javascript:void(0)" id="ccm-file-permissions-advanced"><?=t('Permissions')?></a></li>
-	<?php } ?>
-	<li <?php if (PERMISSIONS_MODEL == 'simple') { ?> class="active" <?php } ?>><a href="javascript:void(0)" id="ccm-file-password"><?=t('Protect with Password')?></a></li>
-	<li><a href="javascript:void(0)" id="ccm-file-storage"><?=t('Storage Location')?></a></li>
+    <?php if (PERMISSIONS_MODEL != 'simple') { ?>
+        <li class="active"><a href="javascript:void(0)" id="ccm-file-permissions-advanced"><?=t('Permissions')?></a></li>
+    <?php } ?>
+    <li <?php if (PERMISSIONS_MODEL == 'simple') {
+?> class="active" <?php
+} ?>><a href="javascript:void(0)" id="ccm-file-password"><?=t('Protect with Password')?></a></li>
+    <li><a href="javascript:void(0)" id="ccm-file-storage"><?=t('Storage Location')?></a></li>
 </ul>
 
 <div class="clearfix"></div>
@@ -48,12 +50,14 @@ if ($_POST['task'] == 'set_location') {
 
 <div id="ccm-file-permissions-advanced-tab">
 
-	<?php Loader::element('permission/lists/file', array('f' => $f)); ?>
+    <?php Loader::element('permission/lists/file', array('f' => $f)); ?>
 
 </div>
 <?php } ?>
 
-<div id="ccm-file-password-tab" <?php if (PERMISSIONS_MODEL != 'simple') { ?> style="display: none" <?php } ?>>
+<div id="ccm-file-password-tab" <?php if (PERMISSIONS_MODEL != 'simple') {
+?> style="display: none" <?php
+} ?>>
 <br/>
 
 <h4><?=t('Requires Password to Access')?></h4>
@@ -91,7 +95,7 @@ if ($_POST['task'] == 'set_location') {
 <?php
 $fsl = FileStorageLocation::getByID(FileStorageLocation::ALTERNATE_ID);
 if (is_object($fsl)) { ?>
-	<label class="radio"><?=$form->radio('fslID', FileStorageLocation::ALTERNATE_ID, $f->getStorageLocationID()) ?> <?=$fsl->getName()?> (<?=$fsl->getDirectory()?>)</label>
+    <label class="radio"><?=$form->radio('fslID', FileStorageLocation::ALTERNATE_ID, $f->getStorageLocationID()) ?> <?=$fsl->getName()?> (<?=$fsl->getDirectory()?>)</label>
 <?php } ?>
 </form>
 
@@ -108,21 +112,21 @@ if (is_object($fsl)) { ?>
 <script type="text/javascript">
 
 $("#ccm-file-permissions-tabs a").click(function() {
-	$("li.active").removeClass('active');
-	$("#" + ccm_fpActiveTab + "-tab").hide();
-	ccm_fpActiveTab = $(this).attr('id');
-	$(this).parent().addClass("active");
-	$("#" + ccm_fpActiveTab + "-tab").show();
-	ccm_filePermissionsSetupButtons();
+    $("li.active").removeClass('active');
+    $("#" + ccm_fpActiveTab + "-tab").hide();
+    ccm_fpActiveTab = $(this).attr('id');
+    $(this).parent().addClass("active");
+    $("#" + ccm_fpActiveTab + "-tab").show();
+    ccm_filePermissionsSetupButtons();
 });
 
 ccm_filePermissionsSetupButtons = function() {
-	if ($("#" + ccm_fpActiveTab + "-buttons").length > 0) {
-		$("#ccm-file-permissions-dialog-wrapper").closest('.ui-dialog-content').jqdialog('option', 'buttons', [{}]);
-		$("#" + ccm_fpActiveTab + "-buttons").clone().show().appendTo($('#ccm-file-permissions-dialog-wrapper').closest('.ui-dialog').find('.ui-dialog-buttonpane').addClass('ccm-ui'));
-	} else {
-		$("#ccm-file-permissions-dialog-wrapper").closest('.ui-dialog-content').jqdialog('option', 'buttons', false);
-	}
+    if ($("#" + ccm_fpActiveTab + "-buttons").length > 0) {
+        $("#ccm-file-permissions-dialog-wrapper").closest('.ui-dialog-content').jqdialog('option', 'buttons', [{}]);
+        $("#" + ccm_fpActiveTab + "-buttons").clone().show().appendTo($('#ccm-file-permissions-dialog-wrapper').closest('.ui-dialog').find('.ui-dialog-buttonpane').addClass('ccm-ui'));
+    } else {
+        $("#ccm-file-permissions-dialog-wrapper").closest('.ui-dialog-content').jqdialog('option', 'buttons', false);
+    }
 
 }
 
@@ -130,21 +134,21 @@ var ccm_fpActiveTab;
 
 $(function() {
 <?php if (PERMISSIONS_MODEL == 'simple') { ?>
-	ccm_fpActiveTab = "ccm-file-password";
+    ccm_fpActiveTab = "ccm-file-password";
 <?php } else { ?>
-	ccm_fpActiveTab = "ccm-file-permissions-advanced";
+    ccm_fpActiveTab = "ccm-file-permissions-advanced";
 <?php } ?>
 
-	ccm_filePermissionsSetupButtons();
-	ccm_setupGridStriping('ccmPermissionsTable');
-	$("#ccm-<?=$searchInstance?>-storage-form").submit(function() {
-		ccm_alSubmitStorageForm('<?=$searchInstance?>');
-		return false;
-	});
-	$("#ccm-<?=$searchInstance?>-password-form").submit(function() {
-		ccm_alSubmitPasswordForm('<?=$searchInstance?>');
-		return false;
-	});
+    ccm_filePermissionsSetupButtons();
+    ccm_setupGridStriping('ccmPermissionsTable');
+    $("#ccm-<?=$searchInstance?>-storage-form").submit(function() {
+        ccm_alSubmitStorageForm('<?=$searchInstance?>');
+        return false;
+    });
+    $("#ccm-<?=$searchInstance?>-password-form").submit(function() {
+        ccm_alSubmitPasswordForm('<?=$searchInstance?>');
+        return false;
+    });
 });
 
 </script>

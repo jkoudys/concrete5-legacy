@@ -10,6 +10,12 @@
 * @category Concrete
 */
 
-class MarketplaceRemoteItem extends Concrete5_Model_MarketplaceRemoteItem {}
-class MarketplaceRemoteItemList extends Concrete5_Model_MarketplaceRemoteItemList {}
-class MarketplaceRemoteItemSet extends Concrete5_Model_MarketplaceRemoteItemSet {}
+class MarketplaceRemoteItem extends Concrete5_Model_MarketplaceRemoteItem
+{
+}
+class MarketplaceRemoteItemList extends Concrete5_Model_MarketplaceRemoteItemList
+{
+}
+class MarketplaceRemoteItemSet extends Concrete5_Model_MarketplaceRemoteItemSet
+{
+}

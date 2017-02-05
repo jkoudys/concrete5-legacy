@@ -196,18 +196,18 @@ if (isset($successMessage)) { ?>
                     <?php
                     $availableSampleContent = StartingPointPackage::getAvailableList();
                     foreach ($availableSampleContent as $spl) {
-                    $pkgHandle = $spl->getPackageHandle();
+                        $pkgHandle = $spl->getPackageHandle();
                     ?>
 
                     <tr class="<?php if ($this->post('SAMPLE_CONTENT') == $pkgHandle || (!$this->post('SAMPLE_CONTENT') && $pkgHandle == 'standard') || count($availableSampleContent) == 1) {
                         ?>package-selected<?php
-                        } ?>">
+} ?>">
                         <td><?=$form->radio('SAMPLE_CONTENT', $pkgHandle, ($pkgHandle == 'standard' || count($availableSampleContent) == 1))?></td>
                         <td class="sample-content-thumbnail"><img src="<?=$uh->getPackageIconURL($spl)?>" width="97" height="97" alt="<?=$spl->getPackageName()?>" /></td>
                         <td class="sample-content-description" width="100%"><h4><?=$spl->getPackageName()?></h4><p><?=$spl->getPackageDescription()?></td>
                         </tr>
 
-                        <?php     } ?>
+                        <?php                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             } ?>
 
                     </tbody>
                 </table>
@@ -294,13 +294,13 @@ $.getJSON('<?=$this->url("/install", "test_url", "20", "20")?>', function(json) 
                 <tr>
                     <td class="ccm-test-phpversion"><?php if ($phpVtest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><?php
-                        } else {
-                        ?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><?php
-                        } ?></td>
+} else {
+?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><?php
+} ?></td>
                     <td width="100%"><?=t(/*i18n: %s is the php version*/'PHP %s', $phpVmin)?></td>
                     <td><?php if (!$phpVtest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?=t('concrete5 requires at least PHP %s', $phpVmin)?>" /><?php
-                        } ?></td>
+} ?></td>
                 </tr>
                 <tr>
                     <td class="ccm-test-js"><img id="ccm-test-js-success" src="<?=ASSETS_URL_IMAGES?>/icons/success.png" style="display: none" />
@@ -311,14 +311,14 @@ $.getJSON('<?=$this->url("/install", "test_url", "20", "20")?>', function(json) 
                 <tr>
                     <td><?php if ($mysqlTest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><?php
-                        } else {
-                        ?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><?php
-                        } ?></td>
+} else {
+?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><?php
+} ?></td>
                     <td width="100%"><?=t('MySQL Available')?>
                     </td>
                     <td><?php if (!$mysqlTest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?=$this->controller->getDBErrorMsg()?>" /><?php
-                        } ?></td>
+} ?></td>
                 </tr>
                 <tr>
                     <td><img id="ccm-test-request-loading"  src="<?=ASSETS_URL_IMAGES?>/dashboard/sitemap/loading.gif" /></td>
@@ -333,38 +333,38 @@ $.getJSON('<?=$this->url("/install", "test_url", "20", "20")?>', function(json) 
                 <tr>
                     <td><?php if ($imageTest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><?php
-                        } else {
-                        ?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><?php
-                        } ?></td>
+} else {
+?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><?php
+} ?></td>
                     <td width="100%"><?=t('Image Manipulation Available')?>
                     </td>
                     <td><?php if (!$imageTest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?=t('concrete5 requires GD library 2.0.1 or greater')?>" /><?php
-                        } ?></td>
+} ?></td>
                 </tr>
                 <tr>
                     <td><?php if ($xmlTest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><?php
-                        } else {
-                        ?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><?php
-                        } ?></td>
+} else {
+?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><?php
+} ?></td>
                     <td width="100%"><?=t('XML Support')?>
                     </td>
                     <td><?php if (!$xmlTest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?=t('concrete5 requires PHP XML Parser and SimpleXML extensions')?>" /><?php
-                        } ?></td>
+} ?></td>
                 </tr>
                 <tr>
                     <td><?php if ($fileWriteTest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><?php
-                        } else {
-                        ?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><?php
-                        } ?></td>
+} else {
+?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><?php
+} ?></td>
                     <td width="100%"><?=t('Writable Files and Configuration Directories')?>
                     </td>
                     <td><?php if (!$fileWriteTest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?=t('The config/, packages/ and files/ directories must be writable by your web server.')?>" /><?php
-                        } ?></td>
+} ?></td>
                 </tr>
                 <tr>
                     <td><img id="ccm-test-cookies-enabled-loading"  src="<?=ASSETS_URL_IMAGES?>/dashboard/sitemap/loading.gif" /></td>
@@ -389,14 +389,14 @@ $.getJSON('<?=$this->url("/install", "test_url", "20", "20")?>', function(json) 
                 <tr>
                     <td><?php if ($remoteFileUploadTest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><?php
-                        } else {
-                        ?><img src="<?=ASSETS_URL_IMAGES?>/icons/warning.png" /><?php
-                        } ?></td>
+} else {
+?><img src="<?=ASSETS_URL_IMAGES?>/icons/warning.png" /><?php
+} ?></td>
                     <td width="100%"><?=t('Remote File Importing Available')?>
                     </td>
                     <td><?php if (!$remoteFileUploadTest) {
                         ?><img src="<?=ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?=t('Remote file importing through the file manager requires the iconv PHP extension.')?>" /><?php
-                        } ?></td>
+} ?></td>
                 </tr>
             </table>
         </div>
@@ -420,7 +420,7 @@ $.getJSON('<?=$this->url("/install", "test_url", "20", "20")?>', function(json) 
             </div>
 
             <div class="block-message alert-message info">
-            <?= t('Having trouble? Check the <a href="%s">installation help forums</a>, or <a href="%s">have us host a copy</a> for you.', 'http://www.concrete5.org/community/forums/installation', 'http://www.concrete5.org/services/hosting' )?>
+            <?= t('Having trouble? Check the <a href="%s">installation help forums</a>, or <a href="%s">have us host a copy</a> for you.', 'http://www.concrete5.org/community/forums/installation', 'http://www.concrete5.org/services/hosting')?>
         </div>
     </div>
 </div>

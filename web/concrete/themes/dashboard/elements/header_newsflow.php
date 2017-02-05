@@ -19,7 +19,6 @@ if ($_c->getCollectionPath() != '/dashboard/news' && $_c->getCollectionPath() !=
 } ?>
     <?php if (!$_c->isCheckedOut()) {
     ?><a href="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&ctask=check-out<?=$token?>" id="ccm-nav-check-out" class="btn"><?=t('Edit Page')?></a><?php
-
 } ?>
 </div>
 <?php

@@ -27,7 +27,7 @@
 
                 if (count($show) > 0) { ?>
 
-                <?php foreach($show as $subcat) { ?>
+                <?php foreach ($show as $subcat) { ?>
 
                 <li>
                     <a href="<?=Loader::helper('navigation')->getLinkToCollection($subcat, false, true)?>"><i class="<?=$subcat->getAttribute('icon_dashboard')?>"></i> <?=t($subcat->getCollectionName())?></a>
@@ -37,11 +37,11 @@
                 <li>
                     <a href="<?=Loader::helper('navigation')->getLinkToCollection($cat, false, true)?>"><i class="<?=$cat->getAttribute('icon_dashboard')?>"></i> <?=t('Home')?></a>
                 </li>
-                <?php } ?>
+                <?php                                                                                                                                                                                                                                                                                                                                                                                                                                 } ?>
             </ul>
         </div>
     </div>
-    <?php } ?>
+    <?php                                                                                                         } ?>
 
     <div class="clearfix"></div>
 
@@ -53,13 +53,13 @@
     $newsPageP = new Permissions($newsPage);
     if ($newsPageP->canRead()) { ?>
     <div><a href="<?=Loader::helper('navigation')->getLinkToCollection($newsPage, false, true)?>"><strong><?=t('News')?></strong></a> - <?=t('Learn about your site and concrete5.')?></div>
-    <?php }
+    <?php                                                                                                         }
 
     $settingsPage = Page::getByPath('/dashboard/system');
     $settingsPageP = new Permissions($settingsPage);
     if ($settingsPageP->canRead()) { ?>
     <div><a href="<?=Loader::helper('navigation')->getLinkToCollection($settingsPage, false, true)?>"><strong><?=t('System &amp; Settings')?></strong></a> - <?=t('Secure and setup your site.')?></div>
-    <?php }
+    <?php                                                                                                         }
 
     $tpa = new TaskPermission();
     $extendPage = Page::getByPath('/dashboard/extend');
@@ -80,9 +80,9 @@
             View::url('/dashboard/extend/install'),
             View::url('/dashboard/extend/update')
         );
-    } ?>
+} ?>
     </div>
-    <?php } ?>
+    <?php                                                                                                         } ?>
 
 </div>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
 <?php
 $miniSurvey=new MiniSurvey($b);
-$miniSurveyInfo=$miniSurvey->getMiniSurveyBlockInfo( $b->getBlockID() );
-MiniSurvey::questionCleanup( intval($miniSurveyInfo['questionSetId']), $b->getBlockID() );
+$miniSurveyInfo=$miniSurvey->getMiniSurveyBlockInfo($b->getBlockID());
+MiniSurvey::questionCleanup(intval($miniSurveyInfo['questionSetId']), $b->getBlockID());
 
 $u = new User();
 $ui = UserInfo::getByID($u->uID);

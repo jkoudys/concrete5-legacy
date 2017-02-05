@@ -18,5 +18,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-class FileAttributeKey extends Concrete5_Model_FileAttributeKey {}
-class FileAttributeValue extends Concrete5_Model_FileAttributeValue {}
+class FileAttributeKey extends Concrete5_Model_FileAttributeKey
+{
+
+}
+class FileAttributeValue extends Concrete5_Model_FileAttributeValue
+{
+
+}

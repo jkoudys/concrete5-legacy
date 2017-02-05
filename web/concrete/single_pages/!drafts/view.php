@@ -2,4 +2,3 @@
 
 $this->controller->redirect('/');
 exit;
-

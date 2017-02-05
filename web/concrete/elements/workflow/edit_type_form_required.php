@@ -14,17 +14,17 @@ $type = $workflow->getWorkflowTypeObject();
 <legend><?=t("Workflow Basics")?></legend>
 
 <div class="control-group">
-	<?=$form->label('wfName', t('Name'))?>
-	<div class="controls">
-		<?=$form->text('wfName', $wfName)?>
-	</div>
+    <?=$form->label('wfName', t('Name'))?>
+    <div class="controls">
+        <?=$form->text('wfName', $wfName)?>
+    </div>
 </div>
 </fieldset></div>
 
 <?php
 if ($type->getPackageID() > 0) {
-	@Loader::packageElement('workflow/types/' . $type->getWorkflowTypeHandle()  . '/edit_type_form', $type->getPackageHandle(), array('type' => $type, 'workflow' => $workflow));
+    @Loader::packageElement('workflow/types/' . $type->getWorkflowTypeHandle()  . '/edit_type_form', $type->getPackageHandle(), array('type' => $type, 'workflow' => $workflow));
 } else {
-	@Loader::element('workflow/types/' . $type->getWorkflowTypeHandle() . '/edit_type_form', array('type' => $type, 'workflow' => $workflow));
+    @Loader::element('workflow/types/' . $type->getWorkflowTypeHandle() . '/edit_type_form', array('type' => $type, 'workflow' => $workflow));
 }
 ?>

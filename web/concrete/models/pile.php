@@ -10,5 +10,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @package Utilities
 *
 */
-class Pile extends Concrete5_Model_Pile {}
-class PileContent extends Concrete5_Model_PileContent {}
+class Pile extends Concrete5_Model_Pile
+{
+}
+class PileContent extends Concrete5_Model_PileContent
+{
+}

@@ -19,7 +19,7 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sear
             <legend><?=t('Areas')?></legend>
             <div class="control-group">
 
-            <?php foreach($areas as $a) { ?>
+            <?php foreach ($areas as $a) { ?>
                 <label class="checkbox"><?=$form->checkbox('arHandle[]', $a, in_array($a, $selectedAreas))?> <?=$a?></label>
             <?php } ?>
             </div>

@@ -15,12 +15,12 @@ ob_start();
 <?= t('User Name') ?>: <b><?= $uName ?></b><br />
 <?= t('Email Address') ?>: <b><?= $uEmail ?></b><br />
 <br />
-<?php if($attribs): ?>
-	<ul>
-	<?php foreach($attribs as $item): ?>
-		<li><?= $item ?></li>
-	<?php endforeach ?>
-	</ul>
+<?php if ($attribs) : ?>
+    <ul>
+    <?php foreach ($attribs as $item) : ?>
+        <li><?= $item ?></li>
+    <?php endforeach ?>
+    </ul>
 <?php endif ?>
 <br />
 <?php t('This account may be managed directly at') ?><br />
@@ -46,11 +46,11 @@ ob_start();
 
 <?= t('Email Address') ?>: <?= $uEmail ?>
 
-<?php if($attribs): ?>
-	<?php foreach($attribs as $item): ?>
-		<?= $item ?>
+<?php if ($attribs) : ?>
+    <?php foreach ($attribs as $item) : ?>
+        <?= $item ?>
 
-	<?php endforeach ?>
+    <?php endforeach ?>
 <?php endif ?>
 
 <?php t('This account may be managed directly at') ?>

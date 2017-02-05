@@ -1,3 +1,5 @@
 <?php
 
-class SecurimageSystemCaptchaTypeController extends Concrete5_Model_SecurimageSystemCaptchaTypeController {}
+class SecurimageSystemCaptchaTypeController extends Concrete5_Model_SecurimageSystemCaptchaTypeController
+{
+}

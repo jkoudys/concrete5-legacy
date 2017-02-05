@@ -17,7 +17,7 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Page Type'), false, false, false);?>
 
     <form method="post" class="form-horizontal" id="add_page_type" action="<?=$this->url('/dashboard/pages/types/add', 'do_add')?>">
-	<?=$valt->output('add_page_type')?>
+    <?=$valt->output('add_page_type')?>
     <?=$form->hidden('task', 'add'); ?>
 
     <div class="ccm-pane-body">
@@ -38,37 +38,37 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                         <?=$form->text('ctHandle', $_POST['ctHandle'], array('style' => 'width: 100%'))?>
                     </td>
                 </tr>
-			</tbody>
-		</table>
+            </tbody>
+        </table>
 
         <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
                     <th class="subheader">
 
-					<?=t('Icon')?>
+                    <?=t('Icon')?>
                     <?php
-                        if (!is_object($pageTypeIconsFS)) {
-                            print '<span style="margin-left: 4px; color: #aaa">';
-                            print t('(To add your own page type icons, create a file set named "%s" and add files to that set)', 'Page Type Icons');
-                            print '</span>';
-                        } else {
-                            print '<span style="margin-left: 4px; color: #aaa">';
-                            print t('(Pulling icons from file set "%s". Icons will be displayed at %s x %s.)', 'Page Type Icons', COLLECTION_TYPE_ICON_WIDTH, COLLECTION_TYPE_ICON_HEIGHT);
-                            print '</span>';
-                        }
+                    if (!is_object($pageTypeIconsFS)) {
+                        print '<span style="margin-left: 4px; color: #aaa">';
+                        print t('(To add your own page type icons, create a file set named "%s" and add files to that set)', 'Page Type Icons');
+                        print '</span>';
+                    } else {
+                        print '<span style="margin-left: 4px; color: #aaa">';
+                        print t('(Pulling icons from file set "%s". Icons will be displayed at %s x %s.)', 'Page Type Icons', COLLECTION_TYPE_ICON_WIDTH, COLLECTION_TYPE_ICON_HEIGHT);
+                        print '</span>';
+                    }
                     ?>
 
                     </th>
                 </tr>
-			</thead>
+            </thead>
             <tbody>
                 <tr>
                     <td>
                     <?php
                     $first = true;
-                    foreach($icons as $ic) {
-                        if(is_object($ic)) {
+                    foreach ($icons as $ic) {
+                        if (is_object($ic)) {
                             $fv = $ic->getApprovedVersion();
                             $checked = false;
                             if (isset($_POST['ctIcon']) && $_POST['ctIcon'] == $ic->getFileID()) {
@@ -102,27 +102,26 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                             </label>
                         <?php
                         }
-
                     } ?>
                     </td>
                 </tr>
-			</tbody>
-		</table>
+            </tbody>
+        </table>
 
         <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
                     <th colspan="3" class="subheader"><?=t('Default Attributes to Display')?></th>
                 </tr>
-			</thead>
+            </thead>
             <tbody>
                 <?php
                     $attribs = CollectionAttributeKey::getList();
                     $i = 0;
-                    foreach($attribs as $ak) {
+                foreach ($attribs as $ak) {
                     if ($i == 0) { ?>
                         <tr class="inputs-list">
-                    <?php } ?>
+                    <?php                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         } ?>
 
                         <td width="33%">
                             <label class="">
@@ -138,19 +137,18 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                     <?php
                     $i = 0;
                     }
-
                 }
 
                 if ($i < 3 && $i > 0) {
                     for ($j = $i; $j < 3; $j++) { ?>
                         <td>&nbsp;</td>
-                    <?php }
+                    <?php                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         }
                 ?></tr>
-        	<?php } ?>
-        	</tbody>
+            <?php                                                                                                                                                                                                                                                                                                                                                                                                                                 } ?>
+            </tbody>
         </table>
 
-	</div>
+    </div>
 
     <div class="ccm-pane-footer">
         <?php print $ih->submit(t('Add'), 'add_page_type', 'right', 'primary'); ?>

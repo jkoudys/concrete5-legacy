@@ -8,4 +8,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-class DeletePagePageWorkflowRequest extends Concrete5_Model_DeletePagePageWorkflowRequest {}
+class DeletePagePageWorkflowRequest extends Concrete5_Model_DeletePagePageWorkflowRequest
+{
+}

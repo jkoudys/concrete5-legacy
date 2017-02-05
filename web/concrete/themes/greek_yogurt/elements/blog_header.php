@@ -25,15 +25,15 @@
 
 <div id="main-container" class="container_24">
 
-	<div id="header">
+    <div id="header">
 
-		<h1><a href="<?php echo DIR_REL?>/"><?php echo h(SITE) ?></a></h1>
+        <h1><a href="<?php echo DIR_REL?>/"><?php echo h(SITE) ?></a></h1>
 
-		<?php
+        <?php
         $a = new Area('Header Nav');
         $a->display($c);
         ?>
 
-	</div>
+    </div>
 
-	<div class="clear"></div>
+    <div class="clear"></div>

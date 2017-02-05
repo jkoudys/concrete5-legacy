@@ -60,7 +60,7 @@ if ($errorCode > -1 && $error == '') {
 <html>
 <head>
 <script language="javascript">
-    <?php if(strlen($error)) { ?>
+    <?php if (strlen($error)) { ?>
         window.parent.ccmAlert.notice("<?=t('Upload Error')?>", "<?=str_replace("\n", '', nl2br($error))?>");
         window.parent.ccm_alResetSingle();
     <?php } else { ?>

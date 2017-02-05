@@ -3,22 +3,22 @@
 <?php
 
 $repeats = array(
-	'' => t('** Options'),
-	'daily' => t('Every Day'),
-	'weekly' => t('Every Week'),
-	'monthly' => t('Every Month')
+    '' => t('** Options'),
+    'daily' => t('Every Day'),
+    'weekly' => t('Every Week'),
+    'monthly' => t('Every Month')
 );
 $repeatDays = array();
 for ($i = 1; $i <= 30; $i++) {
-	$repeatDays[$i] = $i;
+    $repeatDays[$i] = $i;
 }
 $repeatWeeks = array();
 for ($i = 1; $i <= 30; $i++) {
-	$repeatWeeks[$i] = $i;
+    $repeatWeeks[$i] = $i;
 }
 $repeatMonths = array();
 for ($i = 1; $i <= 12; $i++) {
-	$repeatMonths[$i] = $i;
+    $repeatMonths[$i] = $i;
 }
 
 
@@ -38,29 +38,29 @@ $pdRepeatPeriodMonthsRepeatBy = 'month';
 $pdEndRepeatDateSpecific = false;
 $pdEndRepeatDate = '';
 if (is_object($pd)) {
-	$pdStartDate = $pd->getStartDate();
-	$pdEndDate = $pd->getEndDate();
-	$pdRepeats = $pd->repeats();
-	$pdStartDateAllDay = $pd->isStartDateAllDay();
-	$pdEndDateAllDay = $pd->isEndDateAllDay();
-	$pdRepeatPeriod = $pd->getRepeatPeriod();
-	$pdRepeatPeriodWeekDays = $pd->getRepeatPeriodWeekDays();
-	if ($pdRepeatPeriod == 'daily') {
-		$pdRepeatPeriodDaysEvery = $pd->getRepeatPeriodEveryNum();
-	}
-	if ($pdRepeatPeriod == 'weekly') {
-		$pdRepeatPeriodWeeksEvery = $pd->getRepeatPeriodEveryNum();
-	}
-	if ($pdRepeatPeriod == 'monthly') {
-		$pdRepeatPeriodMonthsEvery = $pd->getRepeatPeriodEveryNum();
-	}
-	if ($pd->getRepeatMonthBy() != '') {
-		$pdRepeatPeriodMonthsRepeatBy = $pd->getRepeatMonthBy();
-	}
-	$pdEndRepeatDateSpecific = $pd->getRepeatPeriodEnd();
-	if ($pdEndRepeatDateSpecific) {
-		$pdEndRepeatDate = 'date';
-	}
+    $pdStartDate = $pd->getStartDate();
+    $pdEndDate = $pd->getEndDate();
+    $pdRepeats = $pd->repeats();
+    $pdStartDateAllDay = $pd->isStartDateAllDay();
+    $pdEndDateAllDay = $pd->isEndDateAllDay();
+    $pdRepeatPeriod = $pd->getRepeatPeriod();
+    $pdRepeatPeriodWeekDays = $pd->getRepeatPeriodWeekDays();
+    if ($pdRepeatPeriod == 'daily') {
+        $pdRepeatPeriodDaysEvery = $pd->getRepeatPeriodEveryNum();
+    }
+    if ($pdRepeatPeriod == 'weekly') {
+        $pdRepeatPeriodWeeksEvery = $pd->getRepeatPeriodEveryNum();
+    }
+    if ($pdRepeatPeriod == 'monthly') {
+        $pdRepeatPeriodMonthsEvery = $pd->getRepeatPeriodEveryNum();
+    }
+    if ($pd->getRepeatMonthBy() != '') {
+        $pdRepeatPeriodMonthsRepeatBy = $pd->getRepeatMonthBy();
+    }
+    $pdEndRepeatDateSpecific = $pd->getRepeatPeriodEnd();
+    if ($pdEndRepeatDateSpecific) {
+        $pdEndRepeatDate = 'date';
+    }
 }
 $form = Loader::helper('form');
 $dt = Loader::helper('form/date_time');
@@ -73,16 +73,16 @@ $dt = Loader::helper('form/date_time');
 <div class="control-group">
 <?=$form->label('pdStartDate_activate', tc('Start date', 'From'))?>
 <div class="controls">
-	<?=$dt->datetime('pdStartDate', $pdStartDate, true);?>
-	<label class="checkbox inline"><?=$form->checkbox('pdStartDateAllDayActivate', 1, $pdStartDateAllDay)?> <?=t("All Day")?></label>
+    <?=$dt->datetime('pdStartDate', $pdStartDate, true);?>
+    <label class="checkbox inline"><?=$form->checkbox('pdStartDateAllDayActivate', 1, $pdStartDateAllDay)?> <?=t("All Day")?></label>
 </div>
 </div>
 
 <div class="control-group">
 <?=$form->label('pdEndDate_activate', tc('End date', 'To'))?>
 <div class="controls">
-	<?=$dt->datetime('pdEndDate', $pdEndDate, true);?>
-	<label class="checkbox inline"><?=$form->checkbox('pdEndDateAllDayActivate', 1, $pdEndDateAllDay)?> <?=t("All Day")?></label>
+    <?=$dt->datetime('pdEndDate', $pdEndDate, true);?>
+    <label class="checkbox inline"><?=$form->checkbox('pdEndDateAllDayActivate', 1, $pdEndDateAllDay)?> <?=t("All Day")?></label>
 </div>
 </div>
 
@@ -93,7 +93,7 @@ $dt = Loader::helper('form/date_time');
 <div class="control-group">
 <label class="control-label"></label>
 <div class="controls">
-	<label class="checkbox"><?=$form->checkbox('pdRepeat', 1, $pdRepeats)?> <span><?=t('Repeat...')?></span></label>
+    <label class="checkbox"><?=$form->checkbox('pdRepeat', 1, $pdRepeats)?> <span><?=t('Repeat...')?></span></label>
 </div>
 </div>
 
@@ -103,7 +103,7 @@ $dt = Loader::helper('form/date_time');
 <div class="control-group">
 <?=$form->label('pdRepeatPeriod', t('Repeats'))?>
 <div class="controls">
-	<?=$form->select('pdRepeatPeriod', $repeats, $pdRepeatPeriod)?>
+    <?=$form->select('pdRepeatPeriod', $repeats, $pdRepeatPeriod)?>
 </div>
 </div>
 
@@ -112,8 +112,8 @@ $dt = Loader::helper('form/date_time');
 <div class="control-group">
 <?=$form->label('pdRepeatPeriodDaysEvery', t('Repeat every'))?>
 <div class="controls">
-	<?=$form->select('pdRepeatPeriodDaysEvery', $repeatDays, $pdRepeatPeriodDaysEvery, array('style' => 'width: 60px'))?>
-	<?=t('days')?>
+    <?=$form->select('pdRepeatPeriodDaysEvery', $repeatDays, $pdRepeatPeriodDaysEvery, array('style' => 'width: 60px'))?>
+    <?=t('days')?>
 </div>
 </div>
 
@@ -125,16 +125,16 @@ $dt = Loader::helper('form/date_time');
 <div class="control-group">
 <?=$form->label('pdRepeatPeriodMonthsRepeatBy', t('Repeat By'))?>
 <div class="controls">
-	<label><?=$form->radio('pdRepeatPeriodMonthsRepeatBy', 'month', $pdRepeatPeriodMonthsRepeatBy)?> <span><?=t('Day of Month')?></span></label>
-	<label><?=$form->radio('pdRepeatPeriodMonthsRepeatBy', 'week', $pdRepeatPeriodMonthsRepeatBy)?> <span><?=t('Day of Week')?></span></label>
+    <label><?=$form->radio('pdRepeatPeriodMonthsRepeatBy', 'month', $pdRepeatPeriodMonthsRepeatBy)?> <span><?=t('Day of Month')?></span></label>
+    <label><?=$form->radio('pdRepeatPeriodMonthsRepeatBy', 'week', $pdRepeatPeriodMonthsRepeatBy)?> <span><?=t('Day of Week')?></span></label>
 </div>
 </div>
 
 <div class="control-group">
 <?=$form->label('pdRepeatPeriodMonthsEvery', t('Repeat every'))?>
 <div class="controls">
-	<?=$form->select('pdRepeatPeriodMonthsEvery', $repeatMonths, $pdRepeatPeriodMonthsEvery, array('style' => 'width: 60px'))?>
-	<?=t('months')?>
+    <?=$form->select('pdRepeatPeriodMonthsEvery', $repeatMonths, $pdRepeatPeriodMonthsEvery, array('style' => 'width: 60px'))?>
+    <?=t('months')?>
 </div>
 </div>
 
@@ -151,12 +151,14 @@ $dt = Loader::helper('form/date_time');
 <div class="controls">
 <?php
 $x = 0;
-foreach($list['format']['wide'] as $key => $value) { ?>
-	<label><input <?php if (in_array($x, $pdRepeatPeriodWeekDays)) { ?>checked="checked" <?php } ?>
-	type="checkbox" name="pdRepeatPeriodWeeksDays[]" value="<?=$x?>" /> <span><?=$value?></span></label>
+foreach ($list['format']['wide'] as $key => $value) { ?>
+    <label><input <?php if (in_array($x, $pdRepeatPeriodWeekDays)) {
+?>checked="checked" <?php
+} ?>
+    type="checkbox" name="pdRepeatPeriodWeeksDays[]" value="<?=$x?>" /> <span><?=$value?></span></label>
 
 <?php
-	$x++;
+    $x++;
 } ?>
 </div>
 </div>
@@ -166,8 +168,8 @@ foreach($list['format']['wide'] as $key => $value) { ?>
 <div class="control-group">
 <?=$form->label('pdRepeatPeriodWeeksEvery', t('Repeat every'))?>
 <div class="controls">
-	<?=$form->select('pdRepeatPeriodWeeksEvery', $repeatWeeks, $pdRepeatPeriodWeeksEvery, array('style' => 'width: 60px'))?>
-	<?=t('weeks')?>
+    <?=$form->select('pdRepeatPeriodWeeksEvery', $repeatWeeks, $pdRepeatPeriodWeeksEvery, array('style' => 'width: 60px'))?>
+    <?=t('weeks')?>
 </div>
 </div>
 
@@ -180,15 +182,15 @@ foreach($list['format']['wide'] as $key => $value) { ?>
 <div class="clearfix">
 <label><?=t('Starts On')?></label>
 <div class="controls">
-	<input type="text" disabled="disabled" value="" name="pdStartRepeatDate"   />
+    <input type="text" disabled="disabled" value="" name="pdStartRepeatDate"   />
 </div>
 </div>
 
 <div class="control-group">
 <?=$form->label('pdEndRepeatDate', t('Ends'))?>
 <div class="controls">
-	<label><?=$form->radio('pdEndRepeatDate', '', $pdEndRepeatDate)?> <span><?=t('Never')?></span></label>
-	<label><?=$form->radio('pdEndRepeatDate', 'date', $pdEndRepeatDate)?> <?=$dt->date('pdEndRepeatDateSpecific', $pdEndRepeatDateSpecific)?></label>
+    <label><?=$form->radio('pdEndRepeatDate', '', $pdEndRepeatDate)?> <span><?=t('Never')?></span></label>
+    <label><?=$form->radio('pdEndRepeatDate', 'date', $pdEndRepeatDate)?> <?=$dt->date('pdEndRepeatDateSpecific', $pdEndRepeatDateSpecific)?></label>
 </div>
 
 
@@ -202,148 +204,148 @@ foreach($list['format']['wide'] as $key => $value) { ?>
 
 <script type="text/javascript">
 ccm_accessEntityCalculateRepeatOptions = function() {
-	// get the difference between start date and end date
-	if (!$("#pdStartDate_activate").is(':checked')) {
-		return false;
-	}
+    // get the difference between start date and end date
+    if (!$("#pdStartDate_activate").is(':checked')) {
+        return false;
+    }
 
-	var sdf = ($("#pdStartDate_dt").datepicker('option', 'dateFormat'));
-	var sdfr = $.datepicker.parseDate(sdf, $("#pdStartDate_dt").val());
-	var edf = ($("#pdEndDate_dt").datepicker('option', 'dateFormat'));
-	var edfr = $.datepicker.parseDate(edf, $("#pdEndDate_dt").val());
-	var sh = $("select[name=pdStartDate_h]").val();
-	var eh = $("select[name=pdEndDate_h]").val();
-	if ($("select[name=pdStartDate_a]").val() == 'PM' && (sh < 12)) {
-		sh = parseInt(sh) + 12;
-	} else if (sh == 12 && $("select[name=pdStartDate_a]").val() == 'AM') {
-		sh = 0;
-	}
-	if ($("select[name=pdEndDate_a]").val() == 'PM' && (eh < 12)) {
-		eh = parseInt(eh) + 12;
-	} else if (eh == 12 && $("select[name=pdEndDate_a]").val() == 'AM') {
-		eh = 0;
-	}
-	var startDate = new Date(sdfr.getFullYear(), sdfr.getMonth(), sdfr.getDate(), sh, $('select[name=pdStartDate_m]').val(), 0);
-	var endDate = new Date(edfr.getFullYear(), edfr.getMonth(), edfr.getDate(), eh, $('select[name=pdEndDate_m]').val(), 0);
-	var difference = ((endDate.getTime() / 1000) - (startDate.getTime() / 1000));
-	if (difference >= 60 * 60 * 24) {
-		$('select[name=pdRepeatPeriod] option[value=daily]').attr('disabled', true);
-		$("#ccm-permissions-access-entity-dates-repeat-weekly-dow").hide();
-	} else {
-		$('select[name=pdRepeatPeriod] option[value=daily]').attr('disabled', false);
-		$("#ccm-permissions-access-entity-dates-repeat-weekly-dow").show();
-	}
-	$('input[name=pdStartRepeatDate]').val($("#pdStartDate_dt").val());
-	switch(sdfr.getDay()) {
-		case 0:
-			$("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=0]").attr('checked', true);
-			break;
-		case 1:
-			$("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=1]").attr('checked', true);
-			break;
-		case 2:
-			$("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=2]").attr('checked', true);
-			break;
-		case 3:
-			$("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=3]").attr('checked', true);
-			break;
-		case 4:
-			$("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=4]").attr('checked', true);
-			break;
-		case 5:
-			$("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=5]").attr('checked', true);
-			break;
-		case 6:
-			$("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=6]").attr('checked', true);
-			break;
-	}
+    var sdf = ($("#pdStartDate_dt").datepicker('option', 'dateFormat'));
+    var sdfr = $.datepicker.parseDate(sdf, $("#pdStartDate_dt").val());
+    var edf = ($("#pdEndDate_dt").datepicker('option', 'dateFormat'));
+    var edfr = $.datepicker.parseDate(edf, $("#pdEndDate_dt").val());
+    var sh = $("select[name=pdStartDate_h]").val();
+    var eh = $("select[name=pdEndDate_h]").val();
+    if ($("select[name=pdStartDate_a]").val() == 'PM' && (sh < 12)) {
+        sh = parseInt(sh) + 12;
+    } else if (sh == 12 && $("select[name=pdStartDate_a]").val() == 'AM') {
+        sh = 0;
+    }
+    if ($("select[name=pdEndDate_a]").val() == 'PM' && (eh < 12)) {
+        eh = parseInt(eh) + 12;
+    } else if (eh == 12 && $("select[name=pdEndDate_a]").val() == 'AM') {
+        eh = 0;
+    }
+    var startDate = new Date(sdfr.getFullYear(), sdfr.getMonth(), sdfr.getDate(), sh, $('select[name=pdStartDate_m]').val(), 0);
+    var endDate = new Date(edfr.getFullYear(), edfr.getMonth(), edfr.getDate(), eh, $('select[name=pdEndDate_m]').val(), 0);
+    var difference = ((endDate.getTime() / 1000) - (startDate.getTime() / 1000));
+    if (difference >= 60 * 60 * 24) {
+        $('select[name=pdRepeatPeriod] option[value=daily]').attr('disabled', true);
+        $("#ccm-permissions-access-entity-dates-repeat-weekly-dow").hide();
+    } else {
+        $('select[name=pdRepeatPeriod] option[value=daily]').attr('disabled', false);
+        $("#ccm-permissions-access-entity-dates-repeat-weekly-dow").show();
+    }
+    $('input[name=pdStartRepeatDate]').val($("#pdStartDate_dt").val());
+    switch(sdfr.getDay()) {
+        case 0:
+            $("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=0]").attr('checked', true);
+            break;
+        case 1:
+            $("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=1]").attr('checked', true);
+            break;
+        case 2:
+            $("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=2]").attr('checked', true);
+            break;
+        case 3:
+            $("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=3]").attr('checked', true);
+            break;
+        case 4:
+            $("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=4]").attr('checked', true);
+            break;
+        case 5:
+            $("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=5]").attr('checked', true);
+            break;
+        case 6:
+            $("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=6]").attr('checked', true);
+            break;
+    }
 }
 
 ccm_accessEntityCheckRepeat = function() {
-	if ($('input[name=pdRepeat]').is(':checked')) {
-		$("#ccm-permissions-access-entity-repeat-selector").show();
-	} else {
-		$("#ccm-permissions-access-entity-repeat-selector").hide();
-	}
+    if ($('input[name=pdRepeat]').is(':checked')) {
+        $("#ccm-permissions-access-entity-repeat-selector").show();
+    } else {
+        $("#ccm-permissions-access-entity-repeat-selector").hide();
+    }
 }
 
 ccm_accessEntityOnActivateDates = function() {
-	if ($("#pdStartDate_activate").is(':checked') || $("#pdEndDate_activate").is(':checked')) {
-		ccm_accessEntityCalculateRepeatOptions();
-	}
-	if ($("#pdStartDate_activate").is(':checked') && $("#pdEndDate_activate").is(':checked')) {
-		$("#ccm-permissions-access-entity-repeat").show();
-	} else {
-		$("#ccm-permissions-access-entity-repeat").hide();
-	}
-	if ($("#pdStartDate_activate").is(':checked')) {
-		$('#pdStartDateAllDayActivate').attr('disabled', false);
-	} else {
-		$('input[name=pdStartDateAllDayActivate]').attr('disabled', true);
-	}
-	if ($("#pdEndDate_activate").is(':checked')) {
-		$('#pdEndDateAllDayActivate').attr('disabled', false);
-	} else {
-		$('input[name=pdEndDateAllDayActivate]').attr('disabled', true);
-	}
+    if ($("#pdStartDate_activate").is(':checked') || $("#pdEndDate_activate").is(':checked')) {
+        ccm_accessEntityCalculateRepeatOptions();
+    }
+    if ($("#pdStartDate_activate").is(':checked') && $("#pdEndDate_activate").is(':checked')) {
+        $("#ccm-permissions-access-entity-repeat").show();
+    } else {
+        $("#ccm-permissions-access-entity-repeat").hide();
+    }
+    if ($("#pdStartDate_activate").is(':checked')) {
+        $('#pdStartDateAllDayActivate').attr('disabled', false);
+    } else {
+        $('input[name=pdStartDateAllDayActivate]').attr('disabled', true);
+    }
+    if ($("#pdEndDate_activate").is(':checked')) {
+        $('#pdEndDateAllDayActivate').attr('disabled', false);
+    } else {
+        $('input[name=pdEndDateAllDayActivate]').attr('disabled', true);
+    }
 
-	if ($("input[name=pdStartDateAllDayActivate]").is(':checked')) {
-		$('span#pdStartDate_tw').hide();
-	} else {
-		$('span#pdStartDate_tw').show();
-	}
+    if ($("input[name=pdStartDateAllDayActivate]").is(':checked')) {
+        $('span#pdStartDate_tw').hide();
+    } else {
+        $('span#pdStartDate_tw').show();
+    }
 
-	if ($("input[name=pdEndDateAllDayActivate]").is(':checked')) {
-		$('span#pdEndDate_tw').hide();
-	} else {
-		$('span#pdEndDate_tw').show();
-	}
+    if ($("input[name=pdEndDateAllDayActivate]").is(':checked')) {
+        $('span#pdEndDate_tw').hide();
+    } else {
+        $('span#pdEndDate_tw').show();
+    }
 
 }
 
 ccm_accessEntityOnRepeatPeriodChange = function() {
-	$("#ccm-permissions-access-entity-dates-repeat-daily").hide();
-	$("#ccm-permissions-access-entity-dates-repeat-weekly").hide();
-	$("#ccm-permissions-access-entity-dates-repeat-monthly").hide();
-	if ($('select[name=pdRepeatPeriod]').val() != '') {
-		$("#ccm-permissions-access-entity-dates-repeat-" + $('select[name=pdRepeatPeriod]').val()).show();
-		$("#ccm-permissions-access-entity-dates-repeat-dates").show();
-	}
+    $("#ccm-permissions-access-entity-dates-repeat-daily").hide();
+    $("#ccm-permissions-access-entity-dates-repeat-weekly").hide();
+    $("#ccm-permissions-access-entity-dates-repeat-monthly").hide();
+    if ($('select[name=pdRepeatPeriod]').val() != '') {
+        $("#ccm-permissions-access-entity-dates-repeat-" + $('select[name=pdRepeatPeriod]').val()).show();
+        $("#ccm-permissions-access-entity-dates-repeat-dates").show();
+    }
 }
 
 ccm_accessEntityCalculateRepeatEnd = function() {
-	if ($('input[name=pdEndRepeatDate]:checked').val() == 'date') {
-		$("#ccm-permissions-access-entity-dates-repeat-dates .ccm-input-date-wrapper input").attr('disabled', false);
-	} else {
-		$("#ccm-permissions-access-entity-dates-repeat-dates .ccm-input-date-wrapper input").attr('disabled', true);
-	}
+    if ($('input[name=pdEndRepeatDate]:checked').val() == 'date') {
+        $("#ccm-permissions-access-entity-dates-repeat-dates .ccm-input-date-wrapper input").attr('disabled', false);
+    } else {
+        $("#ccm-permissions-access-entity-dates-repeat-dates .ccm-input-date-wrapper input").attr('disabled', true);
+    }
 }
 
 $(function() {
-	$("#ccm-permissions-access-entity-dates input[type=checkbox]").click(function() {
-		ccm_accessEntityOnActivateDates();
-	});
+    $("#ccm-permissions-access-entity-dates input[type=checkbox]").click(function() {
+        ccm_accessEntityOnActivateDates();
+    });
 
-	$("select[name=pdRepeatPeriod]").change(function() {
-		ccm_accessEntityOnRepeatPeriodChange();
-	});
+    $("select[name=pdRepeatPeriod]").change(function() {
+        ccm_accessEntityOnRepeatPeriodChange();
+    });
 
-	$("input[name=pdRepeat]").click(function() {
-		ccm_accessEntityCheckRepeat();
-	});
+    $("input[name=pdRepeat]").click(function() {
+        ccm_accessEntityCheckRepeat();
+    });
 
-	$("#ccm-permissions-access-entity-dates span.ccm-input-date-wrapper input, #ccm-permissions-access-entity-dates span.ccm-input-time-wrapper select").change(function() {
-		ccm_accessEntityCalculateRepeatOptions();
-	});
-	$("#ccm-permissions-access-entity-dates-repeat-dates input.ccm-input-date").attr('disabled', true);
-	$('input[name=pdEndRepeatDate]').change(function() {
-		ccm_accessEntityCalculateRepeatEnd();
-	});
-	ccm_accessEntityCalculateRepeatOptions();
-	ccm_accessEntityOnActivateDates();
-	ccm_accessEntityCheckRepeat();
-	ccm_accessEntityOnRepeatPeriodChange();
-	ccm_accessEntityCalculateRepeatEnd();
+    $("#ccm-permissions-access-entity-dates span.ccm-input-date-wrapper input, #ccm-permissions-access-entity-dates span.ccm-input-time-wrapper select").change(function() {
+        ccm_accessEntityCalculateRepeatOptions();
+    });
+    $("#ccm-permissions-access-entity-dates-repeat-dates input.ccm-input-date").attr('disabled', true);
+    $('input[name=pdEndRepeatDate]').change(function() {
+        ccm_accessEntityCalculateRepeatEnd();
+    });
+    ccm_accessEntityCalculateRepeatOptions();
+    ccm_accessEntityOnActivateDates();
+    ccm_accessEntityCheckRepeat();
+    ccm_accessEntityOnRepeatPeriodChange();
+    ccm_accessEntityCalculateRepeatEnd();
 });
 </script>
 

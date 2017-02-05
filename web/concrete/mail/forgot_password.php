@@ -17,5 +17,3 @@ You may change your password at the following address:
 Thanks for browsing the site!
 
 ", $uName, SITE, $uName, $changePassURL);
-
-?>

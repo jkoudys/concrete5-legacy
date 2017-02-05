@@ -17,5 +17,6 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class MailHelper extends Concrete5_Helper_Mail {
+class MailHelper extends Concrete5_Helper_Mail
+{
 }

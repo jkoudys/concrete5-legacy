@@ -10,4 +10,4 @@
     <?php Loader::element('workflow/progress/categories/' . $category->getWorkflowProgressCategoryHandle() . '/pending', array('category' => $category)); ?>
 <?php } ?>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
+<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();

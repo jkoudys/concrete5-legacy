@@ -1,2 +1,4 @@
 <?php
-class SystemCaptchaLibrary extends Concrete5_Model_SystemCaptchaLibrary {}
+class SystemCaptchaLibrary extends Concrete5_Model_SystemCaptchaLibrary
+{
+}

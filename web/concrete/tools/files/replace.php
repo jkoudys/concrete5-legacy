@@ -9,7 +9,7 @@ $form = Loader::helper('form');
 $f = File::getByID($_REQUEST['fID']);
 $fp = new Permissions($f);
 if (!$fp->canEditFileContents()) {
-	die(t('Access Denied.'));
+    die(t('Access Denied.'));
 }
 
 $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
@@ -30,20 +30,20 @@ Loader::element('files/upload_single', array('searchInstance' => $searchInstance
 <?php
 $contents = array();
 $con1 = $ch->getIncomingDirectoryContents();
-foreach($con1 as $con) {
-	$contents[$con['name']] = $con['name'];
+foreach ($con1 as $con) {
+    $contents[$con['name']] = $con['name'];
 }
 if (count($contents) > 0) { ?>
 <form method="post" id="ccm-file-manager-replace-incoming" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/importers/incoming">
     <input type="hidden" name="searchInstance" value="<?=$searchInstance?>" />
-	<?= $form->select('send_file', $contents, array('style' => 'width:200px'));?>
-	&nbsp;&nbsp;
-	<?= $form->submit('submit', t('Add File')); ?>
-	<?= $form->hidden('fID', $f->getFileID()); ?>
-	<?=$valt->output('import_incoming');?>
+    <?= $form->select('send_file', $contents, array('style' => 'width:200px'));?>
+    &nbsp;&nbsp;
+    <?= $form->submit('submit', t('Add File')); ?>
+    <?= $form->hidden('fID', $f->getFileID()); ?>
+    <?=$valt->output('import_incoming');?>
 </form>
 <?php } else { ?>
-	<?=t('No files found in %s', DIR_FILES_INCOMING)?>
+    <?=t('No files found in %s', DIR_FILES_INCOMING)?>
 <?php } ?>
 </div>
 
@@ -66,13 +66,13 @@ if (count($contents) > 0) { ?>
 
 <script type="text/javascript">
 $(function() {
-	ccm_alSetupSingleUploadForm();
-	$("#ccm-file-manager-replace-incoming").submit(function() {
-		$(this).attr('target', ccm_alProcessorTarget);
-	});
-	$("#ccm-file-manager-replace-remote").submit(function() {
-		$(this).attr('target', ccm_alProcessorTarget);
-	});
+    ccm_alSetupSingleUploadForm();
+    $("#ccm-file-manager-replace-incoming").submit(function() {
+        $(this).attr('target', ccm_alProcessorTarget);
+    });
+    $("#ccm-file-manager-replace-remote").submit(function() {
+        $(this).attr('target', ccm_alProcessorTarget);
+    });
 
 });
 

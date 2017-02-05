@@ -9,13 +9,15 @@ $d = Loader::helper('concrete/dashboard');
 
 <form method="post" id="user-timezone-form" action="<?php echo $this->action('update') ?>" class="form-horizontal">
 
-     <?php echo $this->controller->token->output('update_timezone')?>
+        <?php echo $this->controller->token->output('update_timezone')?>
 
     <div class="ccm-pane-body">
 
-    	<div class="control-group">
+        <div class="control-group">
             <label class="checkbox">
-                <input type="checkbox" name="user_timezones" value="1" <?php if ($user_timezones) { ?> checked <?php } ?> />
+                <input type="checkbox" name="user_timezones" value="1" <?php if ($user_timezones) {
+?> checked <?php
+} ?> />
                 <span><?php echo t('Enable user defined time zones.') ?></span>
             </label>
         </div>
@@ -23,7 +25,7 @@ $d = Loader::helper('concrete/dashboard');
     </div>
 
      <div class="ccm-pane-footer">
-          <?php print $interface->submit(t('Save'), 'user-timezone-form', 'right', 'primary'); ?>
+            <?php print $interface->submit(t('Save'), 'user-timezone-form', 'right', 'primary'); ?>
      </div>
 
 </form>

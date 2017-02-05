@@ -6,35 +6,35 @@ $ish = Loader::helper('concrete/interface');
 $canAdd = false;
 
 if ($ih->integer($_REQUEST['cID'])) {
-	$c = Page::getByID($_REQUEST['cID']);
-	if (is_object($c) && (!$c->isError())) {
-		$cp = new Permissions($c);
-		if ($dh->inDashboard($c)) {
-			if ($cp->canViewPage()) {
-				$canAdd = true;
-			}
-		}
-	}
+    $c = Page::getByID($_REQUEST['cID']);
+    if (is_object($c) && (!$c->isError())) {
+        $cp = new Permissions($c);
+        if ($dh->inDashboard($c)) {
+            if ($cp->canViewPage()) {
+                $canAdd = true;
+            }
+        }
+    }
 }
 
 $ish->clearInterfaceItemsCache();
 
 if ($canAdd) {
-	$u = new User();
-	$r = new stdClass;
-	if (Loader::helper('validation/token')->validate('access_quick_nav', $_REQUEST['token'])) {
-		$qn = ConcreteDashboardMenu::getMine();
-		if ($qn->contains($c)) {
-			$qn->remove($c);
-			$task = 'add';
-		} else {
-			$qn->add($c);
-			$task = 'remove';
-		}
+    $u = new User();
+    $r = new stdClass;
+    if (Loader::helper('validation/token')->validate('access_quick_nav', $_REQUEST['token'])) {
+        $qn = ConcreteDashboardMenu::getMine();
+        if ($qn->contains($c)) {
+            $qn->remove($c);
+            $task = 'add';
+        } else {
+            $qn->add($c);
+            $task = 'remove';
+        }
 
-		$u->saveConfig('QUICK_NAV_BOOKMARKS', serialize($qn));
+        $u->saveConfig('QUICK_NAV_BOOKMARKS', serialize($qn));
 
-		print $dh->getDashboardAndSearchMenus();
-		exit;
-	}
+        print $dh->getDashboardAndSearchMenus();
+        exit;
+    }
 }

@@ -14,59 +14,59 @@
 <body>
 
 <div id="page">
-	<div id="headerSpacer"></div>
-	<div id="header">
+    <div id="headerSpacer"></div>
+    <div id="header">
 
-		<?php if ($c->isEditMode()) {
+        <?php if ($c->isEditMode()) {
     ?>
-		<div style="min-height: 80px">
-		<?php
+        <div style="min-height: 80px">
+        <?php
 } ?>
 
-		<div id="headerNav">
-			<?php
+        <div id="headerNav">
+            <?php
             $a = new Area('Header Nav');
             $a->display($c);
             ?>
-		</div>
+        </div>
 
-		<h1 id="logo"><!--
-			--><a href="<?php  echo DIR_REL?>/"><?php
+        <h1 id="logo"><!--
+            --><a href="<?php  echo DIR_REL?>/"><?php
                 $block = Block::getByName('My_Site_Name');
-                if ($block && $block->bID) {
-                    $block->display();
-                } else {
-                    echo h(SITE);
-                }
+            if ($block && $block->bID) {
+                $block->display();
+            } else {
+                echo h(SITE);
+            }
             ?></a><!--
-		--></h1>
+        --></h1>
 
-		<?php
+        <?php
         // we use the "is edit mode" check because, in edit mode, the bottom of the area overlaps the item below it, because
         // we're using absolute positioning. So in edit mode we add a bit of space so everything looks nice.
         ?>
 
-		<div class="spacer"></div>
+        <div class="spacer"></div>
 
-		<?php if ($c->isEditMode()) {
+        <?php if ($c->isEditMode()) {
     ?>
-		</div>
-		<?php
+        </div>
+        <?php
 } ?>
 
-		<div id="header-area">
-			<div class="divider"></div>
-			<div id="header-area-inside">
-			<?php
+        <div id="header-area">
+            <div class="divider"></div>
+            <div id="header-area-inside">
+            <?php
             $ah = new Area('Header');
             $ah->display($c);
             ?>
-			</div>
+            </div>
 
-			<?php if ($ah->getTotalBlocksInArea() > 0) {
+            <?php if ($ah->getTotalBlocksInArea() > 0) {
     ?>
-				<div class="divider"></div>
-			<?php
+                <div class="divider"></div>
+            <?php
 } ?>
-		</div>
-	</div>
+        </div>
+    </div>

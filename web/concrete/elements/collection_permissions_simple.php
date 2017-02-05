@@ -1,45 +1,45 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if ($cp->canEditPagePermissions()) {
-	$editAccess = array();
-	$viewAccess = array();
+    $editAccess = array();
+    $viewAccess = array();
 
-	$pk = PermissionKey::getByHandle('view_page');
-	$pk->setPermissionObject($c);
-	$assignments = $pk->getAccessListItems();
-	foreach($assignments as $asi) {
-		$ae = $asi->getAccessEntityObject();
-		if ($ae->getAccessEntityTypeHandle() == 'group') {
-			$group = $ae->getGroupObject();
-			if (is_object($group)) {
-				$viewAccess[] = $group->getGroupID();
-			}
-		}
-	}
+    $pk = PermissionKey::getByHandle('view_page');
+    $pk->setPermissionObject($c);
+    $assignments = $pk->getAccessListItems();
+    foreach ($assignments as $asi) {
+        $ae = $asi->getAccessEntityObject();
+        if ($ae->getAccessEntityTypeHandle() == 'group') {
+            $group = $ae->getGroupObject();
+            if (is_object($group)) {
+                $viewAccess[] = $group->getGroupID();
+            }
+        }
+    }
 
-	$pk = PermissionKey::getByHandle('edit_page_contents');
-	$pk->setPermissionObject($c);
-	$assignments = $pk->getAccessListItems();
-	foreach($assignments as $asi) {
-		$ae = $asi->getAccessEntityObject();
-		if ($ae->getAccessEntityTypeHandle() == 'group') {
-			$group = $ae->getGroupObject();
-			if (is_object($group)) {
-				$editAccess[] = $group->getGroupID();
-			}
-		}
-	}
+    $pk = PermissionKey::getByHandle('edit_page_contents');
+    $pk->setPermissionObject($c);
+    $assignments = $pk->getAccessListItems();
+    foreach ($assignments as $asi) {
+        $ae = $asi->getAccessEntityObject();
+        if ($ae->getAccessEntityTypeHandle() == 'group') {
+            $group = $ae->getGroupObject();
+            if (is_object($group)) {
+                $editAccess[] = $group->getGroupID();
+            }
+        }
+    }
 
-	Loader::model('search/group');
-	$gl = new GroupSearch();
-	$gl->sortBy('gID', 'asc');
-	$gIDs = $gl->get();
-	$gArray = array();
-	foreach($gIDs as $g) {
-		$gArray[] = Group::getByID($g['gID']);
-	}
+    Loader::model('search/group');
+    $gl = new GroupSearch();
+    $gl->sortBy('gID', 'asc');
+    $gIDs = $gl->get();
+    $gArray = array();
+    foreach ($gIDs as $g) {
+        $gArray[] = Group::getByID($g['gID']);
+    }
 
-	$rel = Loader::helper('security')->sanitizeString($_REQUEST['rel']);
+    $rel = Loader::helper('security')->sanitizeString($_REQUEST['rel']);
 ?>
 
 <div class="ccm-ui">
@@ -56,7 +56,9 @@ if ($cp->canEditPagePermissions()) {
 foreach ($gArray as $g) {
 ?>
 
-<li><label><input type="checkbox" name="readGID[]" value="<?=$g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $viewAccess)) { ?> checked <?php } ?> /> <?=$g->getGroupDisplayName()?></label></li>
+<li><label><input type="checkbox" name="readGID[]" value="<?=$g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $viewAccess)) {
+?> checked <?php
+} ?> /> <?=$g->getGroupDisplayName()?></label></li>
 
 <?php } ?>
 
@@ -74,7 +76,9 @@ foreach ($gArray as $g) {
 foreach ($gArray as $g) {
 ?>
 
-<li><label><input type="checkbox" name="editGID[]" value="<?=$g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $editAccess)) { ?> checked <?php } ?> /> <?=$g->getGroupDisplayName()?></label></li>
+<li><label><input type="checkbox" name="editGID[]" value="<?=$g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $editAccess)) {
+?> checked <?php
+} ?> /> <?=$g->getGroupDisplayName()?></label></li>
 
 <?php } ?>
 

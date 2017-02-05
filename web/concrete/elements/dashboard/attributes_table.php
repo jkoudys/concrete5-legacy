@@ -71,7 +71,7 @@ if (count($attribs) > 0) {
             <div class="ccm-attribute-list-wrapper">
                 <?= t('No attributes defined.') ?>
             </div>
-        <?php } else { ?>
+        <?php                                                                                                                                                                                                                 } else { ?>
             <div
                 class="ccm-attribute-sortable-set-list ccm-attribute-list-wrapper"
                 attribute-set-id="<?= $as->getAttributeSetID() ?>"
@@ -93,10 +93,10 @@ if (count($attribs) > 0) {
                         <?= $ak->getAttributeKeyDisplayName() ?>
                     </a>
                 </div>
-            <?php } ?>
+            <?php                                                                                                                                                                                                                                                                                                                         } ?>
             </div>
             <?php } ?>
-<?php 
+<?php
         }
 
         $unsetattribs = $category->getUnassignedAttributeKeys();
@@ -119,7 +119,7 @@ if (count($attribs) > 0) {
                     <?= $ak->getAttributeKeyDisplayName() ?>
                 </a>
             </div>
-            <?php } ?>
+            <?php                                                                                                                                                                                                                                                                                                                         } ?>
         </div>
         <?php
         }
@@ -138,7 +138,7 @@ if (count($attribs) > 0) {
                 <?= $ak->getAttributeKeyDisplayName() ?>
             </a>
         </div>
-        <?php } ?>
+        <?php                                                                                                                                                                                                                 } ?>
         </div>
     <?php
     }

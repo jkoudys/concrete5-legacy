@@ -8,4 +8,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-class MovePagePageWorkflowRequest extends Concrete5_Model_MovePagePageWorkflowRequest {}
+class MovePagePageWorkflowRequest extends Concrete5_Model_MovePagePageWorkflowRequest
+{
+}

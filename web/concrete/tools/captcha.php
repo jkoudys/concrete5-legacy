@@ -12,4 +12,3 @@ error_reporting(0);
 
 $captcha = Loader::helper('validation/captcha');
 $captcha->displayCaptchaPicture();
-?>

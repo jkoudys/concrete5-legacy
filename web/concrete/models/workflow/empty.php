@@ -7,4 +7,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-class EmptyWorkflow extends Concrete5_Model_EmptyWorkflow {}
+class EmptyWorkflow extends Concrete5_Model_EmptyWorkflow
+{
+}

@@ -5,39 +5,39 @@
 
 if (count($interfacelocales) <= 1) { ?>
 <div class="ccm-pane-body ccm-pane-body-footer">
-	<?=t("You don't have any interface languages installed. You must run concrete5 in English.");?>
+    <?=t("You don't have any interface languages installed. You must run concrete5 in English.");?>
 </div>
 <?php } else { ?>
 
 <form method="post" class="form-horizontal" action="<?=$this->action('save_interface_language')?>">
 <div class="ccm-pane-body">
 
-	<div class="control-group">
-	<?=$form->label('LANGUAGE_CHOOSE_ON_LOGIN', t('Login'))?>
-	<div class="controls">
-		<label class="checkbox"><?=$form->checkbox('LANGUAGE_CHOOSE_ON_LOGIN', 1, $LANGUAGE_CHOOSE_ON_LOGIN)?> <span><?=t('Offer choice of language on login.')?></span></label>
-	</div>
-	</div>
+    <div class="control-group">
+    <?=$form->label('LANGUAGE_CHOOSE_ON_LOGIN', t('Login'))?>
+    <div class="controls">
+        <label class="checkbox"><?=$form->checkbox('LANGUAGE_CHOOSE_ON_LOGIN', 1, $LANGUAGE_CHOOSE_ON_LOGIN)?> <span><?=t('Offer choice of language on login.')?></span></label>
+    </div>
+    </div>
 
-	<?php
-	$args = array();
-	if (defined("LOCALE")) {
-		$args['disabled'] = 'disabled';
-	}
-	?>
+    <?php
+    $args = array();
+    if (defined("LOCALE")) {
+        $args['disabled'] = 'disabled';
+    }
+    ?>
 
-	<div class="control-group">
-	<?=$form->label('SITE_LOCALE', t('Default Language'))?>
-	<div class="controls">
-	<?=$form->select('SITE_LOCALE', $interfacelocales, SITE_LOCALE, $args);?>
-	</div>
-	</div>
+    <div class="control-group">
+    <?=$form->label('SITE_LOCALE', t('Default Language'))?>
+    <div class="controls">
+    <?=$form->select('SITE_LOCALE', $interfacelocales, SITE_LOCALE, $args);?>
+    </div>
+    </div>
 
-	<br/>
-	<?=Loader::helper('validation/token')->output('save_interface_language')?>
+    <br/>
+    <?=Loader::helper('validation/token')->output('save_interface_language')?>
 </div>
 <div class="ccm-pane-footer">
-	<?= Loader::helper('concrete/interface')->submit(t('Save'), 'save', 'left', 'primary')?>
+    <?= Loader::helper('concrete/interface')->submit(t('Save'), 'save', 'left', 'primary')?>
 </div>
 </form>
 

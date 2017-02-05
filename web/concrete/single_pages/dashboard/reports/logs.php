@@ -14,13 +14,13 @@ $areEntries = count($entries) > 0 ? true : false;
 
 ?>
 
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Logs'), false, false, false);?>
+    <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Logs'), false, false, false);?>
 
-    <?php if(!$areEntries) { ?>
+    <?php if (!$areEntries) { ?>
 
     <div class="ccm-pane-body ccm-pane-body-footer">
 
-    	<p><?=t('There are no log entries to show at the moment.')?></p>
+        <p><?=t('There are no log entries to show at the moment.')?></p>
 
     </div>
 
@@ -29,8 +29,8 @@ $areEntries = count($entries) > 0 ? true : false;
     <?php } else { ?>
 
     <div class="ccm-pane-options ccm-pane-options-permanent-search">
-    	<form method="post" id="ccm-log-search"  action="<?=$pageBase?>">
-        	<div class="row">
+        <form method="post" id="ccm-log-search"  action="<?=$pageBase?>">
+            <div class="row">
                 <div class="span5">
                     <label for="keywords"><?=t('Keywords')?></label>
                     <div class="input">
@@ -48,19 +48,21 @@ $areEntries = count($entries) > 0 ? true : false;
         </form>
     </div>
 
-	<div class="ccm-pane-body <?php if(!$paginator || !strlen($paginator->getPages())>0) { ?>ccm-pane-body-footer <?php } ?>">
+    <div class="ccm-pane-body <?php if (!$paginator || !strlen($paginator->getPages())>0) {
+?>ccm-pane-body-footer <?php
+} ?>">
 
         <table class="table table-bordered">
-        	<thead>
+            <thead>
                 <tr>
                     <th class="subheaderActive"><?=t('Date/Time')?></th>
                     <th class="subheader"><?=t('Type')?></th>
                     <th class="subheader"><?=t('User')?></th>
                     <th class="subheader"><input style="float: right" class="btn error btn-mini" type="button" onclick="if (confirm('<?=t("Are you sure you want to clear this log?")?>')) { location.href='<?=$this->url('/dashboard/reports/logs', 'clear', $valt->generate(), $_POST['logType'])?>'}" value="<?=t('Clear Log')?>" /><?=t('Text')?></th>
                 </tr>
-			</thead>
+            </thead>
             <tbody>
-				<?php foreach($entries as $ent) { ?>
+                <?php foreach ($entries as $ent) { ?>
                 <tr>
                     <td valign="top" style="white-space: nowrap" class="active"><?php
                         echo $dh->formatPrettyDateTime($ent->getTimestamp(), false, true);
@@ -88,14 +90,14 @@ $areEntries = count($entries) > 0 ? true : false;
     </div>
     <!-- END Body Pane -->
 
-    <?php if($paginator && strlen($paginator->getPages())>0){ ?>
+    <?php if ($paginator && strlen($paginator->getPages())>0) { ?>
     <div class="ccm-pane-footer">
 
             <div class="pagination">
               <ul>
                   <li class="prev"><?=$paginator->getPrevious()?></li>
 
-                  <?php // Call to pagination helper's 'getPages' method with new $wrapper var ?>
+                    <?php // Call to pagination helper's 'getPages' method with new $wrapper var ?>
                     <?=$paginator->getPages('li')?>
 
                   <li class="next"><?=$paginator->getNext()?></li>

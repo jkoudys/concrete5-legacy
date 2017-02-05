@@ -1,6 +1,7 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
-class BlockTypePermissionAccess extends Concrete5_Model_BlockTypePermissionAccess {
+class BlockTypePermissionAccess extends Concrete5_Model_BlockTypePermissionAccess
+{
 
 
 }

@@ -8,4 +8,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-class ChangeSubpageDefaultsInheritancePageWorkflowRequest extends Concrete5_Model_ChangeSubpageDefaultsInheritancePageWorkflowRequest {}
+class ChangeSubpageDefaultsInheritancePageWorkflowRequest extends Concrete5_Model_ChangeSubpageDefaultsInheritancePageWorkflowRequest
+{
+}

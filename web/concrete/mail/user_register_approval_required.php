@@ -16,12 +16,12 @@ ob_start()
 <br />
 <?= t('You may approve or remove this user account here:') ?><br />
 <a href="<?= BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?>"><?= BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?></a>
-<?php if($attribs): ?>
-	<ul>
-	<?php foreach($attribs as $item): ?>
-		<li><?= $item ?></li>
-	<?php endforeach ?>
-	</ul>
+<?php if ($attribs) : ?>
+    <ul>
+    <?php foreach ($attribs as $item) : ?>
+        <li><?= $item ?></li>
+    <?php endforeach ?>
+    </ul>
 <?php endif ?>
 <?php
 
@@ -44,11 +44,11 @@ ob_start();
 
 <?= t('Email Address') ?>: <?= $uEmail ?>
 
-<?php if($attribs): ?>
-	<?php foreach($attribs as $item): ?>
-		<?= $item ?>
+<?php if ($attribs) : ?>
+    <?php foreach ($attribs as $item) : ?>
+        <?= $item ?>
 
-	<?php endforeach ?>
+    <?php endforeach ?>
 <?php endif ?>
 
 <?= t('You may approve or remove this user account here') ?>:

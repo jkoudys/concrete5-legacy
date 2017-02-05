@@ -6,6 +6,7 @@
 */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class IndexSearch extends Concrete5_Job_IndexSearch {
+class IndexSearch extends Concrete5_Job_IndexSearch
+{
 
 }

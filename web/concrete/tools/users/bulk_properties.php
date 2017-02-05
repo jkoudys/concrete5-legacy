@@ -10,86 +10,86 @@ $ek = PermissionKey::getByHandle('edit_user_properties');
 
 $tp = new TaskPermission();
 if (!$tp->canEditUserProperties()) {
-	die(t("Access Denied."));
+    die(t("Access Denied."));
 }
 
 $users = array();
 if (is_array($_REQUEST['uID'])) {
-	foreach($_REQUEST['uID'] as $uID) {
-		$ui = UserInfo::getByID($uID);
-		$users[] = $ui;
-	}
+    foreach ($_REQUEST['uID'] as $uID) {
+        $ui = UserInfo::getByID($uID);
+        $users[] = $ui;
+    }
 }
 
-foreach($users as $ui) {
-	if (!$sk->validate($ui)) {
-		die(t("Access Denied."));
-	}
+foreach ($users as $ui) {
+    if (!$sk->validate($ui)) {
+        die(t("Access Denied."));
+    }
 }
 
 if ($_POST['task'] == 'update_extended_attribute') {
-	$fakID = $_REQUEST['fakID'];
-	$value = '';
+    $fakID = $_REQUEST['fakID'];
+    $value = '';
 
-	$ak = UserAttributeKey::get($fakID);
-	foreach($users as $ui) {
-		if ($ek->validate($ak)) {
-			$ak->saveAttributeForm($ui);
-		}
-	}
-	$val = $ui->getAttributeValueObject($ak);
-	print $val->getValue('display');
-	exit;
+    $ak = UserAttributeKey::get($fakID);
+    foreach ($users as $ui) {
+        if ($ek->validate($ak)) {
+            $ak->saveAttributeForm($ui);
+        }
+    }
+    $val = $ui->getAttributeValueObject($ak);
+    print $val->getValue('display');
+    exit;
 }
 
 if ($_POST['task'] == 'clear_extended_attribute') {
+    $fakID = $_REQUEST['fakID'];
+    $value = '';
 
-	$fakID = $_REQUEST['fakID'];
-	$value = '';
-
-	$ak = UserAttributeKey::get($fakID);
-	foreach($users as $ui) {
-		if ($ek->validate($ak)) {
-			$ui->clearAttribute($ak);
-		}
-	}
-	print '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
-	exit;
+    $ak = UserAttributeKey::get($fakID);
+    foreach ($users as $ui) {
+        if ($ek->validate($ak)) {
+            $ui->clearAttribute($ak);
+        }
+    }
+    print '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
+    exit;
 }
 
 
-function printAttributeRow($ak, $ek) {
-	global $users, $form;
+function printAttributeRow($ak, $ek)
+{
+    global $users, $form;
 
-	$value = '';
-	for ($i = 0; $i < count($users); $i++) {
-		$lastValue = $value;
-		$ui = $users[$i];
-		$vo = $ui->getAttributeValueObject($ak);
-		if (is_object($vo)) {
-			$value = $vo->getValue('display');
-			if ($i > 0 ) {
-				if ($lastValue != $value) {
-					$value = '<div class="ccm-attribute-field-none">' . t('Multiple Values') . '</div>';
-					break;
-				}
-			}
-		}
-	}
+    $value = '';
+    for ($i = 0; $i < count($users); $i++) {
+        $lastValue = $value;
+        $ui = $users[$i];
+        $vo = $ui->getAttributeValueObject($ak);
+        if (is_object($vo)) {
+            $value = $vo->getValue('display');
+            if ($i > 0) {
+                if ($lastValue != $value) {
+                    $value = '<div class="ccm-attribute-field-none">' . t('Multiple Values') . '</div>';
+                    break;
+                }
+            }
+        }
+    }
 
-	if ($value == '') {
-		$text = '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
-	} else {
-		$text = $value;
-	}
-	if ($ak->isAttributeKeyEditable() && $ek->validate($ak)) {
-	$type = $ak->getAttributeType();
-	$hiddenFIDfields='';
-	foreach($users as $ui) {
-		$hiddenfields.=' '.$form->hidden('uID[]' , $ui->getUserID()).' ';
-	}
+    if ($value == '') {
+        $text = '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
+    } else {
+        $text = $value;
+    }
+    if ($ak->isAttributeKeyEditable() && $ek->validate($ak)) {
+        $type = $ak->getAttributeType();
+        $hiddenFIDfields='';
+        foreach ($users as $ui) {
+            $hiddenfields.=' '.$form->hidden('uID[]', $ui->getUserID()).' ';
+        }
 
-	$html = '
+        $html = '
 	<tr class="ccm-attribute-editable-field">
 		<td width="250" style="vertical-align: middle"><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyDisplayName() . '</a></strong></td>
 		<td style="vertical-align: middle" class="ccm-attribute-editable-field-central"><div class="ccm-attribute-editable-field-text">' . $text . '</div>
@@ -107,20 +107,18 @@ function printAttributeRow($ak, $ek) {
 		<img src="' . ASSETS_URL_IMAGES . '/throbber_white_16.gif" width="16" height="16" class="ccm-attribute-editable-field-loading" />
 		</td>
 	</tr>';
-
-	} else {
-
-	$html = '
+    } else {
+        $html = '
 	<tr>
 		<td width="250"><strong>' . $ak->getAttributeKeyDisplayName() . '</strong></td>
 		<td style="vertical-align: middle" class="ccm-attribute-editable-field-central" colspan="2">' . $text . '</td>
 	</tr>';
-	}
-	print $html;
+    }
+    print $html;
 }
 
 if (!isset($_REQUEST['reload'])) { ?>
-	<div id="ccm-user-properties-wrapper">
+    <div id="ccm-user-properties-wrapper">
 <?php } ?>
 
 <div id="ccm-user-properties" class="ccm-ui">
@@ -128,16 +126,14 @@ if (!isset($_REQUEST['reload'])) { ?>
 <table border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-striped">
 <thead>
 <tr>
-	<th colspan="3"><?=t('User Attributes')?></th>
+    <th colspan="3"><?=t('User Attributes')?></th>
 </tr>
 </thead>
 <tbody>
 <?php
 
-foreach($attribs as $at) {
-
-	printAttributeRow($at, $ek);
-
+foreach ($attribs as $at) {
+    printAttributeRow($at, $ek);
 }
 
 ?>
@@ -150,7 +146,7 @@ foreach($attribs as $at) {
 
 <script type="text/javascript">
 $(function() {
-	ccm_activateEditablePropertiesGrid();
+    ccm_activateEditablePropertiesGrid();
 });
 </script>
 
