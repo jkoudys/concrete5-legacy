@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../autoload.php';
+require 'autoload.php';
 
 $cdir = dirname(__FILE__);
 ## This constant ensures that we're operating inside dispatcher.php. There is a LATER check to ensure that dispatcher.php is being called correctly. ##

@@ -1,2 +1,3 @@
 <?php
-require 'concrete/dispatcher.php';
+require_once 'env.php';
+require_once 'router.php';
