@@ -1,4 +1,6 @@
 <?php
+include_once __DIR__ '/vendor/autoload.php';
+
 // Autoloader for concrete5 classes.
 // A simple wrapper around many `Loader` etc. type methods, to prepare source for concrete5.7
 // FIXME: remove after 5.7 upgrade
