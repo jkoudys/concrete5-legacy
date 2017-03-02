@@ -131,9 +131,6 @@ class Concrete5_Helper_Html
         }
 
         if ($js->file === '') {
-            if (isset($this->legacyJavascript[$file])) {
-                $file = $this->legacyJavascript[$file];
-            }
             $js->file = ASSETS_URL_JAVASCRIPT . '/' . $file;
         }
 

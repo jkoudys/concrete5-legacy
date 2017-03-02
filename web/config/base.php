@@ -138,10 +138,6 @@ if (!defined('DIR_BASE_CORE')) {
 }
 
 define('DIRNAME_CORE_CLASSES', 'core');
-# if "concrete/" does NOT exist in DIR_BASE then we set multi_site to on
-if (!is_dir(DIR_BASE . '/' . DIRNAME_APP)) {
-	define("MULTI_SITE", 1);
-}
 
 # The core output buffering level. In the view class we need to know what the
 # initial value is. Usually it's zero but sometimes PHP is setting this to one
@@ -252,11 +248,7 @@ if (defined('MULTI_SITE') && MULTI_SITE == 1) {
 	define('ASSETS_URL_WEB', DIR_REL);
 	define('MULTI_SITE', 0);
 }
-if (defined('DIRNAME_APP_UPDATED')) {
- 	$ap = ASSETS_URL_WEB . '/' . DIRNAME_UPDATES . '/' . DIRNAME_APP_UPDATED . '/' . DIRNAME_APP;
-} else {
-	$ap = ASSETS_URL_WEB . '/' . DIRNAME_APP;
-}
+$ap = ASSETS_URL_WEB;
 
 define('ASSETS_URL', $ap);
 define('ASSETS_URL_CSS', $ap . '/css');

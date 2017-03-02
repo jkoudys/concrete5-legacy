@@ -1,5 +1,4 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
-
+<?php
 /**
  * @package Core
  * @category Concrete
@@ -18,23 +17,23 @@
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
+
 class Concrete5_Library_Request
 {
-
-    private $currentPage;
-    private $requestPath;
-    private $task;
-    private $params;
-    private $includeType;
-    private $btHandle;
-    private $filename;
-    private $cID;
-    private $cPath;
-    private $pkgHandle;
-    private $auxData;
-    private $hasCustomRequestUser;
-    private $customRequestUser;
-    private $customRequestDateTime;
+    protected $currentPage;
+    protected $requestPath;
+    protected $task;
+    protected $params;
+    protected $includeType;
+    protected $btHandle;
+    protected $filename;
+    protected $cID;
+    protected $cPath;
+    protected $pkgHandle;
+    protected $auxData;
+    protected $hasCustomRequestUser;
+    protected $customRequestUser;
+    protected $customRequestDateTime;
 
     // parses the current request and returns an
     // object with tasks, tools, etc... defined in them
@@ -48,11 +47,11 @@ class Concrete5_Library_Request
      * @param string $var Server variable that we parse to get the current path
      * @return bool|string
      */
-    protected static function parsePathFromRequest($var)
+    protected static function parsePathFromRequest(string $var): string
     {
         $path = (isset($_SERVER[$var])) ? $_SERVER[$var] : @getenv($var);
         if (!$path) {
-            return false;
+            return '';
         }
 
         // Allow for special handling
@@ -98,7 +97,7 @@ class Concrete5_Library_Request
      * @param string $path Requested path
      * @return void
      */
-    public function __construct($path)
+    protected function __construct(string $path)
     {
         $this->requestPath = $path;
         $this->parse();
@@ -108,7 +107,7 @@ class Concrete5_Library_Request
      * Gets a request object for the current request. Parses PATH_INFO as necessary.
      * @return Request
      */
-    public static function get()
+    public static function get(): self
     {
         static $req;
         if (!isset($req) || C5_ENVIRONMENT_ONLY) {
@@ -136,10 +135,12 @@ class Concrete5_Library_Request
         return $req;
     }
 
-    public function setCustomRequestUser($ui)
+    public function setCustomRequestUser(UserInfo $ui = null): self
     {
         $this->hasCustomRequestUser = true;
         $this->customRequestUser = $ui;
+
+        return $this;
     }
 
     public function getCustomRequestUser()
@@ -147,9 +148,9 @@ class Concrete5_Library_Request
         return $this->customRequestUser;
     }
 
-    public function hasCustomRequestUser()
+    public function hasCustomRequestUser(): bool
     {
-        return $this->hasCustomRequestUser;
+        return (bool) $this->hasCustomRequestUser;
     }
 
     public function getCustomRequestDateTime()
@@ -157,9 +158,11 @@ class Concrete5_Library_Request
         return $this->customRequestDateTime;
     }
 
-    public function setCustomRequestDateTime($date)
+    public function setCustomRequestDateTime($date): self
     {
         $this->customRequestDateTime = $date;
+
+        return $this;
     }
 
     /**
@@ -168,7 +171,7 @@ class Concrete5_Library_Request
      * task/param separator in them
      * @return Page
      */
-    public function getRequestedPage()
+    public function getRequestedPage(): Page
     {
         $path = $this->getRequestCollectionPath();
         $origPath = $path;
@@ -192,6 +195,7 @@ class Concrete5_Library_Request
             $c = new Page();
             $c->loadError(COLLECTION_NOT_FOUND);
         }
+
         return $c;
     }
 
@@ -328,7 +332,7 @@ class Concrete5_Library_Request
      * Gets the path of the current request
      * @return string
      */
-    public function getRequestPath()
+    public function getRequestPath(): string
     {
         return $this->requestPath;
     }
@@ -337,7 +341,7 @@ class Concrete5_Library_Request
      * Gets the current collection path as contained in the current request
      * @return string
      */
-    public function getRequestCollectionPath()
+    public function getRequestCollectionPath(): string
     {
         // I think the regexps take care of the trimming for us but just to be sure..
         $cPath = trim($this->cPath, '/');
@@ -351,7 +355,7 @@ class Concrete5_Library_Request
      * Gets page ID of the current request
      * @return int
      */
-    public function getRequestCollectionID()
+    public function getRequestCollectionID(): int
     {
         return $this->cID;
     }
@@ -360,7 +364,7 @@ class Concrete5_Library_Request
      * Gets the current MVC task of the request
      * @return string
      */
-    public function getRequestTask()
+    public function getRequestTask(): string
     {
         return $this->task;
     }
@@ -369,7 +373,7 @@ class Concrete5_Library_Request
      * Gets a string of parameters for this current MVC task
      * @return string
      */
-    public function getRequestTaskParameters()
+    public function getRequestTaskParameters(): string
     {
         return $this->params;
     }
@@ -378,7 +382,7 @@ class Concrete5_Library_Request
      * Returns whether this request wants to include a file (typically a tool)
      * @return bool
      */
-    public function isIncludeRequest()
+    public function isIncludeRequest(): bool
     {
         return $this->includeType != null;
     }
@@ -387,7 +391,7 @@ class Concrete5_Library_Request
      * Gets the include type of the current request
      * @return string
      */
-    public function getIncludeType()
+    public function getIncludeType(): string
     {
         return $this->includeType;
     }
@@ -396,7 +400,7 @@ class Concrete5_Library_Request
      * If the current request wants to include a file, this returns the filename it wants to include
      * @return string
      */
-    public function getFilename()
+    public function getFilename(): string
     {
         return $this->filename;
     }
@@ -405,7 +409,7 @@ class Concrete5_Library_Request
      * Gets the block requested by the current request
      * @return string
      */
-    public function getBlock()
+    public function getBlock(): string
     {
         return $this->btHandle;
     }
@@ -415,7 +419,7 @@ class Concrete5_Library_Request
      * inside the request object, but gets passed along anyway
      * @return stdClass
      */
-    public function getAuxiliaryData()
+    public function getAuxiliaryData(): stdClass
     {
         return $this->auxData;
     }
@@ -424,7 +428,7 @@ class Concrete5_Library_Request
      * Gets the package requested by the current request
      * @return string
      */
-    public function getPackageHandle()
+    public function getPackageHandle(): string
     {
         return $this->pkgHandle;
     }
@@ -435,7 +439,7 @@ class Concrete5_Library_Request
      * @param string $task the name of the task function
      * @return void
      */
-    public function setRequestTask($task)
+    public function setRequestTask(string $task = null): self
     {
         $this->task = $task;
     }
@@ -445,16 +449,18 @@ class Concrete5_Library_Request
      * @param Page $page
      * @return void
      */
-    public function setCurrentPage($page)
+    public function setCurrentPage(Page $page): self
     {
         $this->currentPage = $page;
+
+        return $this;
     }
 
     /**
      * Get the current page object
      * @return Page
      */
-    public function getCurrentPage()
+    public function getCurrentPage(): Page
     {
         return $this->currentPage;
     }
@@ -464,9 +470,11 @@ class Concrete5_Library_Request
      * @param string $params List of params, separated by "/"
      * @return void
      */
-    public function setRequestTaskParameters($params)
+    public function setRequestTaskParameters(string $params): self
     {
         $this->params = $params;
+
+        return $this;
     }
 
     /**
