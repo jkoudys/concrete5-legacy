@@ -1,177 +1,126 @@
-ccm_statusBar = {
+import $ from 'jquery';
 
-	                    items: [],
+this.ccm_statusBar = {
+  items: [],
 
-	                    addItem(item) {
-		                    this.items.push(item);
-	},
+  addItem(item) {
+    this.items.push(item);
+  },
 
-	                    activate(containerID) {
-		                    if (!containerID) {
-			                    containerID = 'ccm-page-controls-wrapper';
-		}
+  activate(containerID) {
+    if (!containerID) {
+      containerID = 'ccm-page-controls-wrapper';
+    }
 
-		                    if (this.items.length > 0) {
-			                  let d = '<div id="ccm-page-status-bar" class="ccm-ui">';
-			                    for (i = 0; i < this.items.length; i++) {
-				                const it = this.items[i];
-				                  let buttonStr = '';
-				                const buttons = it.getButtons();
-				                    for (j = 0; j < buttons.length; j++) {
-					                    attribs = '';
-					                  let innerButtonLeft = '';
-					                  let innerButtonRight = '';
-					                    if (buttons[j].getInnerButtonLeftHTML() != '') {
-						                    innerButtonLeft = buttons[j].getInnerButtonLeftHTML() + ' ';
-					}
-					                    if (buttons[j].getInnerButtonRightHTML() != '') {
-						                    innerButtonRight = ' ' + buttons[j].getInnerButtonRightHTML();
-					}
-					                const _attribs = buttons[j].getAttributes();
-					                    for (k in _attribs) {
-						                    attribs += _attribs[k].key + '="' + _attribs[k].value + '" ';
-					}
-					                    if (buttons[j].getURL() != '') {
-						                    buttonStr += '<a href="' + buttons[j].getURL() + '" ' + attribs + ' class="btn btn-small ' + buttons[j].getCSSClass() + '">' + innerButtonLeft + buttons[j].getLabel() + innerButtonRight + '</a>';
-					} else {
-						                    buttonStr += '<button type="submit" ' + attribs + ' name="action_' + buttons[j].getAction() + '" class="btn-small btn ' + buttons[j].getCSSClass() + '">' + innerButtonLeft + buttons[j].getLabel() + innerButtonRight + '</button>';
-					}
-				}
-				                const line = '<form method="post" action="' + it.getAction() + '" id="ccm-status-bar-form-' + i + '" ' + (it.useAjaxForm ? 'class="ccm-status-bar-ajax-form"' : '') + '><div class="alert-message alert ' + it.getCSSClass() + '"><button type="button" class="close" data-dismiss="alert">×</button><span>' + it.getDescription() + '</span> <div class="ccm-page-status-bar-buttons">' + buttonStr + '</div></div></form>';
-				                    d += line;
-			}
-			                    d += '</div>';
-			                    $('#' + containerID).append(d);
-			                    $('#ccm-page-status-bar .dialog-launch').dialog();
-			                    $('#ccm-page-status-bar .alert').bind('closed', function () {
-				                    $(this).remove();
-				                const visi = $('#ccm-page-status-bar .alert:visible').length;
-				                    if (visi == 0) {
-					                    $('#ccm-page-status-bar').remove();
-				}
-			});
-			                    $('#ccm-page-status-bar .ccm-status-bar-ajax-form').ajaxForm({
-				                    dataType: 'json',
-				                    beforeSubmit() {
-					                    jQuery.fn.dialog.showLoader();
-				},
-				                    success(r) {
-					                    if (r.redirect) {
-						                    window.location.href = r.redirect;
-					}
-				},
-			});
-		}
-	},
+    if (this.items.length > 0) {
+      let d = '<div id="ccm-page-status-bar" class="ccm-ui">';
+      let i = 0;
+      for (const it of this.items) {
+        let buttonStr = '';
+        const buttons = it.getButtons();
+        for (const button of buttons) {
+          let innerButtonLeft = '';
+          let innerButtonRight = '';
+          if (button.getInnerButtonLeftHTML()) {
+            innerButtonLeft = button.getInnerButtonLeftHTML() + ' ';
+          }
+          if (button.getInnerButtonRightHTML()) {
+            innerButtonRight = ' ' + button.getInnerButtonRightHTML();
+          }
+          const attribs = Object.values(button.getAttributes()).reduce((a, { key, value }) => `${key}='${value}'`, '');
+          if (button.getURL()) {
+            buttonStr += `
+            <button type="submit" ${attribs} name="action_${button.getAction()}" class="btn-small btn ${button.getCSSClass()}">
+              ${innerButtonLeft}${button.getLabel()}${innerButtonRight}
+            </button>`;
+          } else {
+            buttonStr += `
+            <a href="${button.getURL()}" ${attribs} class="btn btn-small ${button.getCSSClass()}">
+              ${innerButtonLeft}${button.getLabel()}${innerButtonRight}
+            </a>`;
+          }
+        }
+        d += `
+        <form method="post" action="${it.getAction()}" id="ccm-status-bar-form-${i}" ${(it.useAjaxForm ? 'class="ccm-status-bar-ajax-form"' : '')}>
+          <div class="alert-message alert ${it.getCSSClass()}">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <span>${it.getDescription()}</span>
+            <div class="ccm-page-status-bar-buttons"> ${buttonStr}</div>
+          </div>
+        </form>`;
+        i++;
+      }
+      d += '</div>';
 
+      $(`#${containerID}`).append(d);
+      $('#ccm-page-status-bar .dialog-launch').dialog();
+      $('#ccm-page-status-bar .alert').bind('closed', function () {
+        $(this).remove();
+        const visi = $('#ccm-page-status-bar .alert:visible').length;
+        if (visi == 0) {
+          $('#ccm-page-status-bar').remove();
+        }
+      });
+      $('#ccm-page-status-bar .ccm-status-bar-ajax-form').ajaxForm({
+        dataType: 'json',
+        beforeSubmit() {
+          $.fn.dialog.showLoader();
+        },
+        success(r) {
+          if (r.redirect) {
+            window.location.href = r.redirect;
+          }
+        },
+      });
+    }
+  },
 };
 
-ccm_statusBarItem = function () {
-	                    this.css = '';
-	                    this.description = '';
-	                    this.buttons = [];
-	                    this.action = '';
-	                    this.useAjaxForm = false;
+Object.assign(this, {
+  ccm_statusBarItem() {
+    let css = '';
+    let description = '';
+    let action = '';
+    let useAjaxForm = false;
+    const buttons = [];
 
-	                    this.setCSSClass = function (css) {
-		                    this.css = css;
-	};
+    Object.assign(this, {
+      addButton: (btn) => buttons.push(btn),
+      enableAjaxForm: () => { useAjaxForm = true; },
+      getAction: () => action,
+      getButtons: () => buttons,
+      getCSSClass: () => css,
+      getDescription: () => description,
+      setAction: (val) => { action = val; },
+      setCSSClass: (val) => { css = val; },
+      setDescription: (val) => { description = val; },
+    });
+  },
 
-	                    this.enableAjaxForm = function () {
-		                    this.useAjaxForm = true;
-	};
+  ccm_statusBarItemButton() {
+    let css = '';
+    let innerbuttonleft = '';
+    let innerbuttonright = '';
+    let label = '';
+    let action = '';
+    let url = '';
+    let attribs = [];
 
-	                    this.setDescription = function (description) {
-		                    this.description = description;
-	};
-
-	                    this.getCSSClass = function () {
-		                    return this.css;
-	};
-
-	                    this.getDescription = function () {
-		                    return this.description;
-	};
-
-	                    this.addButton = function (btn) {
-		                    this.buttons.push(btn);
-	};
-
-	                    this.getButtons = function () {
-		                    return this.buttons;
-	};
-
-	                    this.setAction = function (action) {
-		                    this.action = action;
-	};
-
-	                    this.getAction = function () {
-		                    return this.action;
-	};
-};
-
-ccm_statusBarItemButton = function () {
-	                    this.css = '';
-	                    this.innerbuttonleft = '';
-	                    this.innerbuttonright = '';
-	                    this.label = '';
-	                    this.action = '';
-	                    this.url = '';
-	                    this.attribs = new Array();
-
-	                    this.setLabel = function (label) {
-		                    this.label = label;
-	};
-
-	                    this.setCSSClass = function (css) {
-		                    this.css = css;
-	};
-
-	                    this.setInnerButtonLeftHTML = function (html) {
-		                    this.innerbuttonleft = html;
-	};
-
-	                    this.setInnerButtonRightHTML = function (html) {
-		                    this.innerbuttonright = html;
-	};
-
-	                    this.setAction = function (action) {
-		                    this.action = action;
-	};
-
-	                    this.getAttributes = function () {
-		                    return this.attribs;
-	};
-
-	                    this.addAttribute = function (key, value) {
-		                    this.attribs.push({ 'key': key, 'value': value });
-	};
-
-	                    this.getAction = function () {
-		                    return this.action;
-	};
-
-	                    this.setURL = function (url) {
-		                    this.url = url;
-	};
-
-	                    this.getURL = function () {
-		                    return this.url;
-	};
-
-	                    this.getCSSClass = function () {
-		                    return this.css;
-	};
-
-	                    this.getInnerButtonLeftHTML = function () {
-		                    return this.innerbuttonleft;
-	};
-
-	                    this.getInnerButtonRightHTML = function () {
-		                    return this.innerbuttonright;
-	};
-
-	                    this.getLabel = function () {
-		                    return this.label;
-	};
-};
+    Object.assign(this, {
+      addAttribute: (key, value) => attribs.push({ key, value }),
+      getAction: () => action,
+      getAttributes: () => attribs,
+      getCSSClass: () => css,
+      getInnerButtonLeftHTML: () => innerbuttonleft,
+      getInnerButtonRightHTML: () => innerbuttonright,
+      getLabel: () => label,
+      getURL: () => url,
+      setAction(val) { action = val; },
+      setCSSClass(val) { css = val; },
+      setInnerButtonLeftHTML(html) { innerbuttonleft = html; },
+      setInnerButtonRightHTML(html) { innerbuttonright = html; },
+      setLabel(val) { label = val; },
+      setURL(val) { url = val; },
+    });
+  },
+});
