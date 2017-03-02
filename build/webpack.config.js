@@ -1,0 +1,66 @@
+const webpack = require('webpack');
+const precss = require('precss');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+// Check if we're doing a production build
+const PROD = process.env.NODE_ENV === 'production';
+
+const presets = ['babel-preset-es2015', 'babel-preset-es2017', 'babel-preset-stage-2'].map(require.resolve);
+
+const appDir = '../web/js/ccm_app';
+
+module.exports = Object.assign({
+  entry: [
+    'babel-polyfill',
+    `${appDir}/jquery.colorpicker.js`,
+    `${appDir}/jquery.hoverIntent.js`,
+    `${appDir}/jquery.liveupdate.js`,
+    `${appDir}/jquery.metadata.js`,
+    `${appDir}/chosen.jquery.js`,
+    `${appDir}/filemanager.js`,
+    `${appDir}/jquery.cookie.js`,
+    `${appDir}/layouts.js`,
+    `${appDir}/legacy_dialog.js`,
+    `${appDir}/newsflow.js`,
+    `${appDir}/page_reindexing.js`,
+    `${appDir}/quicksilver.js`,
+    `${appDir}/remote_marketplace.js`,
+    `${appDir}/search.js`,
+    `${appDir}/sitemap.js`,
+    `${appDir}/status_bar.js`,
+    `${appDir}/tabs.js`,
+    `${appDir}/tinymce_integration.js`,
+    `${appDir}/ui.js`,
+    `${appDir}/toolbar.js`,
+    `${appDir}/themes.js`,
+    `${appDir}/composer.js`,
+  ],
+  output: {
+    path: '../web/js',
+    filename: 'ccm.app.js',
+  },
+  module: {
+    loaders: [{
+      test: /\.json$/,
+      loader: 'json-loader',
+    }, {
+      test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
+      loader: 'babel-loader',
+      query: { presets },
+    }],
+  },
+}, PROD && {
+  // Modify config if production build or not
+  plugins: baseConfig.plugins.concat([
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.DefinePlugin({
+      process: {
+        env: {
+          NODE_ENV: JSON.stringify('production'),
+        },
+      },
+    }),
+  ]),
+});
