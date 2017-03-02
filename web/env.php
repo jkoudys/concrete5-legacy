@@ -23,9 +23,6 @@ require $cdir . '/config/base_pre.php';
 ## Startup check ##
 require $cdir . '/startup/config_check.php';
 
-## Check to see if, based on a config variable, we need to point to an alternate core ##
-require $cdir . '/startup/updated_core_check.php';
-
 ## Load the base config file ##
 require $cdir . '/config/base.php';
 

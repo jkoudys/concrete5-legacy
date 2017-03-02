@@ -1,5 +1,5 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
+// TODO: This whole file should be cleaned up to conform with router & autoloader conventions
 if (!defined('DISPATCHER_FILENAME')) {
 	define('DISPATCHER_FILENAME', 'index.php');
 }
@@ -248,7 +248,8 @@ if (defined('MULTI_SITE') && MULTI_SITE == 1) {
 	define('ASSETS_URL_WEB', DIR_REL);
 	define('MULTI_SITE', 0);
 }
-$ap = ASSETS_URL_WEB;
+
+$ap = '/concrete5/web';
 
 define('ASSETS_URL', $ap);
 define('ASSETS_URL_CSS', $ap . '/css');
