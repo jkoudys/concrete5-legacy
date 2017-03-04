@@ -23,12 +23,11 @@ if (target === 'base') {
   output.filename = 'ccm.base.js';
 } else {
   entry.push(
+    `${appDir}`,
     `${appDir}/jquery.colorpicker.js`,
     `${appDir}/jquery.hoverIntent.js`,
     `${appDir}/jquery.liveupdate.js`,
     `${appDir}/jquery.metadata.js`,
-    `${appDir}/chosen.jquery.js`,
-    `${appDir}/filemanager.js`,
     `${appDir}/jquery.cookie.js`,
     `${appDir}/layouts.js`,
     `${appDir}/legacy_dialog.js`,
