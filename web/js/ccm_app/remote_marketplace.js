@@ -5,7 +5,7 @@ import $ from 'jquery';
 
 const { CCM_TOOLS_PATH } = window;
 
-ccm_openThemeLauncher = function () {
+function ccm_openThemeLauncher() {
   $.fn.dialog.closeTop();
   $.fn.dialog.showLoader();
   ccm_testMarketplaceConnection(() => {
@@ -17,9 +17,9 @@ ccm_openThemeLauncher = function () {
       height: '410',
     });
   }, 'open_theme_launcher');
-};
+}
 
-ccm_testMarketplaceConnection = function (onComplete, task, mpID) {
+function ccm_testMarketplaceConnection(onComplete, task, mpID) {
   if (mpID) {
     mpIDStr = '&mpID=' + mpID;
   } else {
@@ -47,9 +47,9 @@ ccm_testMarketplaceConnection = function (onComplete, task, mpID) {
       return false;
     }
   });
-};
+}
 
-ccm_openAddonLauncher = function () {
+function ccm_openAddonLauncher() {
   $.fn.dialog.closeTop();
   $.fn.dialog.showLoader();
   ccm_testMarketplaceConnection(() => {
@@ -61,9 +61,9 @@ ccm_openAddonLauncher = function () {
       height: '410',
     });
   }, 'open_addon_launcher');
-};
+}
 
-ccm_setupMarketplaceDialogForm = function () {
+function ccm_setupMarketplaceDialogForm() {
   $('.ccm-pane-dialog-pagination').each(function () {
     $(this).closest('.ui-dialog-content').dialog('option', 'buttons', [{}]);
     $(this).closest('.ui-dialog').find('.ui-dialog-buttonpane .ccm-pane-dialog-pagination').remove();
@@ -86,9 +86,9 @@ ccm_setupMarketplaceDialogForm = function () {
       $('#ccm-marketplace-browser-form').closest('.ui-dialog-content').html(resp);
     },
   });
-};
+}
 
-ccm_marketplaceBrowserInit = function () {
+function ccm_marketplaceBrowserInit() {
   $('.ccm-marketplace-item').click(function () {
     ccm_getMarketplaceItemDetails($(this).attr('mpID'));
   });
@@ -105,9 +105,9 @@ ccm_marketplaceBrowserInit = function () {
   $('.ccm-marketplace-item-thumbnail').mouseout(() => {
     $('.ccm-marketplace-results-image-hover-displayed').hide().remove();
   });
-};
+}
 
-ccm_getMarketplaceItemDetails = function (mpID) {
+function ccm_getMarketplaceItemDetails(mpID) {
   $.fn.dialog.showLoader();
   $('#ccm-intelligent-search-results').hide();
   ccm_testMarketplaceConnection(() => {
@@ -120,9 +120,9 @@ ccm_getMarketplaceItemDetails = function (mpID) {
       height: 640,
     });
   }, 'get_item_details', mpID);
-};
+}
 
-ccm_getMarketplaceItem = function (args) {
+function ccm_getMarketplaceItem(args) {
   const mpID = args.mpID;
   const closeTop = args.closeTop;
   const token = args.token;
@@ -172,4 +172,16 @@ ccm_getMarketplaceItem = function (args) {
       });
     }
   });
+}
+
+const RemoteMarketplace = {
+  ccm_openThemeLauncher,
+  ccm_testMarketplaceConnection,
+  ccm_openAddonLauncher,
+  ccm_setupMarketplaceDialogForm,
+  ccm_marketplaceBrowserInit,
+  ccm_getMarketplaceItemDetails,
+  ccm_getMarketplaceItem,
 };
+
+export default RemoteMarketplace;
