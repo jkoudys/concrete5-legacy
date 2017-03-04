@@ -30,7 +30,6 @@ if (target === 'base') {
     `${appDir}/jquery.metadata.js`,
     `${appDir}/jquery.cookie.js`,
     `${appDir}/layouts.js`,
-    `${appDir}/legacy_dialog.js`,
     `${appDir}/newsflow.js`,
     `${appDir}/page_reindexing.js`,
     `${appDir}/quicksilver.js`,
