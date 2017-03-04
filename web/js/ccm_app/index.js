@@ -8,7 +8,11 @@ import Search from './search';
 import Sitemap from './sitemap';
 import StatusBar from './status_bar';
 import Tabs from './tabs';
-import TinymceIntegration from './tinymce_integration.js';
+import TinymceIntegration from './tinymce_integration';
+import UI from './ui';
+import Toolbar from './toolbar';
+import Themes from './themes';
+import Composer from './composer';
 
 Object.assign(window, {
   $,
@@ -23,4 +27,8 @@ Object.assign(window, {
   ...StatusBar,
   ...Tabs,
   ...TinymceIntegration,
+  ...UI,
+  ...Toolbar,
+  ...Themes,
+  ...Composer,
 });

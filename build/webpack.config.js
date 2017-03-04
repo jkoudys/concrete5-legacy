@@ -30,11 +30,7 @@ if (target === 'base') {
     `${appDir}/jquery.metadata.js`,
     `${appDir}/jquery.cookie.js`,
     `${appDir}/layouts.js`,
-    `${appDir}/quicksilver.js`,
-    `${appDir}/ui.js`,
-    `${appDir}/toolbar.js`,
-    `${appDir}/themes.js`,
-    `${appDir}/composer.js`
+    `${appDir}/quicksilver.js`
   );
 
   output.filename = 'ccm.app.js';

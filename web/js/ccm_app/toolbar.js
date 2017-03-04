@@ -11,7 +11,7 @@ $(() => {
 });
 
 // Assign functions to global namespace
-Object.assign(this, {
+const Toolbar = {
   ccm_togglePopover(e, link) {
     if ($('.popover').is(':visible')) {
       $(link).popover('hide');
@@ -338,4 +338,6 @@ Object.assign(this, {
       }, 500);
     }
   },
-});
+};
+
+export default Toolbar;

@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 const { CCM_TOOLS_PATH, CCM_IMAGE_PATH } = window;
 
-Object.assign(this, {
+const Themes = {
   /**
    * Theme JS
    */
@@ -129,4 +129,6 @@ Object.assign(this, {
       $('input[name=plID]').val($(this).attr('ccm-theme-id'));
     });
   },
-});
+};
+
+export default Themes;

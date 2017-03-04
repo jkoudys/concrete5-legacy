@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 const { CCM_TOOLS_PATH } = window;
 
-Object.assign(this, {
+const Composer = {
   ccm_previewComposerDraft(cID, draftTitle) {
     $.fn.dialog.open({
       title: draftTitle,
@@ -12,4 +12,6 @@ Object.assign(this, {
       height: '75%',
     });
   },
-});
+};
+
+export default Composer;

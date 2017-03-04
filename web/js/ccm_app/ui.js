@@ -127,7 +127,7 @@ const ccmCustomStyle = {
   },
 };
 
-Object.assign(this, {
+const UI = {
   ccm_menuInit(obj) {
     if (CCM_EDIT_MODE && (!CCM_ARRANGE_MODE)) {
       switch (obj.type) {
@@ -911,4 +911,6 @@ Object.assign(this, {
   ccm_t(key) {
     return $(`input[name=ccm-string-${key}]`).val();
   },
-});
+};
+
+export default UI;
