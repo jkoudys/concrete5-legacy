@@ -10,8 +10,10 @@ if (typeof (tr_doAnim) == 'undefined') {
 let tr_parseSubnodes = true;
 let tr_reorderMode = false;
 const	tr_moveCopyMode = false;
+let SITEMAP_LAST_DIALOGUE_URL = '';
+let ccm_sitemap_html = '';
 
-showPageMenu = function (obj, e) {
+function showPageMenu(obj, e) {
   ccm_hideMenus();
   e.stopPropagation();
   /* now, check to see if this menu has been made */
@@ -130,15 +132,15 @@ showPageMenu = function (obj, e) {
   }
 
   ccm_fadeInMenu(bobj, e);
-};
+}
 
-hideBranch = function (nodeID) {
+function hideBranch(nodeID) {
   // hides branch and its drop zone
   $('#tree-node' + nodeID).hide();
   $('#tree-dz' + nodeID).hide();
-};
+}
 
-cancelReorder = function () {
+function cancelReorder() {
   if (tr_reorderMode) {
     // $('img.handle').removeClass('moveable');
     tr_reorderMode = false;
@@ -147,13 +149,13 @@ cancelReorder = function () {
       hideSitemapMessage();
     }
   }
-};
+}
 
-ccm_sitemapExitEditMode = function (cID) {
+function ccm_sitemapExitEditMode(cID) {
   $.get(CCM_TOOLS_PATH + '/dashboard/sitemap_check_in?cID=' + cID + '&ccm_token=' + CCM_SECURITY_TOKEN);
-};
+}
 
-searchSubPages = function (cID) {
+function searchSubPages(cID) {
   $('#ccm-tree-search-trigger' + cID).hide();
   if (ccm_animEffects) {
     $('#ccm-tree-search' + cID).fadeIn(200, () => {
@@ -163,9 +165,9 @@ searchSubPages = function (cID) {
     $('#ccm-tree-search' + cID).show();
     $('#ccm-tree-search' + cID + ' input').get(0).focus();
   }
-};
+}
 
-activateReorder = function () {
+function activateReorder() {
   tr_reorderMode = true;
 
   /*
@@ -212,9 +214,9 @@ hideBranch(origCID);
   });
   fixResortingDroppables();
   // showSitemapMessage(ccmi18n_sitemap.reorderPageMessage);
-};
+}
 
-deleteBranchFade = function (nodeID) {
+function deleteBranchFade(nodeID) {
   // hides branch and its drop zone
   if (ccm_animEffects) {
     $('#tree-node' + nodeID).fadeOut(300, () => {
@@ -226,21 +228,21 @@ deleteBranchFade = function (nodeID) {
   } else {
     deleteBranchDirect(nodeID);
   }
-};
+}
 
-deleteBranchDirect = function (nodeID) {
+function deleteBranchDirect(nodeID) {
   // hides branch and its drop zone
   $('#tree-node' + nodeID).remove();
   $('#tree-dz' + nodeID).remove();
-};
+}
 
-showBranch = function (nodeID) {
+function showBranch(nodeID) {
   const orig = $('#tree-node' + nodeID);
   $('#tree-node' + nodeID).show();
   $('#tree-dz' + nodeID).show();
-};
+}
 
-rescanDisplayOrder = function (nodeID) {
+function rescanDisplayOrder(nodeID) {
   setLoading(nodeID);
   let queryString = '?foo=1';
   const nodes = $('#tree-root' + nodeID).children('li.tree-node');
@@ -252,18 +254,15 @@ rescanDisplayOrder = function (nodeID) {
     ccm_parseJSON(resp, () => {});
     removeLoading(nodeID);
   });
-};
+}
 
-let SITEMAP_LAST_DIALOGUE_URL = '';
-let ccm_sitemap_html = '';
-
-parseSitemapResponse = function (instanceID, display_mode, select_mode, nodeID, resp) {
+function parseSitemapResponse(instanceID, display_mode, select_mode, nodeID, resp) {
   const container = $('ul[tree-root-node-id=' + nodeID + '][sitemap-instance-id=' + instanceID + ']');
   container.html(resp);
   container.slideDown(150, 'easeOutExpo');
-};
+}
 
-selectMoveCopyTarget = function (instanceID, display_mode, select_mode, destCID, origCID) {
+function selectMoveCopyTarget(instanceID, display_mode, select_mode, destCID, origCID) {
   if (!origCID) {
     var origCID = CCM_CID;
   }
@@ -311,9 +310,9 @@ selectMoveCopyTarget = function (instanceID, display_mode, select_mode, destCID,
     },
 
   });
-};
+}
 
-selectLabel = function (e, node) {
+function selectLabel(e, node) {
   const cNumChildren = node.attr('tree-node-children');
   if (node.attr('sitemap-select-mode') == 'move_copy_delete' || tr_moveCopyMode == true) {
     const destCID = node.attr('id').substring(10);
@@ -356,9 +355,9 @@ selectLabel = function (e, node) {
     showPageMenu(params, e);
     tr_activeNode = node;
   }
-};
+}
 
-ccmSitemapHighlightPageLabel = function (cID, name) {
+function ccmSitemapHighlightPageLabel(cID, name) {
   var sp = $('#tree-label' + cID + ' > span');
 
   if (sp.length == 0) {
@@ -373,9 +372,9 @@ ccmSitemapHighlightPageLabel = function (cID, name) {
   }
 
   sp.show('highlight');
-};
+}
 
-activateLabels = function (instance_id, display_mode, select_mode) {
+function activateLabels(instance_id, display_mode, select_mode) {
   const smwrapper = $('ul[sitemap-instance-id=' + instance_id + ']');
   smwrapper.find('div.tree-label span').unbind();
   smwrapper.find('div.tree-label span').click(function (e) {
@@ -459,9 +458,9 @@ activateLabels = function (instance_id, display_mode, select_mode) {
       },
     });
   }
-};
+}
 
-ccm_triggerProgressiveOperation = function (url, params, dialogTitle, onComplete, onError) {
+function ccm_triggerProgressiveOperation(url, params, dialogTitle, onComplete, onError) {
   $.fn.dialog.showLoader();
   $('#ccm-dialog-progress-bar').remove();
   $.ajax({
@@ -490,9 +489,9 @@ ccm_triggerProgressiveOperation = function (url, params, dialogTitle, onComplete
       $('#ccm-dialog-progress-bar').jqdialog('open');
     },
   });
-};
+}
 
-ccm_doProgressiveOperation = function (url, params, totalItems, onComplete, onError) {
+function ccm_doProgressiveOperation(url, params, totalItems, onComplete, onError) {
   $.ajax({
     url,
     dataType: 'json',
@@ -549,9 +548,9 @@ ccm_doProgressiveOperation = function (url, params, totalItems, onComplete, onEr
       }
     },
   });
-};
+}
 
-ccm_refreshCopyOperations = function () {
+function ccm_refreshCopyOperations() {
   const dialogTitle = ccmi18n_sitemap.copyProgressTitle;
   ccm_triggerProgressiveOperation(
     CCM_TOOLS_PATH + '/dashboard/sitemap_copy_all',
@@ -561,9 +560,9 @@ ccm_refreshCopyOperations = function () {
       window.location.reload();
     }
   );
-};
+}
 
-moveCopyAliasNode = function (reloadPage) {
+function moveCopyAliasNode(reloadPage) {
   const origCID = $('#origCID').val();
   const destParentID = $('#destParentID').val();
   const destCID = $('#destCID').val();
@@ -643,17 +642,9 @@ moveCopyAliasNode = function (reloadPage) {
       });
     });
   }
-};
+}
 
-/*
-   searchSitemapNode = function(cID) {
-   var q = $('form#ccm-tree-search' + cID + ' input').val();
-   openSubSearch(cID, q);
-   return false;
-   }
-   */
-
-toggleSub = function (instanceID, nodeID, display_mode, select_mode) {
+function toggleSub(instanceID, nodeID, display_mode, select_mode) {
   ccm_hideMenus();
   const container = $('ul[tree-root-node-id=' + nodeID + '][sitemap-instance-id=' + instanceID + ']');
   if (container.attr('tree-root-state') == 'closed') {
@@ -661,9 +652,9 @@ toggleSub = function (instanceID, nodeID, display_mode, select_mode) {
   } else {
     closeSub(instanceID, nodeID, display_mode, select_mode);
   }
-};
+}
 
-ccm_sitemapDeleteForever = function (instance_id, nodeID, isTrash) {
+function ccm_sitemapDeleteForever(instance_id, nodeID, isTrash) {
   const dialogTitle = (isTrash) ? ccmi18n_sitemap.emptyTrash : ccmi18n_sitemap.deletePages;
   ccm_triggerProgressiveOperation(
     CCM_TOOLS_PATH + '/dashboard/sitemap_delete_forever',
@@ -681,21 +672,21 @@ ccm_sitemapDeleteForever = function (instance_id, nodeID, isTrash) {
       }
     }
   );
-};
+}
 
-setLoading = function (nodeID) {
+function setLoading(nodeID) {
   const listNode = $('#tree-node' + nodeID);
   listNode.removeClass('tree-node-' + listNode.attr('tree-node-type'));
   listNode.addClass('tree-node-loading');
-};
+}
 
-removeLoading = function (nodeID) {
+function removeLoading(nodeID) {
   const listNode = $('#tree-node' + nodeID);
   listNode.removeClass('tree-node-loading');
   listNode.addClass('tree-node-' + listNode.attr('tree-node-type'));
-};
+}
 
-openSub = function (instanceID, nodeID, display_mode, select_mode, onComplete) {
+function openSub(instanceID, nodeID, display_mode, select_mode, onComplete) {
   setLoading(nodeID);
   const container = $('#tree-root' + nodeID);
   cancelReorder();
@@ -714,30 +705,9 @@ openSub = function (instanceID, nodeID, display_mode, select_mode, onComplete) {
       }
     }, 200);
   });
-};
+}
 
-/*
-   openSubSearch = function(nodeID, query, onComplete) {
-   setLoading(nodeID);
-   var container = $("#tree-root" + nodeID);
-   ccm_sitemap_html = '';
-   container.html('');
-   container.addClass('ccm-sitemap-search-results');
-   cancelReorder();
-   $.get(CCM_TOOLS_PATH + "/dashboard/sitemap_data.php?node=" + nodeID, {'keywords': query, 'mode': 'full'}, function(resp) {
-   parseSitemapResponse('full', nodeID, resp);
-   activateLabels('full');
-   setTimeout(function() {
-   removeLoading(nodeID);
-   if (onComplete != null) {
-   onComplete();
-   }
-   }, 200);
-   });
-   }
-   */
-
-closeSub = function (instanceID, nodeID, display_mode, select_mode) {
+function closeSub(instanceID, nodeID, display_mode, select_mode) {
   const container = $('ul[tree-root-node-id=' + nodeID + '][sitemap-instance-id=' + instanceID + ']');
   if (tr_doAnim) {
     setLoading(nodeID);
@@ -762,26 +732,26 @@ closeSub = function (instanceID, nodeID, display_mode, select_mode) {
   }
 
   $.get(CCM_TOOLS_PATH + '/dashboard/sitemap_data.php?instance_id=' + instanceID + '&select_mode=' + select_mode + '&display_mode=' + display_mode + '&node=' + nodeID + '&ctask=close-node');
-};
+}
 
-toggleMove = function () {
+function toggleMove() {
   if ($('#copyThisPage').get(0)) {
     $('#copyThisPage').get(0).disabled = true;
     $('#copyChildren').get(0).disabled = true;
     $('#saveOldPagePath').attr('disabled', false);
   }
-};
+}
 
-toggleAlias = function () {
+function toggleAlias() {
   if ($('#copyThisPage').get(0)) {
     $('#copyThisPage').get(0).disabled = true;
     $('#copyChildren').get(0).disabled = true;
     $('#saveOldPagePath').attr('checked', false);
     $('#saveOldPagePath').attr('disabled', 'disabled');
   }
-};
+}
 
-toggleCopy = function () {
+function toggleCopy() {
   if ($('#copyThisPage').get(0)) {
     $('#copyThisPage').get(0).disabled = false;
     $('#copyThisPage').get(0).checked = true;
@@ -789,19 +759,19 @@ toggleCopy = function () {
     $('#saveOldPagePath').attr('checked', false);
     $('#saveOldPagePath').attr('disabled', 'disabled');
   }
-};
+}
 
-showSitemapMessage = function (msg) {
+function showSitemapMessage(msg) {
   $('#ccm-sitemap-message').addClass('message');
   $('#ccm-sitemap-message').html(msg);
   $('#ccm-sitemap-message').fadeIn(200);
-};
+}
 
-hideSitemapMessage = function () {
+function hideSitemapMessage() {
   $('#ccm-sitemap-message').hide();
-};
+}
 
-function fixResortingDroppables() {
+function functiongDroppables() {
   if (tr_reorderMode == false) {
     return false;
   }
@@ -815,6 +785,7 @@ function fixResortingDroppables() {
     addResortDroppable(nodeID);
   }
 }
+
 // drop onto a dropzone - used only for reordering pages
 function addResortDroppable(nodeID) {
   // ignore levels with only one branch
@@ -834,7 +805,7 @@ function addResortDroppable(nodeID) {
   });
 }
 
-ccmSitemapExploreNode = function (instance_id, display_mode, select_mode, cID, selectedPageID) {
+function ccmSitemapExploreNode(instance_id, display_mode, select_mode, cID, selectedPageID) {
   $.fn.dialog.showLoader();
   $.get(CCM_TOOLS_PATH + '/dashboard/sitemap_data.php', { 'instance_id': instance_id, 'display_mode': display_mode, 'select_mode': select_mode, 'node': cID, 'selectedPageID': selectedPageID }, (resp) => {
     parseSitemapResponse(instance_id, 'explore', select_mode, 0, resp);
@@ -842,9 +813,9 @@ ccmSitemapExploreNode = function (instance_id, display_mode, select_mode, cID, s
     $.fn.dialog.hideLoader();
     ccm_sitemap_html = '';
   });
-};
+}
 
-ccmSitemapLoad = function (instance_id, display_mode, select_mode, node, selectedPageID, onComplete) {
+function ccmSitemapLoad(instance_id, display_mode, select_mode, node, selectedPageID, onComplete) {
   if (select_mode == 'move_copy_delete' || select_mode == 'select_page') {
     ccmSitemapExploreNode(instance_id, display_mode, select_mode, node, selectedPageID);
   } else if (display_mode == 'full') {
@@ -882,9 +853,9 @@ ccmSitemapLoad = function (instance_id, display_mode, select_mode, node, selecte
   if (onComplete) {
     onComplete();
   }
-};
+}
 
-ccm_sitemapSetupSearch = function (instance_id) {
+function ccm_sitemapSetupSearch(instance_id) {
   ccm_setupAdvancedSearch(instance_id);
   ccm_sitemapSetupSearchPages(instance_id);
   ccm_searchActivatePostFunction[instance_id] = function () {
@@ -892,9 +863,9 @@ ccm_sitemapSetupSearch = function (instance_id) {
     ccm_sitemapSearchSetupCheckboxes(instance_id);
   };
   ccm_sitemapSearchSetupCheckboxes(instance_id);
-};
+}
 
-ccm_sitemapSearchSetupCheckboxes = function (instance_id) {
+function ccm_sitemapSearchSetupCheckboxes(instance_id) {
   $('#ccm-' + instance_id + '-list-cb-all').click(function (e) {
     e.stopPropagation();
     if ($(this).prop('checked') == true) {
@@ -1005,9 +976,9 @@ ccm_sitemapSearchSetupCheckboxes = function (instance_id) {
 
     $(this).get(0).selectedIndex = 0;
   });
-};
+}
 
-ccm_sitemapSetupSearchPages = function (instance_id) {
+function ccm_sitemapSetupSearchPages(instance_id) {
   $('#ccm-' + instance_id + '-list tr').click(function (e) {
     const node = $(this);
     if (node.hasClass('ccm-results-list-header')) {
@@ -1048,9 +1019,9 @@ ccm_sitemapSetupSearchPages = function (instance_id) {
       showPageMenu(params, e);
     }
   });
-};
+}
 
-ccm_sitemapSelectDisplayMode = function (instance_id, display_mode, select_mode, selectedPageID) {
+function ccm_sitemapSelectDisplayMode(instance_id, display_mode, select_mode, selectedPageID) {
   // finds the selector for the instance of the sitemap and reloads it to be this mode
 
   const ul = $('ul[sitemap-instance-id=' + instance_id + ']');
@@ -1073,9 +1044,9 @@ ccm_sitemapSelectDisplayMode = function (instance_id, display_mode, select_mode,
 
   // now we save the preference
   $.get(CCM_TOOLS_PATH + '/dashboard/sitemap_data.php?task=save_sitemap_display_mode&display_mode=' + display_mode);
-};
+}
 
-ccm_sitemapDeletePages = function (searchInstance) {
+function ccm_sitemapDeletePages(searchInstance) {
   const params = $('#ccm-' + searchInstance + '-delete-form').formToArray(true);
   ccm_triggerProgressiveOperation(
     CCM_TOOLS_PATH + '/pages/delete',
@@ -1098,9 +1069,9 @@ ccm_sitemapDeletePages = function (searchInstance) {
       }
     }
   );
-};
+}
 
-ccm_sitemapUpdateDesign = function (searchInstance) {
+function ccm_sitemapUpdateDesign(searchInstance) {
   $('#ccm-' + searchInstance + '-design-form').ajaxSubmit((resp) => {
     ccm_parseJSON(resp, () => {
       $.fn.dialog.closeTop();
@@ -1110,7 +1081,7 @@ ccm_sitemapUpdateDesign = function (searchInstance) {
       });
     });
   });
-};
+}
 
 $(() => {
   $(document).click(() => {
@@ -1125,3 +1096,48 @@ $(() => {
     });
   });
 });
+
+const Sitemap = {
+  activateLabels,
+  activateReorder,
+  addResortDroppable,
+  cancelReorder,
+  ccmSitemapExploreNode,
+  ccmSitemapHighlightPageLabel,
+  ccmSitemapLoad,
+  ccm_doProgressiveOperation,
+  ccm_refreshCopyOperations,
+  ccm_sitemapDeleteForever,
+  ccm_sitemapDeletePages,
+  ccm_sitemapExitEditMode,
+  ccm_sitemapSearchSetupCheckboxes,
+  ccm_sitemapSelectDisplayMode,
+  ccm_sitemapSetupSearch,
+  ccm_sitemapSetupSearchPages,
+  ccm_sitemapUpdateDesign,
+  ccm_triggerProgressiveOperation,
+  closeSub,
+  deleteBranchDirect,
+  deleteBranchFade,
+  functiongDroppables,
+  hideBranch,
+  hideSitemapMessage,
+  moveCopyAliasNode,
+  openSub,
+  parseSitemapResponse,
+  removeLoading,
+  rescanDisplayOrder,
+  searchSubPages,
+  selectLabel,
+  selectMoveCopyTarget,
+  setLoading,
+  showBranch,
+  showPageMenu,
+  showSitemapMessage,
+  toggleAlias,
+  toggleCopy,
+  toggleMove,
+  toggleSub,
+};
+
+export default Sitemap;

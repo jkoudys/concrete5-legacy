@@ -3,7 +3,7 @@
  */
 import $ from 'jquery';
 
-Object.assign(this, {
+const Tabs = {
   ccm_activateTabBar(selector) {
     $(`#ccm-tab-content-${selector.find('li[class=active] a').attr('data-tab')}`).show();
     selector.find('a').unbind().click(function () {
@@ -18,4 +18,6 @@ Object.assign(this, {
       return false;
     });
   },
-});
+};
+
+export default Tabs;

@@ -1,82 +1,82 @@
 import $ from 'jquery';
 
-this.ccm_statusBar = {
-  items: [],
+const items = [];
 
-  addItem(item) {
-    this.items.push(item);
-  },
+function addItem(item) {
+  items.push(item);
+}
 
-  activate(containerID) {
-    if (!containerID) {
-      containerID = 'ccm-page-controls-wrapper';
-    }
+function activate(containerID) {
+  if (!containerID) {
+    containerID = 'ccm-page-controls-wrapper';
+  }
 
-    if (this.items.length > 0) {
-      let d = '<div id="ccm-page-status-bar" class="ccm-ui">';
-      let i = 0;
-      for (const it of this.items) {
-        let buttonStr = '';
-        const buttons = it.getButtons();
-        for (const button of buttons) {
-          let innerButtonLeft = '';
-          let innerButtonRight = '';
-          if (button.getInnerButtonLeftHTML()) {
-            innerButtonLeft = button.getInnerButtonLeftHTML() + ' ';
-          }
-          if (button.getInnerButtonRightHTML()) {
-            innerButtonRight = ' ' + button.getInnerButtonRightHTML();
-          }
-          const attribs = Object.values(button.getAttributes()).reduce((a, { key, value }) => `${key}='${value}'`, '');
-          if (button.getURL()) {
-            buttonStr += `
-            <button type="submit" ${attribs} name="action_${button.getAction()}" class="btn-small btn ${button.getCSSClass()}">
-              ${innerButtonLeft}${button.getLabel()}${innerButtonRight}
-            </button>`;
-          } else {
-            buttonStr += `
-            <a href="${button.getURL()}" ${attribs} class="btn btn-small ${button.getCSSClass()}">
-              ${innerButtonLeft}${button.getLabel()}${innerButtonRight}
-            </a>`;
-          }
+  if (items.length > 0) {
+    let d = '<div id="ccm-page-status-bar" class="ccm-ui">';
+    let i = 0;
+    for (const it of items) {
+      let buttonStr = '';
+      const buttons = it.getButtons();
+      for (const button of buttons) {
+        let innerButtonLeft = '';
+        let innerButtonRight = '';
+        if (button.getInnerButtonLeftHTML()) {
+          innerButtonLeft = button.getInnerButtonLeftHTML() + ' ';
         }
-        d += `
-        <form method="post" action="${it.getAction()}" id="ccm-status-bar-form-${i}" ${(it.useAjaxForm ? 'class="ccm-status-bar-ajax-form"' : '')}>
-          <div class="alert-message alert ${it.getCSSClass()}">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <span>${it.getDescription()}</span>
-            <div class="ccm-page-status-bar-buttons"> ${buttonStr}</div>
-          </div>
-        </form>`;
-        i++;
+        if (button.getInnerButtonRightHTML()) {
+          innerButtonRight = ' ' + button.getInnerButtonRightHTML();
+        }
+        const attribs = Object.values(button.getAttributes()).reduce((a, { key, value }) => `${key}='${value}'`, '');
+        if (button.getURL()) {
+          buttonStr += `
+          <button type="submit" ${attribs} name="action_${button.getAction()}" class="btn-small btn ${button.getCSSClass()}">
+          ${innerButtonLeft}${button.getLabel()}${innerButtonRight}
+          </button>`;
+        } else {
+          buttonStr += `
+          <a href="${button.getURL()}" ${attribs} class="btn btn-small ${button.getCSSClass()}">
+          ${innerButtonLeft}${button.getLabel()}${innerButtonRight}
+          </a>`;
+        }
       }
-      d += '</div>';
-
-      $(`#${containerID}`).append(d);
-      $('#ccm-page-status-bar .dialog-launch').dialog();
-      $('#ccm-page-status-bar .alert').bind('closed', function () {
-        $(this).remove();
-        const visi = $('#ccm-page-status-bar .alert:visible').length;
-        if (visi == 0) {
-          $('#ccm-page-status-bar').remove();
-        }
-      });
-      $('#ccm-page-status-bar .ccm-status-bar-ajax-form').ajaxForm({
-        dataType: 'json',
-        beforeSubmit() {
-          $.fn.dialog.showLoader();
-        },
-        success(r) {
-          if (r.redirect) {
-            window.location.href = r.redirect;
-          }
-        },
-      });
+      d += `
+      <form method="post" action="${it.getAction()}" id="ccm-status-bar-form-${i}" ${(it.useAjaxForm ? 'class="ccm-status-bar-ajax-form"' : '')}>
+      <div class="alert-message alert ${it.getCSSClass()}">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <span>${it.getDescription()}</span>
+      <div class="ccm-page-status-bar-buttons"> ${buttonStr}</div>
+      </div>
+      </form>`;
+      i++;
     }
-  },
-};
+    d += '</div>';
 
-Object.assign(this, {
+    $(`#${containerID}`).append(d);
+    $('#ccm-page-status-bar .dialog-launch').dialog();
+    $('#ccm-page-status-bar .alert').bind('closed', function () {
+      $(this).remove();
+      const visi = $('#ccm-page-status-bar .alert:visible').length;
+      if (visi == 0) {
+        $('#ccm-page-status-bar').remove();
+      }
+    });
+    $('#ccm-page-status-bar .ccm-status-bar-ajax-form').ajaxForm({
+      dataType: 'json',
+      beforeSubmit() {
+        $.fn.dialog.showLoader();
+      },
+      success(r) {
+        if (r.redirect) {
+          window.location.href = r.redirect;
+        }
+      },
+    });
+  }
+}
+
+const StatusBar = {
+  ccm_statusBar: { addItem, activate },
+
   ccm_statusBarItem() {
     let css = '';
     let description = '';
@@ -104,7 +104,7 @@ Object.assign(this, {
     let label = '';
     let action = '';
     let url = '';
-    let attribs = [];
+    const attribs = [];
 
     Object.assign(this, {
       addAttribute: (key, value) => attribs.push({ key, value }),
@@ -123,4 +123,6 @@ Object.assign(this, {
       setURL(val) { url = val; },
     });
   },
-});
+};
+
+export default StatusBar;
