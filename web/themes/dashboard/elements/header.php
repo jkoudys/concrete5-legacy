@@ -36,7 +36,6 @@ if (!isset($enableEditing) || $enableEditing == false) {
 
 // Required JavaScript
 
-$v->addFooterItem($html->javascript('jquery.backstretch.js'));
 $v->addFooterItem($html->javascript('jquery.ui.js'));
 $v->addFooterItem($html->javascript('jquery.form.js'));
 $v->addFooterItem($html->javascript('jquery.rating.js'));
@@ -77,26 +76,6 @@ $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundI
 <script type="text/javascript">
 
     $(function() {
-        <?php if ($backgroundImage->image) {
-    ?>
-            $.backstretch("<?=$backgroundImage->image?>" <?php if (!$_SESSION['dashboardHasSeenImage']) {
-    ?>,  {speed: 750}<?php
-
-} ?>);
-        <?php 
-} ?>
-        <?php if ($backgroundImage->checkData) {
-    ?>
-            ccm_getDashboardBackgroundImageData('<?=$backgroundImage->filename?>', <?php if ($backgroundImage->displayCaption) {
-    ?> true <?php
-
-} else {
-    ?> false <?php
-
-} ?>);
-        <?php 
-} ?>
-
         $(window).on('resize', function() {
             ccm_testFixForms();
         });
