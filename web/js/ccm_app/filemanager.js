@@ -1,16 +1,15 @@
 import $ from 'jquery';
 
-// const { CCM_TOOLS_PATH, CCM_DISPATCHER_FILENAME, CCM_STAR_STATES, CCM_STAR_ACTION } = window;
+const { CCM_TOOLS_PATH, CCM_DISPATCHER_FILENAME, CCM_STAR_STATES, CCM_STAR_ACTION } = window;
 
 const ccm_alDebug = false;
 const ccm_alLaunchType = [];
-const ccm_totalAdvancedSearchFields = 0;
 let ccm_alActiveAssetField = '';
 let ccm_alProcessorTarget = '';
 let ccm_uploadedFiles = [];
 let checkboxStatus = false;
 
-function cm_triggerSelectFile(fID, af = ccm_alActiveAssetField) {
+function ccm_triggerSelectFile(fID, af = ccm_alActiveAssetField) {
   const obj = $(`#${af}-fm-selected`);
   const dobj = $(`#${af}-fm-display`);
   dobj.hide();
@@ -26,7 +25,7 @@ function cm_triggerSelectFile(fID, af = ccm_alActiveAssetField) {
     obj.unbind('click.concrete');
     obj.on('click.concrete', function (e) {
       e.stopPropagation();
-      ccm_alActivateMenu($(this), e);
+      ccm_alActivateMenu(this, e);
     });
 
     if (typeof (ccm_triggerSelectFileComplete) == 'function') {
@@ -38,13 +37,13 @@ function cm_triggerSelectFile(fID, af = ccm_alActiveAssetField) {
   ccm_alSetupFileProcessor();
 }
 
-function cm_alGetFileData(fID, onComplete) {
+function ccm_alGetFileData(fID, onComplete) {
   $.getJSON(CCM_TOOLS_PATH + '/files/get_data.php?fID=' + fID, (resp) => {
     onComplete(resp);
   });
 }
 
-function cm_clearFile(e, af) {
+function ccm_clearFile(e, af) {
   e.stopPropagation();
   const obj = $('#' + af + '-fm-selected');
   const dobj = $('#' + af + '-fm-display');
@@ -54,7 +53,7 @@ function cm_clearFile(e, af) {
   dobj.show();
 }
 
-function cm_activateFileManager(altype, searchInstance) {
+function ccm_activateFileManager(altype, searchInstance) {
   // delegate event handling to table container so clicks
   // to our star don't interfer with clicks to our rows
   ccm_alLaunchType[searchInstance] = altype;
@@ -90,33 +89,41 @@ function cm_activateFileManager(altype, searchInstance) {
     }
   });
 
-  ccm_searchActivatePostFunction[searchInstance] = () => {
-    ccm_alSetupCheckboxes(searchInstance);
-    ccm_alSetupSelectFiles(searchInstance);
-    ccm_alSetupSingleUploadForm();
-  };
   // setup upload form
+  exportActivate(searchInstance);
 }
 
-function cm_alSetupSingleUploadForm() {
+function exportActivate(searchInstance) {
+  window.ccm_searchActivatePostFunction = Object.assign(window.ccm_searchActivatePostFunction || {}, {
+    [searchInstance]: () => {
+      ccm_alSetupCheckboxes(searchInstance);
+      ccm_alSetupSelectFiles(searchInstance);
+      ccm_alSetupSingleUploadForm();
+    },
+  });
+}
+
+
+function ccm_alSetupSingleUploadForm() {
   $('.ccm-file-manager-submit-single').submit(function () {
     $(this).attr('target', ccm_alProcessorTarget);
     ccm_alSubmitSingle($(this).get(0));
   });
 }
 
-function cm_activateFileSelectors() {
+function ccm_activateFileSelectors() {
   $('.ccm-file-manager-launch').unbind();
   $('.ccm-file-manager-launch').click(function () {
     ccm_alLaunchSelectorFileManager($(this).parent().attr('ccm-file-manager-field'));
   });
 }
 
-function cm_alLaunchSelectorFileManager(selector) {
-  ccm_alActiveAssetField = selector;
+function ccm_alLaunchSelectorFileManager(selector) {
   let filterStr = '';
-
   const types = $('#' + selector + '-fm-display input.ccm-file-manager-filter');
+
+  ccm_alActiveAssetField = selector;
+
   if (types.length) {
     let fields = {}, name;
     for (let i = 0; i < types.length; i++) {
@@ -142,18 +149,18 @@ function cm_alLaunchSelectorFileManager(selector) {
 }
 
 // public method - do not remove or rename
-function cm_launchFileManager(filters) {
+function ccm_launchFileManager(filters) {
   $.fn.dialog.open({
     width: '90%',
     height: '70%',
     appendButtons: true,
     modal: false,
-    href: CCM_TOOLS_PATH + '/files/search_dialog?ocID=' + CCM_CID + '&search=1' + filters,
+    href: `${CCM_TOOLS_PATH}/files/search_dialog?ocID=${CCM_CID}&search=1${filters}`,
     title: ccmi18n_filemanager.title,
   });
 }
 
-function cm_launchFileSetPicker(fsID) {
+function ccm_launchFileSetPicker(fsID) {
   $.fn.dialog.open({
     width: 500,
     height: 160,
@@ -163,7 +170,7 @@ function cm_launchFileSetPicker(fsID) {
   });
 }
 
-function cm_alSubmitSetsForm(searchInstance) {
+function ccm_alSubmitSetsForm(searchInstance) {
   ccm_deactivateSearchResults(searchInstance);
   $.fn.dialog.showLoader();
   $('#ccm-' + searchInstance + '-add-to-set-form').ajaxSubmit((resp) => {
@@ -178,7 +185,7 @@ function cm_alSubmitSetsForm(searchInstance) {
   });
 }
 
-function cm_alSubmitPasswordForm(searchInstance) {
+function ccm_alSubmitPasswordForm(searchInstance) {
   ccm_deactivateSearchResults(searchInstance);
   $('#ccm-' + searchInstance + '-password-form').ajaxSubmit((resp) => {
     $.fn.dialog.closeTop();
@@ -188,7 +195,7 @@ function cm_alSubmitPasswordForm(searchInstance) {
   });
 }
 
-function cm_alSubmitStorageForm(searchInstance) {
+function ccm_alSubmitStorageForm(searchInstance) {
   ccm_deactivateSearchResults(searchInstance);
   $('#ccm-' + searchInstance + '-storage-form').ajaxSubmit((resp) => {
     $.fn.dialog.closeTop();
@@ -198,7 +205,7 @@ function cm_alSubmitStorageForm(searchInstance) {
   });
 }
 
-function cm_alSubmitPermissionsForm(searchInstance) {
+function ccm_alSubmitPermissionsForm(searchInstance) {
   ccm_deactivateSearchResults(searchInstance);
   $('#ccm-' + searchInstance + '-permissions-form').ajaxSubmit((resp) => {
     $.fn.dialog.closeTop();
@@ -209,7 +216,7 @@ function cm_alSubmitPermissionsForm(searchInstance) {
 }
 
 
-function cm_alSetupSetsForm(searchInstance) {
+function ccm_alSetupSetsForm(searchInstance) {
   // activate file set search
   $('#fsAddToSearchName').liveUpdate('ccm-file-search-add-to-sets-list', 'fileset');
 
@@ -252,13 +259,13 @@ function cm_alSetupSetsForm(searchInstance) {
   });
 }
 
-function cm_alSetupPasswordForm() {
+function ccm_alSetupPasswordForm() {
   $('#ccm-file-password-form').submit(() => {
     ccm_alSubmitPasswordForm();
     return false;
   });
 }
-function cm_alRescanFiles() {
+function ccm_alRescanFiles() {
   let turl = CCM_TOOLS_PATH + '/files/rescan?';
   const files = arguments;
   for (let i = 0; i < files.length; i++) {
@@ -286,7 +293,7 @@ function cm_alRescanFiles() {
 }
 
 
-function cm_alSelectPermissionsEntity(selector, id, name) {
+function ccm_alSelectPermissionsEntity(selector, id, name) {
   const html = $('#ccm-file-permissions-entity-base').html();
   $('#ccm-file-permissions-entities-wrapper').append('<div class="ccm-file-permissions-entity">' + html + '<\/div>');
   const p = $('.ccm-file-permissions-entity');
@@ -303,7 +310,7 @@ function cm_alSelectPermissionsEntity(selector, id, name) {
   ccm_alActivateFilePermissionsSelector();
 }
 
-function cm_alActivateFilePermissionsSelector() {
+function ccm_alActivateFilePermissionsSelector() {
   $('.ccm-file-access-add select').unbind();
   $('.ccm-file-access-add select').change(function () {
     const p = $(this).parents('div.ccm-file-permissions-entity')[0];
@@ -345,7 +352,7 @@ function cm_alActivateFilePermissionsSelector() {
   });
 }
 
-function cm_alSetupVersionSelector() {
+function ccm_alSetupVersionSelector() {
   $('#ccm-file-versions-grid input[type=radio]').click(function () {
     $('#ccm-file-versions-grid tr').removeClass('ccm-file-versions-grid-active');
 
@@ -375,7 +382,7 @@ function cm_alSetupVersionSelector() {
   });
 }
 
-function cm_alDeleteFiles(searchInstance) {
+function ccm_alDeleteFiles(searchInstance) {
   $(`#ccm-${searchInstance}-delete-form`).ajaxSubmit((resp) => {
     ccm_parseJSON(resp, () => {
       $.fn.dialog.closeTop();
@@ -387,7 +394,7 @@ function cm_alDeleteFiles(searchInstance) {
   });
 }
 
-function cm_alDuplicateFiles(searchInstance) {
+function ccm_alDuplicateFiles(searchInstance) {
   $(`#ccm-${searchInstance}-duplicate-form`).ajaxSubmit((resp) => {
     ccm_parseJSON(resp, () => {
       $.fn.dialog.closeTop();
@@ -409,11 +416,11 @@ function cm_alDuplicateFiles(searchInstance) {
   });
 }
 
-function cm_alSetupSelectFiles(searchInstance) {
+function ccm_alSetupSelectFiles(searchInstance) {
   $('.ccm-file-list').unbind();
   $('.ccm-file-list tr.ccm-list-record').click(function (e) {
     e.stopPropagation();
-    ccm_alActivateMenu($(this), e);
+    ccm_alActivateMenu(this, e);
   });
   $('.ccm-file-list img.ccm-star').click((e) => {
     e.stopPropagation();
@@ -441,7 +448,7 @@ function cm_alSetupSelectFiles(searchInstance) {
   }
 }
 
-function cm_alSetupCheckboxes(searchInstance) {
+function ccm_alSetupCheckboxes(searchInstance) {
   $('#ccm-' + searchInstance + '-list-cb-all').unbind();
   $('#ccm-' + searchInstance + '-list-cb-all').click(function () {
     ccm_hideMenus();
@@ -542,7 +549,7 @@ function cm_alSetupCheckboxes(searchInstance) {
   ccm_alSetupFileSetSearch(searchInstance);
 }
 
-function cm_alSetupFileSetSearch(searchInstance) {
+function ccm_alSetupFileSetSearch(searchInstance) {
   $('#ccm-' + searchInstance + '-sets-search-wrapper select').chosen(ccmi18n_chosen).unbind();
   $('#ccm-' + searchInstance + '-sets-search-wrapper select').chosen(ccmi18n_chosen).change(() => {
     const sel = $('#ccm-' + searchInstance + '-sets-search-wrapper option:selected');
@@ -551,7 +558,7 @@ function cm_alSetupFileSetSearch(searchInstance) {
 }
 
 
-function cm_alGetSelectedFileIDs(searchInstance) {
+function ccm_alGetSelectedFileIDs(searchInstance) {
   let fidstr = '';
   $('#ccm-' + searchInstance + '-search-results td.ccm-file-list-cb input[type=checkbox]:checked').each(function () {
     fidstr += 'fID[]=' + $(this).val() + '&';
@@ -559,7 +566,7 @@ function cm_alGetSelectedFileIDs(searchInstance) {
   return fidstr;
 }
 
-function cm_alRescanMultiFileMenu(searchInstance) {
+function ccm_alRescanMultiFileMenu(searchInstance) {
   if ($('#ccm-' + searchInstance + '-search-results td.ccm-file-list-cb input[type=checkbox]:checked').length > 0) {
     $('#ccm-' + searchInstance + '-list-multiple-operations').attr('disabled', false);
   } else {
@@ -567,7 +574,7 @@ function cm_alRescanMultiFileMenu(searchInstance) {
   }
 }
 
-function cm_alSetupFileProcessor() {
+function ccm_alSetupFileProcessor() {
   if (ccm_alProcessorTarget != '') {
     return false;
   }
@@ -594,7 +601,7 @@ function cm_alSetupFileProcessor() {
   }
 }
 
-function cm_alSubmitSingle(form) {
+function ccm_alSubmitSingle(form) {
   if ($(form).find('.ccm-al-upload-single-file').val() == '') {
     return false;
   } else {
@@ -603,13 +610,13 @@ function cm_alSubmitSingle(form) {
   }
 }
 
-function cm_alResetSingle() {
+function ccm_alResetSingle() {
   $('.ccm-al-upload-single-file').val('');
   $('.ccm-al-upload-single-loader').hide();
   $('.ccm-al-upload-single-submit').show();
 }
 
-function cm_filesUploadedDialog(searchInstance) {
+function ccm_filesUploadedDialog(searchInstance) {
   if (document.getElementById('ccm-file-upload-multiple-tab')) $.fn.dialog.closeTop();
   let fIDstring = '';
   for (let i = 0; i < ccm_uploadedFiles.length; i++)
@@ -630,14 +637,14 @@ function cm_filesUploadedDialog(searchInstance) {
   ccm_uploadedFiles = [];
 }
 
-function cm_alSetupUploadDetailsForm(searchInstance) {
+function ccm_alSetupUploadDetailsForm(searchInstance) {
   $('#ccm-' + searchInstance + '-update-uploaded-details-form').submit(() => {
     ccm_alSubmitUploadDetailsForm(searchInstance);
     return false;
   });
 }
 
-function cm_alSubmitUploadDetailsForm(searchInstance) {
+function ccm_alSubmitUploadDetailsForm(searchInstance) {
   $.fn.dialog.showLoader();
   $('#ccm-' + searchInstance + '-update-uploaded-details-form').ajaxSubmit((r1) => {
     const r1a = eval('(' + r1 + ')');
@@ -658,7 +665,7 @@ function cm_alSubmitUploadDetailsForm(searchInstance) {
   });
 }
 
-function cm_alRefresh(highlightFIDs, searchInstance, fileSelector) {
+function ccm_alRefresh(highlightFIDs, searchInstance, fileSelector) {
   const ids = highlightFIDs;
   ccm_deactivateSearchResults(searchInstance);
   $('#ccm-' + searchInstance + '-search-results').load(CCM_TOOLS_PATH + '/files/search_results', {
@@ -676,7 +683,7 @@ function cm_alRefresh(highlightFIDs, searchInstance, fileSelector) {
   });
 }
 
-function cm_alHighlightFileIDArray(ids) {
+function ccm_alHighlightFileIDArray(ids) {
   for (let i = 0; i < ids.length; i++) {
     const td = $('tr[fID=' + ids[i] + '] td');
     const oldBG = td.css('backgroundColor');
@@ -684,7 +691,7 @@ function cm_alHighlightFileIDArray(ids) {
   }
 }
 
-function cm_alSelectFile(fID) {
+function ccm_alSelectFile(fID) {
   if (typeof (ccm_chooseAsset) == 'function') {
     let qstring = '';
     if (typeof (fID) == 'object') {
@@ -715,174 +722,245 @@ function cm_alSelectFile(fID) {
   }
 }
 
-function cm_alActivateMenu(obj, e) {
+// Menus we've instantiated, by fID
+const fileMenus = {};
+
+// Template Component
+const MenuOption = ({ icon, onClick, id, title = '', text = '', dialog = false, clear = false, className = '', attributes = {}, width = '90%', height = '70%' }) => {
+  // Optional attributes
+  const optional = Object.entries(attributes).reduce((a, [k, v]) => `${a} ${k}="${v}"`, '');
+  const li = document.createElement('li');
+  li.innerHTML = `
+  <a
+    class="ccm-menu-icon ${icon} ${className} ${dialog ? 'dialog-launch' : ''}"
+    dialog-modal="false"
+    dialog-width="${width}"
+    dialog-height="${height}"
+    dialog-title="${title}"
+    id="${id}"
+    ${optional}
+  >
+    ${text}
+  </a>`;
+
+  const a = li.querySelector('a');
+
+  if (onClick) a.addEventListener('click', onClick);
+  if (dialog) a.addEventListener('click', (e) => {
+    $(a).dialog();
+    e.preventDefault();
+  });
+  if (clear) $(a).click((e) => {
+    ccm_hideMenus();
+  });
+
+  return li;
+};
+
+
+function ccm_alActivateMenu(selected, e) {
   // Is this a file that's already been chosen that we're selecting?
   // If so, we need to offer the reset switch
-  const selectedFile = $(obj).find('div[ccm-file-manager-field]');
-  let selector = '';
-  if (selectedFile.length > 0) {
-    selector = selectedFile.attr('ccm-file-manager-field');
-  }
-  if (!selector) {
-    selector = 	ccm_alActiveAssetField;
-  }
   ccm_hideMenus();
 
-  const fID = $(obj).attr('fID');
-  const searchInstance = $(obj).attr('ccm-file-manager-instance');
+  const {
+    fID: { value: fID } = {},
+    filepath: { value: filepath } = {},
+    'ccm-file-manager-instance': { value: searchInstance } = {},
+    'ccm-file-manager-can-admin': { value: canAdmin = false } = {},
+    'ccm-file-manager-can-delete': { value: canDelete = false } = {},
+    'ccm-file-manager-can-duplicate': { value: canDuplicate = false } = {},
+    'ccm-file-manager-can-edit': { value: canEdit = false } = {},
+    'ccm-file-manager-can-replace': { value: canReplace = false } = {},
+    'ccm-file-manager-can-view': { value: canView = false } = {},
+  } = selected.attributes;
 
-  // now, check to see if this menu has been made
-  let bobj = document.getElementById('ccm-al-menu' + fID + searchInstance + selector);
+  let selectedMenu = fileMenus[fID];
 
-  // This immediate click mode has promise, but it's annoying more than it's helpful
-  /*
-     if (ccm_alLaunchType != 'DASHBOARD' && selector == '') {
-  // then we are in file list mode in the site, which means we
-  // we don't give out all the options in the list
-  ccm_alSelectFile(fID);
-  return;
-  }
-  */
-
-  if (!bobj) {
+  if (!fileMenus[fID]) {
     // create the 1st instance of the menu
-    el = document.createElement('DIV');
-    el.id = 'ccm-al-menu' + fID + searchInstance + selector;
-    el.className = 'ccm-menu ccm-ui';
-    el.style.display = 'block';
-    el.style.visibility = 'hidden';
+    const el = Object.assign(document.createElement('DIV'), {
+      id: `ccm-al-menu${fID}`,
+      className: 'ccm-menu ccm-ui',
+    });
+    Object.assign(el.style, {
+      display: 'block',
+      visibility: 'hidden',
+    });
     document.body.appendChild(el);
 
-    const passedFilters = $('div[ccm-file-manager-field=' + selector + '] input.ccm-file-manager-filter');
-    let filterStr = '';
-    if (passedFilters.length > 0) {
-      passedFilters.each(function () {
-        filterStr += '&' + $(this).attr('name') + '=' + $(this).attr('value');
-      });
-    }
-    const filepath = $(obj).attr('al-filepath');
-    bobj = $('#ccm-al-menu' + fID + searchInstance + selector);
-    bobj.css('position', 'absolute');
+    const passedFilters = document.querySelectorAll('input.ccm-file-manager-filter');
+    const filterStr = [...passedFilters]
+    .map(({ attributes: { name, value } }) => `${name}=${value}`)
+    .join('&');
+
+    el.style.position = 'absolute';
 
     // contents  of menu
-    let html = '<div class="popover"><div class="arrow"></div><div class="inner"><div class="content">';
-    html += '<ul>';
+    const popover = document.createElement('div');
+    popover.classList.add('popover');
+    popover.innerHTML = `
+      <div class="arrow"></div>
+        <div class="inner">
+        <div class="content">
+        <ul></ul>
+        </div>
+      </div>`;
+    const menu = popover.querySelector('ul');
+
     if (ccm_alLaunchType[searchInstance] != 'DASHBOARD' && ccm_alLaunchType[searchInstance] != 'BROWSE') {
       // if we're launching this at the selector level, that means we've already chosen a file, and this should instead launch the library
-      const onclick = (selectedFile.length > 0) ? 'ccm_alLaunchSelectorFileManager(\'' + selector + '\')' : 'ccm_alSelectFile(' + fID + ')';
-      const chooseText = (selectedFile.length > 0) ? ccmi18n_filemanager.chooseNew : ccmi18n_filemanager.select;
-      html += `
-      <li>
-      <a class="ccm-menu-icon ccm-icon-choose-file-menu" dialog-modal="false" dialog-width="90%" dialog-height="70%" dialog-title="${ccmi18n_filemanager.select}" id="menuSelectFile${fID}" onclick="${onclick}">
-      ${chooseText}
-      </a>
-      </li>`;
+      menu.appendChild(MenuOption({
+        title: ccmi18n_filemanager.select,
+        id: `menuSelectFile${fID}`,
+        text: fID ? ccmi18n_filemanager.chooseNew : ccmi18n_filemanager.select,
+        icon: 'ccm-icon-choose-file-menu',
+        onClick: () => ccm_alSelectFile(fID),
+      }));
     }
-    if (selectedFile.length > 0) {
-      html += `
-      <li>
-      <a class="ccm-menu-icon ccm-icon-clear-file-menu" id="menuClearFile${fID + searchInstance + selector}">
-      ${ccmi18n_filemanager.clear}
-      </a>
-      </li>`;
+    if (fID) {
+      menu.appendChild(MenuOption({
+        icon: 'ccm-icon-clear-file-menu',
+        id: `menuClearFile${fID}`,
+        clear: true,
+        text: ccmi18n_filemanager.clear,
+      }));
     }
 
-    if (ccm_alLaunchType[searchInstance] != 'DASHBOARD' && ccm_alLaunchType[searchInstance] != 'BROWSE' && selectedFile.length > 0) {
-      html += '<li class="ccm-menu-separator"></li>';
-    }
-    if ($(obj).attr('ccm-file-manager-can-view') == '1') {
-      html += `
-      <li>
-      <a class="ccm-menu-icon ccm-icon-view dialog-launch" dialog-modal="false" dialog-append-buttons="true" dialog-width="90%" dialog-height="75%" dialog-title="${ccmi18n_filemanager.view}" id="menuView${fID}" href="${CCM_TOOLS_PATH}/files/view?fID=${fID}">
-      ${ccmi18n_filemanager.view}
-      </a>
-      </li>`;
+    if (canAdmin) {
+      menu.appendChild(MenuOption({
+        icon: 'ccm-icon-view',
+        dialog: true,
+        title: ccmi18n_filemanager.view,
+        text: ccmi18n_filemanager.view,
+        id: `menuViews${fID}`,
+        attributes: {
+          'dialog-modal': false,
+          'dialog-append': true,
+          href: `${CCM_TOOLS_PATH}/files/view?fID=${fID}`,
+        },
+      }));
     } else {
-      html += `
-      <li>
-      <a class="ccm-menu-icon ccm-icon-download-menu" id="menuDownload${fID}" onclick="window.frames['${ccm_alProcessorTarget}'].location='${CCM_TOOLS_PATH}/files/download?fID=${fID}'">
-      ${ccmi18n_filemanager.download}
-      </a>
-      </li>`;
+      menu.appendChild(MenuOption({
+        icon: 'ccm-icon-download-menu',
+        id: `menuDownload${fID}`,
+        onClick: () => {
+          window.frames[ccm_alProcessorTarget].location = `${CCM_TOOLS_PATH}/files/download?fID=${fID}`;
+        },
+        text: ccmi18n_filemanager.download,
+      }));
     }
-    if ($(obj).attr('ccm-file-manager-can-edit') == '1') {
-      html += `
-      <li>
-      <a class="ccm-menu-icon ccm-icon-edit-menu dialog-launch" dialog-modal="false" dialog-width="90%" dialog-height="75%" dialog-title="${ccmi18n_filemanager.edit}" id="menuEdit${fID}" href="${CCM_TOOLS_PATH}/files/edit?searchInstance=${searchInstance}&fID=${fID + filterStr}">
-      ${ccmi18n_filemanager.edit}
-      </a>
-      </li>`;
-    }
-    html += `
-    <li>
-    <a class="ccm-menu-icon ccm-icon-properties-menu dialog-launch" dialog-modal="false" dialog-width="680" dialog-height="450" dialog-title="${ccmi18n_filemanager.properties}" id="menuProperties${fID}" href="${CCM_TOOLS_PATH}/files/properties?searchInstance=${searchInstance}&fID=${fID}">
-    ${ccmi18n_filemanager.properties}
-    </a>
-    </li>`;
-    if ($(obj).attr('ccm-file-manager-can-replace') == '1') {
-      html += `
-      <li>
-      <a class="ccm-menu-icon ccm-icon-replace dialog-launch" dialog-modal="false" dialog-width="300" dialog-height="260" dialog-title="${ccmi18n_filemanager.replace}" id="menuFileReplace${fID}" href="${CCM_TOOLS_PATH}/files/replace?searchInstance=${searchInstance}&fID=${fID}">
-      ${ccmi18n_filemanager.replace}
-      </a>
-      </li>`;
-    }
-    if ($(obj).attr('ccm-file-manager-can-duplicate') == '1') {
-      html += `
-      <li>
-      <a class="ccm-menu-icon ccm-icon-copy-menu" id="menuFileDuplicate${fID}" onclick="ccm_alDuplicateFile(${fID},\'${searchInstance}\')">
-      ${ccmi18n_filemanager.duplicate}
-      </a>
-      </li>`;
-    }
-    html += `
-    <li>
-    <a class="ccm-menu-icon ccm-icon-sets dialog-launch" dialog-modal="false" dialog-width="500" dialog-height="400" dialog-title="${ccmi18n_filemanager.sets}" id="menuFileSets${fID}" href="${CCM_TOOLS_PATH}/files/add_to?searchInstance=${searchInstance}&fID=${fID}">
-    ${ccmi18n_filemanager.sets}
-    </a>
-    </li>`;
-    if ($(obj).attr('ccm-file-manager-can-admin') == '1' || $(obj).attr('ccm-file-manager-can-delete') == '1') {
-      html += '<li class="ccm-menu-separator"></li>';
-    }
-    if ($(obj).attr('ccm-file-manager-can-admin') == '1') {
-      html += `
-      <li>
-      <a class="ccm-menu-icon ccm-icon-access-permissions dialog-launch" dialog-modal="false" dialog-width="400" dialog-height="450" dialog-title="${ccmi18n_filemanager.permissions}" id="menuFilePermissions${fID}" href="${CCM_TOOLS_PATH}/files/permissions?searchInstance=${searchInstance}&fID=${fID}">
-      ${ccmi18n_filemanager.permissions}
-      </a>
-      </li>`;
-    }
-    if ($(obj).attr('ccm-file-manager-can-delete') == '1') {
-      html += `
-      <li>
-      <a class="ccm-icon-delete-menu ccm-menu-icon dialog-launch" dialog-append-buttons="true" dialog-modal="false" dialog-width="500" dialog-height="200" dialog-title="${ccmi18n_filemanager.deleteFile}" id="menuDeleteFile${fID}" href="${CCM_TOOLS_PATH}/files/delete?searchInstance=${searchInstance}&fID=${fID}">
-      ${ccmi18n_filemanager.deleteFile}
-      </a>
-      </li>`;
-    }
-    html += '</ul>';
-    html += '</div></div></div>';
-    bobj.append(html);
 
-    $(bobj).find('a').bind('click.hide-menu', (e) => {
-      ccm_hideMenus();
-      return false;
-    });
+    if (canEdit) {
+      menu.appendChild(MenuOption({
+        icon: 'ccm-icon-edit-menu',
+        dialog: true,
+        title: ccmi18n_filemanager.edit,
+        text: ccmi18n_filemanager.edit,
+        id: `menuEdit${fID}`, 
+        attributes: {
+          'dialog-modal': false,
+          href: `${CCM_TOOLS_PATH}/files/edit?searchInstance=${searchInstance}&fID=${fID}&${filterStr}`,
+        }
+      }));
+    }
 
-    $('#ccm-al-menu' + fID + searchInstance + selector + ' a.dialog-launch').dialog();
+    menu.appendChild(MenuOption({
+      icon: 'ccm-icon-properties-menu',
+      dialog: true,
+      width: 680,
+      height: 450,
+      title: ccmi18n_filemanager.properties,
+      text: ccmi18n_filemanager.properties,
+      id: `menuProperties${fID}`,
+      attributes: {
+        'dialog-modal': false,
+        href: `${CCM_TOOLS_PATH}/files/properties?searchInstance=${searchInstance}&fID=${fID}`,
+      },
+    }));
 
-    $('a#menuClearFile' + fID + searchInstance + selector).click((e) => {
-      ccm_clearFile(e, selector);
-      ccm_hideMenus();
-    });
-  } else {
-    bobj = $('#ccm-al-menu' + fID + searchInstance + selector);
+    if (canReplace) {
+      menu.appendChild(MenuOption({
+        icon: 'ccm-icon-replace',
+        dialog: true,
+        width: 300,
+        height: 260,
+        title: ccmi18n_filemanager.replace,
+        text: ccmi18n_filemanager.replace,
+        id: `menuFileReplace${fID}`,
+        attributes: {
+          href: `${CCM_TOOLS_PATH}/files/replace?searchInstance=${searchInstance}&fID=${fID}`,
+          'dialog-modal': false,
+        }
+      }));
+    }
+
+    if (canDuplicate) {
+      menu.appendChild(MenuOption({
+        icon: 'ccm-icon-copy-menu',
+        id: `menuFileDuplicate${fID}`,
+        text: ccmi18n_filemanager.duplicate,
+        onClick: () => ccm_alDuplicateFile(fID, searchInstance),
+      }));
+    }
+
+    menu.appendChild(MenuOption({
+      icon: 'ccm-icon-sets',
+      dialog: true,
+      width: 500,
+      height: 400,
+      text: ccmi18n_filemanager.sets,
+      title: ccmi18n_filemanager.sets,
+      id: `menuFileSets${fID}`,
+      attributes: {
+        href: `${CCM_TOOLS_PATH}/files/add_to?searchInstance=${searchInstance}&fID=${fID}`,
+        'dialog-modal': false,
+      }
+    }));
+
+    if (canAdmin) {
+      menu.appendChild(MenuOption({
+        icon: 'ccm-icon-access-permissions',
+        dialog: true,
+        width: 400,
+        height: 450,
+        title: ccmi18n_filemanager.permissions,
+        text: ccmi18n_filemanager.permissions,
+        id: `menuFilePermissions${fID}`,
+        attributes: {
+          'dialog-modal': false,
+          href: `${CCM_TOOLS_PATH}/files/permissions?searchInstance=${searchInstance}&fID=${fID}`,
+        },
+      }));
+    }
+    if (canDelete) {
+      menu.appendChild(MenuOption({
+        icon: 'ccm-menu-icon',
+        dialog: true,
+        width: 500,
+        height: 200,
+        title: ccmi18n_filemanager.deleteFile,
+        text: ccmi18n_filemanager.deleteFile,
+        id: `menuDeleteFile${fID}`,
+        dialog: true,
+        attributes: {
+          'dialog-append-buttons': true,
+          'dialog-modal': false,
+          href: `${CCM_TOOLS_PATH}/files/delete?searchInstance=${searchInstance}&fID=${fID}`,
+        }
+      }));
+    }
+    el.appendChild(popover);
+
+    el.querySelector('a').addEventListener('click', () => ccm_hideMenus());
+
+    fileMenus[fID] = el;
   }
 
-  ccm_fadeInMenu(bobj, e);
+  ccm_fadeInMenu($(fileMenus[fID]), e);
 }
 
-function cm_alSelectNone() {
+function ccm_alSelectNone() {
   ccm_hideMenus();
 }
 
@@ -904,7 +982,7 @@ function toggleCheckboxStatus(form) {
   }
 }
 
-function cm_alDuplicateFile(fID, searchInstance) {
+function ccm_alDuplicateFile(fID, searchInstance) {
   const postStr = 'fID=' + fID + '&searchInstance=' + searchInstance;
 
   $.post(CCM_TOOLS_PATH + '/files/duplicate', postStr, (resp) => {
@@ -926,7 +1004,7 @@ function cm_alDuplicateFile(fID, searchInstance) {
   });
 }
 
-function cm_alSelectMultipleIncomingFiles(obj) {
+function ccm_alSelectMultipleIncomingFiles(obj) {
   if ($(obj).prop('checked')) {
     $('input.ccm-file-select-incoming').attr('checked', true);
   } else {
@@ -934,7 +1012,7 @@ function cm_alSelectMultipleIncomingFiles(obj) {
   }
 }
 
-function cm_starFile(img, fID) {
+function ccm_starFile(img, fID) {
   let action = '';
   if ($(img).attr('src').indexOf(CCM_STAR_STATES.unstarred) != -1) {
     $(img).attr('src', $(img).attr('src').replace(CCM_STAR_STATES.unstarred, CCM_STAR_STATES.starred));
@@ -950,47 +1028,47 @@ function cm_starFile(img, fID) {
 }
 
 const FileManager = {
-  cm_triggerSelectFile,
-  cm_alGetFileData,
-  cm_clearFile,
-  cm_activateFileManager,
-  cm_alSetupSingleUploadForm,
-  cm_activateFileSelectors,
-  cm_alLaunchSelectorFileManager,
-  cm_launchFileManager,
-  cm_launchFileSetPicker,
-  cm_alSubmitSetsForm,
-  cm_alSubmitPasswordForm,
-  cm_alSubmitStorageForm,
-  cm_alSubmitPermissionsForm,
-  cm_alSetupSetsForm,
-  cm_alSetupPasswordForm,
-  cm_alRescanFiles,
-  cm_alSelectPermissionsEntity,
-  cm_alActivateFilePermissionsSelector,
-  cm_alSetupVersionSelector,
-  cm_alDeleteFiles,
-  cm_alDuplicateFiles,
-  cm_alSetupSelectFiles,
-  cm_alSetupCheckboxes,
-  cm_alSetupFileSetSearch,
-  cm_alGetSelectedFileIDs,
-  cm_alRescanMultiFileMenu,
-  cm_alSetupFileProcessor,
-  cm_alSubmitSingle,
-  cm_alResetSingle,
-  cm_filesUploadedDialog,
-  cm_alSetupUploadDetailsForm,
-  cm_alSubmitUploadDetailsForm,
-  cm_alRefresh,
-  cm_alHighlightFileIDArray,
-  cm_alSelectFile,
-  cm_alActivateMenu,
-  cm_alSelectNone,
+  ccm_triggerSelectFile,
+  ccm_alGetFileData,
+  ccm_clearFile,
+  ccm_activateFileManager,
+  ccm_alSetupSingleUploadForm,
+  ccm_activateFileSelectors,
+  ccm_alLaunchSelectorFileManager,
+  ccm_launchFileManager,
+  ccm_launchFileSetPicker,
+  ccm_alSubmitSetsForm,
+  ccm_alSubmitPasswordForm,
+  ccm_alSubmitStorageForm,
+  ccm_alSubmitPermissionsForm,
+  ccm_alSetupSetsForm,
+  ccm_alSetupPasswordForm,
+  ccm_alRescanFiles,
+  ccm_alSelectPermissionsEntity,
+  ccm_alActivateFilePermissionsSelector,
+  ccm_alSetupVersionSelector,
+  ccm_alDeleteFiles,
+  ccm_alDuplicateFiles,
+  ccm_alSetupSelectFiles,
+  ccm_alSetupCheckboxes,
+  ccm_alSetupFileSetSearch,
+  ccm_alGetSelectedFileIDs,
+  ccm_alRescanMultiFileMenu,
+  ccm_alSetupFileProcessor,
+  ccm_alSubmitSingle,
+  ccm_alResetSingle,
+  ccm_filesUploadedDialog,
+  ccm_alSetupUploadDetailsForm,
+  ccm_alSubmitUploadDetailsForm,
+  ccm_alRefresh,
+  ccm_alHighlightFileIDArray,
+  ccm_alSelectFile,
+  ccm_alActivateMenu,
+  ccm_alSelectNone,
   toggleCheckboxStatus,
-  cm_alDuplicateFile,
-  cm_alSelectMultipleIncomingFiles,
-  cm_starFile,
+  ccm_alDuplicateFile,
+  ccm_alSelectMultipleIncomingFiles,
+  ccm_starFile,
 };
 
 export default FileManager;

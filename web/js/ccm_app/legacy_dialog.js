@@ -1,8 +1,13 @@
+/* global Krete */
+import $ from 'jquery';
+
+const { CCM_TOOLS_PATH, CCM_IMAGE_PATH } = window;
+
 $.widget.bridge('jqdialog', $.ui.dialog);
 
 // wrap our old dialog function in the new dialog() function.
-jQuery.fn.dialog = function () {
-  // Pass this over to jQuery UI Dialog in a few circumstances
+$.fn.dialog = function () {
+  // Pass this over to $ UI Dialog in a few circumstances
   if (arguments.length > 0) {
     $(this).jqdialog(arguments[0], arguments[1], arguments[2]);
     return;
@@ -34,27 +39,29 @@ jQuery.fn.dialog = function () {
         onDestroy,
         onClose,
       };
-      jQuery.fn.dialog.open(obj);
+      $.fn.dialog.open(obj);
       return false;
     });
   });
 };
 
-jQuery.fn.dialog.close = function (num) {
+$.fn.dialog.close = function (num) {
   num++;
   $('#ccm-dialog-content' + num).jqdialog('close');
 };
 
-jQuery.fn.dialog.open = function (obj) {
-  jQuery.fn.dialog.showLoader();
-  if (ccm_uiLoaded) {
+$.fn.dialog.open = function (obj) {
+  let w;
+  let h;
+  $.fn.dialog.showLoader();
+  if (Krete.uiLoaded) {
     ccm_hideMenus();
   }
   let nd = $('.ui-dialog').length;
   nd++;
   $('body').append('<div id="ccm-dialog-content' + nd + '" style="display: none"></div>');
 
-  if (typeof (obj.width) == 'string') {
+  if (typeof (obj.width) === 'string') {
     if (obj.width.indexOf('%', 0) > 0) {
       w = obj.width.replace('%', '');
       w = $(window).width() * (w / 100);
@@ -81,49 +88,41 @@ jQuery.fn.dialog.open = function (obj) {
     h = $(window).height();
   }
   $('#ccm-dialog-content' + nd).jqdialog({
-    'modal': true,
-    'height': h,
-    'width': w,
+    modal: true,
+    height: h,
+    width: w,
     show: {
       effect: 'fade',
       duration: 150,
       easing: 'easeInExpo',
     },
-    'escapeClose': true,
-    'title': obj.title,
-    /*
-    // no hide because it causes problems when closing and opening in rapid succession
-    hide: {
-    effect: 'fade',
-    duration: 75,
-    easing: 'easeOutExpo'
-    },*/
-
-    'open': function () {
+    escapeClose: true,
+    title: obj.title,
+    open() {
       const nd = $('.ui-dialog').length;
       if (nd == 1) {
         $('body').attr('data-last-overflow', $('body').css('overflow'));
         $('body').css('overflow', 'hidden');
       }
     },
-    'beforeClose': function () {
+    beforeClose() {
       const nd = $('.ui-dialog').length;
       if (nd == 1) {
         $('body').css('overflow', $('body').attr('data-last-overflow'));
       }
     },
-    'close': function (ev, u) {
+    close(ev, u) {
       $(this).jqdialog('destroy').remove();
       $('#ccm-dialog-content' + nd).remove();
-      if (typeof obj.onClose != 'undefined') {
-        if ((typeof obj.onClose) == 'function') {
+      if (typeof obj.onClose !== 'undefined') {
+        if ((typeof obj.onClose) === 'function') {
           obj.onClose();
         } else {
           eval(obj.onClose);
         }
       }
-      if (typeof obj.onDestroy != 'undefined') {
-        if ((typeof obj.onDestroy) == 'function') {
+      if (typeof obj.onDestroy !== 'undefined') {
+        if ((typeof obj.onDestroy) === 'function') {
           obj.onDestroy();
         } else {
           eval(obj.onDestroy);
@@ -138,11 +137,11 @@ jQuery.fn.dialog.open = function (obj) {
       type: 'GET',
       url: obj.href,
       success(r) {
-        jQuery.fn.dialog.hideLoader();
-        jQuery.fn.dialog.replaceTop(r);
+        $.fn.dialog.hideLoader();
+        $.fn.dialog.replaceTop(r);
 
-        if (typeof obj.onOpen != 'undefined') {
-          if ((typeof obj.onOpen) == 'function') {
+        if (typeof obj.onOpen !== 'undefined') {
+          if ((typeof obj.onOpen) === 'function') {
             obj.onOpen();
           } else {
             eval(obj.onOpen);
@@ -151,10 +150,10 @@ jQuery.fn.dialog.open = function (obj) {
       },
     });
   } else {
-    jQuery.fn.dialog.hideLoader();
-    jQuery.fn.dialog.replaceTop($(obj.element));
-    if (typeof obj.onOpen != 'undefined') {
-      if ((typeof obj.onOpen) == 'function') {
+    $.fn.dialog.hideLoader();
+    $.fn.dialog.replaceTop($(obj.element));
+    if (typeof obj.onOpen !== 'undefined') {
+      if ((typeof obj.onOpen) === 'function') {
         obj.onOpen();
       } else {
         eval(obj.onOpen);
@@ -163,7 +162,7 @@ jQuery.fn.dialog.open = function (obj) {
   }
 };
 
-jQuery.fn.dialog.replaceTop = function (r) {
+$.fn.dialog.replaceTop = function (r) {
   const nd = $('.ui-dialog').length;
   if (typeof (r) == 'string') {
     $('#ccm-dialog-content' + nd).html(r);
@@ -177,7 +176,7 @@ jQuery.fn.dialog.replaceTop = function (r) {
   $('#ccm-dialog-content' + nd + ' .dialog-launch').dialog();
   $('#ccm-dialog-content' + nd + ' .ccm-dialog-close').click((event) => {
     event.preventDefault();
-    jQuery.fn.dialog.closeTop();
+    $.fn.dialog.closeTop();
   });
   if ($('#ccm-dialog-content' + nd + ' .dialog-buttons').length > 0) {
     $('#ccm-dialog-content' + nd).jqdialog('option', 'buttons', [{}]);
@@ -210,7 +209,7 @@ jQuery.fn.dialog.replaceTop = function (r) {
   }
 };
 
-jQuery.fn.dialog.showLoader = function (text) {
+$.fn.dialog.showLoader = function (text) {
   if (typeof (imgLoader) == 'undefined' || !imgLoader || !imgLoader.src) return false;
   if ($('#ccm-dialog-loader').length < 1) {
     $('body').append("<div id='ccm-dialog-loader-wrapper' class='ccm-ui'><img id='ccm-dialog-loader' src='" + imgLoader.src + "' /></div>");// add loader to the page
@@ -230,24 +229,24 @@ jQuery.fn.dialog.showLoader = function (text) {
   // $('#ccm-dialog-loader-wrapper').fadeTo('slow', 0.2);
 };
 
-jQuery.fn.dialog.hideLoader = function () {
+$.fn.dialog.hideLoader = function () {
   $('#ccm-dialog-loader-wrapper').hide();
   $('#ccm-dialog-loader-text').remove();
 };
 
-jQuery.fn.dialog.closeTop = function () {
+$.fn.dialog.closeTop = function () {
   const nd = $('.ui-dialog').length;
   $('#ccm-dialog-content' + nd).jqdialog('close');
 };
 
-jQuery.fn.dialog.closeAll = function () {
+$.fn.dialog.closeAll = function () {
   $($('.ui-dialog-content').get().reverse()).jqdialog('close');
 };
 
 
 let imgLoader;
 const ccm_dialogOpen = 0;
-jQuery.fn.dialog.loaderImage = CCM_IMAGE_PATH + '/throbber_white_32.gif';
+$.fn.dialog.loaderImage = CCM_IMAGE_PATH + '/throbber_white_32.gif';
 
 const ccmAlert = {
   notice(title, message, onCloseFn) {
@@ -292,5 +291,5 @@ const ccmAlert = {
 
 $(document).ready(() => {
   imgLoader = new Image();// preload image
-  imgLoader.src = jQuery.fn.dialog.loaderImage;
+  imgLoader.src = $.fn.dialog.loaderImage;
 });

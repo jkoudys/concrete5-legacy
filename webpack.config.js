@@ -15,10 +15,13 @@ const output = {
   path: './web/js',
 };
 
+const plugins = [];
 
 if (target === 'base') {
   entry.push(
-    'babel-polyfill'
+    'babel-polyfill',
+    'whatwg-fetch',
+    './web/js/ccm_base'
   );
   output.filename = 'ccm.base.js';
 } else {
@@ -51,7 +54,7 @@ module.exports = Object.assign({
   },
 }, PROD && {
   // Modify config if production build or not
-  plugins: baseConfig.plugins.concat([
+  plugins: plugins.concat([
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.DefinePlugin({
