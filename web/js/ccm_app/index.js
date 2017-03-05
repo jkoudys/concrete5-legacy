@@ -32,3 +32,9 @@ Object.assign(window, {
   ...Themes,
   ...Composer,
 });
+
+// require leaves us in the global scope, so we can include only the jqueryui widgets we need.
+require('jquery-ui/ui/widgets/dialog');
+require('./jquery.hoverIntent');
+require('../bootstrap');
+require('./legacy_dialog');

@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-const { CCM_TOOLS_PATH, CCM_DISPATCHER_FILENAME, CCM_STAR_STATES, CCM_STAR_ACTION } = window;
+// const { CCM_TOOLS_PATH, CCM_DISPATCHER_FILENAME, CCM_STAR_STATES, CCM_STAR_ACTION } = window;
 
 const ccm_alDebug = false;
 const ccm_alLaunchType = [];
