@@ -8,24 +8,26 @@ const target = process.env.TARGET;
 
 const presets = ['babel-preset-es2015', 'babel-preset-es2017', 'babel-preset-stage-2'].map(require.resolve);
 
-const appDir = '../web/js/ccm_app';
+const appDir = './web/js/ccm_app';
 
 const entry = [];
 const output = {
-  path: '../web/js',
+  path: './web/js',
 };
 
+const plugins = [];
 
 if (target === 'base') {
   entry.push(
-    'babel-polyfill'
+    'babel-polyfill',
+    'whatwg-fetch',
+    './web/js/ccm_base'
   );
   output.filename = 'ccm.base.js';
 } else {
   entry.push(
     `${appDir}`,
     `${appDir}/jquery.colorpicker.js`,
-    `${appDir}/jquery.hoverIntent.js`,
     `${appDir}/jquery.liveupdate.js`,
     `${appDir}/jquery.metadata.js`,
     `${appDir}/jquery.cookie.js`,
@@ -51,7 +53,7 @@ module.exports = Object.assign({
   },
 }, PROD && {
   // Modify config if production build or not
-  plugins: baseConfig.plugins.concat([
+  plugins: plugins.concat([
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.DefinePlugin({

@@ -4,18 +4,19 @@
 import $ from 'jquery';
 
 const ccm_searchActivatePostFunction = [];
+let totalAdvancedSearchFields = 0;
 
 function ccm_setupAdvancedSearchFields(searchType) {
-  ccm_totalAdvancedSearchFields = $('.ccm-search-request-field-set').length;
+  totalAdvancedSearchFields = $('.ccm-search-request-field-set').length;
   $('#ccm-' + searchType + '-search-add-option').unbind();
   $('#ccm-' + searchType + '-search-add-option').click(() => {
-    ccm_totalAdvancedSearchFields++;
+    totalAdvancedSearchFields++;
     if ($('#ccm-search-fields-wrapper').length > 0) {
-      $('#ccm-search-fields-wrapper').append('<div class="ccm-search-field" id="ccm-' + searchType + '-search-field-set' + ccm_totalAdvancedSearchFields + '">' + $('#ccm-search-field-base').html() + '<\/div>');
+      $('#ccm-search-fields-wrapper').append('<div class="ccm-search-field" id="ccm-' + searchType + '-search-field-set' + totalAdvancedSearchFields + '">' + $('#ccm-search-field-base').html() + '<\/div>');
     } else {
-      $('#ccm-' + searchType + '-search-advanced-fields').append('<tr class="ccm-search-field" id="ccm-' + searchType + '-search-field-set' + ccm_totalAdvancedSearchFields + '">' + $('#ccm-search-field-base').html() + '<\/tr>');
+      $('#ccm-' + searchType + '-search-advanced-fields').append('<tr class="ccm-search-field" id="ccm-' + searchType + '-search-field-set' + totalAdvancedSearchFields + '">' + $('#ccm-search-field-base').html() + '<\/tr>');
     }
-    ccm_activateAdvancedSearchFields(searchType, ccm_totalAdvancedSearchFields);
+    ccm_activateAdvancedSearchFields(searchType, totalAdvancedSearchFields);
   });
 
   // we have to activate any of the fields that were here based on the request
@@ -180,8 +181,6 @@ function ccm_activateAdvancedSearchFields(searchType, fieldset) {
   $('#ccm-' + searchType + '-search-field-set' + fieldset + ' .ccm-search-remove-option').click(function () {
     $(this).parents('div.ccm-search-field').remove();
     $(this).parents('tr.ccm-search-field').remove();
-
-    // ccm_totalAdvancedSearchFields--;
   });
 
   ccm_checkSelectedAdvancedSearchField(searchType, fieldset);

@@ -117,7 +117,7 @@ function ccm_setupTrickleUpNewsflowStyles() {
 
 function ccm_showDashboardNewsflowWelcome() {
   $.fn.dialog.showLoader(ccmi18n.newsflowLoading);
-  ccm_showNewsflowOverlayWindow(CCM_DISPATCHER_FILENAME + '/dashboard/home?_ccm_dashboard_external=1', () => {
+  ccm_showNewsflowOverlayWindow(`${CCM_DISPATCHER_FILENAME}/dashboard/home?_ccm_dashboard_external=1`, () => {
     $.fn.dialog.hideLoader();
   });
 }

@@ -1,5 +1,4 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
 $v = View::getInstance();
 $c = $v->getCollectionObject();
 if (is_object($c)) {
@@ -57,16 +56,20 @@ if (defined('APP_VERSION_DISPLAY_IN_HEADER') && APP_VERSION_DISPLAY_IN_HEADER) {
 }
 
 $u = new User();
+
+$exports = [
+    'CCM_EDIT_MODE' => $c->isEditMode(),
+    'CCM_ARRANGE_MODE' => $c->isArrangeMode(),
+    'CCM_DISPATCHER_FILENAME' => DIR_REL . '/' . DISPATCHER_FILENAME,
+    'CCM_CID' => $cID ?? 0,
+    'CCM_IMAGE_PATH' => ASSETS_URL_IMAGES,
+    'CCM_TOOLS_PATH' => REL_DIR_FILES_TOOLS_REQUIRED,
+    'CCM_BASE_URL' => BASE_URL,
+    'CCM_REL' => DIR_REL,
+];
 ?>
 <script type="text/javascript">
-let CCM_EDIT_MODE = <?= json_encode($c->isEditMode()) ?>;
-const CCM_ARRANGE_MODE = <?= json_encode($c->isArrangeMode()) ?>;
-const CCM_DISPATCHER_FILENAME = '<?= DIR_REL . '/' . DISPATCHER_FILENAME ?>';
-const CCM_CID = <?= $cID ?? 0 ?>;
-const CCM_IMAGE_PATH = '<?= ASSETS_URL_IMAGES ?>';
-const CCM_TOOLS_PATH = '<?= REL_DIR_FILES_TOOLS_REQUIRED ?>';
-const CCM_BASE_URL = '<?= BASE_URL ?>';
-const CCM_REL = '<?= DIR_REL ?>';
+Object.assign(window, <?= json_encode($exports) ?>);
 </script>
 
 <?php
@@ -109,10 +112,6 @@ if (is_object($cp)) {
 
     if ($v->areLinksDisabled()) {
         $v->addHeaderItem('<script type="text/javascript">window.onload = function() {ccm_disableLinks()}</script>', 'CORE');
-    }
-    $cih = Loader::helper('concrete/interface');
-    if ($cih->showNewsflowOverlay()) {
-        $v->addFooterItem('<script type="text/javascript">$(function() { ccm_showDashboardNewsflowWelcome(); });</script>');
     }
 }
 
