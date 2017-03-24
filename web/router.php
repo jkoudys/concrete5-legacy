@@ -2,12 +2,8 @@
 
 // figure out where we need to go
 $req = Request::get();
-if ($req->getRequestCollectionPath() != '') {
-    if (ENABLE_LEGACY_CONTROLLER_URLS) {
-        $c = Page::getByPath($req->getRequestCollectionPath(), 'ACTIVE');
-    } else {
-        $c = $req->getRequestedPage();
-    }
+if ($req->getRequestCollectionPath() !== '') {
+    $c = $req->getRequestedPage();
 } else {
     $c = Page::getByID($req->getRequestCollectionID(), 'ACTIVE');
 }
@@ -112,4 +108,3 @@ if (STATISTICS_TRACK_PAGE_VIEWS == 1) {
 
 $v = View::getInstance();
 $v->render($c);
-

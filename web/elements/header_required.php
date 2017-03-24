@@ -75,7 +75,6 @@ Object.assign(window, <?= json_encode($exports) ?>);
 <?php
 $html = Loader::helper('html');
 $v->addHeaderItem($html->css('ccm.base.css'), 'CORE');
-$v->addHeaderItem($html->javascript('jquery.js'), 'CORE');
 $v->addHeaderItem($html->javascript('ccm.base.js', false), 'CORE');
 
 $favIconFID=intval(Config::get('FAVICON_FID'));

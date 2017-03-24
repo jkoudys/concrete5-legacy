@@ -31,7 +31,7 @@ if (target === 'base') {
     `${appDir}/jquery.liveupdate.js`,
     `${appDir}/jquery.metadata.js`,
     `${appDir}/jquery.cookie.js`,
-    `${appDir}/layouts.js`,
+    `${appDir}/layouts.js`
   );
 
   output.filename = 'ccm.app.js';
