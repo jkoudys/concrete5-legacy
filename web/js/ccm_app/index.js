@@ -37,8 +37,10 @@ Object.assign(window, {
 require('jquery-ui/ui/widgets/dialog');
 require('jquery-ui/ui/widgets/droppable');
 require('jquery-ui/ui/widgets/datepicker');
+require('./jquery.rating');
 require('./jquery.hoverIntent');
 require('chosen-js');
 require('../jquery.form');
 require('../bootstrap');
 require('./legacy_dialog');
+require('./dashboard');

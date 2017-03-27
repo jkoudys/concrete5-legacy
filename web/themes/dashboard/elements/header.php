@@ -36,13 +36,9 @@ if (!isset($enableEditing) || $enableEditing == false) {
 
 // Required JavaScript
 
-$v->addFooterItem($html->javascript('jquery.ui.js'));
-$v->addFooterItem($html->javascript('jquery.form.js'));
-$v->addFooterItem($html->javascript('jquery.rating.js'));
 $v->addFooterItem('<script type="text/javascript" src="'.REL_DIR_FILES_TOOLS_REQUIRED.'/i18n_js"></script>');
 $v->addFooterItem($html->javascript('bootstrap.js'));
 $v->addHeaderItem($html->javascript('ccm.app.js'));
-$v->addFooterItem($html->javascript('ccm.dashboard.js'));
 $v->addFooterItem(Loader::helper('html')->javascript('tiny_mce/tiny_mce.js'));
 
 if (ENABLE_PROGRESSIVE_PAGE_REINDEX && Config::get('DO_PAGE_REINDEX_CHECK')) {

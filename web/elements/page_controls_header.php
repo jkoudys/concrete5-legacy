@@ -29,10 +29,6 @@ if (!$dh->inDashboard($c)) {
 	$this->addFooterItem('<div id="ccm-page-controls-wrapper"><div id="ccm-toolbar"></div></div>');
 
 	$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>');
-	$this->addHeaderItem($html->javascript('jquery.js'));
-	$this->addFooterItem($html->javascript('jquery.ui.js'));
-	$this->addFooterItem($html->javascript('jquery.form.js'));
-	$this->addFooterItem($html->javascript('jquery.rating.js'));
 	$this->addFooterItem($html->javascript('bootstrap.js'));
 	$this->addFooterItem($html->javascript('ccm.app.js'));
 	if (ENABLE_PROGRESSIVE_PAGE_REINDEX && Config::get('DO_PAGE_REINDEX_CHECK')) {

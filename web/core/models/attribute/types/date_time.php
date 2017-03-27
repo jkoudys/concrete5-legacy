@@ -89,12 +89,10 @@ class Concrete5_Controller_AttributeType_DateTime extends AttributeTypeControlle
                 break;
             case 'date':
                 $this->addHeaderItem($html->css('jquery.ui.css'));
-                $this->addHeaderItem($html->javascript('jquery.ui.js'));
                 print $dt->date($this->field('value'), $caValue);
                 break;
             default:
                 $this->addHeaderItem($html->css('jquery.ui.css'));
-                $this->addHeaderItem($html->javascript('jquery.ui.js'));
                 print $dt->datetime($this->field('value'), $caValue);
                 break;
         }

@@ -89,7 +89,6 @@ class Concrete5_Controller_Block_Form extends BlockController
     {
         if ($this->viewRequiresJqueryUI()) {
             $this->addHeaderItem(Loader::helper('html')->css('jquery.ui.css'));
-            $this->addFooterItem(Loader::helper('html')->javascript('jquery.ui.js'));
         }
     }
 
