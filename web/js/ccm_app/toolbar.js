@@ -35,7 +35,7 @@ const Toolbar = {
     const accepter = $('#ccm-nav-dashboard');
     const title = l.parent().parent().parent().find('h3');
     title.css('display', 'inline');
-    title.effect('transfer', { to: accepter, 'easing': 'easeOutExpo' }, 600);
+    title.effect('transfer', { to: accepter }, 600);
     $.get(CCM_TOOLS_PATH + '/dashboard/add_to_quick_nav', {
       'cID': cID,
       'token': token,
@@ -51,8 +51,8 @@ const Toolbar = {
   ccm_hideToolbarMenus() {
     $('.ccm-system-nav-selected').removeClass('ccm-system-nav-selected');
     $('.ccm-system-nav-selected').removeClass('ccm-system-nav-selected');
-    $('#ccm-edit-overlay').fadeOut(90, 'easeOutExpo');
-    $('#ccm-dashboard-overlay').fadeOut(90, 'easeOutExpo');
+    $('#ccm-edit-overlay').fadeOut(90);
+    $('#ccm-dashboard-overlay').fadeOut(90);
     clearTimeout(ccm_hideToolbarMenusTimer);
   },
 
@@ -66,7 +66,7 @@ const Toolbar = {
       $('.ccm-system-nav-selected').removeClass('ccm-system-nav-selected');
       $(this).parent().addClass('ccm-system-nav-selected');
       if ($('#ccm-dashboard-overlay').is(':visible')) {
-        $('#ccm-dashboard-overlay').fadeOut(90, 'easeOutExpo');
+        $('#ccm-dashboard-overlay').fadeOut(90);
         $(window).unbind('click.dashboard-nav');
       }
     });
@@ -85,22 +85,22 @@ const Toolbar = {
       $('.ccm-system-nav-selected').removeClass('ccm-system-nav-selected');
       $(this).parent().addClass('ccm-system-nav-selected');
       $('#ccm-nav-intelligent-search').val('');
-      $('#ccm-intelligent-search-results').fadeOut(90, 'easeOutExpo');
+      $('#ccm-intelligent-search-results').fadeOut(90);
 
       if ($('#ccm-edit-overlay').is(':visible')) {
-        $('#ccm-edit-overlay').fadeOut(90, 'easeOutExpo');
+        $('#ccm-edit-overlay').fadeOut(90);
         $(window).unbind('click.ccm-edit');
       }
 
       /* if ($('#ccm-dashboard-overlay').is(':visible')) {
         $(".ccm-system-nav-selected").removeClass('ccm-system-nav-selected');
-        $('#ccm-dashboard-overlay').fadeOut(90, 'easeOutExpo');
+        $('#ccm-dashboard-overlay').fadeOut(90);
         $(window).unbind('click.dashboard-nav');
         } else {*/
-      $('#ccm-dashboard-overlay').fadeIn(160, 'easeOutExpo');
+      $('#ccm-dashboard-overlay').fadeIn(160);
       $(window).bind('click.dashboard-nav', () => {
         $('.ccm-system-nav-selected').removeClass('ccm-system-nav-selected');
-        $('#ccm-dashboard-overlay').fadeOut(90, 'easeOutExpo');
+        $('#ccm-dashboard-overlay').fadeOut(90);
         $(window).unbind('click.dashboard-nav');
       });
       // }
@@ -182,16 +182,16 @@ const Toolbar = {
       $('.ccm-system-nav-selected').removeClass('ccm-system-nav-selected');
       $(this).parent().addClass('ccm-system-nav-selected');
       $('#ccm-nav-intelligent-search').val('');
-      $('#ccm-intelligent-search-results').fadeOut(90, 'easeOutExpo');
+      $('#ccm-intelligent-search-results').fadeOut(90);
 
       if ($('#ccm-dashboard-overlay').is(':visible')) {
-        $('#ccm-dashboard-overlay').fadeOut(90, 'easeOutExpo');
+        $('#ccm-dashboard-overlay').fadeOut(90);
         $(window).unbind('click.dashboard-nav');
       }
 
       /* if ($('#ccm-edit-overlay').is(':visible')) {
         $(".ccm-system-nav-selected").removeClass('ccm-system-nav-selected');
-        $('#ccm-edit-overlay').fadeOut(90, 'easeOutExpo');
+        $('#ccm-edit-overlay').fadeOut(90);
         $(window).unbind('click.ccm-edit');
         } else {*/
       setTimeout("$('#ccm-check-in-comments').focus();", 300);
@@ -214,7 +214,7 @@ const Toolbar = {
         posX = posX - 20; // BACK it up!
       }
       $('#ccm-edit-overlay').css('left', posX + 'px');
-      $('#ccm-edit-overlay').fadeIn(160, 'easeOutExpo', function () {
+      $('#ccm-edit-overlay').fadeIn(160, function () {
         $(this).find('a').click(() => {
           ccm_toolbarCloseEditMenu();
         });
@@ -230,7 +230,7 @@ const Toolbar = {
 
   ccm_toolbarCloseEditMenu() {
     $('.ccm-system-nav-selected').removeClass('ccm-system-nav-selected');
-    $('#ccm-edit-overlay').fadeOut(90, 'easeOutExpo');
+    $('#ccm-edit-overlay').fadeOut(90);
     $(window).unbind('click.ccm-edit');
   },
 

@@ -155,14 +155,15 @@ const UI = {
 
     if (!bobj) {
       // create the 1st instance of the menu
-      el = document.createElement('DIV');
-      el.id = 'ccm-block-menu' + obj.bID + '-' + obj.aID;
-      el.className = 'ccm-menu ccm-ui';
-      el.style.display = 'block';
-      el.style.visibility = 'hidden';
+      const el = Object.assign(document.createElement('DIV'), {
+        id: `ccm-block-menu${obj.bID}-${obj.aID}`,
+        className: 'ccm-menu ccm-ui',
+      });
+      Object.assign(el.style, { display: 'block', visibility: 'hidden' });
+
       document.body.appendChild(el);
 
-      bobj = $('#ccm-block-menu' + obj.bID + '-' + obj.aID);
+      bobj = $(`#ccm-block-menu${obj.bID}-${obj.aID}`);
       bobj.css('position', 'absolute');
 
       // contents of menu
@@ -290,11 +291,15 @@ const UI = {
 
       if (!aobj) {
         // create the 1st instance of the menu
-        el = document.createElement('DIV');
-        el.id = 'ccm-area-menu' + obj.aID;
-        el.className = 'ccm-menu ccm-ui';
-        el.style.display = 'block';
-        el.style.visibility = 'hidden';
+        const el = Object.assign(document.createElement('DIV'), {
+          id: `ccm-area-menu${obj.aID}`,
+          className: `ccm-menu ccm-ui`,
+        });
+        Object.assign(el.style, {
+          display: 'block',
+          visibility: 'hidden',
+        });
+
         document.body.appendChild(el);
 
         aobj = $('#ccm-area-menu' + obj.aID);
@@ -502,25 +507,23 @@ const UI = {
       $(ccm_selectedDomID).removeClass('ccm-menu-hotspot-active');
     }
 
-    aobj = $(domID);
+    const aobj = $(domID);
     aobj.addClass('ccm-menu-hotspot-active');
     ccm_selectedDomID = domID;
 
-    offs = aobj.offset();
+    const { top, left } = aobj.offset();
 
-    $('#ccm-highlighter').hide();
-
-    $('#ccm-highlighter').css('width', aobj.outerWidth());
-    $('#ccm-highlighter').css('height', aobj.outerHeight());
-    $('#ccm-highlighter').css('top', offs.top);
-    $('#ccm-highlighter').css('left', offs.left);
-    $('#ccm-highlighter').fadeIn(120, 'easeOutExpo');
     /*
        $("#ccmMenuHighlighter").mouseover(
        function() {clearTimeout(ccm_deactivateTimer)}
        );
        */
-    $('#ccm-highlighter').mouseout((e) => {
+
+    $('#ccm-highlighter')
+    .hide()
+    .css({ top, left, width: aobj.outerWidth(), height: aobj.outerHeight() })
+    .fadeIn(120)
+    .mouseout((e) => {
       if (!ccm_activeMenu) {
         if (!e.target) {
           ccm_hideHighlighter();
@@ -528,18 +531,17 @@ const UI = {
           ccm_hideHighlighter();
         }
       }
-    });
-
-    $('#ccm-highlighter').unbind('click');
-    $('#ccm-highlighter').click(
+    })
+    .unbind('click')
+    .click(
       (e) => {
         switch (obj.type) {
-                case 'BLOCK':
-                        ccm_showBlockMenu(obj, e);
-                        break;
-                case 'AREA':
-                        ccm_showAreaMenu(obj, e);
-                        break;
+        case 'BLOCK':
+          ccm_showBlockMenu(obj, e);
+          break;
+        case 'AREA':
+          ccm_showAreaMenu(obj, e);
+          break;
         }
       }
     );
@@ -884,10 +886,10 @@ const UI = {
     const pane = $(obj).parent().find('div.ccm-pane-options-content');
     if ($(obj).hasClass('ccm-icon-option-closed')) {
       $(obj).removeClass('ccm-icon-option-closed').addClass('ccm-icon-option-open');
-      pane.slideDown('fast', 'easeOutExpo');
+      pane.slideDown();
     } else {
       $(obj).removeClass('ccm-icon-option-open').addClass('ccm-icon-option-closed');
-      pane.slideUp('fast', 'easeOutExpo');
+      pane.slideUp();
     }
   },
 

@@ -3,7 +3,7 @@ import $ from 'jquery';
 const { CCM_TOOLS_PATH } = window;
 
 ccm_closeDashboardPane = function (r) {
-  $(r).closest('div.ccm-pane').fadeOut(120, 'easeOutExpo');
+  $(r).closest('div.ccm-pane').fadeOut(120);
 };
 
 ccm_getDashboardBackgroundImageData = function (image, display) {
@@ -12,15 +12,19 @@ ccm_getDashboardBackgroundImageData = function (image, display) {
   }, (r) => {
     if (r && display) {
       let html = '<div>';
-      html += '<strong>' + r.title + '</strong> ' + ccmi18n.authoredBy + ' ';
+      html += `<strong>${r.title}</strong> ${ccmi18n.authoredBy} `;
       if (r.link) {
-        html += '<a target="_blank" href="' + r.link + '">' + r.author + '</a>';
+        html += `<a target="_blank" href="${r.link}">${r.author}</a>`;
       } else {
         html += r.author;
       }
-      $('<div id="ccm-dashboard-image-caption" class="ccm-ui"/>').html(html).appendTo(document.body).show();
+      $('<div id="ccm-dashboard-image-caption" class="ccm-ui"/>')
+      .html(html)
+      .appendTo(document.body)
+      .show();
+
       setTimeout(() => {
-        $('#ccm-dashboard-image-caption').fadeOut(1000, 'easeOutExpo');
+        $('#ccm-dashboard-image-caption').fadeOut(1000);
       }, 5000);
     }
   });

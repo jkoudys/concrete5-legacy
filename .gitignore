@@ -40,7 +40,9 @@ error_log
 /.buildpath
 
 # ignore JavaScript source maps
-/web/concrete/js/*.js.map
+/web/js/*.js.map
+/web/js/ccm.app.js
+/web/js/ccm.base.js
 
 # ignore node modules used for building
 /build/node_modules

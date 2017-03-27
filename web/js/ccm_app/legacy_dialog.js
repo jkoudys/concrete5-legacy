@@ -18,28 +18,17 @@ $.fn.dialog = function () {
   // LEGACY SUPPORT
   return $(this).each(function () {
     $(this).unbind('click.make-dialog').bind('click.make-dialog', function (e) {
-      const href = $(this).attr('href');
-      const width = $(this).attr('dialog-width');
-      const height = $(this).attr('dialog-height');
-      const title = $(this).attr('dialog-title');
-      const onOpen = $(this).attr('dialog-on-open');
-      const onDestroy = $(this).attr('dialog-on-destroy');
-      /*
-       * no longer necessary. we auto detect
-       var appendButtons = $(this).attr('dialog-append-buttons');
-       */
-      const onClose = $(this).attr('dialog-on-close');
-      obj = {
+      $.fn.dialog.open({
         modal: true,
-        href,
-        width,
-        height,
-        title,
-        onOpen,
-        onDestroy,
-        onClose,
-      };
-      $.fn.dialog.open(obj);
+        href: $(this).attr('href'),
+        width: $(this).attr('dialog-width'),
+        height: $(this).attr('dialog-height'),
+        title: $(this).attr('dialog-title'),
+        onOpen: $(this).attr('dialog-on-open'),
+        onDestroy: $(this).attr('dialog-on-destroy'),
+        onClose: $(this).attr('dialog-on-close'),
+      });
+
       return false;
     });
   });
@@ -283,7 +272,7 @@ const ccmAlert = {
 
     if (time > 0) {
       setTimeout(() => {
-        $('#ccm-notification').fadeOut({ easing: 'easeOutExpo', duration: 300 });
+        $('#ccm-notification').fadeOut({ duration: 300 });
       }, time);
     }
   },

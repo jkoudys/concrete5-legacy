@@ -9,11 +9,11 @@ class DeferredEventEmitter extends EventEmitter {
   /**
    * Emit an event if we're active, or queue it up if we're not
    */
-  emit() {
+  emit(...args) {
     if (this.active) {
-      super.emit.apply(this, arguments);
+      super.emit.apply(this, args);
     } else {
-      this.emits.push(arguments);
+      this.emits.push(args);
     }
   }
 
@@ -81,4 +81,31 @@ const Krete = {
 };
 
 // Namespace for c5.6 fork
-Object.assign(window, { Krete });
+Object.assign(window, {
+  Krete,
+  ccm_addHeaderItem(item, type) {
+    const { $ } = window;
+    // "item" might already have a "?v=", so avoid invalid query string.
+    const qschar = (item.indexOf('?') > -1 ? '&ts' : '?ts=');
+    if (type === 'CSS') {
+      if (navigator.userAgent.indexOf('MSIE') > -1) {
+        // Force IE to apply dynamically inserted stylesheet across jQuery versions
+        document.querySelector('head')
+        .appendChild(Object.assign(document.createElement('link'), {
+          type: 'text/css',
+          rel: 'stylesheet',
+          href: item,
+          media: 'screen',
+        }));
+      } else if (!($('head').children(`link[href*="${item}"]`).length)) {
+        $('head').append(`<link rel="stylesheet" media="screen" type="text/css" href="${item}${qschar}${Date.now}" />`);
+      }
+    } else if (type === 'JAVASCRIPT') {
+      if (!($(`script[src*="${item}"]`).length)) {
+        $('head').append(`<script type="text/javascript" src="${item}${qschar}${Date.now()}"></script>`);
+      }
+    } else if (!($('head').children(item).length)) {
+      $('head').append(item);
+    }
+  },
+});

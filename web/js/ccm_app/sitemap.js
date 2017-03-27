@@ -273,7 +273,7 @@ function rescanDisplayOrder(nodeID) {
 function parseSitemapResponse(instanceID, display_mode, select_mode, nodeID, resp) {
   const container = $('ul[tree-root-node-id=' + nodeID + '][sitemap-instance-id=' + instanceID + ']');
   container.html(resp);
-  container.slideDown(150, 'easeOutExpo');
+  container.slideDown(150);
 }
 
 function selectMoveCopyTarget(instanceID, display_mode, select_mode, destCID, origCID) {
@@ -724,7 +724,7 @@ function closeSub(instanceID, nodeID, display_mode, select_mode) {
   const container = $('ul[tree-root-node-id=' + nodeID + '][sitemap-instance-id=' + instanceID + ']');
   if (tr_doAnim) {
     setLoading(nodeID);
-    container.slideUp(150, 'easeOutExpo', () => {
+    container.slideUp(150, () => {
       removeLoading(nodeID);
       container.attr('tree-root-state', 'closed');
       container.html('');

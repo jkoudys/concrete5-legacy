@@ -4,8 +4,8 @@ const { CCM_DISPATCHER_FILENAME, CCM_TOOLS_PATH } = window;
 
 function ccm_closeNewsflow(r) {
   const $ovl = ccm_getNewsflowOverlayWindow();
-  $ovl.fadeOut(300, 'easeOutExpo');
-  $('.ui-widget-overlay').fadeOut(300, 'easeOutExpo', function () {
+  $ovl.fadeOut(300);
+  $('.ui-widget-overlay').fadeOut(300, function () {
     $(this).remove();
   });
 }
@@ -102,7 +102,7 @@ function ccm_showNewsflowOverlayWindow(url, callback) {
     ccm_setNewsflowOverlayDimensions();
     ccm_setupTrickleUpNewsflowStyles();
 
-    $ovl.fadeIn('300', 'easeOutExpo', () => {
+    $ovl.fadeIn('300', () => {
       ccm_setNewsflowPagingArrowHeight();
     });
   });
