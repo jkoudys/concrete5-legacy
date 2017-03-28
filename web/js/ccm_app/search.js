@@ -1,9 +1,10 @@
 /*
  * Search
  */
+/* global window */
 import $ from 'jquery';
 
-const ccm_searchActivatePostFunction = [];
+window.ccm_searchActivatePostFunction = window.ccm_searchActivatePostFunction || [];
 let totalAdvancedSearchFields = 0;
 
 function ccm_setupAdvancedSearchFields(searchType) {
@@ -91,8 +92,8 @@ function ccm_activateSearchResults(searchType) {
   obj.attr('disabled', false);
   ccm_setupInPagePaginationAndSorting(searchType);
   ccm_setupSortableColumnSelection(searchType);
-  if (typeof (ccm_searchActivatePostFunction[searchType]) == 'function') {
-    ccm_searchActivatePostFunction[searchType]();
+  if (typeof (window.ccm_searchActivatePostFunction[searchType]) == 'function') {
+    window.ccm_searchActivatePostFunction[searchType]();
   }
 }
 

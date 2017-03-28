@@ -13,6 +13,7 @@ import UI from './ui';
 import Toolbar from './toolbar';
 import Themes from './themes';
 import Composer from './composer';
+import Dashboard from './dashboard';
 
 Object.assign(window, {
   $,
@@ -31,6 +32,7 @@ Object.assign(window, {
   ...Toolbar,
   ...Themes,
   ...Composer,
+  ...Dashboard,
 });
 
 // require leaves us in the global scope, so we can include only the jqueryui widgets we need.
@@ -43,4 +45,3 @@ require('chosen-js');
 require('../jquery.form');
 require('../bootstrap');
 require('./legacy_dialog');
-require('./dashboard');

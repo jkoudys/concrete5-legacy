@@ -587,17 +587,6 @@ function moveCopyAliasNode(reloadPage) {
   const saveOldPagePath = $('input[name=saveOldPagePath]:checked').val();
   // DO THE DEED
 
-  params = {
-
-    'origCID': origCID,
-    'destCID': destCID,
-    'ctask': ctask,
-    'ccm_token': CCM_SECURITY_TOKEN,
-    'copyAll': copyAll,
-    'saveOldPagePath': saveOldPagePath,
-  };
-
-
   if (copyAll == 1) {
     const dialogTitle = ccmi18n_sitemap.copyProgressTitle;
     ccm_triggerProgressiveOperation(
@@ -611,7 +600,14 @@ function moveCopyAliasNode(reloadPage) {
   } else {
     $.fn.dialog.showLoader();
 
-    $.getJSON(CCM_TOOLS_PATH + '/dashboard/sitemap_drag_request.php', params, (resp) => {
+    $.getJSON(CCM_TOOLS_PATH + '/dashboard/sitemap_drag_request.php', {
+      origCID,
+      destCID,
+      ctask,
+      ccm_token: CCM_SECURITY_TOKEN,
+      copyAll,
+      saveOldPagePath,
+    }, (resp) => {
       // parse response
       ccm_parseJSON(resp, () => {
         $.fn.dialog.closeAll();
@@ -871,7 +867,7 @@ function ccmSitemapLoad(instance_id, display_mode, select_mode, node, selectedPa
 function ccm_sitemapSetupSearch(instance_id) {
   ccm_setupAdvancedSearch(instance_id);
   ccm_sitemapSetupSearchPages(instance_id);
-  ccm_searchActivatePostFunction[instance_id] = function () {
+  window.ccm_searchActivatePostFunction[instance_id] = function () {
     ccm_sitemapSetupSearchPages(instance_id);
     ccm_sitemapSearchSetupCheckboxes(instance_id);
   };
@@ -879,14 +875,14 @@ function ccm_sitemapSetupSearch(instance_id) {
 }
 
 function ccm_sitemapSearchSetupCheckboxes(instance_id) {
-  $('#ccm-' + instance_id + '-list-cb-all').click(function (e) {
+  $(`#ccm-${instance_id}-list-cb-all`).click(function (e) {
     e.stopPropagation();
-    if ($(this).prop('checked') == true) {
-      $('.ccm-list-record td.ccm-' + instance_id + '-list-cb input[type=checkbox]').attr('checked', true);
-      $('#ccm-' + instance_id + '-list-multiple-operations').attr('disabled', false);
+    if ($(this).prop('checked')) {
+      $(`.ccm-list-record td.ccm-${instance_id}-list-cb input[type=checkbox]`).attr('checked', true);
+      $(`#ccm-${instance_id}-list-multiple-operations`).attr('disabled', false);
     } else {
-      $('.ccm-list-record td.ccm-' + instance_id + '-list-cb input[type=checkbox]').attr('checked', false);
-      $('#ccm-' + instance_id + '-list-multiple-operations').attr('disabled', true);
+      $(`.ccm-list-record td.ccm-${instance_id}-list-cb input[type=checkbox]`).attr('checked', false);
+      $(`#ccm-${instance_id}-list-multiple-operations`).attr('disabled', true);
     }
   });
   $('td.ccm-' + instance_id + '-list-cb input[type=checkbox]').click((e) => {
@@ -902,89 +898,89 @@ function ccm_sitemapSearchSetupCheckboxes(instance_id) {
 
   $('#ccm-' + instance_id + '-list-multiple-operations').change(function () {
     const action = $(this).val();
-    cIDstring = '';
+    let cIDstring = '';
     $('td.ccm-' + instance_id + '-list-cb input[type=checkbox]:checked').each(function () {
       cIDstring = cIDstring + '&cID[]=' + $(this).val();
     });
     switch (action) {
-            case 'delete':
-                    $.fn.dialog.open({
-                      width: 500,
-                      height: 400,
-                      modal: false,
-                      appendButtons: true,
-                      href: CCM_TOOLS_PATH + '/pages/delete?' + cIDstring + '&searchInstance=' + instance_id,
-                      title: ccmi18n_sitemap.deletePages,
-                    });
-                    break;
-            case 'design':
-                    $.fn.dialog.open({
-                      width: 610,
-                      height: 405,
-                      modal: false,
-                      appendButtons: true,
-                      href: CCM_TOOLS_PATH + '/pages/design?' + cIDstring + '&searchInstance=' + instance_id,
-                      title: ccmi18n_sitemap.pageDesign,
-                    });
-                    break;
-            case 'move_copy':
-                    $.fn.dialog.open({
-                      width: 640,
-                      height: 340,
-                      modal: false,
-                      href: CCM_TOOLS_PATH + '/sitemap_overlay?instance_id=' + instance_id + '&select_mode=move_copy_delete&' + cIDstring,
-                      title: ccmi18n_sitemap.moveCopyPage,
-                    });
-                    break;
-            case 'speed_settings':
-                    $.fn.dialog.open({
-                      width: 610,
-                      height: 340,
-                      modal: false,
-                      appendButtons: true,
-                      href: CCM_TOOLS_PATH + '/pages/speed_settings?' + cIDstring,
-                      title: ccmi18n_sitemap.speedSettingsTitle,
-                    });
-                    break;
-            case 'permissions':
-                    $.fn.dialog.open({
-                      width: 430,
-                      height: 630,
-                      modal: false,
-                      appendButtons: true,
-                      href: CCM_TOOLS_PATH + '/pages/permissions?' + cIDstring,
-                      title: ccmi18n_sitemap.pagePermissionsTitle,
-                    });
-                    break;
-            case 'permissions_add_access':
-                    $.fn.dialog.open({
-                      width: 440,
-                      height: 200,
-                      modal: false,
-                      appendButtons: true,
-                      href: CCM_TOOLS_PATH + '/pages/permissions_access?task=add&' + cIDstring,
-                      title: ccmi18n_sitemap.pagePermissionsTitle,
-                    });
-                    break;
-            case 'permissions_remove_access':
-                    $.fn.dialog.open({
-                      width: 440,
-                      height: 300,
-                      modal: false,
-                      appendButtons: true,
-                      href: CCM_TOOLS_PATH + '/pages/permissions_access?task=remove&' + cIDstring,
-                      title: ccmi18n_sitemap.pagePermissionsTitle,
-                    });
-                    break;
-            case 'properties':
-                    $.fn.dialog.open({
-                      width: 630,
-                      height: 450,
-                      modal: false,
-                      href: CCM_TOOLS_PATH + '/pages/bulk_metadata_update?' + cIDstring,
-                      title: ccmi18n_sitemap.pagePropertiesTitle,
-                    });
-                    break;
+      case 'delete':
+        $.fn.dialog.open({
+          width: 500,
+          height: 400,
+          modal: false,
+          appendButtons: true,
+          href: CCM_TOOLS_PATH + '/pages/delete?' + cIDstring + '&searchInstance=' + instance_id,
+          title: ccmi18n_sitemap.deletePages,
+        });
+        break;
+      case 'design':
+        $.fn.dialog.open({
+          width: 610,
+          height: 405,
+          modal: false,
+          appendButtons: true,
+          href: CCM_TOOLS_PATH + '/pages/design?' + cIDstring + '&searchInstance=' + instance_id,
+          title: ccmi18n_sitemap.pageDesign,
+        });
+        break;
+      case 'move_copy':
+        $.fn.dialog.open({
+          width: 640,
+          height: 340,
+          modal: false,
+          href: CCM_TOOLS_PATH + '/sitemap_overlay?instance_id=' + instance_id + '&select_mode=move_copy_delete&' + cIDstring,
+          title: ccmi18n_sitemap.moveCopyPage,
+        });
+        break;
+      case 'speed_settings':
+        $.fn.dialog.open({
+          width: 610,
+          height: 340,
+          modal: false,
+          appendButtons: true,
+          href: CCM_TOOLS_PATH + '/pages/speed_settings?' + cIDstring,
+          title: ccmi18n_sitemap.speedSettingsTitle,
+        });
+        break;
+      case 'permissions':
+        $.fn.dialog.open({
+          width: 430,
+          height: 630,
+          modal: false,
+          appendButtons: true,
+          href: CCM_TOOLS_PATH + '/pages/permissions?' + cIDstring,
+          title: ccmi18n_sitemap.pagePermissionsTitle,
+        });
+        break;
+      case 'permissions_add_access':
+        $.fn.dialog.open({
+          width: 440,
+          height: 200,
+          modal: false,
+          appendButtons: true,
+          href: CCM_TOOLS_PATH + '/pages/permissions_access?task=add&' + cIDstring,
+          title: ccmi18n_sitemap.pagePermissionsTitle,
+        });
+        break;
+      case 'permissions_remove_access':
+        $.fn.dialog.open({
+          width: 440,
+          height: 300,
+          modal: false,
+          appendButtons: true,
+          href: CCM_TOOLS_PATH + '/pages/permissions_access?task=remove&' + cIDstring,
+          title: ccmi18n_sitemap.pagePermissionsTitle,
+        });
+        break;
+      case 'properties':
+        $.fn.dialog.open({
+          width: 630,
+          height: 450,
+          modal: false,
+          href: CCM_TOOLS_PATH + '/pages/bulk_metadata_update?' + cIDstring,
+          title: ccmi18n_sitemap.pagePropertiesTitle,
+        });
+        break;
     }
 
     $(this).get(0).selectedIndex = 0;
@@ -992,7 +988,7 @@ function ccm_sitemapSearchSetupCheckboxes(instance_id) {
 }
 
 function ccm_sitemapSetupSearchPages(instance_id) {
-  $('#ccm-' + instance_id + '-list tr').click(function (e) {
+  $(`#ccm-${instance_id}-list tr`).click(function (e) {
     const node = $(this);
     if (node.hasClass('ccm-results-list-header')) {
       return false;
@@ -1010,26 +1006,25 @@ function ccm_sitemapSetupSearchPages(instance_id) {
       const origCID = node.attr('selected-page-id');
       selectMoveCopyTarget(node.attr('sitemap-instance-id'), node.attr('sitemap-display-mode'), node.attr('sitemap-select-mode'), destCID, origCID);
     } else {
-      params = {
-        'cID': node.attr('cID'),
-        'select_mode': node.attr('sitemap-select-mode'),
-        'display_mode': node.attr('sitemap-display-mode'),
-        'instance_id': node.attr('sitemap-instance-id'),
-        'isTrash': node.attr('tree-node-istrash'),
-        'inTrash': node.attr('tree-node-intrash'),
-        'canCompose': node.attr('tree-node-cancompose'),
-        'canEditProperties': node.attr('tree-node-can-edit-properties'),
-        'canEditSpeedSettings': node.attr('tree-node-can-edit-speed-settings'),
-        'canEditPermissions': node.attr('tree-node-can-edit-permissions'),
-        'canEditDesign': node.attr('tree-node-can-edit-design'),
-        'canViewVersions': node.attr('tree-node-can-view-versions'),
-        'canDelete': node.attr('tree-node-can-delete'),
-        'canAddSubpages': node.attr('tree-node-can-add-subpages'),
-        'canAddExternalLinks': node.attr('tree-node-can-add-external-links'),
-        'cNumChildren': node.attr('cNumChildren'),
-        'cAlias': node.attr('cAlias'),
-      };
-      showPageMenu(params, e);
+      showPageMenu({
+        cID: node.attr('cID'),
+        select_mode: node.attr('sitemap-select-mode'),
+        display_mode: node.attr('sitemap-display-mode'),
+        instance_id: node.attr('sitemap-instance-id'),
+        isTrash: node.attr('tree-node-istrash'),
+        inTrash: node.attr('tree-node-intrash'),
+        canCompose: node.attr('tree-node-cancompose'),
+        canEditProperties: node.attr('tree-node-can-edit-properties'),
+        canEditSpeedSettings: node.attr('tree-node-can-edit-speed-settings'),
+        canEditPermissions: node.attr('tree-node-can-edit-permissions'),
+        canEditDesign: node.attr('tree-node-can-edit-design'),
+        canViewVersions: node.attr('tree-node-can-view-versions'),
+        canDelete: node.attr('tree-node-can-delete'),
+        canAddSubpages: node.attr('tree-node-can-add-subpages'),
+        canAddExternalLinks: node.attr('tree-node-can-add-external-links'),
+        cNumChildren: node.attr('cNumChildren'),
+        cAlias: node.attr('cAlias'),
+      }, e);
     }
   });
 }
@@ -1037,18 +1032,16 @@ function ccm_sitemapSetupSearchPages(instance_id) {
 function ccm_sitemapSelectDisplayMode(instance_id, display_mode, select_mode, selectedPageID) {
   // finds the selector for the instance of the sitemap and reloads it to be this mode
 
-  const ul = $('ul[sitemap-instance-id=' + instance_id + ']');
-  ul.html('');
-  ul.attr('sitemap-display-mode', display_mode);
-  ul.attr('sitemap-select-mode', select_mode);
-  ul.attr('sitemap-display-mode', display_mode);
-  if (display_mode == 'explore') {
-    var node = 1;
-  } else {
-    var node = 0;
-  }
+  const ul = $(`ul[sitemap-instance-id=${instance_id}]`)
+  .html('')
+  .attr('sitemap-display-mode', display_mode)
+  .attr('sitemap-select-mode', select_mode)
+  .attr('sitemap-display-mode', display_mode);
+
+  const node = (display_mode === 'explore') ? 1 : 0;
+
   ccmSitemapLoad(instance_id, display_mode, select_mode, node, selectedPageID, () => {
-    if (display_mode == 'explore') {
+    if (display_mode === 'explore') {
       $('div[sitemap-wrapper=1][sitemap-instance-id=' + instance_id + ']').addClass('ccm-sitemap-explore');
     } else {
       $('div[sitemap-wrapper=1][sitemap-instance-id=' + instance_id + ']').removeClass('ccm-sitemap-explore');
