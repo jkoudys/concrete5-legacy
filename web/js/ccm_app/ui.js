@@ -694,12 +694,8 @@ const UI = {
   },
 
   ccm_setupGroupSearch(callback) {
+    const func = callback ? window[callback] : ccm_triggerSelectGroup;
     $('div.ccm-group a').unbind();
-    if (callback) {
-      func = window[callback];
-    } else {
-      func = ccm_triggerSelectGroup;
-    }
 
     $('div.ccm-group a').each(function (i) {
       const gla = $(this);

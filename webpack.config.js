@@ -15,7 +15,9 @@ const output = {
   path: './web/js',
 };
 
-const plugins = [];
+const plugins = [
+  new ExtractTextPlugin({ filename: '../../web/css/ccm.app.css', allChunks: true }),
+];
 
 if (target === 'base') {
   entry.push(
@@ -45,12 +47,16 @@ module.exports = Object.assign({
       test: /\.json$/,
       loader: 'json-loader',
     }, {
+      test: /\.less$/,
+      loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader?-url!less-loader?-relativeUrls' }),
+    }, {
       test: /\.js$/,
       exclude: /(node_modules|bower_components)/,
       loader: 'babel-loader',
       query: { presets },
     }],
   },
+  plugins,
 }, PROD && {
   // Modify config if production build or not
   plugins: plugins.concat([

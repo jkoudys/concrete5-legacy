@@ -25,8 +25,11 @@
     "chosen-js": "^1.6.2",
     "chosen-npm": "^1.4.2",
     "core-js": "git@github.com:zloirock/core-js.git",
+    "css-loader": "^0.27.3",
     "jquery": "^3.1.1",
     "jquery-ui": "^1.12.1",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.2",
     "webpack": "^2.2.1",
     "whatwg-fetch": "^2.0.3"
   }
