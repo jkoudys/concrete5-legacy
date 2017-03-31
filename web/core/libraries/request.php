@@ -460,7 +460,7 @@ class Concrete5_Library_Request
      * Get the current page object
      * @return Page
      */
-    public function getCurrentPage(): Page
+    public function getCurrentPage()
     {
         return $this->currentPage;
     }

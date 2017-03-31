@@ -1,6 +1,4 @@
 <?php
-    defined('C5_EXECUTE') or die('Access Denied.');
-
     $co = Request::get();
     $include = false;
 if ($co->isIncludeRequest()) {

@@ -1,8 +1,7 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
-
 $c = Page::getByID($_REQUEST['cID'], 'RECENT');
 $a = Area::get($c, $_REQUEST['arHandle']);
+
 if (!is_object($a)) {
 	die('Invalid Area');
 }
@@ -44,8 +43,6 @@ if ($isGlobalArea && $_REQUEST['btask'] != 'view_edit_mode') {
 if(($c->isMasterCollection()) && (!in_array($_REQUEST['btask'], array('child_pages','composer','view_edit_mode')))) {
 	echo '<div class="ccm-ui"><div class="alert alert-warning">';
 	echo t('This is a global block.  Editing it here will change all instances of this block throughout the site.');
-	//echo t('This is a global block.  Edit it from the <a href="%s">Global Scrapbook</a> in your dashboard.<br /><br /><br />', View::url('/dashboard/scrapbook/') );
-	//echo '[<a class="ccm-dialog-close">'.t('Close Window').'</a>]';
 	echo '</div></div>';
 }
 
@@ -172,6 +169,6 @@ if (is_object($b)) {
 	}
 }
 
-if ($_REQUEST['btask'] != 'view' && $_REQUEST['btask'] != 'view_edit_mode') {
+if ($_REQUEST['btask'] !== 'view' && $_REQUEST['btask'] !== 'view_edit_mode') {
 	include(DIR_FILES_ELEMENTS_CORE . '/dialog_footer.php');
 }
