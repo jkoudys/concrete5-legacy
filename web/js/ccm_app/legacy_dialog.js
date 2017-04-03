@@ -237,10 +237,10 @@ let imgLoader;
 const ccm_dialogOpen = 0;
 $.fn.dialog.loaderImage = CCM_IMAGE_PATH + '/throbber_white_32.gif';
 
-const ccmAlert = {
+window.ccmAlert = {
   notice(title, message, onCloseFn) {
     $.fn.dialog.open({
-      href: CCM_TOOLS_PATH + '/alert',
+      href: `${CCM_TOOLS_PATH}/alert`,
       title,
       width: 320,
       height: 160,
@@ -264,7 +264,7 @@ const ccmAlert = {
     if (title == null) {
       var messageText = message;
     } else {
-      var messageText = '<h3>' + title + '</h3>' + message;
+      var messageText = `<h3>${title}</h3>${message}`;
     }
     $('#ccm-notification-inner').html('<img id="ccm-notification-icon" src="' + CCM_IMAGE_PATH + '/icons/' + icon + '.png" width="16" height="16" /><div id="ccm-notification-message">' + messageText + '</div>');
 

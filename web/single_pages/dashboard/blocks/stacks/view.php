@@ -1,6 +1,4 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
-
 if ($this->controller->getTask() === 'view_details') {
     $sv = CollectionVersion::get($stack, 'ACTIVE');
 ?>
@@ -37,18 +35,17 @@ if ($this->controller->getTask() === 'view_details') {
 
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($sv->getVersionName(), false, 'span10 offset1', false)?>
     <div class="ccm-pane-options">
-        <div class="btn-group" style="float:left; margin-right: 4px;">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><?=t('Add')?> <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li><a href="javascript:void(0)" onclick="ccm_stacksAddBlock()"><?=t('Block')?></a></li>
-                <li><a dialog-modal="false" dialog-width="550" dialog-height="380" dialog-title="<?=t('Paste From Clipboard')?>" id="stackAddClipboard" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?cID=<?=$stack->getCollectionID()?>&arHandle=<?=STACKS_AREA_NAME?>&atask=paste&addOnly=0"><?=t('Paste From Clipboard')?></a></li>
-            </ul>
-        </div>
+        <a
+            class="btn small ccm-main-nav-edit-option"
+            onclick="ccm_stacksAddBlock()"
+        >
+            <?= t('Add Block')?>
+        </a>
 
         <?php $cpc = new Permissions($stack); ?>
 
         <?php if ($cpc->canEditPageProperties()) { ?>
-            <a class="btn small ccm-main-nav-edit-option"href="<?=$this->action('rename', $stack->getCollectionID())?>"><?=t('Rename')?></a>
+            <a class="btn small ccm-main-nav-edit-option" href="<?=$this->action('rename', $stack->getCollectionID())?>"><?=t('Rename')?></a>
         <?php } ?>
 
         <a class="btn small ccm-main-nav-edit-option" dialog-width="640" dialog-height="340" id="stackVersions" dialog-title="<?=t('Version History')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?rel=SITEMAP&cID=<?=$stack->getCollectionID()?>"><?=t('Version History')?></a>
