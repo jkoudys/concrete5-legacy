@@ -129,7 +129,7 @@ const ccmCustomStyle = {
 
 const UI = {
   ccm_menuInit(obj) {
-    if (CCM_EDIT_MODE && (!CCM_ARRANGE_MODE)) {
+    if (window.CCM_EDIT_MODE && (!window.CCM_ARRANGE_MODE)) {
       switch (obj.type) {
       case 'BLOCK':
         $('#b' + obj.bID + '-' + obj.aID).mouseover((e) => {
