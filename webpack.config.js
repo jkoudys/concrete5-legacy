@@ -21,6 +21,7 @@ const plugins = [
 
 if (target === 'base') {
   entry.push(
+    './polyfills/Object.assign',
     'babel-polyfill',
     'whatwg-fetch',
     './web/js/ccm_base'

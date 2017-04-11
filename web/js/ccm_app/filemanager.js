@@ -6,7 +6,7 @@ const ccm_alDebug = false;
 const ccm_alLaunchType = [];
 let ccm_alActiveAssetField = '';
 let ccm_alProcessorTarget = '';
-let ccm_uploadedFiles = [];
+window.ccm_uploadedFiles = [];
 let checkboxStatus = false;
 
 function ccm_triggerSelectFile(fID, af = ccm_alActiveAssetField) {
@@ -384,19 +384,25 @@ function ccm_alSetupVersionSelector() {
 
 function ccm_alDeleteFiles(searchInstance) {
   $(`#ccm-${searchInstance}-delete-form`).ajaxSubmit((resp) => {
-    ccm_parseJSON(resp, () => {
+    const { error, message } = resp;
+    if (error) {
+      alert(message);
+    } else {
       $.fn.dialog.closeTop();
       ccm_deactivateSearchResults(searchInstance);
       $('#ccm-' + searchInstance + '-advanced-search').ajaxSubmit((resp) => {
         ccm_parseAdvancedSearchResponse(resp, searchInstance);
       });
-    });
+    }
   });
 }
 
 function ccm_alDuplicateFiles(searchInstance) {
   $(`#ccm-${searchInstance}-duplicate-form`).ajaxSubmit((resp) => {
-    ccm_parseJSON(resp, () => {
+    const { error, message } = resp;
+    if (error) {
+      alert(message);
+    } else {
       $.fn.dialog.closeTop();
       ccm_deactivateSearchResults(searchInstance);
       const r = eval('(' + resp + ')');
@@ -406,13 +412,13 @@ function ccm_alDuplicateFiles(searchInstance) {
         const highlight = [];
         for (let i = 0; i < r.fID.length; i++) {
           fID = r.fID[i];
-          ccm_uploadedFiles.push(fID);
+          window.ccm_uploadedFiles.push(fID);
           highlight.push(fID);
         }
         ccm_alRefresh(highlight, searchInstance);
         ccm_filesUploadedDialog(searchInstance);
       });
-    });
+    }
   });
 }
 
@@ -619,8 +625,8 @@ function ccm_alResetSingle() {
 function ccm_filesUploadedDialog(searchInstance) {
   if (document.getElementById('ccm-file-upload-multiple-tab')) $.fn.dialog.closeTop();
   let fIDstring = '';
-  for (let i = 0; i < ccm_uploadedFiles.length; i++)
-  fIDstring = fIDstring + '&fID[]=' + ccm_uploadedFiles[i];
+  for (let i = 0; i < window.ccm_uploadedFiles.length; i++)
+  fIDstring = fIDstring + '&fID[]=' + window.ccm_uploadedFiles[i];
   $.fn.dialog.open({
     width: 690,
     height: 440,
@@ -634,7 +640,7 @@ function ccm_filesUploadedDialog(searchInstance) {
     },
     title: ccmi18n_filemanager.uploadComplete,
   });
-  ccm_uploadedFiles = [];
+  window.ccm_uploadedFiles = [];
 }
 
 function ccm_alSetupUploadDetailsForm(searchInstance) {
@@ -692,7 +698,7 @@ function ccm_alHighlightFileIDArray(ids) {
 }
 
 function ccm_alSelectFile(fID) {
-  if (typeof (ccm_chooseAsset) == 'function') {
+  if (typeof (ccm_chooseAsset) === 'function') {
     let qstring = '';
     if (typeof (fID) == 'object') {
       for (let i = 0; i < fID.length; i++) {
@@ -703,12 +709,15 @@ function ccm_alSelectFile(fID) {
     }
 
     $.getJSON(CCM_TOOLS_PATH + '/files/get_data.php?' + qstring, (resp) => {
-      ccm_parseJSON(resp, () => {
+      const { message, error } = resp;
+      if (error) {
+        alert(message);
+      } else {
         for (let i = 0; i < resp.length; i++) {
           ccm_chooseAsset(resp[i]);
         }
         $.fn.dialog.closeTop();
-      });
+      }
     });
   } else {
     if (typeof (fID) == 'object') {
@@ -998,7 +1007,7 @@ function ccm_alDuplicateFile(fID, searchInstance) {
     if (r.fID) {
       highlight.push(r.fID);
       ccm_alRefresh(highlight, searchInstance);
-      ccm_uploadedFiles.push(r.fID);
+      window.ccm_uploadedFiles.push(r.fID);
       ccm_filesUploadedDialog(searchInstance);
     }
   });

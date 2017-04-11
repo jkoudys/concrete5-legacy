@@ -10,7 +10,7 @@ const ccm_editorCurrentAuxTool = false;
 function ccm_editorSetupImagePicker() {
   tinyMCE.activeEditor.focus();
   const bm = tinyMCE.activeEditor.selection.getBookmark();
-  ccm_chooseAsset = function (obj) {
+  window.ccm_chooseAsset = function (obj) {
     const mceEd = tinyMCE.activeEditor;
     mceEd.selection.moveToBookmark(bm); // reset selection to the bookmark (ie looses it)
     const args = {};
@@ -33,7 +33,7 @@ function ccm_editorSetupImagePicker() {
 function ccm_editorSetupFilePicker() {
   tinyMCE.activeEditor.focus();
   const bm = tinyMCE.activeEditor.selection.getBookmark();
-  ccm_chooseAsset = function (obj) {
+  window.ccm_chooseAsset = function (obj) {
     const mceEd = tinyMCE.activeEditor;
     mceEd.selection.moveToBookmark(bm); // reset selection to the bookmark (ie looses it)
     const selectedText = mceEd.selection.getContent();
