@@ -1,4 +1,4 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
+<?php
 /* @var $h ConcreteDashboardHelper */
 $h = Loader::helper('concrete/dashboard');
 /* @var $ih ConcreteInterfaceHelper */
@@ -7,26 +7,17 @@ $ih = Loader::helper('concrete/interface');
 $form = Loader::helper('form');
 /* @var $dh DateHelper */
 $dh = Loader::helper('date');
-
 ?>
 <style type="text/css">
 #ccm-jobs-list td {
 	vertical-align: middle;
-	-webkit-transition-property: color, background-color;
-	-webkit-transition-duration: .9s, .9s;
-	-moz-transition-property: color, background-color;
-	-moz-transition-duration: .9s, .9s;
-	-o-transition-property: color, background-color;
-	-o-transition-duration: .9s, .9s;
-	-ms-transition-property: color, background-color;
-	-ms-transition-duration: .9s, .9s;
 	transition-property: color, background-color;
 	transition-duration: .9s, .9s;
  }
 
 #ccm-jobs-list td button {
- 	float: right;
- }
+	float: right;
+}
 
 #ccm-jobs-list tr.error td {
 	color: #f00;
@@ -35,39 +26,41 @@ $dh = Loader::helper('date');
 #ccm-jobs-list tr.success td {
 	color: #090;
 }
-
 </style>
 
-<?=$h->getDashboardPaneHeaderWrapper(t('Automated Jobs'), false, false);?>
+<?= $h->getDashboardPaneHeaderWrapper(t('Automated Jobs'), false, false) ?>
 
-<?=Loader::helper('concrete/interface')->tabs(array(
-	array($this->action('view'), t('Jobs'), $jobListSelected),
-	array($this->action('view_sets'), t('Job Sets'), $jobSetsSelected)
-), false);?>
+<?= Loader::helper('concrete/interface')->tabs([
+	[$this->action('view'), t('Jobs'), $jobListSelected],
+	[$this->action('view_sets'), t('Job Sets'), $jobSetsSelected],
+], false) ?>
 
-<? if (in_array($this->controller->getTask(), array('view', 'install', 'uninstall', 'job_installed', 'job_uninstalled', 'reset', 'reset_complete', 'job_scheduled'))) { ?>
+<?php if (in_array(
+	$this->controller->getTask(),
+	['view', 'install', 'uninstall', 'job_installed', 'job_uninstalled', 'reset', 'reset_complete', 'job_scheduled']
+)) { ?>
 
 <div id="ccm-tab-content-list">
 
-<? if (count($installedJobs) > 0) { ?>
+<?php if (count($installedJobs) > 0) { ?>
 
 <table class="table" id="ccm-jobs-list">
 	<thead>
 	<tr>
-		<th><?=t('ID')?></th>
-		<th style="width: 200px"><?=t('Name')?></th>
+		<th><?= t('ID') ?></th>
+		<th style="width: 200px"><?= t('Name') ?></th>
 		<th><?=t('Last Run')?></th>
-		<th style="width: 200px"><?=t('Results of Last Run')?></th>
-		<td><a href="<?=$this->action('reset')?>" class="btn pull-right btn-mini"><?=t('Reset All Jobs')?></a></td>
+		<th style="width: 200px"><?= t('Results of Last Run') ?></th>
+		<td><a href="<?= $this->action('reset') ?>" class="btn pull-right btn-mini"><?= t('Reset All Jobs') ?></a></td>
 		<td></td>
 	</tr>
 	</thead>
 	<tbody>
-	<? foreach($installedJobs as $j) { ?>
-		<tr class="<? if ($j->didFail()) { ?>error<? } ?> <? if ($j->getJobStatus() == 'RUNNING') {?>running<? } ?>">
+	<?php foreach($installedJobs as $j) { ?>
+		<tr class="<?php if ($j->didFail()) { ?>error<?php } ?> <?php if ($j->getJobStatus() === 'RUNNING') {?>running<?php } ?>">
 			<td><?=$j->getJobID()?></td>
 			<td><i class="icon-question-sign" title="<?=$j->getJobDescription()?>"></i> <?=$j->getJobName()?></td>
-			<td class="jDateLastRun"><?
+			<td class="jDateLastRun"><?php
 				if ($j->getJobStatus() == 'RUNNING') {
 					$runtime = $dh->formatTime($j->getJobDateLastRun(), true, true);
 					echo ("<strong>");
@@ -86,20 +79,20 @@ $dh = Loader::helper('date');
 			</td>
 			<td>
 				<a href="javascript:void(0)" class="ccm-automate-job-instructions" data-jSupportsQueue="<?=$j->supportsQueue()?>" data-jID="<?=$j->getJobID()?>" title="<?=t('Automate this Job')?>"><i class="icon-tasks"></i></a>
-				<? if ($j->canUninstall()) { ?>
+				<?php if ($j->canUninstall()) { ?>
 					<a href="<?=$this->action('uninstall', $j->getJobID())?>" title="<?=t('Remove this Job')?>"><i class="icon-trash"></i></a>
-				<? } ?>
+				<?php } ?>
 			</td>
 		</tr>
 
-	<? } ?>
+	<?php } ?>
 	</tbody>
 </table>
 
 
 <div style="display: none" id="ccm-jobs-automation-dialogs">
 
-<? foreach($installedJobs as $j) { ?>
+<?php foreach($installedJobs as $j) { ?>
 	<div id="jd<?=$j->getJobID()?>" class="ccm-ui">
 		<form action="<?=$this->action('update_job_schedule')?>" method="post">
 			<?=$form->hidden('jID', $j->getJobID());?>
@@ -127,7 +120,7 @@ $dh = Loader::helper('date');
 			</label>
 			<fieldset class="ccm-jobs-automation-schedule-cron" <?=($j->isScheduled?'style="display: none;"':'')?>>
 				<div class="well">
-					<? if ($j->supportsQueue()) { ?>
+					<?php if ($j->supportsQueue()) { ?>
 						<p><?=t('The "%s" job supports queueing, meaning it can be run in a couple different ways:', $j->getJobName())?></p>
 						<h4><?=t('No Queueing')?></h4>
 						<div><textarea style="width: 560px" rows="2" class="ccm-default-jobs-url"><?=BASE_URL . $this->url('/tools/required/jobs?auth=' . $auth . '&jID=' . $j->getJobID())?></textarea></div>
@@ -140,10 +133,10 @@ $dh = Loader::helper('date');
 						<div><textarea style="width: 560px" rows="2" class="ccm-default-jobs-url"><?=BASE_URL . REL_DIR_FILES_TOOLS_REQUIRED . '/jobs/check_queue?auth=' . $auth?></textarea></div>
 						<div class="alert alert-info"><?=t('The first URL starts the process - the second ensures that it completes in batches.')?></div>
 
-					<? } else { ?>
+					<?php } else { ?>
 						<p><?=t('To run the "%s" job, automate the following URL using cron or a similar system:', $j->getJobName())?></p><br/>
 						<div><textarea style="width: 560px" rows="2" class="ccm-default-jobs-url"><?=BASE_URL . $this->url('/tools/required/jobs/run_single?auth=' . $auth . '&jID=' . $j->getJobID())?></textarea></div>
-					<? } ?>
+					<?php } ?>
 				</div>
 			</fieldset>
 			<div class="ccm-pane-footer">
@@ -153,15 +146,15 @@ $dh = Loader::helper('date');
 			</div>
 		</form>
 	</div>
-<? } ?>
+<?php } ?>
 
 </div>
 
-<? } else { ?>
+<?php } else { ?>
 	<p><?=t('You have no jobs installed.')?></p>
-<? } ?>
+<?php } ?>
 
-<? if (count($availableJobs) > 0) { ?>
+<?php if (count($availableJobs) > 0) { ?>
 	<h4><?=t('Awaiting Installation')?></h4>
 	<table class="table table-striped">
 	<thead>
@@ -183,8 +176,8 @@ $dh = Loader::helper('date');
 		<?endforeach?>
 	</tbody>
 	</table>
-<? } ?>
-<?
+<?php } ?>
+<?php
 $djs = JobSet::getDefault();
 if (is_object($djs)) { ?>
 <div class="well">
@@ -192,11 +185,11 @@ if (is_object($djs)) { ?>
 <p><?=t('To run all the jobs in the <a href="%s">%s</a> Job Set, schedule this URL using cron or a similar system:', $this->url('/dashboard/system/optimization/jobs', 'edit_set', $djs->getJobSetID()), $djs->getJobSetDisplayName())?></p>
 <div><input type="text" style="width: 700px" class="ccm-default-jobs-url" value="<?=BASE_URL . $this->url('/tools/required/jobs?auth=' . $auth)?>" /></div>
 </div>
-<? } ?>
+<?php } ?>
 
 </div>
 
-<? } else { ?>
+<?php } else { ?>
 
 <div id="ccm-tab-content-sets">
 
@@ -231,8 +224,7 @@ if (is_object($djs)) { ?>
 		</fieldset>
 		</form>
 
-
-		<? if ($set->canDelete()) { ?>
+		<?php if ($set->canDelete()) { ?>
 
 		<form method="post" action="<?php echo $this->action('delete_set')?>" class="form-vertical">
 		<fieldset>
@@ -250,7 +242,7 @@ if (is_object($djs)) { ?>
 			</div>
 		</fieldset>
 		</form>
-		<? } ?>
+		<?php } ?>
 		</div>
 
 		<div class="span-pane-half">
@@ -333,7 +325,7 @@ if (is_object($djs)) { ?>
 		</div>
 
 
-<? } else { ?>
+<?php } else { ?>
 
 	<form method="post" class="form-horizontal" action="<?php echo $this->action('add_set')?>">
 
@@ -368,9 +360,9 @@ if (is_object($djs)) { ?>
 	<div class="control-group">
 		<label class="control-label"><?=t('Jobs')?></label>
 		<div class="controls">
-		<? foreach($installedJobs as $j) { ?>
+		<?php foreach($installedJobs as $j) { ?>
 			<label class="checkbox"><?=$form->checkbox('jID[]', $j->getJobID())?> <span><?=$j->getJobName()?></span></label>
-		<? } ?>
+		<?php } ?>
 		</div>
 	</div>
 
@@ -383,9 +375,9 @@ if (is_object($djs)) { ?>
 
 	</form>
 
-	<? } ?>
+	<?php } ?>
 </div>
-<? } ?>
+<?php } ?>
 
 
 <script type="text/javascript">
@@ -496,4 +488,4 @@ $(function() {
 	});
 });
 </script>
-<?=$h->getDashboardPaneFooterWrapper();?>
+<?= $h->getDashboardPaneFooterWrapper() ?>
