@@ -1,16 +1,9 @@
 <?php
-
-defined('C5_EXECUTE') or die("Access Denied.");
-
-if (!Loader::helper('validation/numbers')->integer($_GET['cID'])) {
-	die(t('Access Denied'));
-}
-
-$c = Page::getByID($_GET['cID'], 'RECENT');
+$c = Page::getByID((int) $_GET['cID'], 'RECENT');
 $cp = new Permissions($c);
 $canViewPane = false;
 
-$additionalArgs = array();
+$additionalArgs = [];
 
 switch($_GET['ctask']) {
 	case 'edit_metadata':
