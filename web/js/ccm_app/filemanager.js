@@ -5,7 +5,7 @@ const { CCM_TOOLS_PATH, CCM_DISPATCHER_FILENAME, CCM_STAR_STATES, CCM_STAR_ACTIO
 const ccm_alDebug = false;
 const ccm_alLaunchType = [];
 let ccm_alActiveAssetField = '';
-let ccm_alProcessorTarget = '';
+window.ccm_alProcessorTarget = '';
 window.ccm_uploadedFiles = [];
 let checkboxStatus = false;
 
@@ -32,7 +32,7 @@ function ccm_triggerSelectFile(fID, af = ccm_alActiveAssetField) {
       ccm_triggerSelectFileComplete(fID, af);
     }
   });
-  const vobj = $('#' + af + '-fm-value');
+  const vobj = $(`#${af}-fm-value`);
   vobj.attr('value', fID);
   ccm_alSetupFileProcessor();
 }
@@ -45,9 +45,9 @@ function ccm_alGetFileData(fID, onComplete) {
 
 function ccm_clearFile(e, af) {
   e.stopPropagation();
-  const obj = $('#' + af + '-fm-selected');
-  const dobj = $('#' + af + '-fm-display');
-  const vobj = $('#' + af + '-fm-value');
+  const obj = $(`#${af}-fm-selected`);
+  const dobj = $(`#${af}-fm-display`);
+  const vobj = $(`#${af}-fm-value`);
   vobj.attr('value', 0);
   obj.hide();
   dobj.show();
@@ -69,7 +69,6 @@ function ccm_activateFileManager(altype, searchInstance) {
   if (altype == 'DASHBOARD') {
     $('.dialog-launch').dialog();
   }
-
 
   ccm_alSetupCheckboxes(searchInstance);
   ccm_alSetupFileProcessor();
@@ -106,7 +105,7 @@ function exportActivate(searchInstance) {
 
 function ccm_alSetupSingleUploadForm() {
   $('.ccm-file-manager-submit-single').submit(function () {
-    $(this).attr('target', ccm_alProcessorTarget);
+    $(this).attr('target', window.ccm_alProcessorTarget);
     ccm_alSubmitSingle($(this).get(0));
   });
 }
@@ -120,7 +119,7 @@ function ccm_activateFileSelectors() {
 
 function ccm_alLaunchSelectorFileManager(selector) {
   let filterStr = '';
-  const types = $('#' + selector + '-fm-display input.ccm-file-manager-filter');
+  const types = $(`#${selector}-fm-display input.ccm-file-manager-filter`);
 
   ccm_alActiveAssetField = selector;
 
@@ -544,7 +543,7 @@ function ccm_alSetupCheckboxes(searchInstance) {
                     });
                     break;
             case 'download':
-                    window.frames[ccm_alProcessorTarget].location = CCM_TOOLS_PATH + '/files/download?' + fIDstring;
+                    window.frames[window.ccm_alProcessorTarget].location = CCM_TOOLS_PATH + '/files/download?' + fIDstring;
                     break;
     }
 
@@ -581,7 +580,7 @@ function ccm_alRescanMultiFileMenu(searchInstance) {
 }
 
 function ccm_alSetupFileProcessor() {
-  if (ccm_alProcessorTarget != '') {
+  if (window.ccm_alProcessorTarget != '') {
     return false;
   }
 
@@ -601,9 +600,9 @@ function ccm_alSetupFileProcessor() {
   document.body.appendChild(ifr);
 
   if (ccm_alDebug) {
-    ccm_alProcessorTarget = '_blank';
+    window.ccm_alProcessorTarget = '_blank';
   } else {
-    ccm_alProcessorTarget = 'ccm-al-upload-processor' + ts;
+    window.ccm_alProcessorTarget = 'ccm-al-upload-processor' + ts;
   }
 }
 
@@ -708,7 +707,7 @@ function ccm_alSelectFile(fID) {
       qstring += 'fID=' + fID;
     }
 
-    $.getJSON(CCM_TOOLS_PATH + '/files/get_data.php?' + qstring, (resp) => {
+    $.getJSON(`${CCM_TOOLS_PATH}/files/get_data.php?${qstring}`, (resp) => {
       const { message, error } = resp;
       if (error) {
         alert(message);
@@ -735,17 +734,29 @@ function ccm_alSelectFile(fID) {
 const fileMenus = {};
 
 // Template Component
-const MenuOption = ({ icon, onClick, id, title = '', text = '', dialog = false, clear = false, className = '', attributes = {}, width = '90%', height = '70%' }) => {
+const MenuOption = ({
+  attributes = {},
+  attributes: {
+    href,
+  } = {},
+  className = '',
+  clear = false,
+  dialog = false,
+  height = 600,
+  icon,
+  id,
+  onClick,
+  text = '',
+  title = '',
+  width = 800,
+  searchInstance,
+}) => {
   // Optional attributes
   const optional = Object.entries(attributes).reduce((a, [k, v]) => `${a} ${k}="${v}"`, '');
   const li = document.createElement('li');
   li.innerHTML = `
   <a
-    class="ccm-menu-icon ${icon} ${className} ${dialog ? 'dialog-launch' : ''}"
-    dialog-modal="false"
-    dialog-width="${width}"
-    dialog-height="${height}"
-    dialog-title="${title}"
+    class="ccm-menu-icon ${icon} ${className}"
     id="${id}"
     ${optional}
   >
@@ -755,11 +766,20 @@ const MenuOption = ({ icon, onClick, id, title = '', text = '', dialog = false, 
   const a = li.querySelector('a');
 
   if (onClick) a.addEventListener('click', onClick);
-  if (dialog) a.addEventListener('click', (e) => {
-    $(a).dialog();
+  if (dialog) a.addEventListener('click', async (e) => {
     e.preventDefault();
+    const pageContent = await fetch(href, { credentials: 'include' }).then(r => r.text());
+    const div = document.createElement('div');
+    div.innerHTML = pageContent;
+
+    $(div).dialog({
+      height,
+      width,
+      title,
+    });
   });
   if (clear) $(a).click((e) => {
+    ccm_clearFile(e, searchInstance);
     ccm_hideMenus();
   });
 
@@ -833,6 +853,7 @@ function ccm_alActivateMenu(selected, e) {
         id: `menuClearFile${fID}`,
         clear: true,
         text: ccmi18n_filemanager.clear,
+        searchInstance,
       }));
     }
 
@@ -854,7 +875,7 @@ function ccm_alActivateMenu(selected, e) {
         icon: 'ccm-icon-download-menu',
         id: `menuDownload${fID}`,
         onClick: () => {
-          window.frames[ccm_alProcessorTarget].location = `${CCM_TOOLS_PATH}/files/download?fID=${fID}`;
+          window.frames[window.ccm_alProcessorTarget].location = `${CCM_TOOLS_PATH}/files/download?fID=${fID}`;
         },
         text: ccmi18n_filemanager.download,
       }));

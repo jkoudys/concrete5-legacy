@@ -6,7 +6,14 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const PROD = process.env.NODE_ENV === 'production';
 const target = process.env.TARGET;
 
-const presets = ['babel-preset-es2015', 'babel-preset-es2017', 'babel-preset-stage-2'].map(require.resolve);
+const presets = [
+  ['env', {
+    targets: {
+      chrome: 52,
+    },
+  }],
+  'babel-preset-stage-2',
+];
 
 const appDir = './web/js/ccm_app';
 
