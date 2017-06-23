@@ -65,20 +65,14 @@ if ($_POST['task'] == 'save_permissions') {
 
 <?php if (!is_object($pae)) { ?>
 
-<div class="btn-group">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-    <i class="icon-plus-sign"></i> <?=t('Select')?>
-    <span class="caret"></span>
-        </a>
-    <ul class="dropdown-menu">
+<ul class="nav nav-pills nav-stacked">
     <?php
     $category = PermissionKeyCategory::getByHandle($_REQUEST['pkCategoryHandle']);
     $entitytypes = PermissionAccessEntityType::getList($category);
     foreach ($entitytypes as $type) { ?>
         <li><?=$type->getAccessEntityTypeLinkHTML()?></li>
     <?php                                                                                                             } ?>
-    </ul>
-</div>
+</ul>
 <br/><br/>
 
 <?php foreach ($entitytypes as $type) { ?>

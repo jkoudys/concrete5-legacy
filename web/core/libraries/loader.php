@@ -1,4 +1,4 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
+<?php
 
 /**
  * @package Core
@@ -269,10 +269,6 @@
 				}
 			}
 
-			//$_dba->LogSQL(true);
-			//global $ADODB_PERF_MIN;
-			//$ADODB_PERF_MIN = 0;
-
 			return $_dba;
 		}
 
@@ -287,9 +283,9 @@
 			$siteclass = "Site" . Object::camelcase($file) . "Helper";
 
 			if (array_key_exists($class, $instances)) {
-            	$instance = $instances[$class];
+				$instance = $instances[$class];
 			} else if (array_key_exists($siteclass, $instances)) {
-            	$instance = $instances[$siteclass];
+				$instance = $instances[$siteclass];
 			} else {
 
 				$env = Environment::get();
@@ -306,8 +302,8 @@
 					}
 				}
 
-	            $instances[$class] = new $class();
-    	        $instance = $instances[$class];
+				$instances[$class] = new $class();
+				$instance = $instances[$class];
 			}
 
 			if(method_exists($instance,'reset')) {

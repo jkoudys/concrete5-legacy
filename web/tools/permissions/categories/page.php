@@ -71,9 +71,7 @@ if (count($pages) > 0) {
                 $deferred = true;
             }
         }
-        $obj = new stdClass;
-        $obj->deferred = $deferred;
-        echo json_encode($obj);
+        echo json_encode(['deferred' => $deferred]);
         exit;
     }
 

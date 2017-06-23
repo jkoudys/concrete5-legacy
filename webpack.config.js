@@ -8,7 +8,7 @@ const target = process.env.TARGET;
 
 const presets = [
   ['env', {
-    targets: {
+    targets: PROD ? undefined : {
       chrome: 52,
     },
   }],
