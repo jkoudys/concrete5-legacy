@@ -97,11 +97,11 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 	}
 
 	//this was added because calling both getTotal() and get() was duplicating some of the query components
-	protected function createQuery(){
-		if(!$this->queryCreated){
+	protected function createQuery() {
+		if (!$this->queryCreated) {
 			$this->setBaseQuery();
-			if(!isset($this->showInactiveUsers)) $this->filter('u.uIsActive', 1);
-			if(!$this->showInvalidatedUsers) $this->filter('u.uIsValidated', 0, '!=');
+			if (!isset($this->showInactiveUsers)) $this->filter('u.uIsActive', 1);
+			if (!$this->showInvalidatedUsers) $this->filter('u.uIsValidated', 0, '!=');
 			$this->setupAttributeFilters("left join UserSearchIndexAttributes on (UserSearchIndexAttributes.uID = u.uID)");
 			$this->queryCreated=1;
 		}

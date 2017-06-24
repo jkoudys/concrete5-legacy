@@ -222,11 +222,8 @@
 		 * these need to be loaded before the models which need to be loaded before db()
 		 */
 		public function database() {
-			require(DIR_BASE_CORE . '/libraries/3rdparty/adodb/adodb.inc.php');
-			require(DIR_BASE_CORE . '/libraries/3rdparty/adodb/adodb-exceptions.inc.php');
-			require(DIR_BASE_CORE . '/libraries/3rdparty/adodb/adodb-active-record.inc.php');
-			require(DIR_BASE_CORE . '/libraries/3rdparty/adodb/adodb-xmlschema03.inc.php');
-			require(DIR_BASE_CORE . '/libraries/database.php');
+			require_once ADODB_DIR . '/adodb-active-record.inc.php';
+			require_once DIR_BASE_CORE . '/libraries/database.php';
 		}
 
 		/**
@@ -238,7 +235,14 @@
 		 * </code>
 		 * @return ADOConnection
 		 */
-		public static function db($server = null, $username = null, $password = null, $database = null, $create = false, $autoconnect = true) {
+		public static function db(
+			string $server = null,
+			string $username = null,
+			string $password = null,
+			string $database = null,
+			bool $create = false,
+			bool $autoconnect = true
+		) {
 			static $_dba;
 			if ((!isset($_dba) || $create) && ($autoconnect)) {
 				if ($server == null && defined('DB_SERVER')) {

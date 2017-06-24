@@ -348,7 +348,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		/**
 		 * Gets the value of the attribute for the user
 		 */
-		public function getAttribute($ak, $displayMode = false) {
+		public function getAttribute($ak, $displayMode = false, ...$args) {
 			Loader::model('attribute/categories/user');
 			if (!is_object($ak)) {
 				$ak = UserAttributeKey::getByHandle($ak);
@@ -356,13 +356,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if (is_object($ak)) {
 				$av = $this->getAttributeValueObject($ak);
 				if (is_object($av)) {
-					if(func_num_args() > 2) {
-						$args = func_get_args();
-						array_shift($args);
-						return call_user_func_array(array($av, 'getValue'), $args);
-					} else {
-						return $av->getValue($displayMode);
+					if (count($args)) {
+						return $av->getValue(...$args);
 					}
+					return $av->getValue($displayMode);
 				}
 			}
 		}
@@ -379,7 +376,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getAttributeValueObject($ak, $createIfNotFound = false) {
 			$db = Loader::db();
 			$av = false;
-			$v = array($this->getUserID(), $ak->getAttributeKeyID());
+			$v = [$this->getUserID(), $ak->getAttributeKeyID()];
 			$avID = $db->GetOne("select avID from UserAttributeValues where uID = ? and akID = ?", $v);
 			if ($avID > 0) {
 				$av = UserAttributeValue::getByID($avID);

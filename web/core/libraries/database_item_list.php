@@ -55,7 +55,7 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 	protected function executeBase() {
 		$db = Loader::db();
 		$q = $this->query . $this->userQuery . ' where 1=1 ';
-		foreach($this->filters as $f) {
+		foreach ($this->filters as $f) {
 			$column = $f[0];
 			$comp = $f[2];
 			$value = $f[1];
