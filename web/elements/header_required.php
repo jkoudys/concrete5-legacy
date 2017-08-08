@@ -69,7 +69,12 @@ $exports = [
 ];
 ?>
 <script type="text/javascript">
-Object.assign(window, <?= json_encode($exports) ?>);
+(function () {
+    var exports = <?= json_encode($exports) ?>;
+    for (var key in exports) {
+        window[key] = exports[key];
+    }
+})();
 </script>
 
 <?php

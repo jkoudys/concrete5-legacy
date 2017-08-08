@@ -1,6 +1,4 @@
 <?php
-
-defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * @package Users
  * @author Andrew Embler <andrew@concrete5.org>
@@ -376,8 +374,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getAttributeValueObject($ak, $createIfNotFound = false) {
 			$db = Loader::db();
 			$av = false;
-			$v = [$this->getUserID(), $ak->getAttributeKeyID()];
-			$avID = $db->GetOne("select avID from UserAttributeValues where uID = ? and akID = ?", $v);
+			$avID = $db->GetOne(
+				'SELECT avID FROM UserAttributeValues WHERE uID = ? AND akID = ?',
+				[$this->getUserID(), $ak->getAttributeKeyID()]
+			);
 			if ($avID > 0) {
 				$av = UserAttributeValue::getByID($avID);
 				if (is_object($av)) {
@@ -391,7 +391,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 				// Is this avID in use ?
 				if (is_object($av)) {
-					$cnt = $db->GetOne("select count(avID) from UserAttributeValues where avID = ?", $av->getAttributeValueID());
+					$cnt = $db->GetOne("SELECT COUNT(avID) FROM UserAttributeValues WHERE avID = ?", $av->getAttributeValueID());
 				}
 
 				if ((!is_object($av)) || ($cnt > 1)) {
@@ -586,7 +586,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			Events::fire('on_user_deactivate', $this);
 		}
 
-
 		function resetUserPassword() {
 			// resets user's password, and returns the value of the reset password
 			$db = Loader::db();
@@ -771,7 +770,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				return $this->uLastOnline;
 			}
 		}
-
 
 		function getUserEndDate($type = 'system') {
 			if(ENABLE_USER_TIMEZONES && $type == 'user') {
