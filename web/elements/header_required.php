@@ -69,12 +69,11 @@ $exports = [
 ];
 ?>
 <script type="text/javascript">
-(function () {
-    var exports = <?= json_encode($exports) ?>;
+(function (exports) {
     for (var key in exports) {
         window[key] = exports[key];
     }
-})();
+})(<?= json_encode($exports) ?>);
 </script>
 
 <?php

@@ -165,15 +165,15 @@ $dh = Loader::helper('date');
 		</tr>
 	</thead>
 	<tbody>
-		<?foreach($availableJobs as $availableJobName => $job):?>
+		<?php foreach($availableJobs as $availableJobName => $job): ?>
 		<tr>
-			<td><?=$job->getJobName() ?></td>
-			<td><?=$job->getJobDescription() ?></td>
-			<td><?if(!$job->invalid):?>
-				<a href="<?=$this->action('install', $job->jHandle)?>" class="btn btn-small pull-right"><?=t('Install')?></a>
-			<?endif?></td>
+			<td><?= $job->getJobName() ?></td>
+			<td><?= $job->getJobDescription() ?></td>
+			<td><?php if(!$job->invalid): ?>
+				<a href="<?= $this->action('install', $job->jHandle) ?>" class="btn btn-small pull-right"><?=t('Install')?></a>
+			<?php endif ?></td>
 		</tr>
-		<?endforeach?>
+		<?php endforeach ?>
 	</tbody>
 	</table>
 <?php } ?>
