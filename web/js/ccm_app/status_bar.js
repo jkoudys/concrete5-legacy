@@ -29,14 +29,14 @@ function activate(containerID) {
         const attribs = Object.values(button.getAttributes()).reduce((a, { key, value }) => `${key}='${value}'`, '');
         if (button.getURL()) {
           buttonStr += `
-          <button type="submit" ${attribs} name="action_${button.getAction()}" class="btn-small btn ${button.getCSSClass()}">
-          ${innerButtonLeft}${button.getLabel()}${innerButtonRight}
-          </button>`;
-        } else {
-          buttonStr += `
           <a href="${button.getURL()}" ${attribs} class="btn btn-small ${button.getCSSClass()}">
           ${innerButtonLeft}${button.getLabel()}${innerButtonRight}
           </a>`;
+        } else {
+          buttonStr += `
+          <button type="submit" ${attribs} name="action_${button.getAction()}" class="btn-small btn ${button.getCSSClass()}">
+          ${innerButtonLeft}${button.getLabel()}${innerButtonRight}
+          </button>`;
         }
       }
       d += `
