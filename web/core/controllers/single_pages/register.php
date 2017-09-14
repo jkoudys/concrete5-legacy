@@ -8,7 +8,7 @@ class Concrete5_Controller_Register extends Controller
         if (!ENABLE_REGISTRATION) {
             $cont = Loader::controller('/page_not_found');
             $cont->view();
-            $this->render("/page_not_found");
+            $this->render('/page_not_found');
         }
         parent::__construct();
         Loader::model('user_attributes');
@@ -45,9 +45,11 @@ class Concrete5_Controller_Register extends Controller
         }
 
         if (ENABLE_REGISTRATION_CAPTCHA) {
-            $captcha = Loader::helper('validation/captcha');
-            if (!$captcha->check()) {
-                $e->add(t("Incorrect image validation code. Please check the image and re-enter the letters or numbers as necessary."));
+            $gRecaptchaResponse = $_POST['g-recaptcha-response'];
+            $recaptcha = new \ReCaptcha\ReCaptcha(GOOGLE_RECAPTCHA_SECRET);
+            $resp = $recaptcha->verify($gRecaptchaResponse, $_SERVER['REMOTE_ADDR']);
+            if (!$resp->isSuccess()) {
+                $e->add($resp->getErrorCodes());
             }
         }
 
